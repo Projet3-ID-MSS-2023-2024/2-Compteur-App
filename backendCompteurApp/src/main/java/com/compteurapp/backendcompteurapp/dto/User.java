@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.dto;
 
 public class User {
+    private String id;
     private String firstName;
 
     private String lastName;
@@ -10,6 +11,14 @@ public class User {
     private String userName;
 
     private String password;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

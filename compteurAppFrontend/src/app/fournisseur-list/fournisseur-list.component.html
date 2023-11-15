@@ -5,6 +5,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>id</th>
               <th>firstName</th>
               <th>lastName</th>
               <th>Username</th>
@@ -12,17 +13,20 @@
               <th>phoneNumber</th>
               <th>tva</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of fournisseurs">
+              <td>{{ user?.id }}</td>
               <td>{{ user?.firstName }}</td>
               <td>{{ user?.lastName }}</td>
               <td>{{ user?.userName }}</td>
               <td>{{ user?.email }}</td>
               <td>{{ user?.phoneNumber }}</td>
               <td>{{ user?.tva }}</td>
-              <td><button>Delete</button></td>
+              <td><button (click)="deleteFournisseurSpring(user?.id)">Delete</button></td>
+              <td><button (click)="updateFournisseurSpring(user?.id)">Update</button></td>
             </tr>
           </tbody>
         </table>

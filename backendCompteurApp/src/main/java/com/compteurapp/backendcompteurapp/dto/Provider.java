@@ -4,6 +4,10 @@ public class Provider extends User{
     private String tva;
     private String phoneNumber;
 
+    public Provider() {
+        super();
+    }
+
     public void setTva(String tva) {
         this.tva = tva;
     }
