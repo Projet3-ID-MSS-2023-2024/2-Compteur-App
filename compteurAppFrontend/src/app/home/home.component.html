@@ -1,0 +1,11 @@
+<div *ngIf="authenticated">
+  <div>
+    <button (click)="goToFournisseurs()">Liste de fournisseur</button>
+    <button (click)="goToAddFournisseur()">Ajouter fournisseur</button>
+    <button (click)="goToAddAdresse()">Ajouter adresse</button>
+  </div>
+</div>
+<div>
+  <button *ngIf="!authenticated" (click)="login()">Login</button>
+  <button *ngIf="authenticated" (click)="logout()">Logout</button>
+</div>
