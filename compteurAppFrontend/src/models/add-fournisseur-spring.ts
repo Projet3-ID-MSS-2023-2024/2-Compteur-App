@@ -1,4 +1,5 @@
 export class AddFournisseurSpring {
+  id?: number;
   firstName?: string;
   lastName?: string;
   email?: string;

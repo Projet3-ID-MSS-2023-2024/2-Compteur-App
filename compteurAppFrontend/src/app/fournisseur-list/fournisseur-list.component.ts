@@ -15,6 +15,7 @@ export class FournisseurListComponent {
     private readonly keycloak: KeycloakService
     ) { }
 
+  fournisseur: AddFournisseurSpring = new AddFournisseurSpring();
   fournisseurs: AddFournisseurSpring[] = [];
 
   ngOnInit(): void {
@@ -27,5 +28,34 @@ export class FournisseurListComponent {
       }
     );
   }
+
+  deleteFournisseurSpring(id: number | undefined) {
+    this.fournisseurService.deleteFournisseurSpring(id).subscribe(
+      data => {
+        console.log(data);
+        this.ngOnInit();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  updateFournisseurSpring(id: number | undefined) {
+    if (id != undefined) {
+      this.fournisseurService.updateFournisseurSpring(this.fournisseurs[id], id).subscribe(
+        data => {
+          console.log(data);
+          this.ngOnInit();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    } else {
+      console.log('id is undefined');
+    }
+  }
+
 
 }

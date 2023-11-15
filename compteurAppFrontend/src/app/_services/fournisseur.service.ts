@@ -26,12 +26,28 @@ export class FournisseurService {
     return this.http.post<AddFournisseurSpring>(`/api/provider`, user, { headers });
   }
 
+  updateFournisseurSpring(user: AddFournisseurSpring | undefined, id: number | undefined) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<AddFournisseurSpring>(`/api/provider/${id}`, user, { headers });
+  }
+
   getFournisseurSpring() {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<any>(`/api/providers`, { headers });
+  }
+
+  deleteFournisseurSpring(id: number | undefined) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.delete<any>(`/api/provider/${id}`, { headers });
   }
 
 
