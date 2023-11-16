@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
-import { ClientService } from '../_services/client.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -11,33 +11,27 @@ import { ClientService } from '../_services/client.service';
 export class HomeComponent implements OnInit{
   authenticated = false;
   isAdmin = false;
-  isFournisseur = false;
-  isClient = false;
+  isUser = false;
 
-  constructor(private readonly keycloak: KeycloakService, private route: Router, private clientService: ClientService) {}
-
-  ngOnInit(): void {
+  constructor(private readonly keycloak: KeycloakService, private route: Router, private userService: UserService) {
     this.keycloak.isLoggedIn().then((authenticated) => {
       this.authenticated = authenticated;
       if (authenticated) {
-        console.log(this.keycloak.getToken());
-        this.isAdmin = this.keycloak.isUserInRole('admin');
-        this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
-        this.isClient = this.keycloak.isUserInRole('client');
-
-
-        if(!this.isAdmin && !this.isFournisseur && !this.isClient) {
-          // this.clientService.asignClientRole(this.keycloak.getKeycloakInstance().subject, 'client').subscribe(
-          //   (data) => {
-          //     console.log(data);
-          //   },
-          //   (error) => {
-          //     console.log(error);
-          //   }
-          // );
-        }
+        this.isAdmin = this.keycloak.isUserInRole('ADMIN');
+        this.isUser = this.keycloak.isUserInRole('USER');
       }
     });
+
+  }
+  ngOnInit(): void {
+    this.userService.getUserBySpring().subscribe(
+      (data) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   login() {

@@ -5,6 +5,7 @@ import { FournisseurService } from '../_services/fournisseur.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AddFournisseur } from 'src/models/add-fournisseur';
+import { UserService } from '../_services/user.service';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 
 @Component({
@@ -23,6 +24,7 @@ export class FournisseurAddComponent {
     private router: Router,
     private fournisseurService: FournisseurService,
     private readonly keycloak: KeycloakService,
+    private userService: UserService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],

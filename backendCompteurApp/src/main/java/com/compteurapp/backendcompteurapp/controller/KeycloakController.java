@@ -12,7 +12,6 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.ws.rs.core.Response;
 
@@ -30,7 +29,6 @@ public class KeycloakController {
         this.keycloakUtil = keycloakUtil;
     }
 
-    //------------------User------------------//
     @GetMapping("/users")
     public List<User> getUsers() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
@@ -46,23 +44,7 @@ public class KeycloakController {
         return Response.ok(user).build();
     }
 
-    @PutMapping("/user/{id}")
-    public Response updateUser(@PathVariable String id, @RequestBody User user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().get(id).update(userRep);
-        return Response.ok(user).build();
-    }
-
-    @DeleteMapping("/user/{id}")
-    public Response deleteUser(@PathVariable String id) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().delete(id);
-        return Response.ok().build();
-    }
-
-    //------------------Provider------------------//
-    @GetMapping("/provider")
+    @GetMapping("/providers")
     public List<Provider> getProviders() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
@@ -83,7 +65,6 @@ public class KeycloakController {
         return providers;
     }
 
-    @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")
     public Response createProvider(@RequestBody Provider provider) {
         UserRepresentation userRep = mapUserRep(provider);
@@ -104,7 +85,6 @@ public class KeycloakController {
         return Response.ok(provider).build();
     }
 
-    @PreAuthorize("hasRole('admin')")
     @PutMapping("/provider/{id}")
     public Response updateProvider(@PathVariable String id, @RequestBody Provider provider) {
         UserRepresentation userRep = mapUserRep(provider);
@@ -117,24 +97,13 @@ public class KeycloakController {
         keycloak.realm(realm).users().get(id).update(userRep);
         return Response.ok(provider).build();
     }
-    @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/provider/{id}")
-    public Response deleteProvider(@PathVariable String id) {
+    public Response deleteUser(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
         return Response.ok().build();
     }
 
-    //------------------Role------------------//
-    @PostMapping("/asignRole/{userId}/{roleName}")
-    public Response asignRole(@PathVariable String userId, @PathVariable String roleName) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
-        keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(role));
-        return Response.ok().build();
-    }
-
-    //------------------Private------------------//
     private User mapUser(UserRepresentation userRep) {
         User user = new User();
         user.setFirstName(userRep.getFirstName());
