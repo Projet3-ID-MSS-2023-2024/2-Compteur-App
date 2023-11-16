@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,23 +25,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private JwtAuthConverter jwtAuthConverter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        http.authorizeHttpRequests(authorize ->
+        http.oauth2ResourceServer(t->
+                t.jwt(configurer -> configurer.jwtAuthenticationConverter(jwtAuthConverter)));
+        http.authorizeHttpRequests(authorization ->
         {
-/*            authorize.requestMatchers(HttpMethod.GET, "/adresse").permitAll();
-            authorize.requestMatchers(HttpMethod.GET, "/api/users").permitAll();
-            authorize.requestMatchers(HttpMethod.POST, "/api/provider").permitAll();
-            authorize.requestMatchers(HttpMethod.POST, "/api/addAdresse").permitAll();*/
-            authorize.anyRequest().permitAll();
+            authorization.anyRequest().authenticated();
 
         });
-        http.oauth2ResourceServer(t->
-                t.jwt(Customizer.withDefaults()));
-
         return http.build();
     }
     @Bean
@@ -61,13 +58,5 @@ public class SecurityConfig {
         return c;
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 }

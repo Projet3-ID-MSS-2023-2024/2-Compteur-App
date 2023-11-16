@@ -39,7 +39,7 @@ export class FournisseurService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<any>(`/api/providers`, { headers });
+    return this.http.get<any>(`/api/provider`, { headers });
   }
 
   deleteFournisseurSpring(id: number | undefined) {
