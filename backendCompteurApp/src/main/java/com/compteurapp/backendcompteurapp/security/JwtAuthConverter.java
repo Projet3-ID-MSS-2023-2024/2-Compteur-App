@@ -8,12 +8,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     @Override
@@ -30,7 +32,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
             List<GrantedAuthority> roles = new ArrayList<>();
 
             for (String keycloakRole : keycloakRoles) {
-                roles.add(new SimpleGrantedAuthority(keycloakRole));
+                roles.add(new SimpleGrantedAuthority("ROLE_"));
             }
 
             return roles;
