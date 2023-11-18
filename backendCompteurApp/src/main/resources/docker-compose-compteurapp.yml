@@ -1,16 +1,6 @@
 version: '3'
 services:
-  db-keycloak:
-    image: postgres:16-alpine
-    ports:
-      - 5433:5432
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-
-  keycloak-app:
+  keycloak-app-compteurAapp:
     image: keycloak/keycloak:22.0.5
     command: ["start-dev"]
     ports:
@@ -19,6 +9,6 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://db-keycloak/postgres?currentSchema=public
+      - KC_DB_URL=jdbc:postgresql://13.37.240.236:5432/postgres?currentSchema=public
       - KC_DB_USERNAME=admin
       - KC_DB_PASSWORD=admin
