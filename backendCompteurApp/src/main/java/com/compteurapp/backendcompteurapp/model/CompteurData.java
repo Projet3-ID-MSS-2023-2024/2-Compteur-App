@@ -16,15 +16,21 @@ public class CompteurData {
     private double valeur;
     private String photo;
 
+    private long id_client;
+    private long id_vendeur;
+
     @ManyToOne
     @JoinColumn(name="id_compteur")
     private Compteur compteur;
 
-    public CompteurData(long id, Date date, double valeur, String photo, Compteur compteur) {
+
+    public CompteurData(long id, Date date, double valeur, String photo, long id_client, long id_vendeur, Compteur compteur) {
         this.id = id;
         this.date = date;
         this.valeur = valeur;
         this.photo = photo;
+        this.id_client = id_client;
+        this.id_vendeur = id_vendeur;
         this.compteur = compteur;
     }
 
@@ -58,6 +64,22 @@ public class CompteurData {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public long getId_client() {
+        return id_client;
+    }
+
+    public void setId_client(long id_client) {
+        this.id_client = id_client;
+    }
+
+    public long getId_vendeur() {
+        return id_vendeur;
+    }
+
+    public void setId_vendeur(long id_vendeur) {
+        this.id_vendeur = id_vendeur;
     }
 
     public Compteur getCompteur() {
