@@ -1,7 +1,10 @@
 package com.compteurapp.backendcompteurapp.model;
 
 import jakarta.persistence.*;
-import org.apache.james.mime4j.dom.datetime.DateTime;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 
 import java.sql.Date;
 
@@ -12,11 +15,20 @@ public class CompteurData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull
     private Date date;
+
+    @Min(0)
     private double valeur;
+
+    @Size(max = 255)
     private String photo;
 
+    @NotNull
     private long id_client;
+
+    @NotNull
     private long id_vendeur;
 
     @ManyToOne
@@ -33,6 +45,8 @@ public class CompteurData {
         this.id_vendeur = id_vendeur;
         this.compteur = compteur;
     }
+
+    public CompteurData(){}
 
     public long getId() {
         return id;
