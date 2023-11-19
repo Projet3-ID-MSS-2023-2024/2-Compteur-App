@@ -15,22 +15,22 @@ public class CompteurData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     private Date date;
 
     @Min(0)
-    private double valeur;
+    private Double valeur;
 
     @Size(max = 255)
     private String photo;
 
     @NotNull
-    private long id_client;
+    private Long client;
 
     @NotNull
-    private long id_vendeur;
+    private Long vendeur;
 
     @ManyToOne
     @JoinColumn(name="id_compteur")
@@ -39,24 +39,24 @@ public class CompteurData {
     @OneToMany(mappedBy = "compteurData")
     private List<Facture> factures;
 
-
-    public CompteurData(long id, Date date, double valeur, String photo, long id_client, long id_vendeur, Compteur compteur) {
+    public CompteurData(Long id, Date date, Double valeur, String photo, Long client, Long vendeur, Compteur compteur, List<Facture> factures) {
         this.id = id;
         this.date = date;
         this.valeur = valeur;
         this.photo = photo;
-        this.id_client = id_client;
-        this.id_vendeur = id_vendeur;
+        this.client = client;
+        this.vendeur = vendeur;
         this.compteur = compteur;
+        this.factures = factures;
     }
 
     public CompteurData(){}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,11 +68,11 @@ public class CompteurData {
         this.date = date;
     }
 
-    public double getValeur() {
+    public Double getValeur() {
         return valeur;
     }
 
-    public void setValeur(double valeur) {
+    public void setValeur(Double valeur) {
         this.valeur = valeur;
     }
 
@@ -84,20 +84,20 @@ public class CompteurData {
         this.photo = photo;
     }
 
-    public long getId_client() {
-        return id_client;
+    public Long getClient() {
+        return client;
     }
 
-    public void setId_client(long id_client) {
-        this.id_client = id_client;
+    public void setClient(Long client) {
+        this.client = client;
     }
 
-    public long getId_vendeur() {
-        return id_vendeur;
+    public Long getVendeur() {
+        return vendeur;
     }
 
-    public void setId_vendeur(long id_vendeur) {
-        this.id_vendeur = id_vendeur;
+    public void setVendeur(Long vendeur) {
+        this.vendeur = vendeur;
     }
 
     public Compteur getCompteur() {
@@ -106,5 +106,13 @@ public class CompteurData {
 
     public void setCompteur(Compteur compteur) {
         this.compteur = compteur;
+    }
+
+    public List<Facture> getFactures() {
+        return factures;
+    }
+
+    public void setFactures(List<Facture> factures) {
+        this.factures = factures;
     }
 }

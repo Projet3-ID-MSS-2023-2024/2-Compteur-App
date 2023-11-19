@@ -10,10 +10,9 @@ import java.util.List;
 
 public interface CompteurDataRepository extends JpaRepository<CompteurData, Long> {
 
-    Page<CompteurData> findByIdClient(Long idClient, Pageable pageable);
-    Page<CompteurData> findByIdVendeurAndFacturesIsNull(Long idVendeur, Pageable pageable);
-    Page<CompteurData> findByIdVendeurAndIdClientAndFacturesIsNull(Long idVendeur, Long idClient, Pageable pageable);
-    Page<CompteurData> findByIdVendeurAndFacturesEtat(Long idVendeur, FactureStatement etat, Pageable pageable);
-    Page<CompteurData> findByIdVendeurAndIdClientAndFacturesEtat(Long idVendeur, Long idClient, FactureStatement etat, Pageable pageable);
-
+    Page<CompteurData> findByClient(int idClient, Pageable pageable);
+    Page<CompteurData> findByVendeurAndFacturesIsNull(Long idVendeur, Pageable pageable);
+    Page<CompteurData> findByVendeurAndClientAndFacturesIsNull(Long idVendeur, Long idClient, Pageable pageable);
+    Page<CompteurData> findByVendeurAndFacturesEtat(Long idVendeur, FactureStatement etat, Pageable pageable);
+    Page<CompteurData> findByVendeurAndClientAndFacturesEtat(Long idVendeur, Long idClient, FactureStatement etat, Pageable pageable);
 }

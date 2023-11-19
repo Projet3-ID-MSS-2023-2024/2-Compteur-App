@@ -12,7 +12,7 @@ public class Facture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @NotNull
     private Date date;
     @Min(value = 0)
@@ -24,7 +24,7 @@ public class Facture {
     @JoinColumn(name="compteur_data_id")
     private CompteurData compteurData;
 
-    public Facture(long id, Date date, double prix, FactureStatement etat, CompteurData compteurData) {
+    public Facture(Long id, Date date, double prix, FactureStatement etat, CompteurData compteurData) {
         this.id = id;
         this.date = date;
         this.prix = prix;
@@ -34,11 +34,11 @@ public class Facture {
 
     public Facture(){}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
