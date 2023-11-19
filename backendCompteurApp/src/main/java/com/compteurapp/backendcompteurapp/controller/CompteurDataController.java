@@ -50,6 +50,8 @@ public class CompteurDataController {
 
 
 
+
+
     /* On récupere les CompteurData pour les relevés pas encore traiter */
 
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
