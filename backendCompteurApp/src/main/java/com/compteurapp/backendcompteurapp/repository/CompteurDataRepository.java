@@ -9,9 +9,11 @@ import java.util.List;
 public interface CompteurDataRepository extends JpaRepository<CompteurData, Long> {
 
     List<CompteurData> findByIdClient(Long idClient);
-    List<CompteurData> findByFacturesIsNull();
     List<CompteurData> findByIdVendeurAndFacturesIsNull(Long idVendeur);
     List<CompteurData> findByIdVendeurAndIdClientAndFacturesIsNull(Long idVendeur, Long idClient);
     List<CompteurData> findByIdVendeurAndFacturesEtat(Long idVendeur, FactureStatement etat);
+    List<CompteurData> findByIdVendeurAndIdClientAndFacturesEtat(Long idVendeur, Long idClient, FactureStatement etat);
+
+
 
 }

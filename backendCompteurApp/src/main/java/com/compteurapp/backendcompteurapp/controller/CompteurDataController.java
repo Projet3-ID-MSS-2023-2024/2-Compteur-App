@@ -63,12 +63,23 @@ public class CompteurDataController {
         return compteurDataList;
     }
 
-    /* On récupere les CompteurData ou les factures sont impayé */
-    @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable Long idVendeur){
-        List<CompteurData> compteurDataList = repository.findByIdVendeurAndFacturesEtat(idVendeur, FactureStatement.IMPAYER);
+
+    /* On récupere les CompteurData ou les factures en fonction d'un état */
+    @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}/{etat}")
+    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable FactureStatement etat){
+        List<CompteurData> compteurDataList = repository.findByIdVendeurAndFacturesEtat(idVendeur, etat);
         if (compteurDataList.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and Facture etat IMPAYER");
+            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and Facture etat " + etat);
+        }
+        return compteurDataList;
+    }
+
+    /* On récupere les CompteurData ou les factures sont impayé ou payé pour un client */
+    @GetMapping("/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/{idVendeur}/{idClient}/{etat}")
+    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable FactureStatement etat){
+        List<CompteurData> compteurDataList = repository.findByIdVendeurAndIdClientAndFacturesEtat(idVendeur, idClient, etat);
+        if (compteurDataList.isEmpty()) {
+            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + ", client id " + idClient + " and Facture etat " + etat);
         }
         return compteurDataList;
     }
