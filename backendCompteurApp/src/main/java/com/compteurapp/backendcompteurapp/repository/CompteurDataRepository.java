@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CompteurDataRepository extends JpaRepository<CompteurData, Long> {
 
-    Page<CompteurData> findByClient(int idClient, Pageable pageable);
+    Page<CompteurData> findByClient(Long idClient, Pageable pageable);
     Page<CompteurData> findByVendeurAndFacturesIsNull(Long idVendeur, Pageable pageable);
     Page<CompteurData> findByVendeurAndClientAndFacturesIsNull(Long idVendeur, Long idClient, Pageable pageable);
     Page<CompteurData> findByVendeurAndFacturesEtat(Long idVendeur, FactureStatement etat, Pageable pageable);

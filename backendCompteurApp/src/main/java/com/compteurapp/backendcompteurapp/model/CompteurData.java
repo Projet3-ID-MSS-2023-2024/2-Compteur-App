@@ -5,12 +5,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "compteur_data")
+@Table(name = "compteur_datas")
 public class CompteurData {
 
     @Id
@@ -39,8 +38,7 @@ public class CompteurData {
     @OneToMany(mappedBy = "compteurData")
     private List<Facture> factures;
 
-    public CompteurData(Long id, Date date, Double valeur, String photo, Long client, Long vendeur, Compteur compteur, List<Facture> factures) {
-        this.id = id;
+    public CompteurData(Date date, Double valeur, String photo, Long client, Long vendeur, Compteur compteur, List<Facture> factures) {
         this.date = date;
         this.valeur = valeur;
         this.photo = photo;
