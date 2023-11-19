@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "compteur_data")
@@ -34,6 +35,9 @@ public class CompteurData {
     @ManyToOne
     @JoinColumn(name="id_compteur")
     private Compteur compteur;
+
+    @OneToMany(mappedBy = "compteurData")
+    private List<Facture> factures;
 
 
     public CompteurData(long id, Date date, double valeur, String photo, long id_client, long id_vendeur, Compteur compteur) {
