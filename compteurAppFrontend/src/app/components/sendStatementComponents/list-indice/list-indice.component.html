@@ -1,0 +1,18 @@
+<div class="listeIndice">
+  <div class="titleAndSearch">
+    <h2>{{title}}</h2>
+    <div class="searchBar">
+      <app-search-bar></app-search-bar>
+    </div>
+  </div>
+  <div class="indicePlacement">
+    <app-indice [indiceArray]="['Nom compteur', 'Catégorie', 'Fournisseur']" [legend]="true"></app-indice>
+  </div>
+</div>
+
+<div class="containerList">
+  <div class="indicePlacement">
+    <app-indice [indiceArray]="['Nom compteur', 'Catégorie', 'Fournisseur']" [legend]="false"></app-indice>
+  </div>
+  <hr>
+</div>

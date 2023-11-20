@@ -22,6 +22,10 @@ import { SendStatementComponent } from './pages/send-statement/send-statement.co
 import { SendStatementMainComponent } from './components/sendStatementComponents/send-statement-main/send-statement-main.component';
 import { PageNameComponent } from './components/universalComponents/page-name/page-name.component';
 import { InformationPageComponent } from './components/universalComponents/information-page/information-page.component';
+import { InformationCardComponent } from './components/universalComponents/information-card/information-card.component';
+import { ListIndiceComponent } from './components/sendStatementComponents/list-indice/list-indice.component';
+import { IndiceComponent } from './components/sendStatementComponents/indice/indice.component';
+import { SearchBarComponent } from './components/sendStatementComponents/search-bar/search-bar.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -70,6 +74,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     SendStatementMainComponent,
     PageNameComponent,
     InformationPageComponent,
+    InformationCardComponent,
+    ListIndiceComponent,
+    IndiceComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,

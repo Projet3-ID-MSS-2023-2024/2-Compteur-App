@@ -5,4 +5,18 @@
   position: absolute;
   background-color: #522de8;
   border-radius: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.informationPlacement{
+  width: 27%;
+  height: 80%;
+  position: relative;
+}
+
+hr{
+  border: 1px solid rgba(255, 255, 255, 0.178);
+  border-radius: 5px;
+  height: 50%;
 }

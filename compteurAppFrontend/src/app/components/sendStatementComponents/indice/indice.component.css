@@ -1,0 +1,30 @@
+.indiceBar{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.indice{
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+p{
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 1.3em;
+  color: rgba(0, 0, 0, 0.637);
+  font-weight: 600;
+}
+
+.indiceButton{
+  width: 5%;
+  height: 100%;
+}
+
+hr{
+  margin-top: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.103);
+}

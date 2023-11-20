@@ -11,6 +11,9 @@
     <app-provider-navbar *ngIf="role==='fournisseur'"></app-provider-navbar>
     <app-lock-navbar *ngIf="role==='lock'"></app-lock-navbar>
 
+    <div class="logout">
+      <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'"></app-navbar-card>
+    </div>
   </div>
   <div class="containerBottom">
     <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'"
