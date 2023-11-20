@@ -33,6 +33,13 @@
         <div class='airReverse air3'></div>
     </section>
 
+    <div id="custom-popup">
+        <div id="custom-popup-content">
+            <p id="popup-message"></p>
+            <button id="popup-btn" onclick="closePopup()">Fermer</button>
+        </div>
+    </div>
+    <div id="overlay"></div>
   <div class="${properties.kcLoginClass!} containeur">
     <div class="containeur-info">
         <div id="kc-header" class="${properties.kcHeaderClass!} left">
@@ -51,13 +58,25 @@
                     <h1 id="kc-page-title"><#nested "header"></h1>
                 </div>
                 <div id="kc-content-wrapper">
+                <script>
                 <#if displayMessage && message?has_content>
-                    <script>
-                        window.messageType = '${message.type}';
-                        window.messageText = '${kcSanitize(message.summary)?no_esc}';
-                    </script>
-                 </#if>
+                function displayPopup(message) {
+                // Afficher la fenêtre modale
+                document.getElementById("custom-popup").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
 
+                // Afficher le message dans la fenêtre modale
+                document.getElementById("popup-message").innerHTML = message;
+                }
+
+                function closePopup() {
+                // Cacher la fenêtre modale
+                document.getElementById("custom-popup").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+                }
+                    displayPopup('${kcSanitize(message.summary)?no_esc}')
+                 </#if>
+                </script>
                 <#nested "form">
                 </div>
             </div>

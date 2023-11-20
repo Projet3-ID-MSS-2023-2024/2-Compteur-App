@@ -56,6 +56,13 @@
                     <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
                   </div>
             </form>
+            <#if error?? && error?has_content>
+                <script>
+                    // Ajoutez ici un script pour déclencher l'affichage de la popup d'erreur si nécessaire
+                    console.log("Erreur détectée. Affichage de la popup.");
+                    displayPopup("${error}");
+                </script>
+            </#if>
         </#if>
         </div>
         <#if realm.password && social.providers??>
