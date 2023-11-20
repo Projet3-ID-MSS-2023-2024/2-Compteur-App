@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 import com.compteurapp.backendcompteurapp.dto.Provider;
 import com.compteurapp.backendcompteurapp.dto.User;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
+import com.compteurapp.backendcompteurapp.services.KeycloakService;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,9 @@ public class KeycloakController {
     @Value("${realm}")
     private String realm;
 
+    @Autowired
+    KeycloakService keycloakService;
+
     public KeycloakController(KeycloakSecurityUtil keycloakUtil) {
         this.keycloakUtil = keycloakUtil;
     }
@@ -33,75 +38,34 @@ public class KeycloakController {
     //------------------User------------------//
     @GetMapping("/users")
     public List<User> getUsers() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
-        return userRepresentations.stream().map(this::mapUser).collect(Collectors.toList());
+        return this.keycloakService.getUsers();
     }
 
     @PostMapping("/user")
     public Response createUser(@RequestBody User user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().create(userRep);
-        return Response.ok(user).build();
+        return this.keycloakService.createUser(user);
     }
 
     @PutMapping("/user/{id}")
     public Response updateUser(@PathVariable String id, @RequestBody User user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().get(id).update(userRep);
-        return Response.ok(user).build();
+        return this.keycloakService.updateUser(id, user);
     }
 
     @DeleteMapping("/user/{id}")
     public Response deleteUser(@PathVariable String id) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().delete(id);
-        return Response.ok().build();
+        return this.keycloakService.deleteUser(id);
     }
 
     //------------------Provider------------------//
     @GetMapping("/provider")
     public List<Provider> getProviders() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
-        List<Provider> providers = new ArrayList<>();
-        for (UserRepresentation userRepresentation : userRepresentations) {
-            if (userRepresentation.getAttributes() != null && userRepresentation.getAttributes().containsKey("tva")) {
-                Provider provider = new Provider();
-                provider.setId(userRepresentation.getId());
-                provider.setUserName(userRepresentation.getUsername());
-                provider.setFirstName(userRepresentation.getFirstName());
-                provider.setLastName(userRepresentation.getLastName());
-                provider.setEmail(userRepresentation.getEmail());
-                provider.setTva(userRepresentation.getAttributes().get("tva").get(0));
-                provider.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
-                providers.add(provider);
-            }
-        }
-        return providers;
+        return this.keycloakService.getProviders();
     }
 
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")
     public Response createProvider(@RequestBody Provider provider) {
-        UserRepresentation userRep = mapUserRep(provider);
-        Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("tva", Collections.singletonList(provider.getTva()));
-        attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
-        userRep.setAttributes(attributes);
-
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        Response createUserResponse = keycloak.realm(realm).users().create(userRep);
-        String userId;
-        if (createUserResponse.getStatus() == 201)
-        {
-            userId = CreatedResponseUtil.getCreatedId(createUserResponse);
-            RoleRepresentation providerRole = keycloak.realm(realm).roles().get("fournisseur").toRepresentation();
-            keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(providerRole));
-        }
-        return Response.ok(provider).build();
+        return this.keycloakService.createProvider(provider);
     }
 
     @PreAuthorize("hasRole('admin')")
@@ -120,18 +84,13 @@ public class KeycloakController {
     @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/provider/{id}")
     public Response deleteProvider(@PathVariable String id) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().delete(id);
-        return Response.ok().build();
+        return this.keycloakService.deleteUser(id);
     }
 
     //------------------Role------------------//
     @PostMapping("/asignRole/{userId}/{roleName}")
     public Response asignRole(@PathVariable String userId, @PathVariable String roleName) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
-        keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(role));
-        return Response.ok().build();
+        return this.keycloakService.asignRole(userId, roleName);
     }
 
     //------------------Private------------------//
