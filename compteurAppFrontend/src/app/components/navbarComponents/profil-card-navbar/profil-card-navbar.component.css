@@ -81,3 +81,12 @@
   width: 30px;
   height: auto;
 }
+
+.lock{
+  display: flex;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}

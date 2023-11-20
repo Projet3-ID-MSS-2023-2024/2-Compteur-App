@@ -8,6 +8,7 @@
   border-radius: 10px;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
 .containerMain{
@@ -44,5 +45,11 @@
   height: 70px;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.103);
+  border: 2px solid rgba(0, 0, 0, 0.048);
+  border-radius: 10px;
+}
+
+.logoCard h1{
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 2em;
 }

@@ -12,7 +12,12 @@ import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NavbarComponent } from './components/navbarComponents/navbar/navbar.component';
 import { NavbarCardComponent } from './components/navbarComponents/navbar-card/navbar-card.component';
-import { UserCardNavbarComponent } from './components/navbarComponents/user-card-navbar/user-card-navbar.component';
+import { ProfilCardNavbarComponent } from './components/navbarComponents/profil-card-navbar/profil-card-navbar.component';
+import { HomeMainComponent } from './components/homePageComponents/home-main/home-main.component';
+import { ClientNavbarComponent } from './components/navbarComponents/client-navbar/client-navbar.component';
+import { ProviderNavbarComponent } from './components/navbarComponents/provider-navbar/provider-navbar.component';
+import { LockNavbarComponent } from './components/navbarComponents/lock-navbar/lock-navbar.component';
+import { NavbarCardLockedComponent } from './components/navbarComponents/navbar-card-locked/navbar-card-locked.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -51,7 +56,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HomePageComponent,
     NavbarComponent,
     NavbarCardComponent,
-    UserCardNavbarComponent,
+    ProfilCardNavbarComponent,
+    HomeMainComponent,
+    ClientNavbarComponent,
+    ProviderNavbarComponent,
+    LockNavbarComponent,
+    NavbarCardLockedComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,15 +4,16 @@
       <h1>Compteur'App</h1>
     </div>
     <div class="homeCard">
-      <app-navbar-card
-      [icone]="'home.svg'"
-      [title]="'Home'"
-      ></app-navbar-card>
+      <app-navbar-card [icone]="'home.svg'" [title]="'Home'"></app-navbar-card>
     </div>
+
+    <app-client-navbar *ngIf="role==='client'"></app-client-navbar>
+    <app-provider-navbar *ngIf="role==='fournisseur'"></app-provider-navbar>
+    <app-lock-navbar *ngIf="role==='lock'"></app-lock-navbar>
+
   </div>
   <div class="containerBottom">
-    <app-user-card-navbar
-    [profilPicture]="'profilPicture.png'"
-    ></app-user-card-navbar>
+    <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'"
+      [surname]="'Robert Johns'" [lock]="role"></app-profil-card-navbar>
   </div>
 </div>

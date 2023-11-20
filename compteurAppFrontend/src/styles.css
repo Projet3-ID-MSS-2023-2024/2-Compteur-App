@@ -7,3 +7,46 @@
 body{
   background-color: rgb(233, 233, 248);
 }
+
+.pageContent{
+  display: flex;
+  width: calc(100% - 16.5% - 40px);
+  min-height: calc(100vh - 20px);
+  position: absolute;
+  left: calc(16.5% + 25px);
+  border: 1px solid rgba(0, 0, 0, 0.116);
+  top: 10px;
+  border-radius: 15px;
+}
+
+.homeCard{
+  display: flex;
+  width: 90%;
+  height: 50px;
+  margin-left: 5%;
+  border-radius: 16px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbarElement{
+  display: flex;
+  width: 100%;
+  min-height: 10px;
+  position: absolute;
+  flex-direction: column;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
