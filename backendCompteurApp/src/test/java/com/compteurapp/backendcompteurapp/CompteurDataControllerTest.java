@@ -96,5 +96,5 @@ public class CompteurDataControllerTest {
                 .getCompteurDataByVendeurIdAndClientIdWithoutFacture(325L, 133L, 0, 1);
         assertEquals("picture3", vendeurCompteurDataClient.get(0).getPhoto());
     }
-    
+
 }

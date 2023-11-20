@@ -4,18 +4,26 @@ import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
 import jakarta.validation.Valid;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,9 +44,35 @@ public class CompteurDataController {
     CompteurDataService service;
 
     @PostMapping("/createCompteurData")
-    public CompteurData createCompteurData(@Validated @RequestBody CompteurData compteurData) {
+    public CompteurData createCompteurData(@RequestParam("image") MultipartFile image, @RequestParam Long client, @RequestParam Long vendeur, @RequestParam double valeur ) throws IOException, IOException {
+        String fileName;
+
+            fileName = RandomStringUtils.randomAlphanumeric(10) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
+
+
+        String uploadDir = "src/main/resources/ImgCompteur/";
+
+        // Créez le répertoire s'il n'existe pas
+        File uploadDirectory = new File(uploadDir);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdir();
+        }
+
+        // Transférez le fichier vers le répertoire
+        Path uploadPath = Paths.get(uploadDir + fileName);
+        image.transferTo(uploadPath);
+
+        CompteurData compteurData = new CompteurData();
+        compteurData.setPhoto(fileName);
+        compteurData.setVendeur(vendeur);
+        compteurData.setClient(client);
+        compteurData.setValeur(valeur);
+
+        // Enregistrez CompteurData dans la base de données
         return service.createCompteurData(compteurData);
     }
+
+
 
     /**/
     /* METHODE POUR LE VENDEUR */
