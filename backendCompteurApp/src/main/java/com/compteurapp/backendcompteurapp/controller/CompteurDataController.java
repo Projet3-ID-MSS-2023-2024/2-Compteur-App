@@ -45,71 +45,40 @@ public class CompteurDataController {
     /**/
 
     /* On récupere tout les relevés d'un client */
-/*
+
     @GetMapping("/getCompteurDataByClientId/{idClient}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByClientId(@PathVariable int idClient, @PathVariable int start, @PathVariable int end){
-        Pageable pageable = PageRequest.of(start, end);
-        Long idClientLong = Long.valueOf(idClient);
-        Page<CompteurData> page = repository.findByClient(idClientLong, pageable);
-        if (page.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with client id " + idClient);
-        }
-        return page.getContent();
-    }*/
-
-
-
-
+    public List<CompteurData> getCompteurDataByClientId(@PathVariable Long idClient, @PathVariable int start, @PathVariable int end){
+        return service.getCompteurDataByClientId(idClient, start, end);
+    }
 
     /* On récupere les CompteurData pour les relevés pas encore traiter */
-/*
+
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(@PathVariable int idVendeur, @PathVariable int start, @PathVariable int end){
-        Pageable pageable = PageRequest.of(start, end);
-        Long idVendeurLong = Long.valueOf(idVendeur);
-        Page<CompteurData> page = repository.findByVendeurAndFacturesIsNull(idVendeurLong, pageable);
-        if (page.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeurLong + " without Facture");
-        }
-        return page.getContent();
-    }*/
+    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(@PathVariable Long idVendeur, @PathVariable int start, @PathVariable int end){
+        return service.getCompteurDataByVendeurIdWithoutFacture(idVendeur, start,end);
+    }
 
 
     /* On récupere les CompteurData d'un client qui ne sont pas traité */
-/*
+
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdWithoutFacture/{id_Vendeur}/{idClient}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable int start, @PathVariable int end){
-        Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByVendeurAndClientAndFacturesIsNull(idVendeur, idClient, pageable);
-        if (page.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and client id " + idClient + " without Facture");
-        }
-        return page.getContent();
-    }*/
+        return service.getCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient, start, end);
+    }
 
     /* On récupere les CompteurData ou les factures en fonction d'un état */
-    /*
+
     @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}/{etat}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByVendeurAndFacturesEtat(idVendeur, etat, pageable);
-        if (page.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and Facture etat " + etat);
-        }
-        return page.getContent();
-    }*/
+        return service.getCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
+    }
 
 
     /* On récupere les CompteurData ou les factures sont impayé ou payé pour un client */
-    /*
+
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/{idVendeur}/{idClient}/{etat}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByVendeurAndClientAndFacturesEtat(idVendeur, idClient, etat, pageable);
-        if (page.isEmpty()) {
-            throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + ", client id " + idClient + " and Facture etat " + etat);
-        }
-        return page.getContent();
-    }*/
+        return service.getCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat, start, end);
+    }
 
 }
