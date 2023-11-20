@@ -5,13 +5,15 @@ import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.co
 import { AuthGuard } from './guards/authGuard';
 import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'fournisseurs', component: FournisseurListComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'addFournisseur', component: FournisseurAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'addAdresse', component: AdresseAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'homePage', component: HomePageComponent},
   {path: '**', redirectTo: 'home'}
 ];
 

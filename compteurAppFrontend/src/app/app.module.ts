@@ -9,7 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { NavbarComponent } from './components/navbarComponents/navbar/navbar.component';
+import { NavbarCardComponent } from './components/navbarComponents/navbar-card/navbar-card.component';
+import { UserCardNavbarComponent } from './components/navbarComponents/user-card-navbar/user-card-navbar.component';
 
+/*
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
@@ -34,7 +39,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         return !(isGetRequest && isAcceptablePathMatch);
       }
     });
-}
+}*/
 
 @NgModule({
   declarations: [
@@ -42,7 +47,11 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HomeComponent,
     FournisseurListComponent,
     FournisseurAddComponent,
-    AdresseAddComponent
+    AdresseAddComponent,
+    HomePageComponent,
+    NavbarComponent,
+    NavbarCardComponent,
+    UserCardNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +60,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HttpClientModule,
     ReactiveFormsModule
   ],
+  /*
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -58,7 +68,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       multi: true,
       deps: [KeycloakService]
     },
-  ],
+  ],*/
   bootstrap: [AppComponent]
 })
 export class AppModule { }

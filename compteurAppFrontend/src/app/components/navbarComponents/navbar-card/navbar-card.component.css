@@ -1,0 +1,40 @@
+.navbarCard{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbarCard:hover{
+  background-color: rgba(0, 0, 0, 0.082);
+  cursor: pointer;
+}
+
+.iconeCard{
+  display: flex;
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconeCard img{
+  width: 60%;
+  height: auto;
+}
+
+.texte{
+  display: flex;
+  width: calc(100% - 80px);
+  height: 40px;
+  margin-left: 5px;
+  align-items: center;
+}
+
+.texte p{
+  font-size: 1em;
+  font-weight: 500;
+}
