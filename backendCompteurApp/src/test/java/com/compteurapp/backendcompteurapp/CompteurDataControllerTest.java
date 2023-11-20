@@ -5,10 +5,14 @@ import static org.mockito.Mockito.*;
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
+import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,65 +33,51 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class CompteurDataControllerTest {
 
-    private MockMvc mockMvc;
-
-    @InjectMocks
-    private CompteurDataController compteurDataController;
-
-    @Mock
-    private CompteurDataRepository compteurDataRepository;
+    @Autowired
+    CompteurDataService compteurDataService;
 
     @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
+    public void init(){
+        CompteurData compteur = new CompteurData();
+        compteur.setValeur(10.0);
+        compteur.setVendeur(25L);
+        compteur.setClient(133L);
+        compteur.setPhoto("picture");
+        CompteurData compteur2 = new CompteurData();
+        compteur2.setValeur(100.0);
+        compteur2.setVendeur(25L);
+        compteur2.setClient(133L);
+        compteur2.setPhoto("picture2");
+        CompteurData compteur3 = new CompteurData();
+        compteur3.setValeur(300.0);
+        compteur3.setVendeur(25L);
+        compteur3.setClient(133L);
+        compteur3.setPhoto("picture3");
+        compteurDataService.createCompteurData(compteur);
+        compteurDataService.createCompteurData(compteur2);
+        compteurDataService.createCompteurData(compteur3);
     }
 
     @Test
-    void testFindCompteurDataSize() {
-        List<CompteurData> list = new ArrayList<>();
-
-        CompteurData compteurData = new CompteurData();
-        compteurData.setPhoto("photo");
-        compteurData.setClient(1L);
-        compteurData.setVendeur(1L);
-        compteurData.setValeur(100.0);
-
-        list.add(compteurData);
-        Pageable pageable = PageRequest.of(0, 1);
-
-        Page<CompteurData> page = new PageImpl<>(list, pageable, list.size());
-        when(compteurDataRepository.findByClient(1L, pageable)).thenReturn(page);
-
-        Page<CompteurData> empPage = compteurDataRepository.findByClient(1L, pageable);
-        assertEquals(1, empPage.getContent().size());
+    public void testAddData(){
+        CompteurData compteur = new CompteurData();
+        compteur.setValeur(10.0);
+        compteur.setVendeur(25L);
+        compteur.setClient(5L);
+        compteur.setPhoto("dede");
+        CompteurData compteurCreate = compteurDataService.createCompteurData(compteur);
+        assertEquals(10.0, compteurCreate.getValeur(), 0.001);
+        assertEquals(25L, compteurCreate.getVendeur());
+        assertEquals("dede", compteurCreate.getPhoto());
     }
 
     @Test
-    void testFindCompteurDataValues() {
-        List<CompteurData> list = new ArrayList<>();
-
-        CompteurData compteurData = new CompteurData();
-        compteurData.setPhoto("photo");
-        compteurData.setClient(1L);
-        compteurData.setVendeur(1L);
-        compteurData.setValeur(100.0);
-
-        list.add(compteurData);
-        Pageable pageable = PageRequest.of(0, 1);
-
-        Page<CompteurData> page = new PageImpl<>(list, pageable, list.size());
-        when(compteurDataRepository.findByClient(1L, pageable)).thenReturn(page);
-
-        Page<CompteurData> empPage = compteurDataRepository.findByClient(1L, pageable);
-        assertEquals(1, empPage.getContent().size());
-        CompteurData actual = empPage.getContent().get(0);
-        assertEquals(100.0, actual.getValeur(), 0.001);
-        assertEquals("photo",actual.getPhoto());
+    public void testGetCompteurDataByClientId(){
+        List<CompteurData> clientCompteurData = compteurDataService.getCompteurDataByClientId(133L, 0, 1);
+        assertEquals(10.0, clientCompteurData.get(0).getValeur(), 0.001);
     }
-
-
 
 }
