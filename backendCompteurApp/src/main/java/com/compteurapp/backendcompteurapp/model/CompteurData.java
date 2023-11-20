@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,10 +18,9 @@ public class CompteurData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Date date;
+    private Date date = new Date();
 
-    @Min(0)
+    @DecimalMin("0.0")
     private Double valeur;
 
     @Size(max = 255)
@@ -39,14 +39,12 @@ public class CompteurData {
     @OneToMany(mappedBy = "compteurData")
     private List<Facture> factures;
 
-    public CompteurData(Date date, Double valeur, String photo, Long client, Long vendeur, Compteur compteur, List<Facture> factures) {
-        this.date = date;
+    public CompteurData(Double valeur, String photo, Long client, Long vendeur, Compteur compteur, List<Facture> factures) {
         this.valeur = valeur;
         this.photo = photo;
         this.client = client;
         this.vendeur = vendeur;
         this.compteur = compteur;
-        this.factures = factures;
     }
 
     public CompteurData(){}
