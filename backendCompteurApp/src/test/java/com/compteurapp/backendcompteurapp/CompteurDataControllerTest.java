@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
+import com.compteurapp.backendcompteurapp.model.FactureStatement;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,7 @@ public class CompteurDataControllerTest {
         compteur2.setPhoto("picture2");
         CompteurData compteur3 = new CompteurData();
         compteur3.setValeur(300.0);
-        compteur3.setVendeur(25L);
+        compteur3.setVendeur(325L);
         compteur3.setClient(133L);
         compteur3.setPhoto("picture3");
         compteurDataService.createCompteurData(compteur);
@@ -76,8 +78,23 @@ public class CompteurDataControllerTest {
 
     @Test
     public void testGetCompteurDataByClientId(){
-        List<CompteurData> clientCompteurData = compteurDataService.getCompteurDataByClientId(133L, 0, 1);
+        List<CompteurData> clientCompteurData = compteurDataService
+                .getCompteurDataByClientId(133L, 0, 1);
         assertEquals(10.0, clientCompteurData.get(0).getValeur(), 0.001);
     }
 
+    @Test
+    public void testGetCompteurDataByVendeurIdWithoutFacture(){
+        List<CompteurData> vendeurCompteurData = compteurDataService
+                .getCompteurDataByVendeurIdWithoutFacture(325L,0,1);
+        assertEquals(133.0, vendeurCompteurData.get(0).getClient(), 0.001);
+    }
+
+    @Test
+    public void testGetCompteurDataByVendeurIdAndClientIdWithoutFacture(){
+        List<CompteurData> vendeurCompteurDataClient = compteurDataService
+                .getCompteurDataByVendeurIdAndClientIdWithoutFacture(325L, 133L, 0, 1);
+        assertEquals("picture3", vendeurCompteurDataClient.get(0).getPhoto());
+    }
+    
 }
