@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
+import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
 import jakarta.validation.Valid;
@@ -44,10 +45,15 @@ public class CompteurDataController {
     CompteurDataService service;
 
     @PostMapping("/createCompteurData")
-    public CompteurData createCompteurData(@RequestParam("image") MultipartFile image, @RequestParam Long client, @RequestParam Long vendeur, @RequestParam double valeur ) throws IOException, IOException {
+    public CompteurData createCompteurData(@RequestParam("image") MultipartFile image,
+                                           @RequestParam Long client,
+                                           @RequestParam Long vendeur,
+                                           @RequestParam double valeur,
+                                           @RequestParam Long idCompteur ) throws IOException, IOException {
         String fileName;
 
-            fileName = RandomStringUtils.randomAlphanumeric(10) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
+        //Genere un nom de 15 caracteres
+        fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
 
 
         String uploadDir = "src/main/resources/ImgCompteur/";
@@ -68,7 +74,10 @@ public class CompteurDataController {
         compteurData.setClient(client);
         compteurData.setValeur(valeur);
 
-        // Enregistrez CompteurData dans la base de données
+        Compteur compteur = new Compteur();
+        compteur.setId(idCompteur);
+        compteurData.setCompteur(compteur);
+
         return service.createCompteurData(compteurData);
     }
 
