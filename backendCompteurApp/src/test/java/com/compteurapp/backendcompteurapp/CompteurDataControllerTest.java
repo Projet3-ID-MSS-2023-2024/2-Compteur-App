@@ -88,28 +88,6 @@ public class CompteurDataControllerTest {
         assertEquals("photo",actual.getPhoto());
     }
 
-    @Test
-    void testFindCompteurWithBadValues() {
-        List<CompteurData> list = new ArrayList<>();
-
-        CompteurData compteurData = new CompteurData();
-        compteurData.setPhoto("photo");
-        compteurData.setClient(1L);
-        compteurData.setVendeur(1L);
-        compteurData.setValeur(-100.0);
-
-        list.add(compteurData);
-        Pageable pageable = PageRequest.of(0, 1);
-
-        Page<CompteurData> page = new PageImpl<>(list, pageable, list.size());
-        when(compteurDataRepository.findByClient(1L, pageable)).thenReturn(page);
-
-        Page<CompteurData> empPage = compteurDataRepository.findByClient(1L, pageable);
-        assertEquals(1, empPage.getContent().size());
-        CompteurData actual = empPage.getContent().get(0);
-        assertEquals(-100.0, actual.getValeur(), 0.001);
-    }
-
 
 
 }

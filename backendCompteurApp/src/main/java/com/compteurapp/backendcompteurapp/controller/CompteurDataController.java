@@ -3,7 +3,6 @@ package com.compteurapp.backendcompteurapp.controller;
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
-import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 
 
 import java.util.Date;
@@ -27,16 +27,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CompteurDataController {
 
-    @Autowired
-    CompteurDataRepository repository;
 
     /**/
     /* METHODE POUR LE CLIENT"
     /**/
 
+    @Autowired
+    CompteurDataService service;
+
     @PostMapping("/createCompteurData")
     public CompteurData createCompteurData(@Validated @RequestBody CompteurData compteurData) {
-        return repository.save(compteurData);
+        return service.createCompteurData(compteurData);
     }
 
     /**/
@@ -44,7 +45,7 @@ public class CompteurDataController {
     /**/
 
     /* On récupere tout les relevés d'un client */
-
+/*
     @GetMapping("/getCompteurDataByClientId/{idClient}/{start}/{end}")
     public List<CompteurData> getCompteurDataByClientId(@PathVariable int idClient, @PathVariable int start, @PathVariable int end){
         Pageable pageable = PageRequest.of(start, end);
@@ -54,14 +55,14 @@ public class CompteurDataController {
             throw new ResourceNotFoundException("No CompteurData found with client id " + idClient);
         }
         return page.getContent();
-    }
+    }*/
 
 
 
 
 
     /* On récupere les CompteurData pour les relevés pas encore traiter */
-
+/*
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(@PathVariable int idVendeur, @PathVariable int start, @PathVariable int end){
         Pageable pageable = PageRequest.of(start, end);
@@ -71,11 +72,11 @@ public class CompteurDataController {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeurLong + " without Facture");
         }
         return page.getContent();
-    }
+    }*/
 
 
     /* On récupere les CompteurData d'un client qui ne sont pas traité */
-
+/*
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdWithoutFacture/{id_Vendeur}/{idClient}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable int start, @PathVariable int end){
         Pageable pageable = PageRequest.of(start, end);
@@ -84,9 +85,10 @@ public class CompteurDataController {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and client id " + idClient + " without Facture");
         }
         return page.getContent();
-    }
+    }*/
 
     /* On récupere les CompteurData ou les factures en fonction d'un état */
+    /*
     @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}/{etat}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
         Pageable pageable = PageRequest.of(start, end);
@@ -95,10 +97,11 @@ public class CompteurDataController {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and Facture etat " + etat);
         }
         return page.getContent();
-    }
+    }*/
 
 
     /* On récupere les CompteurData ou les factures sont impayé ou payé pour un client */
+    /*
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/{idVendeur}/{idClient}/{etat}/{start}/{end}")
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
         Pageable pageable = PageRequest.of(start, end);
@@ -107,5 +110,6 @@ public class CompteurDataController {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + ", client id " + idClient + " and Facture etat " + etat);
         }
         return page.getContent();
-    }
+    }*/
+
 }
