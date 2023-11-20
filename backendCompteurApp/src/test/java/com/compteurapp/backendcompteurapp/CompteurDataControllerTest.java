@@ -3,6 +3,7 @@ package com.compteurapp.backendcompteurapp;
 import static org.mockito.Mockito.*;
 
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
+import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
@@ -43,21 +44,26 @@ public class CompteurDataControllerTest {
 
     @BeforeEach
     public void init(){
+        Compteur compteurCompteur = new Compteur();
+        compteurCompteur.setId(1L);
         CompteurData compteur = new CompteurData();
         compteur.setValeur(10.0);
         compteur.setVendeur(25L);
         compteur.setClient(133L);
+        compteur.setCompteur(compteurCompteur);
         compteur.setPhoto("picture");
         CompteurData compteur2 = new CompteurData();
         compteur2.setValeur(100.0);
         compteur2.setVendeur(25L);
         compteur2.setClient(133L);
         compteur2.setPhoto("picture2");
+        compteur2.setCompteur(compteurCompteur);
         CompteurData compteur3 = new CompteurData();
         compteur3.setValeur(300.0);
         compteur3.setVendeur(325L);
         compteur3.setClient(133L);
         compteur3.setPhoto("picture3");
+        compteur3.setCompteur(compteurCompteur);
         compteurDataService.createCompteurData(compteur);
         compteurDataService.createCompteurData(compteur2);
         compteurDataService.createCompteurData(compteur3);
@@ -65,7 +71,9 @@ public class CompteurDataControllerTest {
 
     @Test
     public void testAddData(){
+        Compteur compteurCompteur = new Compteur();
         CompteurData compteur = new CompteurData();
+        compteur.setCompteur(compteurCompteur);
         compteur.setValeur(10.0);
         compteur.setVendeur(25L);
         compteur.setClient(5L);
@@ -97,4 +105,6 @@ public class CompteurDataControllerTest {
         assertEquals("picture3", vendeurCompteurDataClient.get(0).getPhoto());
     }
 
+    /* Doit rajouter test quand il y auras le compteur de fait */
+    /* Doit rajouter test quand il y auras la facture de fait */
 }
