@@ -92,6 +92,18 @@ public class KeycloakService {
         return Response.ok(provider).build();
     }
 
+    public Response updateProvider(@PathVariable String id, @RequestBody Provider provider) {
+        UserRepresentation userRep = mapUserRep(provider);
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("tva", Collections.singletonList(provider.getTva()));
+        attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
+        userRep.setAttributes(attributes);
+
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        keycloak.realm(realm).users().get(id).update(userRep);
+        return Response.ok(provider).build();
+    }
+
     public Response deleteProvider(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
