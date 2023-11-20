@@ -1,6 +1,6 @@
 version: '3'
 services:
-  keycloak-app-compteurAapp:
+  keycloakAppCompteur:
     image: keycloak/keycloak:22.0.5
     command: ["start-dev"]
     ports:
