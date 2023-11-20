@@ -35,7 +35,8 @@ public class SecurityConfig {
                 t.jwt(configurer -> configurer.jwtAuthenticationConverter(jwtAuthConverter)));
         http.authorizeHttpRequests(authorization ->
         {
-            authorization.anyRequest().authenticated();
+            //authorization.anyRequest().authenticated();
+            authorization.anyRequest().permitAll();
 
         });
         return http.build();
