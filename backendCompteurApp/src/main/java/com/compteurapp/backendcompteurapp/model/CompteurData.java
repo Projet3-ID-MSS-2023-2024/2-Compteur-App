@@ -1,11 +1,13 @@
 package com.compteurapp.backendcompteurapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Type;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,7 @@ public class CompteurData {
     private Date date = new Date();
 
     @DecimalMin("0.0")
+    @Valid
     private Double valeur;
 
     @Size(max = 255)

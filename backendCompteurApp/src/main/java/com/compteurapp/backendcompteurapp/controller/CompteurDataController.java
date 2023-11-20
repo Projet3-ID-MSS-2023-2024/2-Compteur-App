@@ -9,10 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -27,7 +35,7 @@ public class CompteurDataController {
     /**/
 
     @PostMapping("/createCompteurData")
-    public CompteurData createCompteurData(@Valid @RequestBody CompteurData compteurData) {
+    public CompteurData createCompteurData(@Validated @RequestBody CompteurData compteurData) {
         return repository.save(compteurData);
     }
 
@@ -100,5 +108,4 @@ public class CompteurDataController {
         }
         return page.getContent();
     }
-
 }
