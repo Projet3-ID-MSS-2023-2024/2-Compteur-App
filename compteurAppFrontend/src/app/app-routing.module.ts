@@ -7,6 +7,7 @@ import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.compo
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { SendStatementComponent } from './pages/send-statement/send-statement.component';
+import { ProfilComponent } from './pages/profil/profil.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'addAdresse', component: AdresseAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'homePage', component: HomePageComponent},
   {path: 'send-statement', component: SendStatementComponent},
+  {path: 'profil', component: ProfilComponent},
   {path: '**', redirectTo: 'home'}
 ];
 

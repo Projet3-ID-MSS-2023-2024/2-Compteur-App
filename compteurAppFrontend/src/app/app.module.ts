@@ -26,6 +26,9 @@ import { InformationCardComponent } from './components/universalComponents/infor
 import { ListIndiceComponent } from './components/sendStatementComponents/list-indice/list-indice.component';
 import { IndiceComponent } from './components/sendStatementComponents/indice/indice.component';
 import { SearchBarComponent } from './components/sendStatementComponents/search-bar/search-bar.component';
+import { ProfilComponent } from './pages/profil/profil.component';
+import { ProfilMainComponent } from './components/profilComponents/profil-main/profil-main.component';
+import { AddMeterComponent } from './components/profilComponents/add-meter/add-meter.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -78,6 +81,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ListIndiceComponent,
     IndiceComponent,
     SearchBarComponent,
+    ProfilComponent,
+    ProfilMainComponent,
+    AddMeterComponent,
   ],
   imports: [
     BrowserModule,
