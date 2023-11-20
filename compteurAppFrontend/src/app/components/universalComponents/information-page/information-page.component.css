@@ -1,0 +1,8 @@
+.informationPage{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #522de8;
+  border-radius: 20px;
+}

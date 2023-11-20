@@ -17,6 +17,7 @@ body{
   border: 1px solid rgba(0, 0, 0, 0.116);
   top: 10px;
   border-radius: 15px;
+  flex-direction: column;
 }
 
 .homeCard{
@@ -36,6 +37,25 @@ body{
   min-height: 10px;
   position: absolute;
   flex-direction: column;
+}
+
+.pageNamePlacement{
+  display: flex;
+  width: 95%;
+  margin-left: 2.5%;
+  margin-top: 10px;
+  height: 70px;
+  align-items: center;
+  position: relative;
+}
+
+.informationPagePlacement{
+  display: flex;
+  width: 95%;
+  margin-left: 2.5%;
+  height: 120px;
+  margin-top: 40px;
+  position: relative;
 }
 
 body::-webkit-scrollbar {

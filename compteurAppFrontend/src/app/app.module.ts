@@ -18,6 +18,10 @@ import { ClientNavbarComponent } from './components/navbarComponents/client-navb
 import { ProviderNavbarComponent } from './components/navbarComponents/provider-navbar/provider-navbar.component';
 import { LockNavbarComponent } from './components/navbarComponents/lock-navbar/lock-navbar.component';
 import { NavbarCardLockedComponent } from './components/navbarComponents/navbar-card-locked/navbar-card-locked.component';
+import { SendStatementComponent } from './pages/send-statement/send-statement.component';
+import { SendStatementMainComponent } from './components/sendStatementComponents/send-statement-main/send-statement-main.component';
+import { PageNameComponent } from './components/universalComponents/page-name/page-name.component';
+import { InformationPageComponent } from './components/universalComponents/information-page/information-page.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -62,6 +66,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ProviderNavbarComponent,
     LockNavbarComponent,
     NavbarCardLockedComponent,
+    SendStatementComponent,
+    SendStatementMainComponent,
+    PageNameComponent,
+    InformationPageComponent,
   ],
   imports: [
     BrowserModule,
