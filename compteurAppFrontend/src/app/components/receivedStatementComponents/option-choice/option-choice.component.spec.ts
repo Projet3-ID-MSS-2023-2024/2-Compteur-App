@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionPaidUnpaidComponent } from './option-paid-unpaid.component';
+import { OptionChoiceComponent } from './option-choice.component';
 
 describe('OptionPaidUnpaidComponent', () => {
-  let component: OptionPaidUnpaidComponent;
-  let fixture: ComponentFixture<OptionPaidUnpaidComponent>;
+  let component: OptionChoiceComponent;
+  let fixture: ComponentFixture<OptionChoiceComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [OptionPaidUnpaidComponent]
+      declarations: [OptionChoiceComponent]
     });
-    fixture = TestBed.createComponent(OptionPaidUnpaidComponent);
+    fixture = TestBed.createComponent(OptionChoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
