@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list-indice',
@@ -8,5 +8,10 @@ import { Component, Input } from '@angular/core';
 export class ListIndiceComponent {
 
   @Input() title!: string;
+  @Output() buttonPressed: EventEmitter<string> = new EventEmitter<string>();
+
+  buttonPress(btn: string){
+    this.buttonPressed.emit(btn);
+  }
 
 }

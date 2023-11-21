@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class SendStatementMainComponent {
 
+  showSendStatement = false;
+
+  buttonPress(buttonName:string){
+    this.showSendStatement = true;
+  }
 }

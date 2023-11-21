@@ -29,6 +29,7 @@ import { SearchBarComponent } from './components/sendStatementComponents/search-
 import { ProfilComponent } from './pages/profil/profil.component';
 import { ProfilMainComponent } from './components/profilComponents/profil-main/profil-main.component';
 import { AddMeterComponent } from './components/profilComponents/add-meter/add-meter.component';
+import { SendCompteurDataComponent } from './components/sendStatementComponents/send-compteur-data/send-compteur-data.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -84,6 +85,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ProfilComponent,
     ProfilMainComponent,
     AddMeterComponent,
+    SendCompteurDataComponent,
   ],
   imports: [
     BrowserModule,

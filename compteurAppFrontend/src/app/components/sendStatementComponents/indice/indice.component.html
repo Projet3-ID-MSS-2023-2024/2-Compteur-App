@@ -2,5 +2,14 @@
   <div class="indice" *ngFor="let item of indiceArray" #indices>
     <p #text>{{item}}</p>
   </div>
-  <div class="indiceButton" #indiceButton></div>
+  <div class="indiceButton" #indiceButton>
+    <div class="showMore"  *ngIf="legend===false" (click)="openCloseLanguette()">
+      <img src="./assets/navbarIcone/more.svg">
+    </div>
+    <div class="languette"  *ngIf="legend===false" #languette>
+      <div class="button" *ngIf="btn1" (click)="buttonPress('btn1')"><img [src]="'./assets/navbarIcone/'+btn1"></div>
+      <div class="button" *ngIf="btn2"></div>
+      <div class="button" *ngIf="btn3"></div>
+    </div>
+  </div>
 </div>

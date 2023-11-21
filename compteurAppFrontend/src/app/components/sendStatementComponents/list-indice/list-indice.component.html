@@ -10,7 +10,9 @@
 
 <div class="containerList">
   <div class="indicePlacement">
-    <app-indice [indiceArray]="['Nom compteur', 'Catégorie', 'Fournisseur']" [legend]="false"></app-indice>
+    <app-indice [indiceArray]="['Nom compteur', 'Catégorie', 'Fournisseur']" [legend]="false" [btn1]="'send.svg'" (buttonPressed)="buttonPress($event)"></app-indice>
   </div>
   <hr>
 </div>
+
+

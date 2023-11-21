@@ -10,7 +10,7 @@ import { SendStatementComponent } from './pages/send-statement/send-statement.co
 import { ProfilComponent } from './pages/profil/profil.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', redirectTo: 'homePage', pathMatch: 'full'},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'fournisseurs', component: FournisseurListComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'addFournisseur', component: FournisseurAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
