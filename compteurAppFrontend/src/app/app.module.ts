@@ -35,6 +35,7 @@ import { ReceivedStatementMainComponent } from './components/receivedStatementCo
 import { ReceivedListComponent } from './components/receivedStatementComponents/received-list/received-list.component';
 import { OptionChoiceComponent } from './components/receivedStatementComponents/option-choice/option-choice.component';
 import { ChangePageableComponent } from './components/universalComponents/change-pageable/change-pageable.component';
+import { MobileNavbarComponent } from './components/navbarComponents/mobile-navbar/mobile-navbar.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -96,6 +97,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ReceivedListComponent,
     OptionChoiceComponent,
     ChangePageableComponent,
+    MobileNavbarComponent,
   ],
   imports: [
     BrowserModule,

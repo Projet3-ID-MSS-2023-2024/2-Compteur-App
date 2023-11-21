@@ -59,3 +59,10 @@
 .logoCard h1{
   font-size: 2em;
 }
+
+@media screen and (max-width: 950px) {
+  .navbar{
+    display: none;
+  }
+}
+
