@@ -1,0 +1,22 @@
+<div class="addMeter" [formGroup]="addMeter">
+    <div class="meterInput">
+      <div class="placeHolder"><label>Nom compteur</label></div>
+      <input type="text" placeholder="Nom compteur" formControlName="nom"/>
+    </div>
+
+    <div class="meterInput">
+      <div class="placeHolder"><label>Catégorie</label></div>
+      <select formControlName="categorie">
+        <option [value]="item" *ngFor="let item of category">{{item}}</option>
+      </select>
+    </div>
+    <div class="meterInput">
+      <div class="placeHolder"><label>Fournisseur</label></div>
+      <select formControlName="fournisseur">
+        <option [value]="item" *ngFor="let item of provider">{{item}}</option>
+      </select>
+    </div>
+    <div class="sendMeter" (click)="sendData()">
+      <img src="./assets/navbarIcone/add.svg" alt="add" />
+    </div>
+</div>
