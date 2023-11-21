@@ -88,3 +88,12 @@ input:focus{
   background-color: rgb(88, 88, 88);
   color: white;
 }
+
+@media screen and (max-width: 950px) {
+
+  .sendCompteurForm{
+    width: 90%;
+    height: 50%;
+  }
+
+}

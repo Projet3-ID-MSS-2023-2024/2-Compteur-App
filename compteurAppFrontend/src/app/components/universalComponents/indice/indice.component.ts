@@ -10,9 +10,7 @@ export class IndiceComponent implements AfterViewInit{
   @Input() indiceArray: any[] = [];
   @Input() legend!:boolean;
 
-  @Input() btn1!:string;
-  @Input() btn2!:string;
-  @Input() btn3!:string;
+  @Input() buttonOption!: string[];
 
   @Output() buttonPressed: EventEmitter<string> = new EventEmitter<string>();
 
@@ -26,7 +24,6 @@ export class IndiceComponent implements AfterViewInit{
   ngAfterViewInit(): void {
       let sizeMax = 90;
       let size = sizeMax / this.indiceArray.length;
-      this.indiceButton.nativeElement.style.marginRight = this.legend ? '12px' : '0px';
       this.indices.forEach((element) => {
         element.nativeElement.style.width = size + '%';
       });

@@ -70,3 +70,20 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-track {
   background-color: #f0f0f0;
 }
+
+
+@media screen and (max-width: 950px) {
+
+  .pageContent{
+    width: 98%;
+    margin-left: 1%;
+    min-height: 100vh;
+    position: initial;
+    left: 0;
+    border: 0px;
+    top: 0px;
+    border-radius: 0px;
+    flex-direction: column;
+  }
+
+}

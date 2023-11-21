@@ -1,2 +1,17 @@
-<app-navbar></app-navbar>
-<app-send-statement-main></app-send-statement-main>
+<div class="pageContent">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Envoyer son relevé'"></app-page-name>
+  </div>
+  <div class="informationPagePlacement">
+    <app-information-page></app-information-page>
+  </div>
+  <div class="addCompteurPlacement">
+    <app-add-meter></app-add-meter>
+  </div>
+
+  <div class="emplacementIndiceList">
+    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption"></app-indice-list>
+  </div>
+
+</div>
+<app-send-compteur-data *ngIf="showSendStatement"></app-send-compteur-data>

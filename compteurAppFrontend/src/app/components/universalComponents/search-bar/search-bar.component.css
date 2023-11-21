@@ -39,7 +39,6 @@ input{
   background-color: transparent;
   border: none;
   font-size: 1.5em;
-
 }
 
 input::placeholder{
@@ -48,4 +47,17 @@ input::placeholder{
 
 input:focus{
   outline: none;
+}
+
+@media screen and (max-width: 950px) {
+
+  .searchBar img{
+    width: 20px;
+    height: 20px;
+  }
+
+  input{
+    font-size: 1.2em;
+  }
+
 }

@@ -1,2 +1,27 @@
-<app-navbar></app-navbar>
-<app-received-statement-main></app-received-statement-main>
+<div class="pageContent">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Relevé reçu'"></app-page-name>
+  </div>
+  <div class="informationPagePlacement">
+    <app-information-page></app-information-page>
+  </div>
+  <div class="filterPlacement">
+    <div class="optionPlacement">
+      <div class="option">
+        <app-option-choice [choiceOne]="'Traité'" [choiceTwo]="'Non Traité'"></app-option-choice>
+      </div>
+      <div class="option">
+        <app-option-choice [choiceOne]="'Payé'" [choiceTwo]="'Non payé'"></app-option-choice>
+      </div>
+    </div>
+    <div class="searchBarPlacement">
+      <app-search-bar></app-search-bar>
+    </div>
+  </div>
+  <div class="placementList">
+    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption"></app-indice-list>
+  </div>
+  <div class="movePagePlacement">
+    <app-change-pageable></app-change-pageable>
+  </div>
+</div>

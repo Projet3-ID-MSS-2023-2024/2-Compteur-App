@@ -11,12 +11,21 @@
 h2{
   font-size: 1.5em;
   color: rgba(255, 255, 255, 0.801);
-
 }
 
 p{
   font-size: 5em;
   color: white;
   font-weight: bold;
+}
 
+
+@media screen and (max-width: 950px) {
+  h2{
+    font-size: 1.2em;
+  }
+
+  p{
+    font-size: 3em;
+  }
 }
