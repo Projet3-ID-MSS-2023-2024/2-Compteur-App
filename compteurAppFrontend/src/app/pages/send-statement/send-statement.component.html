@@ -10,8 +10,9 @@
   </div>
 
   <div class="emplacementIndiceList">
-    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption"></app-indice-list>
+    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
   </div>
 
 </div>
-<app-send-compteur-data *ngIf="showSendStatement"></app-send-compteur-data>
+<app-send-compteur-data (sendData)="sendStatement($event)" *ngIf="showSendStatement"></app-send-compteur-data>
+<app-delete-confirmation (delete)="deleteChoice($event)" *ngIf="showPopUpDelete"></app-delete-confirmation>

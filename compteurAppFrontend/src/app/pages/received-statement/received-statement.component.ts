@@ -24,4 +24,16 @@ export class ReceivedStatementComponent {
     [4, '2023-11-24', 50.75, 'Annulé'],
   ];
 
+  buttonPress(arrayData: any){
+    switch(arrayData[0]){
+      case 'btn1':
+        break;
+      case 'btn2':
+        break;
+    }
+  }
+
+  delete(id: number){}
+
+
 }

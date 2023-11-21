@@ -35,11 +35,13 @@ export class IndiceComponent implements AfterViewInit{
   openCloseLanguette(){
     this.languette.nativeElement.style.transform = this.openLanguette ? 'translateY(-50%)' : 'translateY(0%)';
     this.languette.nativeElement.style.opacity = this.openLanguette ? '0' : '1';
+    this.languette.nativeElement.style.zIndex = this.openLanguette ? '-1' : '4';
     this.openLanguette = !this.openLanguette;
   }
 
-  buttonPress(buttonName:string){
-    this.buttonPressed.emit(buttonName);
+  buttonPress(buttonName:string, id: number){
+    let arrayData:any = [buttonName, id]
+    this.buttonPressed.emit(arrayData);
   }
 
 

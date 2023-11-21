@@ -19,9 +19,10 @@
     </div>
   </div>
   <div class="placementList">
-    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption"></app-indice-list>
+    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
   </div>
   <div class="movePagePlacement">
     <app-change-pageable></app-change-pageable>
   </div>
 </div>
+

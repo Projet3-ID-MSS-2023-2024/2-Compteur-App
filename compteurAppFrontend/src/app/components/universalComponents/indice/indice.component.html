@@ -11,12 +11,12 @@
       <img src="./assets/navbarIcone/more.svg" alt="show more">
     </div>
     <div class="languette" *ngIf="legend===false" #languette>
-      <div class="button" *ngIf="buttonOption[0]" (click)="buttonPress('btn1')"><img
+      <div class="button" *ngIf="buttonOption[0]" (click)="buttonPress('btn1', indiceArray[0])"><img
           [src]="'./assets/navbarIcone/'+buttonOption[0]" alt="button1"></div>
-      <div class="button" *ngIf="buttonOption[1]" (click)="buttonPress('btn2')"><img
+      <div class="button" *ngIf="buttonOption[1]" (click)="buttonPress('btn2',indiceArray[0])"><img
           [src]="'./assets/navbarIcone/'+buttonOption[1]" alt="button2"></div>
-      <div class="button" *ngIf="buttonOption[3]" (click)="buttonPress('btn3')"><img
-          [src]="'./assets/navbarIcone/'+buttonOption[3]" alt="button3"></div>
+      <div class="button" *ngIf="buttonOption[2]" (click)="buttonPress('btn3',indiceArray[0])"><img
+          [src]="'./assets/navbarIcone/'+buttonOption[2]" alt="button3"></div>
     </div>
   </div>
 </div>

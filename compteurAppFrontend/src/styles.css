@@ -86,4 +86,13 @@ body::-webkit-scrollbar-track {
     flex-direction: column;
   }
 
+  .pageNamePlacement{
+    margin-top: 40px;
+    height: 40px;
+  }
+
+  .informationPagePlacement{
+    margin-top: 0px;
+  }
+
 }

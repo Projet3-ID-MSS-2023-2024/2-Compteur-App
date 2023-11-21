@@ -26,4 +26,5 @@
 .button img{
   width: 60%;
   height: auto;
+  filter: invert(1);
 }

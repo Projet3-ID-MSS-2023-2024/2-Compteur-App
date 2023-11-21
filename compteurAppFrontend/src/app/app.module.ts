@@ -31,6 +31,7 @@ import { OptionChoiceComponent } from './components/universalComponents/option-c
 import { ChangePageableComponent } from './components/universalComponents/change-pageable/change-pageable.component';
 import { MobileNavbarComponent } from './components/navbarComponents/mobile-navbar/mobile-navbar.component';
 import { IndiceListComponent } from './components/universalComponents/indice-list/indice-list.component';
+import { DeleteConfirmationComponent } from './components/universalComponents/delete-confirmation/delete-confirmation.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -88,6 +89,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ChangePageableComponent,
     MobileNavbarComponent,
     IndiceListComponent,
+    DeleteConfirmationComponent,
   ],
   imports: [
     BrowserModule,

@@ -11,8 +11,10 @@ export class IndiceListComponent {
   @Input() buttonOption!: string[];
   @Input() data!: any[];
 
-  buttonPress(button: string){
-    console.log('button press');
+  @Output() buttonPressed: EventEmitter<string> = new EventEmitter<string>();
+
+  buttonPress(arrayData: any){
+    this.buttonPressed.emit(arrayData);
   }
 
 }
