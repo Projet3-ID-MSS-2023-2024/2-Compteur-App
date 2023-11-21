@@ -1,8 +1,8 @@
 <div class="changePageable">
-  <div class="button">
+  <div class="button" (click)="changePage('previous')" #before [style.opacity]="pageStart > 0 ? 1 : 0" [style.cursor]="pageStart > 0 ? 'pointer' : 'default'">
     <img src="./assets/navbarIcone/arrow-left.svg" alt="arrow-left">
   </div>
-  <div class="button">
+  <div class="button" (click)="changePage('next')">
     <img src="./assets/navbarIcone/arrow-right.svg" alt="arrow-right">
   </div>
 </div>

@@ -8,21 +8,22 @@
   <div class="filterPlacement">
     <div class="optionPlacement">
       <div class="option">
-        <app-option-choice [choiceOne]="'Traité'" [choiceTwo]="'Non Traité'"></app-option-choice>
+        <app-option-choice [choiceOne]="'Non traité'" [choiceTwo]="'Traité'" (choice)="traiterFilter($event)"></app-option-choice>
       </div>
       <div class="option">
-        <app-option-choice [choiceOne]="'Payé'" [choiceTwo]="'Non payé'"></app-option-choice>
+        <app-option-choice [choiceOne]="'Non payé'" [choiceTwo]="'Payé'" (choice)="payerFilter($event)" *ngIf="traiterFilterChoice==='choiceTwo'"></app-option-choice>
       </div>
     </div>
     <div class="searchBarPlacement">
-      <app-search-bar></app-search-bar>
+      <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
     </div>
   </div>
   <div class="placementList">
     <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
   </div>
   <div class="movePagePlacement">
-    <app-change-pageable></app-change-pageable>
+    <app-change-pageable (page)="changePage($event)" [pageStart]="pageStart" [pageEnd]="pageEnd"></app-change-pageable>
   </div>
 </div>
+<app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)"></app-show-compteur-picture>
 

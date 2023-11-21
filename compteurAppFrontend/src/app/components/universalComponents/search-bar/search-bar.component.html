@@ -1,6 +1,6 @@
-<div class="searchBar">
-  <div class="searchButton">
+<div class="searchBar" [formGroup]="searchForm">
+  <div class="searchButton" (click)="sendData()">
     <img src="./assets/navbarIcone/search.svg" alt="searchIcone">
   </div>
-  <input type="search" placeholder="Rechercher">
+  <input type="search" placeholder="Rechercher" formControlName="search">
 </div>

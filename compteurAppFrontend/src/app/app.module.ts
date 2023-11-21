@@ -33,6 +33,7 @@ import { MobileNavbarComponent } from './components/navbarComponents/mobile-navb
 import { IndiceListComponent } from './components/universalComponents/indice-list/indice-list.component';
 import { DeleteConfirmationComponent } from './components/universalComponents/delete-confirmation/delete-confirmation.component';
 import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-metter/modify-metter.component';
+import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -92,6 +93,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     IndiceListComponent,
     DeleteConfirmationComponent,
     ModifyMetterComponent,
+    ShowCompteurPictureComponent,
   ],
   imports: [
     BrowserModule,
