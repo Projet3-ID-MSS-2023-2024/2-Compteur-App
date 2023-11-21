@@ -59,6 +59,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Roboto', sans-serif;
 }
 
 .informationCard h3 {
@@ -68,6 +69,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Roboto', sans-serif;
 }
 
 .showMore{

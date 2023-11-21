@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit{
 
-  role: string = "client";
+  role: string = "fournisseur";
 
   ngOnInit(): void {
 

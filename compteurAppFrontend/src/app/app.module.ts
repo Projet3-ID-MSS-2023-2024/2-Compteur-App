@@ -24,12 +24,15 @@ import { PageNameComponent } from './components/universalComponents/page-name/pa
 import { InformationPageComponent } from './components/universalComponents/information-page/information-page.component';
 import { InformationCardComponent } from './components/universalComponents/information-card/information-card.component';
 import { ListIndiceComponent } from './components/sendStatementComponents/list-indice/list-indice.component';
-import { IndiceComponent } from './components/sendStatementComponents/indice/indice.component';
-import { SearchBarComponent } from './components/sendStatementComponents/search-bar/search-bar.component';
+import { IndiceComponent } from './components/universalComponents/indice/indice.component';
+import { SearchBarComponent } from './components/universalComponents/search-bar/search-bar.component';
 import { ProfilComponent } from './pages/profil/profil.component';
 import { ProfilMainComponent } from './components/profilComponents/profil-main/profil-main.component';
 import { AddMeterComponent } from './components/profilComponents/add-meter/add-meter.component';
 import { SendCompteurDataComponent } from './components/sendStatementComponents/send-compteur-data/send-compteur-data.component';
+import { ReceivedStatementComponent } from './pages/received-statement/received-statement.component';
+import { ReceivedStatementMainComponent } from './components/receivedStatementComponents/received-statement-main/received-statement-main.component';
+import { ReceivedListComponent } from './components/receivedStatementComponents/received-list/received-list.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -86,6 +89,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ProfilMainComponent,
     AddMeterComponent,
     SendCompteurDataComponent,
+    ReceivedStatementComponent,
+    ReceivedStatementMainComponent,
+    ReceivedListComponent,
   ],
   imports: [
     BrowserModule,

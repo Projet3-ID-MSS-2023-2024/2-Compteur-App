@@ -5,6 +5,9 @@
   <div class="informationPagePlacement">
     <app-information-page></app-information-page>
   </div>
+  <div class="addCompteurPlacement">
+    <app-add-meter></app-add-meter>
+  </div>
   <app-list-indice (buttonPressed)="buttonPress($event)"></app-list-indice>
 </div>
 <app-send-compteur-data *ngIf="showSendStatement"></app-send-compteur-data>
