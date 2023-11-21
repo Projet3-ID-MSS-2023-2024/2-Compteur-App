@@ -33,6 +33,8 @@ import { SendCompteurDataComponent } from './components/sendStatementComponents/
 import { ReceivedStatementComponent } from './pages/received-statement/received-statement.component';
 import { ReceivedStatementMainComponent } from './components/receivedStatementComponents/received-statement-main/received-statement-main.component';
 import { ReceivedListComponent } from './components/receivedStatementComponents/received-list/received-list.component';
+import { OptionTraitementComponent } from './components/receivedStatementComponents/option-traitement/option-traitement.component';
+import { OptionPaidUnpaidComponent } from './components/receivedStatementComponents/option-paid-unpaid/option-paid-unpaid.component';
 
 /*
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -92,6 +94,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ReceivedStatementComponent,
     ReceivedStatementMainComponent,
     ReceivedListComponent,
+    OptionTraitementComponent,
+    OptionPaidUnpaidComponent,
   ],
   imports: [
     BrowserModule,

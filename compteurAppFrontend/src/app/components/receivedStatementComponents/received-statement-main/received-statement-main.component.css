@@ -1,0 +1,29 @@
+.filterPlacement{
+  display: flex;
+  width: 95%;
+  margin-left: 2.5%;
+  height: 50px;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.optionPlacement{
+  display: flex;
+  width: 40%;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.searchBarPlacement{
+  display: flex;
+  width: 30%;
+  height: 100%;
+  position: relative;
+}
+
+.option{
+  display: flex;
+  width: 45%;
+  height: 100%;
+  position: relative;
+}
