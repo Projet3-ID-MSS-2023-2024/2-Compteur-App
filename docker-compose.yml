@@ -1,7 +1,7 @@
 version: '3'
 services:
   keycloakAppCompteur:
-    image: franco20/theme-compteur-app:latest
+    image: franco20/theme-keycloak-compteur-app-ok:latest
     command: ["start-dev"]
     ports:
       - 8082:8080
