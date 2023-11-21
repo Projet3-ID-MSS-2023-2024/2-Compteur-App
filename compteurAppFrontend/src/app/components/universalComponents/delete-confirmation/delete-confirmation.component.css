@@ -1,0 +1,82 @@
+.sendCompteurData{
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(6.2px);
+  -webkit-backdrop-filter: blur(6.2px);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.sendCompteurForm{
+  display: flex;
+  justify-content: space-evenly;
+  width: 40%;
+  height: 30%;
+  flex-direction: column;
+  border-radius: 20px;
+  background: rgba(26, 26, 26, 0.77);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.2px);
+  -webkit-backdrop-filter: blur(7.2px);
+  border: 1px solid rgba(52, 52, 52, 0.33);
+}
+
+.title{
+  display: flex;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.title h1{
+  color: white;
+}
+
+
+.buttonContainer{
+  display: flex;
+  width: 90%;
+  margin-left: 5%;
+  height: 60px;
+  justify-content: space-between;
+}
+
+.button{
+  display: flex;
+  width: 35%;
+  height: 100%;
+  background-color: rgb(163, 163, 163);
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover{
+  background-color: rgb(88, 88, 88);
+  color: white;
+}
+
+.annuler{
+  background-color: #f44336;
+  color: white;
+}
+
+@media screen and (max-width: 950px) {
+
+  .sendCompteurForm{
+    width: 90%;
+    height: 50%;
+  }
+
+}

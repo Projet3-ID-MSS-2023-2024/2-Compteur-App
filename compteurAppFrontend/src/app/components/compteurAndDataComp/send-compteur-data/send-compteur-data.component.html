@@ -1,0 +1,19 @@
+<div class="sendCompteurData">
+  <div class="sendCompteurForm">
+    <div class="title">
+      <h1>Envoyer votre relevé</h1>
+    </div>
+    <div class="formulaire" [formGroup]="dataSend">
+      <input type="text" placeholder="Valeur" formControlName="valeur">
+      <input type="file" formControlName="photo">
+    </div>
+    <div class="buttonContainer">
+      <div class="button" (click)="dataSender(false)">
+        <p>Annuler</p>
+      </div>
+      <div class="button" (click)="dataSender(true)">
+        <p>Envoyer</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="indiceList">
+  <div class="indicePlacement">
+    <app-indice [indiceArray]="attributLegend" [legend]="true"></app-indice>
+  </div>
+  <div class="indicePlacement" *ngFor="let item of data">
+    <app-indice [indiceArray]="item" [legend]="false" [buttonOption]="buttonOption"
+      (buttonPressed)="buttonPress($event)">
+    </app-indice>
+  </div>
+</div>

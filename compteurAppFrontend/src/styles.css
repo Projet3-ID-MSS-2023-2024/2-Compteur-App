@@ -1,0 +1,98 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Smooch Sans', sans-serif;
+}
+
+body{
+  background-color: rgb(233, 233, 248);
+}
+
+.pageContent{
+  display: flex;
+  width: calc(100% - 16.5% - 40px);
+  min-height: calc(100vh - 20px);
+  position: absolute;
+  left: calc(16.5% + 25px);
+  border: 1px solid rgba(0, 0, 0, 0.116);
+  top: 10px;
+  border-radius: 15px;
+  flex-direction: column;
+}
+
+.homeCard{
+  display: flex;
+  width: 90%;
+  height: 50px;
+  margin-left: 5%;
+  border-radius: 16px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbarElement{
+  display: flex;
+  width: 100%;
+  min-height: 10px;
+  position: absolute;
+  flex-direction: column;
+}
+
+.pageNamePlacement{
+  display: flex;
+  width: 95%;
+  margin-left: 2.5%;
+  margin-top: 10px;
+  height: 70px;
+  align-items: center;
+  position: relative;
+}
+
+.informationPagePlacement{
+  display: flex;
+  width: 95%;
+  margin-left: 2.5%;
+  height: 150px;
+  margin-top: 40px;
+  position: relative;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+
+@media screen and (max-width: 950px) {
+
+  .pageContent{
+    width: 98%;
+    margin-left: 1%;
+    min-height: 100vh;
+    position: initial;
+    left: 0;
+    border: 0px;
+    top: 0px;
+    border-radius: 0px;
+    flex-direction: column;
+  }
+
+  .pageNamePlacement{
+    margin-top: 40px;
+    height: 40px;
+  }
+
+  .informationPagePlacement{
+    margin-top: 0px;
+  }
+
+}

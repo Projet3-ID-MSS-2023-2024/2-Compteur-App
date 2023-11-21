@@ -1,0 +1,14 @@
+version: '3'
+services:
+  keycloakAppCompteur:
+    image: franco20/theme-keycloak-compteur-app-ok:latest
+    command: ["start-dev"]
+    ports:
+      - 8082:8080
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://13.37.240.236:5432/postgres?currentSchema=public
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=admin

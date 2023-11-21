@@ -1,0 +1,61 @@
+<div class="container">
+  <h2>Ajout fournisseur</h2>
+  <form [formGroup]="adresseForm" (ngSubmit)="addAdresse()">
+    <div class="containeur-form">
+      <div class="left">
+        <div class="form-group">
+          <label for="rue">Rue :</label>
+          <input
+            type="text"
+            id="rue"
+            formControlName="rue"
+          />
+        </div>
+
+
+        <div class="form-group">
+          <label for="rue">Numéro :</label>
+          <input
+            type="number"
+            id="numero"
+            formControlName="numero"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="ville">Ville :</label>
+          <input
+            type="text"
+            id="ville"
+            formControlName="ville"
+          />
+        </div>
+      </div>
+      <div class="right">
+
+
+
+        <div class="form-group">
+          <label for="codePostal">Code postal :</label>
+          <input
+            type="text"
+            id="codePostal"
+            formControlName="codePostal"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="pays">Pays :</label>
+          <input
+            type="text"
+            id="pays"
+            formControlName="pays"
+          />
+        </div>
+        <div></div>
+      </div>
+    </div>
+    <button type="submit">Ajouter</button>
+  </form>
+
+</div>
