@@ -9,7 +9,11 @@ export class SendStatementComponent {
 
   showSendStatement:boolean = false;
   showPopUpDelete:boolean = false;
+  showPopUpModifyMetter:boolean = false;
   idFocus!:number;
+
+  category:string[] = ['Electricité', 'Eau', 'Gaz', 'Internet', 'Téléphone', 'Autre'];
+  provider:string[] = ['EDF', 'Engie', 'Suez', 'Orange', 'SFR', 'Free', 'Bouygues', 'Autre'];
 
   attributLegend = ['Date', 'Montant', 'Statut'];
   buttonOption = ['edit.svg', 'delete.svg','send.svg'];
@@ -31,6 +35,7 @@ export class SendStatementComponent {
   buttonPress(arrayData: any){
     switch(arrayData[0]){
       case 'btn1':
+        this.showPopUpModifyMetter = true;
         break;
       case 'btn2':
         this.showPopUpDelete = true;
@@ -52,6 +57,15 @@ export class SendStatementComponent {
     console.log(choice);
     console.log(this.idFocus);
     this.showPopUpDelete = false;
+  }
+
+  newMetter(data: any){
+    console.log(data);
+  }
+
+  modifyMetter(data: any){
+    this.showPopUpModifyMetter = false;
+    console.log(data);
   }
 
 }
