@@ -1,7 +1,7 @@
 package com.compteurapp.backendcompteurapp;
 
-import com.compteurapp.backendcompteurapp.dto.Provider;
-import com.compteurapp.backendcompteurapp.dto.User;
+import com.compteurapp.backendcompteurapp.model.Provider;
+import com.compteurapp.backendcompteurapp.model.User;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtilTest;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.MethodOrderer;

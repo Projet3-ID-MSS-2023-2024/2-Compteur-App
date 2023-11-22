@@ -1,7 +1,7 @@
 package com.compteurapp.backendcompteurapp.services;
 
-import com.compteurapp.backendcompteurapp.dto.Provider;
-import com.compteurapp.backendcompteurapp.dto.User;
+import com.compteurapp.backendcompteurapp.model.Provider;
+import com.compteurapp.backendcompteurapp.model.User;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class KeycloakService {
