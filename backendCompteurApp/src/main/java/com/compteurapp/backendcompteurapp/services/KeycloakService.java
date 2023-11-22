@@ -27,19 +27,6 @@ public class KeycloakService {
         this.keycloakUtil = keycloakUtil;
     }
 
-    public List<User> getUsers() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
-        return userRepresentations.stream().map(this::mapUser).collect(Collectors.toList());
-    }
-
-    public Response createUser(@RequestBody User user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().create(userRep);
-        return Response.ok(user).build();
-    }
-
     public Response deleteUser(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
@@ -92,16 +79,21 @@ public class KeycloakService {
         return Response.ok(provider).build();
     }
 
+    public Response updateProvider(@PathVariable String id, @RequestBody Provider provider) {
+        UserRepresentation userRep = mapUserRep(provider);
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("tva", Collections.singletonList(provider.getTva()));
+        attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
+        userRep.setAttributes(attributes);
+
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        keycloak.realm(realm).users().get(id).update(userRep);
+        return Response.ok(provider).build();
+    }
+
     public Response deleteProvider(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
-        return Response.ok().build();
-    }
-
-    public Response asignRole(@PathVariable String userId, @PathVariable String roleName) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
-        keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(role));
         return Response.ok().build();
     }
 
