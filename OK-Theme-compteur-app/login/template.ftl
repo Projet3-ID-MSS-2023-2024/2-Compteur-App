@@ -23,7 +23,7 @@
 </head>
 
 <body class="${properties.kcBodyClass!}">
-    <section class="waves">
+    <#--  <section class="waves">
         <div class='air air1'></div>
         <div class='air air2'></div>
         <div class='air air3'></div>
@@ -31,7 +31,7 @@
         <div class='airReverse air1'></div>
         <div class='airReverse air2'></div>
         <div class='airReverse air3'></div>
-    </section>
+    </section>  -->
 
     <div id="custom-popup">
         <div id="custom-popup-content">
@@ -44,8 +44,7 @@
     <div class="containeur-info">
         <div id="kc-header" class="${properties.kcHeaderClass!} left">
             <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">
-                 <img src="${url.resourcesPath}/img/logo.svg" alt="" style="width: 100%;">
-                <h1 class="title-app">CompteurApp</h1>
+                 <img src="${url.resourcesPath}/img/logo.png" alt="" style="width : 100% ; height : auto; object-fit : cover;">
             </div>
         </div>
         <div class="${properties.kcFormCardClass!} <#if displayWide>${properties.kcFormCardAccountClass!}</#if> right">

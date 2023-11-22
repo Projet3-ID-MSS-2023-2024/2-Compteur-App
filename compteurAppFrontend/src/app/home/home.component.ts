@@ -25,7 +25,6 @@ export class HomeComponent implements OnInit{
         this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
         this.isClient = this.keycloak.isUserInRole('client');
 
-
         if(!this.isAdmin && !this.isFournisseur && !this.isClient) {
           // this.clientService.asignClientRole(this.keycloak.getKeycloakInstance().subject, 'client').subscribe(
           //   (data) => {
