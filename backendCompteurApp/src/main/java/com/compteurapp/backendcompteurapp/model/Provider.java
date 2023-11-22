@@ -1,4 +1,4 @@
-package com.compteurapp.backendcompteurapp.dto;
+package com.compteurapp.backendcompteurapp.model;
 
 public class Provider extends User{
     private String tva;

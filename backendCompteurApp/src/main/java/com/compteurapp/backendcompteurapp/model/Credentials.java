@@ -1,4 +1,4 @@
-package com.compteurapp.backendcompteurapp.dto;
+package com.compteurapp.backendcompteurapp.model;
 
 import org.keycloak.representations.idm.CredentialRepresentation;
 

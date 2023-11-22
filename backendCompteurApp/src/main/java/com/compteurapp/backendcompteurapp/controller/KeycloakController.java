@@ -1,8 +1,8 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import java.util.*;
-import com.compteurapp.backendcompteurapp.dto.Provider;
-import com.compteurapp.backendcompteurapp.dto.User;
+import com.compteurapp.backendcompteurapp.model.Provider;
+import com.compteurapp.backendcompteurapp.model.User;
 import com.compteurapp.backendcompteurapp.services.KeycloakService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
