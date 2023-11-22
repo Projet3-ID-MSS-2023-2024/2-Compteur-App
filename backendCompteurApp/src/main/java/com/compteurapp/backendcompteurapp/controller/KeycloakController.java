@@ -20,16 +20,6 @@ public class KeycloakController {
     }
 
     //------------------User------------------//
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return this.keycloakService.getUsers();
-    }
-
-    @PostMapping("/user")
-    public Response createUser(@RequestBody User user) {
-        return this.keycloakService.createUser(user);
-    }
-
     @PutMapping("/user/{id}")
     public Response updateUser(@PathVariable String id, @RequestBody User user) {
         return this.keycloakService.updateUser(id, user);
@@ -61,12 +51,6 @@ public class KeycloakController {
     @DeleteMapping("/provider/{id}")
     public Response deleteProvider(@PathVariable String id) {
         return this.keycloakService.deleteProvider(id);
-    }
-
-    //------------------Role------------------//
-    @PostMapping("/asignRole/{userId}/{roleName}")
-    public Response asignRole(@PathVariable String userId, @PathVariable String roleName) {
-        return this.keycloakService.asignRole(userId, roleName);
     }
 
 }
