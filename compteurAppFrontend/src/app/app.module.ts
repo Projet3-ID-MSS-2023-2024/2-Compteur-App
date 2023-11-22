@@ -35,7 +35,7 @@ import { DeleteConfirmationComponent } from './components/universalComponents/de
 import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-metter/modify-metter.component';
 import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
 
-/*
+
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
@@ -60,7 +60,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         return !(isGetRequest && isAcceptablePathMatch);
       }
     });
-}*/
+}
 
 @NgModule({
   declarations: [
@@ -102,7 +102,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HttpClientModule,
     ReactiveFormsModule
   ],
-  /*
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -110,7 +109,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       multi: true,
       deps: [KeycloakService]
     },
-  ],*/
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

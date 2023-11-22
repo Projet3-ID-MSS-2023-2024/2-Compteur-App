@@ -10,7 +10,7 @@ body {
 .title-app {
   font-size: 45px;
   font-weight: bold;
-  color: #3586ff;
+  color: #000000;
   text-align: center;
 }
 
@@ -25,10 +25,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ececec;
+  background-color: #e9e9f8;
   position: relative;
   overflow: hidden;
-  background: #3586ff;
   z-index: 1;
 }
 
@@ -37,12 +36,12 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: #e9e9f8;
   border-radius: 35px;
   width: 70%;
   height: 70vh;
   z-index: 1;
-  box-shadow: 10px 5px 5px #0097ffd9;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .left {
@@ -78,12 +77,31 @@ body {
   left: 0;
 }
 
+a{
+  color: #522de8;
+}
+
+
+.submitReturnregister{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 40%;
+  justify-content: space-evenly;
+  margin-top: 10%;
+}
+
+.submitReturnregister #kc-form-buttons{
+  margin-bottom: 0px;
+}
+
 .submitReturnLogin{
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100px;
+  height: 40%;
   justify-content: space-evenly;
+  margin-top: 13%;
 }
 
 #kc-form-buttons-password{
@@ -91,21 +109,13 @@ body {
 }
 
 #kc-reset-password-form{
-  height: 83%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  display: block;
 }
 
 #kc-content-wrapper {
   height: 100%;
   width: 75%;
   position: relative;
-}
-
-#mdpOublie{
-  
 }
 
 .kc-feedback-text {
@@ -115,7 +125,7 @@ body {
 }
 
 #kc-page-title {
-  color: #38bdfd;
+  color: #000;
   font-size: 30px;
   font-weight: bold;
 }
@@ -177,7 +187,7 @@ body {
 
 #kc-form-buttons-password input {
   color: #fff;
-  background-color: #38bdfd;
+  background-color: #522de8;
   width: 100%;
   height: 50px;
   border-radius: 5px;
@@ -187,9 +197,14 @@ body {
   cursor: pointer;
 }
 
+#kc-form-buttons-password input:hover{
+  background-color: #000;
+  color: #e9e9f8;
+}
+
 #kc-form-buttons input {
   color: #fff;
-  background-color: #38bdfd;
+  background-color: #522de8;
   width: 100%;
   height: 50px;
   border-radius: 5px;
@@ -197,6 +212,11 @@ body {
   font-weight: bold;
   border: none;
   cursor: pointer;
+}
+
+#kc-form-buttons input:hover{
+  background-color: #000;
+  color: #e9e9f8;
 }
 
 #kc-form {
@@ -220,7 +240,7 @@ body {
 
   /* Style de la scrollbar */
   scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #38bdfd #eeeeee; /* Firefox */
+  scrollbar-color: #522de8 #eeeeee; /* Firefox */
 
   /* Style de la scrollbar pour les navigateurs basés sur Webkit */
   &::-webkit-scrollbar {
@@ -228,7 +248,7 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #38bdfd;
+    background-color: #522de8;
     border-radius: 4px;
   }
 
@@ -244,6 +264,7 @@ body {
   align-items: center;
   width: 100%;
   height: 20%;
+  margin-top: 20%;
 }
 
 form {
@@ -255,11 +276,12 @@ form {
 }
 
 #formRegister{
-  height: 86%;
-  display: flex;
+  height: 74%;
+  display: block;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-top: 6%;
 }
 
 .labelInput {
@@ -289,7 +311,7 @@ form {
 .labelInput input:focus {
   border: none;
   outline: none;
-  border-bottom: 1px solid #38bdfd;
+  border-bottom: 1px solid #522de8;
 }
 
 .labelInputRegister {
@@ -319,7 +341,7 @@ form {
 .labelInputRegister input:focus {
   border: none;
   outline: none;
-  border-bottom: 1px solid #38bdfd;
+  border-bottom: 1px solid #522de8;
 }
 
 .air {
@@ -487,7 +509,7 @@ form {
 }
 
 #popup-btn {
-  background-color: #38bdfd;
+  background-color: #522de8;
   color: #fff;
   width: 100%;
   height: 50px;
@@ -496,6 +518,10 @@ form {
   font-weight: bold;
   border: none;
   cursor: pointer;
+}
+
+#popup-btn:hover {
+  background-color: #000;
 }
 
 @media screen and (max-width: 970px) {
@@ -518,6 +544,7 @@ form {
 
   .title-app {
     font-size: 23px;
+    margin-top: 7%;
   }
 
   #kc-page-title {
