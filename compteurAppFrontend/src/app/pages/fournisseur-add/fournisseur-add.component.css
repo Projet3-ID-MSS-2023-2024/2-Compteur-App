@@ -1,33 +1,32 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-}
-
 .containeur-wrappeur{
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  min-width: 60%;
-  max-width: 60%;
-  margin-top: 80px;
+  min-width: 80%;
+  max-width: 80%;
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
+
 .buttondiv{
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  transition: all 0.3s ease;
 }
+
 button{
   align-items: center;
   border: 1px solid #ccc;
@@ -39,12 +38,13 @@ button{
   text-decoration: none;
   background-color: #ffffff;
   color: #000000;
+  transition: all 0.3s ease;
 }
 
 button:hover{
   background-color: #000000;
   color: #ffffff;
-
+  transform: scale(1.1);
 }
 
 a{
@@ -53,16 +53,19 @@ a{
   margin: 1% 47.9%;
   font-size: 20px;
   font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 a:hover{
   color: #007BFF;
+  transform: scale(1.1);
 }
 
 .containeur-form{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  transition: all 0.3s ease;
 }
 
 .right{
@@ -70,6 +73,7 @@ a:hover{
   flex-direction: column;
   justify-content: flex-start;
   min-width: 30%;
+  transition: all 0.3s ease;
 }
 
 .left{
@@ -77,19 +81,23 @@ a:hover{
   flex-direction: column;
   justify-content: flex-start;
   min-width: 30%;
+  transition: all 0.3s ease;
 }
 
 h2 {
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 form {
   margin-top: 20px;
+  transition: all 0.3s ease;
 }
 
 label {
   display: block;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 input[type="text"],
@@ -104,6 +112,7 @@ select {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  transition: all 0.3s ease;
 }
 
 input[type="submit"] {
@@ -113,8 +122,35 @@ input[type="submit"] {
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 input[type="submit"]:hover {
   background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+@media screen and (max-width: 600px) {
+  .containeur-form{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .right{
+    min-width: 90%;
+  }
+  .left{
+    min-width: 90%;
+  }
+  .buttondiv{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  button{
+    margin: 5% 0;
+  }
+  a{
+    margin: 5% 0;
+  }
 }

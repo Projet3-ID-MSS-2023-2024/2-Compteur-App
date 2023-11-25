@@ -53,7 +53,9 @@ public class KeycloakService {
                 provider.setEmail(userRepresentation.getEmail());
                 provider.setTva(userRepresentation.getAttributes().get("tva").get(0));
                 provider.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
-                provider.setLogo(userRepresentation.getAttributes().get("logo").get(0));
+                if(userRepresentation.getAttributes().containsKey("logo")){
+                    provider.setLogo(userRepresentation.getAttributes().get("logo").get(0));
+                }
                 providers.add(provider);
             }
         }

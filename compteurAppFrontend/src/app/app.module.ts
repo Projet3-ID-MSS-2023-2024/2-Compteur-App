@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -36,6 +35,8 @@ import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-m
 import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
 import { HomeCardComponent } from './components/universalComponents/home-card/home-card.component';
 import { DropdownComponent } from './components/universalComponents/dropdown/dropdown.component';
+import { AdminNavbarComponent } from './components/navbarComponents/admin-navbar/admin-navbar.component';
+import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -98,6 +99,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ShowCompteurPictureComponent,
     HomeCardComponent,
     DropdownComponent,
+    AdminNavbarComponent,
   ],
   imports: [
     BrowserModule,

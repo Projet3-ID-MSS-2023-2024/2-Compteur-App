@@ -72,14 +72,14 @@ hr {
   height: 0px;
   border: 1px solid rgba(0, 0, 0, 0.103);
 }
-@media screen and (max-width: 577px) {
+@media screen and (max-width: 579px) {
   .cardList{
     align-items: center;
     justify-content: center;
   }
 }
 
-@media screen and (max-width: 536px) {
+@media screen and (max-width: 547px) {
 
   .categoryList {
     margin-top: 20px; /* Ajoutez la marge que vous voulez */

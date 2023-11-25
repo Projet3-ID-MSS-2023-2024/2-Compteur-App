@@ -8,12 +8,21 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class NavbarComponent implements OnInit{
 
-  role: string = "fournisseur";
+  isAdmin = false;
+  isFournisseur = false;
+  isClient = false;
 
   constructor(private readonly keycloak: KeycloakService) {}
 
   ngOnInit(): void {
-
+    this.keycloak.isLoggedIn().then((authenticated) => {
+      if (authenticated) {
+        console.log(this.keycloak.getToken());
+        this.isAdmin = this.keycloak.isUserInRole('admin');
+        this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
+        this.isClient = this.keycloak.isUserInRole('client');
+      }
+    });
   }
 
   logout() {

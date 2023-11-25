@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.component';
 import { AuthGuard } from './guards/authGuard';
-import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
+import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { SendStatementComponent } from './pages/send-statement/send-statement.component';
