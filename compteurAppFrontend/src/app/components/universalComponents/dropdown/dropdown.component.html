@@ -1,0 +1,6 @@
+<div class="list">
+  <div class="placeHolder"><label>Catégorie</label></div>
+  <select [formControl]="categorie">
+    <option *ngFor="let item of category" [value]="item">{{item}}</option>
+  </select>
+</div>

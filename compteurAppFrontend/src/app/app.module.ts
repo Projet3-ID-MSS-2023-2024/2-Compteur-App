@@ -34,6 +34,8 @@ import { IndiceListComponent } from './components/universalComponents/indice-lis
 import { DeleteConfirmationComponent } from './components/universalComponents/delete-confirmation/delete-confirmation.component';
 import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-metter/modify-metter.component';
 import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
+import { HomeCardComponent } from './components/universalComponents/home-card/home-card.component';
+import { DropdownComponent } from './components/universalComponents/dropdown/dropdown.component';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -94,6 +96,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DeleteConfirmationComponent,
     ModifyMetterComponent,
     ShowCompteurPictureComponent,
+    HomeCardComponent,
+    DropdownComponent,
   ],
   imports: [
     BrowserModule,

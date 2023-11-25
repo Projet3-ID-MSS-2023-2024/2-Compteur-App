@@ -1,1 +1,23 @@
-<div class="pageContent"></div>
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Liste fournisseurs'"></app-page-name>
+  </div>
+
+  <div class="searchAndCategory">
+    <div class="filterPlacementListProvider">
+      <div class="searchBarPlacement">
+        <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
+      </div>
+      <div class="categoryList">
+        <app-dropdown [category]="items"></app-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="cardList">
+    <div *ngFor="let filter of filterData">
+      <app-home-card [title]="filter.userName" [logoUrl]="filter.logo"></app-home-card>
+    </div>
+  </div>
+
+</div>
