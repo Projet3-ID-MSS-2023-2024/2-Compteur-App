@@ -3,9 +3,7 @@ package com.compteurapp.backendcompteurapp.controller;
 import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +19,18 @@ public class CategoryController {
         return this.categoryService.getAllCategories();
     }
 
-    @GetMapping("/getCategory")
-    public Category getCategory(Long id){
+    @GetMapping("/getCategory/{id}")
+    public Category getCategory(@PathVariable Long id){
         return this.categoryService.getCategory(id);
     }
 
-    @GetMapping("/getCategoryByName")
-    public Category getCategoryByName(String name){
+    @GetMapping("/getCategoryByName{name}")
+    public Category getCategoryByName(@PathVariable String name){
         return this.categoryService.getCategoryByName(name);
     }
 
     @GetMapping("/deleteCategory")
-    public void deleteCategory(Long id){
+    public void deleteCategory(@RequestParam Long id){
         this.categoryService.deleteCategory(id);
     }
 
@@ -42,12 +40,12 @@ public class CategoryController {
     }
 
     @GetMapping("/addCategory")
-    public void addCategory(Category category){
+    public void addCategory(@RequestBody Category category){
         this.categoryService.addCategory(category);
     }
 
     @GetMapping("/updateCategory")
-    public void updateCategory(Category category){
+    public void updateCategory(@RequestBody Category category){
         this.categoryService.updateCategory(category);
     }
 }

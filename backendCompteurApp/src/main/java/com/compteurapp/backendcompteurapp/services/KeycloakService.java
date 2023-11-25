@@ -53,9 +53,7 @@ public class KeycloakService {
                 provider.setEmail(userRepresentation.getEmail());
                 provider.setTva(userRepresentation.getAttributes().get("tva").get(0));
                 provider.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
-                if(userRepresentation.getAttributes().containsKey("logo")){
-                    provider.setLogo(userRepresentation.getAttributes().get("logo").get(0));
-                }
+                provider.setIdCategory(userRepresentation.getAttributes().get("idCategory").get(0));
                 providers.add(provider);
             }
         }
@@ -67,6 +65,7 @@ public class KeycloakService {
         Map<String, List<String>> attributes = new HashMap<>();
         attributes.put("tva", Collections.singletonList(provider.getTva()));
         attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
+        attributes.put("idCategory", Collections.singletonList(provider.getIdCategory()));
         userRep.setAttributes(attributes);
 
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();

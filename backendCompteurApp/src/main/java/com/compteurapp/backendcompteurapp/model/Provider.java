@@ -3,7 +3,7 @@ package com.compteurapp.backendcompteurapp.model;
 public class Provider extends User{
     private String tva;
     private String phoneNumber;
-    private String logo;
+    private String idCategory;
 
     public Provider() {
         super();
@@ -25,11 +25,12 @@ public class Provider extends User{
         return phoneNumber;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getIdCategory() {
+        return idCategory;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
     }
+
 }

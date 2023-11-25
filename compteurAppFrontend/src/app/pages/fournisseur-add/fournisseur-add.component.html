@@ -58,12 +58,12 @@
               />
             </div>
             <div class="form-group">
-              <label for="">Catégorie</label>
-              <select name="" id="">
-                <option value="">Eau</option>
-                <option value="">Gaz</option>
-                <option value="">Électricité</option>
+              <label for="category">Catégorie</label>
+              <select formControlName="category" id="category">
+                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
               </select>
+
+
             </div>
           </div>
         </div>

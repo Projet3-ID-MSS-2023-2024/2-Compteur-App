@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
+import { CategoryService } from 'src/app/_services/category.service';
+import { Category } from 'src/models/category';
 
 @Component({
   selector: 'app-fournisseur-add',
@@ -17,12 +19,14 @@ export class FournisseurAddComponent {
   public authToken = localStorage.getItem('access_token');
   public fournisseur: AddFournisseur | undefined;
   public fournisseurSpring: AddFournisseurSpring | undefined;
+  public categories: Category[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private fournisseurService: FournisseurService,
     private readonly keycloak: KeycloakService,
+    private CategoryService: CategoryService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -30,17 +34,21 @@ export class FournisseurAddComponent {
       phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
       TVA: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      category: ['', [Validators.required]],
     });
-  }
-  ngOnInit(): void {
-    this.fournisseurService.getFournisseurSpring().subscribe(
+
+    this.CategoryService.getAll().subscribe(
       (data) => {
+        this.categories = data;
         console.log(data);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+  ngOnInit(): void {
+
   }
 
   handleError(error: any) {
@@ -49,6 +57,7 @@ export class FournisseurAddComponent {
 
   addFournisseur() {
     if (this.registerForm.valid) {
+      console.log(this.registerForm.value);
       this.fournisseurSpring = {
         userName: this.registerForm.value.username,
         email: this.registerForm.value.email,
@@ -57,6 +66,7 @@ export class FournisseurAddComponent {
         lastName: this.registerForm.value.username,
         phoneNumber: this.registerForm.value.phoneNumber,
         tva: this.registerForm.value.TVA,
+        idCategory: this.registerForm.value.category
       };
 
       this.fournisseurService
