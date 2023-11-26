@@ -60,6 +60,27 @@ public class KeycloakService {
         return providers;
     }
 
+    public Provider getProviderByUsername(String username) {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        Provider provider = new Provider();
+        for (UserRepresentation userRepresentation : userRepresentations) {
+            if (userRepresentation.getAttributes() != null && userRepresentation.getAttributes().containsKey("tva")) {
+                if (userRepresentation.getUsername().equals(username)) {
+                    provider.setId(userRepresentation.getId());
+                    provider.setUserName(userRepresentation.getUsername());
+                    provider.setFirstName(userRepresentation.getFirstName());
+                    provider.setLastName(userRepresentation.getLastName());
+                    provider.setEmail(userRepresentation.getEmail());
+                    provider.setTva(userRepresentation.getAttributes().get("tva").get(0));
+                    provider.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
+                    provider.setIdCategory(userRepresentation.getAttributes().get("idCategory").get(0));
+                }
+            }
+        }
+        return provider;
+    }
+
     public Response createProvider(@RequestBody Provider provider) {
         UserRepresentation userRep = mapUserRep(provider);
         Map<String, List<String>> attributes = new HashMap<>();
@@ -85,12 +106,14 @@ public class KeycloakService {
         Map<String, List<String>> attributes = new HashMap<>();
         attributes.put("tva", Collections.singletonList(provider.getTva()));
         attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
+        attributes.put("idCategory", Collections.singletonList(provider.getIdCategory()));
         userRep.setAttributes(attributes);
 
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
         return Response.ok(provider).build();
     }
+
 
     public Response deleteProvider(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();

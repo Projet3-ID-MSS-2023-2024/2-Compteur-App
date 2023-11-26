@@ -36,6 +36,11 @@ public class KeycloakController {
         return this.keycloakService.getProviders();
     }
 
+    @GetMapping("/provider/{username}")
+    public Provider getProvider(@PathVariable String username) {
+        return this.keycloakService.getProviderByUsername(username);
+    }
+
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")
     public Response createProvider(@RequestBody Provider provider) {

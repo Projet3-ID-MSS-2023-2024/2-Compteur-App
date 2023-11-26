@@ -42,6 +42,14 @@ export class FournisseurService {
     return this.http.get<any>(`/api/provider`, { headers });
   }
 
+  getFournisseurSpringByUserName(userName: string | undefined) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`/api/provider/${userName}`, { headers });
+  }
+
   deleteFournisseurSpring(id: number | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({

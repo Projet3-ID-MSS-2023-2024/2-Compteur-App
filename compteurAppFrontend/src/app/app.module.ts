@@ -4,7 +4,6 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
@@ -37,6 +36,9 @@ import { HomeCardComponent } from './components/universalComponents/home-card/ho
 import { DropdownComponent } from './components/universalComponents/dropdown/dropdown.component';
 import { AdminNavbarComponent } from './components/navbarComponents/admin-navbar/admin-navbar.component';
 import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
+import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-info.component';
+import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -69,7 +71,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
   declarations: [
     AppComponent,
     HomeComponent,
-    FournisseurListComponent,
     FournisseurAddComponent,
     AdresseAddComponent,
     HomePageComponent,
@@ -100,6 +101,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HomeCardComponent,
     DropdownComponent,
     AdminNavbarComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
