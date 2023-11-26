@@ -29,4 +29,13 @@ export class NavbarComponent implements OnInit{
     this.keycloak.logout();
   }
 
+  isPopup: boolean = false;
+
+  openPopupDeconnexion(){
+    this.isPopup = true;
+  }
+
+  closePopup(){
+    this.isPopup = false;
+  }
 }

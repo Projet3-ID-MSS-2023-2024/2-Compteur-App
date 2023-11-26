@@ -12,12 +12,24 @@
     <app-lock-navbar *ngIf="0"></app-lock-navbar>
     <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
 
-    <div (click)="logout()" class="logout">
+    <div (click)="openPopupDeconnexion()" class="logout">
       <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'"></app-navbar-card>
     </div>
   </div>
   <div class="containerBottom">
     <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'"
       [surname]="'Robert Johns'"></app-profil-card-navbar>
+  </div>
+</div>
+
+<div class="popupDeconnexion" *ngIf="isPopup">
+  <div class="popupDeconnexionContent">
+    <div class="popupDeconnexionTitle">
+      <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
+    </div>
+    <div class="popupDeconnexionButtons">
+      <button (click)="logout()" class="popupDeconnexionButtonYes">Oui</button>
+      <button (click)="closePopup()" class="popupDeconnexionButtonNo">Non</button>
+    </div>
   </div>
 </div>
