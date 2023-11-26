@@ -118,4 +118,14 @@ export class FournisseurInfoComponent {
     );
   }
 
+  closeOrOpenDelete:boolean = false;
+
+  closeDelete(){
+    this.closeOrOpenDelete = false;
+  }
+
+  openDelete(){
+    this.closeOrOpenDelete = true;
+  }
+
 }

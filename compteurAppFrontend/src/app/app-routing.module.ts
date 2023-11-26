@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './guards/authGuard';
 import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
@@ -14,7 +13,6 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'homePage', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'addFournisseur', component: FournisseurAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'listFournisseur', component: FournisseurListComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'categories', component: CategoriesComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},

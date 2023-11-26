@@ -66,10 +66,22 @@
           </div>
         </div>
         <div class="buttondiv">
-          <button type="submit">Ajouter</button>
-          <button type="delete" (click)="deleteFournisseur()" class="button-delete">Supprimer</button>
+          <button type="submit">Modifier</button>
+          <button type="delete" (click)="openDelete()" class="button-delete">Supprimer</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="popupDelete" *ngIf="closeOrOpenDelete">
+  <div class="popupDeleteContent">
+    <div class="popupDeleteText">
+      <p>Êtes-vous sûr de vouloir supprimer ce fournisseur ?</p>
+    </div>
+    <div class="popupDeleteButton">
+      <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
+      <button class="buttonDelete" (click)="deleteFournisseur()">Supprimer</button>
     </div>
   </div>
 </div>

@@ -12,6 +12,13 @@ export class CategoryService {
     private readonly keycloak: KeycloakService
   ) {}
 
+  create(name: string) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.post<any>('api/addCategory', { name }, { headers });
+  }
 
   getAll() {
     const token = this.keycloak.getKeycloakInstance().token;
@@ -27,5 +34,22 @@ export class CategoryService {
       Authorization: `Bearer ${token}`,
     };
     return this.http.get<any>(`api/getCategory/${id}`, { headers });
+  }
+
+  delete(id: number) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.delete<any>(`api/deleteCategory/${id}`, { headers });
+  }
+
+
+  deleteByName(name: string) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.delete<any>(`api/deleteCategoryByName/${name}`, { headers });
   }
 }

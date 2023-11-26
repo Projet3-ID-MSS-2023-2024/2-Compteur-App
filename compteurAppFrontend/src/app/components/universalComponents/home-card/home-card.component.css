@@ -11,7 +11,16 @@
   background-color: #fff;
   height: 250px;
   width: 250px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Ajout de la transition pour transform */
 }
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05); /* Ajout de l'effet de mise à l'échelle */
+}
+
+
 
 .card-logo {
   width: 80px;

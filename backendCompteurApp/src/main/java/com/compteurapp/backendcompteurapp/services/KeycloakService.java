@@ -101,7 +101,7 @@ public class KeycloakService {
         return Response.ok(provider).build();
     }
 
-    public Response updateProvider(@PathVariable String id, @RequestBody Provider provider) {
+    public Response updateProvider(String id, Provider provider) {
         UserRepresentation userRep = mapUserRep(provider);
         Map<String, List<String>> attributes = new HashMap<>();
         attributes.put("tva", Collections.singletonList(provider.getTva()));

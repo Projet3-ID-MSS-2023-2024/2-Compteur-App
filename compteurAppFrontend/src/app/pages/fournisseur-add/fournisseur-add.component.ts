@@ -8,6 +8,7 @@ import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
+import { MessageService } from 'src/app/_services/message.service';
 
 @Component({
   selector: 'app-fournisseur-add',
@@ -26,7 +27,8 @@ export class FournisseurAddComponent {
     private router: Router,
     private fournisseurService: FournisseurService,
     private readonly keycloak: KeycloakService,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private messageService: MessageService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -46,9 +48,6 @@ export class FournisseurAddComponent {
         console.log(error);
       }
     );
-  }
-  ngOnInit(): void {
-
   }
 
   handleError(error: any) {
@@ -73,7 +72,9 @@ export class FournisseurAddComponent {
         .AddFournisseurSpring(this.fournisseurSpring)
         .subscribe(
           (data) => {
-            console.log(data);
+            this.messageService.changeMessage('Fournisseur ajouté avec succès');
+            this.messageService.changePopup(true);
+            this.router.navigate(['/listFournisseur']);
           },
           (error) => {
             console.log('error');

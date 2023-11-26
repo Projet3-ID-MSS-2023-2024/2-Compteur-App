@@ -29,23 +29,28 @@ public class CategoryController {
         return this.categoryService.getCategoryByName(name);
     }
 
-    @GetMapping("/deleteCategory")
-    public void deleteCategory(@RequestParam Long id){
+    @DeleteMapping("/deleteCategory/{id}")
+    public void deleteCategory(@PathVariable Long id){
         this.categoryService.deleteCategory(id);
     }
 
-    @GetMapping("/deleteAllCategories")
+    @DeleteMapping("/deleteAllCategories")
     public void deleteAllCategories(){
         this.categoryService.deleteAllCategories();
     }
 
-    @GetMapping("/addCategory")
+    @DeleteMapping("/deleteCategoryByName")
+    public void deleteCategoryByName(@RequestParam String name){
+        this.categoryService.deleteCategoryByName(name);
+    }
+
+    @PostMapping("/addCategory")
     public void addCategory(@RequestBody Category category){
         this.categoryService.addCategory(category);
     }
 
-    @GetMapping("/updateCategory")
+    @PutMapping("/updateCategory/")
     public void updateCategory(@RequestBody Category category){
-        this.categoryService.updateCategory(category);
+        this.categoryService.updateCategory(category.getId(), category);
     }
 }

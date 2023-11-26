@@ -159,6 +159,116 @@ input[type="submit"]:hover {
   transform: scale(1.1);
 }
 
+.popupDelete {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popupEdit {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popupEditContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.popupEditText {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.popupEditButton {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonCancel, .buttonEdit {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonCancel {
+  background-color: #ccc;
+  color: black;
+}
+
+.buttonEdit {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+.popupDeleteContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  border-radius: 10px;
+}
+
+.popupDeleteText {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.popupDeleteText p {
+  text-align: center;
+  font-size: larger;
+
+}
+
+.popupDeleteButton {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.buttonCancel, .buttonDelete {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonCancel {
+  background-color: #ccc;
+  color: black;
+  border-radius: 7px;
+}
+
+.buttonCancel:hover {
+  background-color: #ddd;
+}
+
+.buttonDelete {
+  background-color: #f44336;
+  color: white;
+  border-radius: 7px;
+}
+
+.buttonDelete:hover {
+  background-color: #da190b;
+}
+
+
+
 @media screen and (max-width: 600px) {
   .containeur-form{
     flex-direction: column;
@@ -183,3 +293,4 @@ input[type="submit"]:hover {
     margin: 5% 0;
   }
 }
+
