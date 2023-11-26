@@ -3,10 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -34,7 +31,14 @@ import { IndiceListComponent } from './components/universalComponents/indice-lis
 import { DeleteConfirmationComponent } from './components/universalComponents/delete-confirmation/delete-confirmation.component';
 import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-metter/modify-metter.component';
 import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
-
+import { HomeCardComponent } from './components/universalComponents/home-card/home-card.component';
+import { DropdownComponent } from './components/universalComponents/dropdown/dropdown.component';
+import { AdminNavbarComponent } from './components/navbarComponents/admin-navbar/admin-navbar.component';
+import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
+import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-info.component';
+import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { FormsModule } from '@angular/forms';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -65,8 +69,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    FournisseurListComponent,
     FournisseurAddComponent,
     AdresseAddComponent,
     HomePageComponent,
@@ -94,13 +96,20 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DeleteConfirmationComponent,
     ModifyMetterComponent,
     ShowCompteurPictureComponent,
+    HomeCardComponent,
+    DropdownComponent,
+    AdminNavbarComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {

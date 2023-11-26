@@ -1,0 +1,296 @@
+.containeur-wrappeur{
+  display: flex;
+  width: 100%;
+  margin-top: 70px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: 80%;
+  max-width: 80%;
+  background-color: #e9e9f8;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.buttondiv{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+button{
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ffffff;
+  color: #000000;
+  transition: all 0.3s ease;
+  margin: 20px;
+  width: 100px;
+  height: 50px;
+}
+
+.button-delete{
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ff0000;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.button-delete:hover{
+  background-color: #ff0000;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+button:hover{
+  background-color: #000000;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+a{
+  text-decoration: none;
+  color: #000000;
+  margin: 1% 47.9%;
+  font-size: 20px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+a:hover{
+  color: #000000;
+  transform: scale(1.1);
+}
+
+.containeur-form{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  transition: all 0.3s ease;
+}
+
+.right{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 30%;
+  transition: all 0.3s ease;
+}
+
+.left{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 30%;
+  transition: all 0.3s ease;
+}
+
+h2 {
+  text-align: center;
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
+form {
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  color: #000000;
+  font-size: x-large;
+  transition: all 0.3s ease;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  font-size: larger;
+}
+
+input[type="submit"] {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.popupDelete {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popupEdit {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popupEditContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.popupEditText {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.popupEditButton {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonCancel, .buttonEdit {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonCancel {
+  background-color: #ccc;
+  color: black;
+}
+
+.buttonEdit {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+.popupDeleteContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  border-radius: 10px;
+}
+
+.popupDeleteText {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.popupDeleteText p {
+  text-align: center;
+  font-size: larger;
+
+}
+
+.popupDeleteButton {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.buttonCancel, .buttonDelete {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonCancel {
+  background-color: #ccc;
+  color: black;
+  border-radius: 7px;
+}
+
+.buttonCancel:hover {
+  background-color: #ddd;
+}
+
+.buttonDelete {
+  background-color: #f44336;
+  color: white;
+  border-radius: 7px;
+}
+
+.buttonDelete:hover {
+  background-color: #da190b;
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .containeur-form{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .right{
+    min-width: 90%;
+  }
+  .left{
+    min-width: 90%;
+  }
+  .buttondiv{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  button{
+    margin: 5% 0;
+  }
+  a{
+    margin: 5% 0;
+  }
+}
+

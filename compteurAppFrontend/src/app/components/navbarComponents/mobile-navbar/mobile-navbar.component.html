@@ -9,9 +9,10 @@
   </div>
 
   <div class="navbarPosition" #items>
-    <app-client-navbar *ngIf="role==='client'"></app-client-navbar>
-    <app-provider-navbar *ngIf="role==='fournisseur'"></app-provider-navbar>
-    <app-lock-navbar *ngIf="role==='lock'"></app-lock-navbar>
+    <app-client-navbar *ngIf="isClient"></app-client-navbar>
+    <app-provider-navbar *ngIf="isFournisseur"></app-provider-navbar>
+    <app-lock-navbar *ngIf="role=='lock'"></app-lock-navbar>
+    <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
   </div>
 
   <div class="homePlacement" #items>

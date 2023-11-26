@@ -1,11 +1,12 @@
-import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-mobile-navbar',
   templateUrl: './mobile-navbar.component.html',
   styleUrls: ['./mobile-navbar.component.css']
 })
-export class MobileNavbarComponent {
+export class MobileNavbarComponent implements OnInit {
 
   role: string = 'fournisseur';
 
@@ -13,6 +14,20 @@ export class MobileNavbarComponent {
   @ViewChildren('items') items!: QueryList<ElementRef>;
   open: boolean = false;
   showHideImg:string = "show.svg";
+
+  isAdmin: boolean = false;
+  isFournisseur: boolean = false;
+  isClient: boolean = false;
+
+  constructor(
+    private keycloakService: KeycloakService,
+  ) { }
+
+  ngOnInit(): void {
+    this.isFournisseur = this.keycloakService.isUserInRole('fournisseur') ? true : false;
+    this.isAdmin = this.keycloakService.isUserInRole('admin') ? true : false;
+    this.isClient = this.keycloakService.isUserInRole('client') ? true : false;
+  }
 
   openClose(){
     this.navbar.nativeElement.style.width = this.open ? '150px' : '95%';

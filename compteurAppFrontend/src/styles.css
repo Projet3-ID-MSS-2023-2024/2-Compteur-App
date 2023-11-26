@@ -6,6 +6,7 @@
 
 body{
   background-color: rgb(233, 233, 248);
+
 }
 
 .pageContent{
@@ -18,6 +19,28 @@ body{
   top: 10px;
   border-radius: 15px;
   flex-direction: column;
+}
+
+.pageContentRow{
+  display: flex;
+  flex-wrap: wrap;
+
+  width: calc(100% - 16.5% - 40px);
+  min-height: calc(100vh - 20px);
+  position: absolute;
+  left: calc(16.5% + 25px);
+  border: 1px solid rgba(0, 0, 0, 0.116);
+  top: 10px;
+  border-radius: 15px;
+  flex-direction: row;
+  align-content: flex-start;
+
+}
+
+.cardList{
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .homeCard{
@@ -84,6 +107,19 @@ body::-webkit-scrollbar-track {
     top: 0px;
     border-radius: 0px;
     flex-direction: column;
+  }
+
+  .pageContentRow{
+    width: 98%;
+    margin-left: 1%;
+    min-height: 100vh;
+    position: initial;
+    left: 0;
+    border: 0px;
+    top: 0px;
+    border-radius: 0px;
+    flex-direction: row;
+    align-content: flex-start;
   }
 
   .pageNamePlacement{

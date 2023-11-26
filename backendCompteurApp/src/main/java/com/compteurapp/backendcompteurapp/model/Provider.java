@@ -3,6 +3,7 @@ package com.compteurapp.backendcompteurapp.model;
 public class Provider extends User{
     private String tva;
     private String phoneNumber;
+    private String idCategory;
 
     public Provider() {
         super();
@@ -23,4 +24,13 @@ public class Provider extends User{
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public String getIdCategory() {
+        return idCategory;
+    }
+
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
+    }
+
 }

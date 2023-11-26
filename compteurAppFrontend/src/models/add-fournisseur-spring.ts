@@ -7,4 +7,5 @@ export class AddFournisseurSpring {
   password?: string;
   tva?: string;
   phoneNumber?: string;
+  idCategory?: string;
 }

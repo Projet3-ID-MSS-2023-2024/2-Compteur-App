@@ -1,0 +1,32 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Liste fournisseurs'"></app-page-name>
+  </div>
+  <div class="searchAndCategory">
+    <div class="filterPlacementListProvider">
+      <div class="searchBarPlacement">
+        <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
+      </div>
+      <div class="categoryList">
+        <app-dropdown [category]="items"  (change)="filterByCategory($event)"></app-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="cardList">
+    <div *ngFor="let filter of filterData" (click)="goToFournisseurInfo(filter.userName)">
+      <app-home-card [title]="filter.userName"></app-home-card>
+    </div>
+  </div>
+</div>
+
+<div class="popupAjoutReussiFournisseur" *ngIf="closeOrOpenPopup">
+  <div class="popupAjoutReussiFournisseurContent">
+    <div class="popupAjoutReussiFournisseurContentText">
+      <p>Le fournisseur a bien été ajouté</p>
+    </div>
+    <div class="popupAjoutReussiFournisseurContentButton">
+      <button (click)="closePopup()">OK</button>
+    </div>
+  </div>
+</div>
