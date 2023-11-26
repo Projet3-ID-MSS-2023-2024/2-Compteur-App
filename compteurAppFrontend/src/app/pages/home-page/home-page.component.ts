@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
+import { CategoryService } from 'src/app/_services/category.service';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
@@ -20,7 +21,7 @@ export class HomePageComponent implements OnInit{
   fournisseurData: AddFournisseurSpring[] = [];
   filterData: AddFournisseurSpring[] = [];
 
-  constructor(private readonly keycloak: KeycloakService, private route: Router, private fournisseurService: FournisseurService) {}
+  constructor(private readonly keycloak: KeycloakService, private route: Router, private fournisseurService: FournisseurService, private categoryService: CategoryService) {}
 
   ngOnInit(): void {
     this.keycloak.isLoggedIn().then((authenticated) => {
@@ -53,12 +54,32 @@ export class HomePageComponent implements OnInit{
         }
         else
           console.log("From list" + fournisseur.userName + "From search" + data.search);
-
           return null;
       });
     }
   }
 
+  filterByCategory(event: any){
+    const category = event.target.value;
+    if(category == ''){
+      this.filterData = [...this.fournisseurData];
+    } else {
+      this.categoryService.getAll().subscribe(
+        (data:any) => {
+          this.filterData = this.fournisseurData.filter((fournisseur) => {
+            let categoryFournisseur = data.find((cat: { id: string | undefined; }) => cat.id == fournisseur.idCategory);
+            return categoryFournisseur && categoryFournisseur.name.toLowerCase() == category.toLowerCase();
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
 
-  items = ['Eau', 'Gaz', 'Électricité'];
+
+
+
+  items = ['Tout', 'Eau', 'Gaz', 'Électricité'];
 }

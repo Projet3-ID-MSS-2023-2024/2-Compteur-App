@@ -88,21 +88,4 @@ export class FournisseurAddComponent {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0] as File;
   }
-
-  uploadLogo() {
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('logo', this.selectedFile, this.selectedFile.name);
-
-      // Envoyer le formulaire avec le fichier vers votre backend
-      // Vous devez implémenter le service backend pour gérer le stockage du fichier
-      // par exemple, en utilisant une API REST avec Express, Flask, etc.
-      // Exemple fictif :
-      // this.logoService.uploadLogo(formData).subscribe(response => {
-      //   console.log('Logo téléchargé avec succès', response);
-      // });
-    } else {
-      console.log('Aucun fichier sélectionné.');
-    }
-  }
 }
