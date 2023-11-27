@@ -19,6 +19,7 @@ export class FournisseurInfoComponent {
   public categories: Category[] = [];
   public idProvider: number | undefined;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
+  showDiv = false;
 
   constructor(
     private formBuilder: FormBuilder,
