@@ -44,7 +44,7 @@ export class FournisseurListComponent implements OnInit {
 
     this.messageService.currentMessage.subscribe(message => this.message = message);
     this.messageService.currentPopup.subscribe(popup => this.closeOrOpenPopup = popup);
-    console.log(this.closeOrOpenPopup);
+
 
     this.categoryService.getAll().subscribe(
       (data) => {
