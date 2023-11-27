@@ -6,6 +6,7 @@ import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
+import { Category } from 'src/models/category';
 
 @Component({
   selector: 'app-fournisseur-list',
@@ -31,6 +32,8 @@ export class FournisseurListComponent implements OnInit {
 
   message!: string;
   closeOrOpenPopup!: boolean;
+  public categories: Category[] = [];
+  public categoriesName: string[] = [];
 
   ngOnInit(): void {
     this.fournisseurService.getFournisseurSpring().subscribe((data: any) => {
@@ -42,6 +45,23 @@ export class FournisseurListComponent implements OnInit {
     this.messageService.currentMessage.subscribe(message => this.message = message);
     this.messageService.currentPopup.subscribe(popup => this.closeOrOpenPopup = popup);
     console.log(this.closeOrOpenPopup);
+
+    this.categoryService.getAll().subscribe(
+      (data) => {
+        this.categories = data;
+        console.log(data[0]['name']);
+        this.categoriesName.push('Tout');
+        this.categories.forEach((category) => {
+          if (category.name) {
+            this.categoriesName.push(category.name);
+          }
+        });
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   searchBarDataReceip(data: any) {

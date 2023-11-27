@@ -8,7 +8,7 @@
         <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
       </div>
       <div class="categoryList">
-        <app-dropdown [category]="items"  (change)="filterByCategory($event)"></app-dropdown>
+        <app-dropdown [category]="categoriesName"  (change)="filterByCategory($event)"></app-dropdown>
       </div>
     </div>
   </div>

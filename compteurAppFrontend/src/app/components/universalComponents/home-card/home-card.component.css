@@ -8,11 +8,12 @@
   overflow: hidden;
   margin: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
   height: 250px;
   width: 250px;
   cursor: pointer;
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Ajout de la transition pour transform */
+  background-color: #3a475b;
+  color: #e9e9f8;
 }
 
 .card:hover {
