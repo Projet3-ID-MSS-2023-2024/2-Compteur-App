@@ -8,7 +8,7 @@
         <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
       </div>
       <div class="categoryList">
-        <app-dropdown [category]="items"  (change)="filterByCategory($event)"></app-dropdown>
+        <app-dropdown [category]="categoriesName"  (change)="filterByCategory($event)"></app-dropdown>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 <div class="popupAjoutReussiFournisseur" *ngIf="closeOrOpenPopup">
   <div class="popupAjoutReussiFournisseurContent">
     <div class="popupAjoutReussiFournisseurContentText">
-      <p>Le fournisseur a bien été ajouté</p>
+      <p>{{message}}</p>
     </div>
     <div class="popupAjoutReussiFournisseurContentButton">
       <button (click)="closePopup()">OK</button>

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { CategoryService } from 'src/app/_services/category.service';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
+import { MessageService } from 'src/app/_services/message.service';
 import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
@@ -19,6 +20,7 @@ export class FournisseurInfoComponent {
   public categories: Category[] = [];
   public idProvider: number | undefined;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
+  showDiv = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +28,8 @@ export class FournisseurInfoComponent {
     private fournisseurService: FournisseurService,
     private readonly keycloak: KeycloakService,
     private CategoryService: CategoryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -111,6 +114,9 @@ export class FournisseurInfoComponent {
     this.fournisseurService.deleteFournisseurSpring(this.idProvider).subscribe(
       (data) => {
         console.log(data);
+        this.messageService.changeMessage('Fournisseur supprimé avec succès');
+        this.messageService.changePopup(true);
+        this.router.navigate(['/listFournisseur']);
       },
       (error) => {
         console.log(error);

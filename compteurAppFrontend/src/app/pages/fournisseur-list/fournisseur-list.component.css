@@ -28,6 +28,7 @@
   overflow-y: auto; /* Enable vertical scrolling */
   margin-top: 10px;
   width: 97%;
+  justify-content: center;
 }
 
 
@@ -119,7 +120,7 @@ hr {
 
 .popupAjoutReussiFournisseurContentText {
   margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 25px;
 }
 
 .popupAjoutReussiFournisseurContentButton {
@@ -129,6 +130,7 @@ hr {
 
 .popupAjoutReussiFournisseurContentButton button {
   padding: 10px 20px;
+  font-size: 25px;
   border: none ;
   border-radius: 5px;
   cursor: pointer;
