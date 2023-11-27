@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadingService } from 'src/app/_services/loading.service';
 
 @Component({
   selector: 'app-send-statement',
@@ -32,6 +33,8 @@ export class SendStatementComponent {
     [4, '2023-11-24', 50.75, 'Annulé'],
   ];
 
+  constructor(private loadingService: LoadingService) { }
+
   buttonPress(arrayData: any){
     switch(arrayData[0]){
       case 'btn1':
@@ -60,7 +63,7 @@ export class SendStatementComponent {
   }
 
   newMetter(data: any){
-    console.log(data);
+    this.loadingService.emettreEvenement('sucess');
   }
 
   modifyMetter(data: any){

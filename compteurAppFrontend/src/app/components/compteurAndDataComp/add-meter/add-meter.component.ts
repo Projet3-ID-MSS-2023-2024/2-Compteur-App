@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocalisationService } from 'src/app/_services/localisation.service';
 import { Adresse } from 'src/app/models/adressModel';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { LoadingService } from 'src/app/_services/loading.service';
 
 @Component({
   selector: 'app-add-meter',
@@ -21,12 +22,13 @@ export class AddMeterComponent {
     fournisseur: new FormControl('', Validators.required),
   });
 
-  constructor(private localisationService: LocalisationService) {}
+  constructor(private localisationService: LocalisationService, private loadingService:LoadingService) {}
 
   async sendData() {
     if (this.addMeter.valid) {
+      this.loadingService.emettreEvenement('loading');
       await this.getAdresse();
-      let data = [this.addMeter.value, this.adresse]
+      let data = [this.addMeter.value, this.adresse];
       this.data.emit(data);
     }
   }
