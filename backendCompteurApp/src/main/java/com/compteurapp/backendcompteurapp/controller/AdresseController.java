@@ -3,10 +3,10 @@ package com.compteurapp.backendcompteurapp.controller;
 import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,6 +19,11 @@ public class AdresseController {
     @GetMapping("/getAdresses")
     public List<Adresse> getAdresses(){
         return repository.findAll();
+    }
+
+    @GetMapping("/getAdresses/{id}")
+    public Optional<Adresse> getAdressesById(@PathVariable Long id){
+        return repository.findById(id);
     }
 
     @PostMapping("/addAdresse")
