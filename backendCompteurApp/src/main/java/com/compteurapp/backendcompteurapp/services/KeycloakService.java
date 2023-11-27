@@ -31,7 +31,7 @@ public class KeycloakService {
         List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
         User user = new Provider();
         for (UserRepresentation userRepresentation : userRepresentations) {
-            if (userRepresentation.getAttributes() != null && userRepresentation.getAttributes().containsKey("tva")) {
+            if (userRepresentation.getAttributes() != null) {
                 if (userRepresentation.getUsername().equals(username)) {
                     user.setId(userRepresentation.getId());
                     user.setUserName(userRepresentation.getUsername());
