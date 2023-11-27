@@ -16,13 +16,28 @@ public class Compteur {
     @OneToMany(mappedBy = "compteur", cascade = CascadeType.ALL)
     private List<CompteurData> compteurData;
 
-    public Compteur(Long id, String nom, List<CompteurData> compteurData) {
+    private Long id_user;
+
+    @ManyToOne
+    @JoinColumn(name="adresse_id", nullable=false)
+    private Adresse adresse;
+
+    @ManyToOne
+    @JoinColumn(name="categorie_id", nullable=false)
+    private Category category;
+
+
+    public Compteur(Long id, String nom, List<CompteurData> compteurData, Long id_user, Adresse adresse, Category category) {
         this.id = id;
         this.nom = nom;
         this.compteurData = compteurData;
+        this.id_user = id_user;
+        this.adresse = adresse;
+        this.category = category;
     }
 
     public Compteur(){}
+
 
     public Long getId() {
         return id;
@@ -46,5 +61,29 @@ public class Compteur {
 
     public void setCompteurData(List<CompteurData> compteurData) {
         this.compteurData = compteurData;
+    }
+
+    public Long getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
+    }
+
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
