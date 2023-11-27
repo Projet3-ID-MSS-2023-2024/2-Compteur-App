@@ -18,6 +18,9 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   margin-top: 20px;
   transition: all 0.3s ease;
+  border: 2px solid #3a475b;
+  background-color: #3a475b;
+  color: #e9e9f8;
 }
 
 .buttondiv{
@@ -26,6 +29,15 @@
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+}
+
+
+.form-group label{
+  color: #e9e9f8;
+}
+
+.form-group input{
+  background-color: #e9e9f8;
 }
 
 button{
@@ -267,7 +279,9 @@ input[type="submit"]:hover {
   background-color: #da190b;
 }
 
-
+.button-delete{
+  border-color: #ff0000;
+}
 
 @media screen and (max-width: 600px) {
   .containeur-form{
