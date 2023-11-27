@@ -4,7 +4,7 @@ export class Compteur {
   id_user!: number;
   id_fournisseur!: number;
   id_adresse!: number;
-  id_categorie!: number;
+  id_category!: number;
 
   constructor(nom: string, id_user: number, id_fournisseur:number ,id_adresse: number, id_categorie: number, id?: number) {
     this.id = id;
@@ -12,6 +12,6 @@ export class Compteur {
     this.id_user = id_user;
     this.id_fournisseur = id_fournisseur;
     this.id_adresse = id_adresse;
-    this.id_categorie = id_categorie;
+    this.id_category = id_categorie;
   }
 }

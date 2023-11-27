@@ -39,29 +39,10 @@ public class CompteurController {
 
 
     @PostMapping("/compteur")
-    public Compteur createCompteur(@RequestParam String nom,
-                                           @RequestParam Long id_user,
-                                            @RequestParam Long id_fournisseur,
-                                           @RequestParam Long id_category,
-                                           @RequestParam Long id_adresse) throws IOException, IOException {
-
-
-        Category category = new Category();
-        category.setId(id_category);
-
-        Adresse adresse = new Adresse();
-        adresse.setId(id_adresse);
-
-        Compteur compteur = new Compteur();
-        compteur.setNom(nom);
-        compteur.setAdresse(adresse);
-        compteur.setCategory(category);
-        compteur.setId_user(id_user);
-        compteur.setId_fournisseur(id_fournisseur);
-
-
+    public Compteur createCompteur(@RequestBody Compteur compteur) throws IOException, IOException {
         return service.createCompteur(compteur);
     }
+
 
     @GetMapping("/compteur")
     public List<Compteur> getCompteur(){
