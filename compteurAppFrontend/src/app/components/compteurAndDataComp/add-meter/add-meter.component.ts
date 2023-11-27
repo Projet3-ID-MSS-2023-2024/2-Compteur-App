@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocalisationService } from 'src/app/_services/localisation.service';
-import { Adresse } from 'src/app/models/adressModel';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { addAdresse } from 'src/models/add-adresse';
 import { LoadingService } from 'src/app/_services/loading.service';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { Category } from 'src/models/category';
+import { UserGet } from 'src/models/user-get';
+
 
 @Component({
   selector: 'app-add-meter',
@@ -12,9 +15,9 @@ import { LoadingService } from 'src/app/_services/loading.service';
 })
 export class AddMeterComponent {
   @Output() data: EventEmitter<any[]> = new EventEmitter<any[]>();
-  @Input() category: string[] = [];
-  @Input() provider: string[] = [];
-  adresse!:Adresse;
+  @Input() category: Category[] = [];
+  @Input() provider: UserGet[] = [];
+  adresse!: addAdresse;
 
   addMeter = new FormGroup({
     nom: new FormControl('', Validators.required),
@@ -22,7 +25,8 @@ export class AddMeterComponent {
     fournisseur: new FormControl('', Validators.required),
   });
 
-  constructor(private localisationService: LocalisationService, private loadingService:LoadingService) {}
+  constructor(private localisationService: LocalisationService,
+    private loadingService:LoadingService) {}
 
   async sendData() {
     if (this.addMeter.valid) {
@@ -37,7 +41,7 @@ export class AddMeterComponent {
     const observable = this.localisationService.getLocalisation(50.4169699, 4.3252908);
     return firstValueFrom(observable)
       .then((data) => {
-        this.adresse = new Adresse(data.address.town, data.address.country, data.address.postcode, data.address.road, data.address.house_number);
+        this.adresse = new addAdresse(data.address.road, data.address.house_number, data.address.postcode, data.address.town, data.address.country);
       });
   }
 }

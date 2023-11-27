@@ -41,6 +41,7 @@ public class CompteurController {
     @PostMapping("/compteur")
     public Compteur createCompteur(@RequestParam String nom,
                                            @RequestParam Long id_user,
+                                            @RequestParam Long id_fournisseur,
                                            @RequestParam Long id_category,
                                            @RequestParam Long id_adresse) throws IOException, IOException {
 
@@ -56,6 +57,7 @@ public class CompteurController {
         compteur.setAdresse(adresse);
         compteur.setCategory(category);
         compteur.setId_user(id_user);
+        compteur.setId_fournisseur(id_fournisseur);
 
 
         return service.createCompteur(compteur);

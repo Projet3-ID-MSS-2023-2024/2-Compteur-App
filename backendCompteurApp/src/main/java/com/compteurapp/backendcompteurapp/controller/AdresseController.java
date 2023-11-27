@@ -21,10 +21,6 @@ public class AdresseController {
         return repository.findAll();
     }
 
-    @GetMapping("/getAdresses/{id}")
-    public Optional<Adresse> getAdressesById(@PathVariable Long id){
-        return repository.findById(id);
-    }
 
     @PostMapping("/addAdresse")
     public Adresse addAdresse(@RequestBody Adresse adresse){

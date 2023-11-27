@@ -1,42 +1,60 @@
 import { Component } from '@angular/core';
+import { CategoryService } from 'src/app/_services/category.service';
+import { Observable, firstValueFrom, last, lastValueFrom } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
+import { Category } from 'src/models/category';
+import { FournisseurService } from 'src/app/_services/fournisseur.service';
+import { UserGet } from 'src/models/user-get';
+import { addAdresse } from 'src/models/add-adresse';
+import { AdresseService } from 'src/app/_services/adresse.service';
+import { Compteur } from 'src/models/compteur';
+import { CompteurService } from 'src/app/_services/compteur.service';
+import { KeycloakService } from 'keycloak-angular';
+import { KeycloakProfile } from 'keycloak-js';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-send-statement',
   templateUrl: './send-statement.component.html',
-  styleUrls: ['./send-statement.component.css']
+  styleUrls: ['./send-statement.component.css'],
 })
 export class SendStatementComponent {
+  showSendStatement: boolean = false;
+  showPopUpDelete: boolean = false;
+  showPopUpModifyMetter: boolean = false;
+  idFocus!: number;
+  category: Category[] = [];
 
-  showSendStatement:boolean = false;
-  showPopUpDelete:boolean = false;
-  showPopUpModifyMetter:boolean = false;
-  idFocus!:number;
-
-  category:string[] = ['Electricité', 'Eau', 'Gaz', 'Internet', 'Téléphone', 'Autre'];
-  provider:string[] = ['EDF', 'Engie', 'Suez', 'Orange', 'SFR', 'Free', 'Bouygues', 'Autre'];
+  provider: UserGet[] = [];
 
   attributLegend = ['Date', 'Montant', 'Statut'];
-  buttonOption = ['edit.svg', 'delete.svg','send.svg'];
-  data: any[][] = [
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-  ];
+  buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
+  data: Compteur[] = [];
 
-  constructor(private loadingService: LoadingService) { }
+  idUserConnecter: any;
 
-  buttonPress(arrayData: any){
-    switch(arrayData[0]){
+  constructor(
+    private loadingService: LoadingService,
+    private categoryService: CategoryService,
+    private providerService: FournisseurService,
+    private adresseService: AdresseService,
+    private compteurService: CompteurService,
+    private keycloackService: KeycloakService
+  ) {}
+
+  async ngAfterViewInit() {
+    this.loadingService.emettreEvenement('loading');
+    this.category = await this.getCategory();
+    this.provider = await this.getProvider();
+    this.data = await this.getCompteurs();
+    let user = await this.getDataUser().toPromise();
+    if(user)
+    this.idUserConnecter = user.id;
+    this.loadingService.emettreEvenement('sucess');
+  }
+
+  buttonPress(arrayData: any) {
+    switch (arrayData[0]) {
       case 'btn1':
         this.showPopUpModifyMetter = true;
         break;
@@ -50,25 +68,62 @@ export class SendStatementComponent {
     this.idFocus = arrayData[1];
   }
 
-  sendStatement(choice: any){
+  sendStatement(choice: any) {
     console.log(choice);
     console.log(this.idFocus);
     this.showSendStatement = false;
   }
 
-  deleteChoice(choice: boolean){
+  deleteChoice(choice: boolean) {
     console.log(choice);
     console.log(this.idFocus);
     this.showPopUpDelete = false;
   }
 
-  newMetter(data: any){
+  async newMetter(data: any) {
     this.loadingService.emettreEvenement('sucess');
+    let adresse = await this.addAdresse(data[1]);
+    let compteur = new Compteur(
+      data[0].nom,
+      this.idUserConnecter,
+      data[0].fournisseur,
+      adresse.id,
+      data[0].categorie
+    );
+    await this.addCompteur(compteur);
   }
 
-  modifyMetter(data: any){
+  modifyMetter(data: any) {
     this.showPopUpModifyMetter = false;
     console.log(data);
   }
 
+  getCategory(): Promise<Category[]> {
+    const observable = this.categoryService.getAll();
+    return lastValueFrom(observable);
+  }
+
+  getProvider(): Promise<UserGet[]> {
+    const observable = this.providerService.getFournisseurSpring();
+    return lastValueFrom(observable);
+  }
+
+  async addAdresse(adresse: addAdresse): Promise<any> {
+    const observable = this.adresseService.addAdresse(adresse);
+    return lastValueFrom(observable);
+  }
+
+  async addCompteur(compteur: Compteur): Promise<Compteur> {
+    const observable = this.compteurService.addCompteur(compteur);
+    return lastValueFrom(observable);
+  }
+
+  async getCompteurs(): Promise<Compteur[]> {
+    const observable = this.compteurService.getCompteurs();
+    return lastValueFrom(observable);
+  }
+
+  getDataUser(): Observable<KeycloakProfile> {
+    return from(this.keycloackService.loadUserProfile());
+  }
 }
