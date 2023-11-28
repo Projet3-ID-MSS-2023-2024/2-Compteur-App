@@ -135,6 +135,9 @@ hr {
   height: 100%;
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .popupAjoutReussiFournisseurContent {
@@ -142,7 +145,7 @@ hr {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
+  width: 70%;
   border-radius: 10px;
 }
 

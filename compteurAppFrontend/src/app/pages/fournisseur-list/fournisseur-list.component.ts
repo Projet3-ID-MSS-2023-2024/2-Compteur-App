@@ -34,7 +34,10 @@ export class FournisseurListComponent implements OnInit {
   ngOnInit(): void {
     this.initCategories();
     this.initFournisseurs();
+    this.messageService.currentMessage.subscribe(message => this.message = message);
+    this.messageService.currentPopup.subscribe(closeOrOpenPopup => this.closeOrOpenPopup = closeOrOpenPopup);
   }
+
 
   private initFournisseurs() {
     this.fournisseurData$ = this.fournisseurService.getFournisseurSpring();
