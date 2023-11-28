@@ -1,10 +1,10 @@
 package com.compteurapp.backendcompteurapp.DTO;
 
 public class CompteurDto {
-    public int id;
+    public Long id;
     public String nom;
-    public String id_client;
-    public String id_provider;
-    public int id_category;
-    public int id_adresse;
+    public String id_user;
+    public String id_fournisseur;
+    public Long id_category;
+    public Long id_adresse;
 }

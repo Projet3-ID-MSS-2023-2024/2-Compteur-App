@@ -13,9 +13,9 @@ public class Compteur {
     private Long id;
     private String nom;
 
-    private Long id_user;
+    private String id_user;
 
-    private Long id_fournisseur;
+    private String id_fournisseur;
 
     @ManyToOne
     @JoinColumn(name="adresse_id", nullable=false)
@@ -26,7 +26,7 @@ public class Compteur {
     private Category category;
 
 
-    public Compteur(Long id, String nom, Long id_user, Long id_fournisseur, Adresse adresse, Category category) {
+    public Compteur(Long id, String nom, String id_user, String id_fournisseur, Adresse adresse, Category category) {
         this.id = id;
         this.nom = nom;
         this.id_user = id_user;
@@ -54,19 +54,19 @@ public class Compteur {
         this.nom = nom;
     }
 
-    public Long getId_user() {
+    public String getId_user() {
         return id_user;
     }
 
-    public void setId_user(Long id_user) {
+    public void setId_user(String id_user) {
         this.id_user = id_user;
     }
 
-    public Long getId_fournisseur() {
+    public String getId_fournisseur() {
         return id_fournisseur;
     }
 
-    public void setId_fournisseur(Long id_fournisseur) {
+    public void setId_fournisseur(String id_fournisseur) {
         this.id_fournisseur = id_fournisseur;
     }
 

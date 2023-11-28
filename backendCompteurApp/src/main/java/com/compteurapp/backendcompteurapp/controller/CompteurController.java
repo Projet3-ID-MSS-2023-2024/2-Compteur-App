@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.controller;
 
+import com.compteurapp.backendcompteurapp.DTO.CompteurDto;
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
 import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.model.Category;
@@ -39,7 +40,21 @@ public class CompteurController {
 
 
     @PostMapping("/compteur")
-    public Compteur createCompteur(@RequestBody Compteur compteur) throws IOException, IOException {
+    public Compteur createCompteur(@RequestBody CompteurDto compteurDto) throws IOException, IOException {
+
+        Adresse adresse = new Adresse();
+        adresse.setId(compteurDto.id_adresse);
+
+        Category category = new Category();
+        category.setId(compteurDto.id_category);
+
+        Compteur compteur = new Compteur();
+        compteur.setNom(compteurDto.nom);
+        compteur.setCategory(category);
+        compteur.setAdresse(adresse);
+        compteur.setId_fournisseur(compteurDto.id_fournisseur);
+        compteur.setId_user(compteurDto.id_user);
+
         return service.createCompteur(compteur);
     }
 
