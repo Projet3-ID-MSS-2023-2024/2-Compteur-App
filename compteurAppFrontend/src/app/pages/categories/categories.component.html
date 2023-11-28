@@ -9,20 +9,30 @@
       <button type="submit">Ajouter</button>
     </form>
   </div>
-  <div class="placementList">
-    <app-indice-list [attributLegend]="attributLegend" [data]="categories" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+  <div class="placementList" *ngIf="categories$ | async as categories">
+    <table>
+      <tr>
+        <th>n°</th>
+        <th>Nom</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let category of categories">
+        <td>{{category.index}}</td>
+        <td>{{category.name}}</td>
+        <td class="tdDelete"><img class="deleteBtn" (click)="openDelete(category.id)" src="../../../assets/navbarIcone/delete-category.svg" alt=""></td>
+        <!-- <button class="deleteBtn" (click)="openDelete(category.id)">Supprimer</button> -->
+        <div class="popupDelete" *ngIf="selectedCategoryId === category.id">
+          <div class="popupDeleteContent">
+            <div class="popupDeleteText">
+              <p>Êtes-vous sûr de vouloir supprimer cette catégorie ?</p>
+            </div>
+            <div class="popupDeleteButton">
+              <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
+              <button class="buttonDelete" (click)="deleteCategory(category.id)">Supprimer</button>
+            </div>
+          </div>
+        </div>
+      </tr>
+    </table>
   </div>
 </div>
-
-<div class="popupDelete" *ngIf="closeOrOpenDelete">
-  <div class="popupDeleteContent">
-    <div class="popupDeleteText">
-      <p>Êtes-vous sûr de vouloir supprimer cette catégorie ?</p>
-    </div>
-    <div class="popupDeleteButton">
-      <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
-      <button class="buttonDelete" (click)="deleteCategory()">Supprimer</button>
-    </div>
-  </div>
-</div>
-
