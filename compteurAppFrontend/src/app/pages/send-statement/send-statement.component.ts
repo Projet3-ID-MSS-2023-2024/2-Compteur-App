@@ -27,7 +27,7 @@ export class SendStatementComponent {
 
   provider: UserGet[] = [];
 
-  attributLegend = ['Date', 'Montant', 'Statut'];
+  attributLegend = ['Nom compteur', 'Fournisseur', 'Catégorie'];
   buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
   data: Compteur[] = [];
 
@@ -46,7 +46,7 @@ export class SendStatementComponent {
     this.loadingService.emettreEvenement('loading');
     this.category = await this.getCategory();
     this.provider = await this.getProvider();
-    this.data = await this.getCompteurs();
+    //this.data = await this.getCompteurs();
     let user = await this.getDataUser().toPromise();
     if(user)
     this.idUserConnecter = user.id;
@@ -90,7 +90,8 @@ export class SendStatementComponent {
       adresse.id,
       data[0].categorie
     );
-    await this.addCompteur(compteur);
+    let test = await this.addCompteur(compteur);
+    console.log(test);
   }
 
   modifyMetter(data: any) {
@@ -126,4 +127,5 @@ export class SendStatementComponent {
   getDataUser(): Observable<KeycloakProfile> {
     return from(this.keycloackService.loadUserProfile());
   }
+
 }

@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.model;
 
+
 public class User {
     private String id;
     private String firstName;

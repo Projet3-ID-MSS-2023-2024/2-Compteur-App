@@ -1,7 +1,9 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.DTO.CompteurDto;
+import com.compteurapp.backendcompteurapp.DTO.CompteurSenderDTO;
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
+import com.compteurapp.backendcompteurapp.mapper.CompteurMapper;
 import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.Compteur;
@@ -36,31 +38,16 @@ import java.util.stream.Collectors;
 public class CompteurController {
 
     @Autowired
-    CompteurService service;
+    CompteurMapper compteurMapper;
 
 
     @PostMapping("/compteur")
-    public Compteur createCompteur(@RequestBody CompteurDto compteurDto) throws IOException, IOException {
-
-        Adresse adresse = new Adresse();
-        adresse.setId(compteurDto.id_adresse);
-
-        Category category = new Category();
-        category.setId(compteurDto.id_category);
-
-        Compteur compteur = new Compteur();
-        compteur.setNom(compteurDto.nom);
-        compteur.setCategory(category);
-        compteur.setAdresse(adresse);
-        compteur.setId_fournisseur(compteurDto.id_fournisseur);
-        compteur.setId_user(compteurDto.id_user);
-
-        return service.createCompteur(compteur);
+    public CompteurSenderDTO createCompteur(@RequestBody CompteurDto compteurDto) throws IOException, IOException {
+        CompteurSenderDTO compteur;
+        compteur = this.compteurMapper.createCompteurMapping(compteurDto);
+        return compteur;
     }
 
 
-    @GetMapping("/compteur")
-    public List<Compteur> getCompteur(){
-        return service.getAllCompteur();
-    }
+
 }
