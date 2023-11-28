@@ -9,6 +9,93 @@ body{
 
 }
 
+
+.popupDelete {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+button{
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ffffff;
+  color: #000000;
+  transition: all 0.3s ease;
+  margin: 20px;
+  width: 100px;
+  height: 50px;
+}
+
+.popupDeleteContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80vw;
+  border-radius: 10px;
+}
+
+.popupDeleteText {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.popupDeleteText p {
+  text-align: center;
+  font-size: larger;
+
+}
+
+.popupDeleteButton {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonCancel, .buttonDelete {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonCancel {
+  background-color: #ccc;
+  color: black;
+  border-radius: 7px;
+}
+
+.buttonCancel:hover {
+  background-color: #ddd;
+}
+
+.buttonDelete {
+  background-color: #f44336;
+  color: white;
+  border-radius: 7px;
+}
+
+.buttonDelete:hover {
+  background-color: #da190b;
+}
+
+.button-delete{
+  border-color: #ff0000;
+}
+
+
 .pageContent{
   display: flex;
   width: calc(100% - 16.5% - 40px);

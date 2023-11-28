@@ -43,7 +43,5 @@
 }
 
 @media screen and (max-width: 950px) {
-  .navbarCard{
-    filter: invert(1);
-  }
+
 }
