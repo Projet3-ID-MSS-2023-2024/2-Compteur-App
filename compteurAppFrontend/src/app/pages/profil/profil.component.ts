@@ -22,29 +22,24 @@ export class ProfilComponent implements OnInit {
   idFocus!: number;
 
   data!: any[][];
-  public registerForm: FormGroup;
+  public registerForm!: FormGroup;
   userName!: string | undefined;
   isClient!: boolean;
   user$!: Observable<User>;
   fournisseur$!: Observable<AddFournisseurSpring>;
+  providerEdit: AddFournisseurSpring | undefined;
+  userEdit!: User | undefined;
+  idUser!: number;
+  idProvider!: number;
+  editMode: boolean = false;
+  editPageName:string = "Profil";
 
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
     private fournisseurService: FournisseurService,
     private formBuilder: FormBuilder
-  ) {
-    this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-      TVA: ['', [Validators.required]],
-      password: [''],
-      category: ['', [Validators.required]],
-      lastname: [''],
-      firstname: [''],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.initUser();
@@ -58,22 +53,44 @@ export class ProfilComponent implements OnInit {
 
       if (!this.keycloak.isUserInRole('fournisseur')) {
         this.isClient = true;
+        this.registerForm = this.formBuilder.group({
+          username: ['', [Validators.required, Validators.minLength(3)]],
+          email: ['', [Validators.required, Validators.email]],
+          phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
+          password: [''],
+          lastname: ['', [Validators.required]],
+          firstname: ['', [Validators.required]],
+        });
         this.user$ = this.userService.getUserByUserName(this.userName);
         this.user$.subscribe((data) => {
+          this.idUser = data.id ? data.id : -1;
           this.registerForm.patchValue({
             username: data.userName,
             email: data.email,
             phoneNumber: data.phoneNumber,
             password: data.password,
             lastname: data.lastName,
-            firstname: data.firstName
+            firstname: data.firstName,
           });
         });
       } else {
         this.isClient = false;
+        this.registerForm = this.formBuilder.group({
+          username: ['', [Validators.required, Validators.minLength(3)]],
+          email: ['', [Validators.required, Validators.email]],
+          phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
+          TVA: ['', [Validators.required]],
+          password: [''],
+          category: ['', [Validators.required]],
+          lastname: ['', [Validators.required]],
+          firstname: ['', [Validators.required]],
+        });
         this.fournisseur$ =
           this.fournisseurService.getFournisseurSpringByUserName(this.userName);
         this.fournisseur$.subscribe((data) => {
+          console.log(data,this.idProvider,this.userName);
+          this.idProvider = data.id ? data.id : -1;
+
           this.registerForm.patchValue({
             username: data.userName,
             email: data.email,
@@ -82,7 +99,7 @@ export class ProfilComponent implements OnInit {
             password: data.password,
             category: data.idCategory,
             lastname: data.lastName,
-            firstname: data.firstName
+            firstname: data.firstName,
           });
         });
       }
@@ -98,6 +115,69 @@ export class ProfilComponent implements OnInit {
     }
     this.idFocus = arrayData[1];
   }
+  editUser() {
+    if (this.isClient) {
+      console.log(this.registerForm);
+      if (this.registerForm.valid) {
+        console.log(this.registerForm.value);
+        this.userEdit = {
+          email: this.registerForm.value.email,
+          firstName: this.registerForm.value.firstname,
+          lastName: this.registerForm.value.lastname,
+          phoneNumber: this.registerForm.value.phoneNumber,
+          userName: this.registerForm.value.username,
+          password: this.registerForm.value.password,
+        };
+        console.log(this.userEdit, this.idUser);
+        this.userService.updateUserSpring(this.userEdit, this.idUser).subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log('error');
+            this.handleError(error);
+          }
+        );
+      }
+    } else {
+      if (this.registerForm.valid) {
+        console.log(this.registerForm.value);
+        this.providerEdit = {
+          email: this.registerForm.value.email,
+          firstName: this.registerForm.value.firstname,
+          lastName: this.registerForm.value.lastname,
+          phoneNumber: this.registerForm.value.phoneNumber,
+          userName: this.registerForm.value.username,
+          password: this.registerForm.value.password,
+          tva: this.registerForm.value.tva,
+          idCategory: this.registerForm.value.category,
+        };
+        this.fournisseurService
+          .updateFournisseurSpring(this.providerEdit, this.idProvider)
+          .subscribe(
+            (data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log('error');
+              this.handleError(error);
+            }
+          );
+      }
+    }
+  }
+  turnEditMode() {
+    if(!this.editMode){
+      this.editPageName = "Modification du profil";
+    } else this.editPageName = "Profil";
+    this.editMode = !this.editMode;
 
-  editUser() {}
+  }
+  handleError(error: any) {
+    console.error('Une erreur est survenue : ', error);
+  }
+  testerMdp(chaine:string){
+    const regexVerif = /[A-Z][a-z][\d][!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]]/;
+    return regexVerif.test(chaine);
+  }
 }
