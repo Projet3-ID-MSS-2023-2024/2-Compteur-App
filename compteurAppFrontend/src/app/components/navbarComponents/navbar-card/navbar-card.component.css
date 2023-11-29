@@ -32,17 +32,16 @@
   height: 40px;
   margin-left: 5px;
   align-items: center;
+
 }
 
 .texte p{
   font-size: 1em;
   font-weight: 500;
-  color: #3a475b;
+  color: #e9e9f8;
   font-family: 'Roboto', sans-serif;
 }
 
 @media screen and (max-width: 950px) {
-  .navbarCard{
-    filter: invert(1);
-  }
+
 }

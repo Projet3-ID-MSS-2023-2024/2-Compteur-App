@@ -3,12 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KeycloakService } from 'keycloak-angular';
 import { FournisseurService } from '../../_services/fournisseur.service';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
 import { MessageService } from 'src/app/_services/message.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-fournisseur-add',
@@ -18,9 +17,8 @@ import { MessageService } from 'src/app/_services/message.service';
 export class FournisseurAddComponent {
   public registerForm: FormGroup;
   public authToken = localStorage.getItem('access_token');
-  public fournisseur: AddFournisseur | undefined;
-  public fournisseurSpring: AddFournisseurSpring | undefined;
-  public categories: Category[] = [];
+  public fournisseurSpring$!: Observable<AddFournisseurSpring>;
+  public categories$!: Observable<Category[]>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,15 +37,7 @@ export class FournisseurAddComponent {
       category: ['', [Validators.required]],
     });
 
-    this.CategoryService.getAll().subscribe(
-      (data) => {
-        this.categories = data;
-        console.log(data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.categories$ = this.CategoryService.getAll();
   }
 
   handleError(error: any) {
@@ -57,7 +47,7 @@ export class FournisseurAddComponent {
   addFournisseur() {
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
-      this.fournisseurSpring = {
+      const fournisseurSpring: AddFournisseurSpring = {
         userName: this.registerForm.value.username,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
@@ -69,7 +59,7 @@ export class FournisseurAddComponent {
       };
 
       this.fournisseurService
-        .AddFournisseurSpring(this.fournisseurSpring)
+        .AddFournisseurSpring(fournisseurSpring)
         .subscribe(
           (data) => {
             this.messageService.changeMessage('Fournisseur ajouté avec succès');

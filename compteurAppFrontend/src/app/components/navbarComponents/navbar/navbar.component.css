@@ -9,6 +9,7 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  background-color: #3a475b;
 }
 
 .containerMain{
@@ -52,12 +53,15 @@
   height: 70px;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
   border: 2px solid rgba(0, 0, 0, 0.048);
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .logoCard h1{
   font-size: 2em;
+  color: #e9e9f8;
 }
 
 .popupDeconnexion {

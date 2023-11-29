@@ -7,22 +7,14 @@
             <input type="text" id="username" name="username" value="${username}" autocomplete="username" readonly="readonly" style="display:none;"/>
             <input type="password" id="password" name="password" autocomplete="current-password" style="display:none;"/>
 
-            <div class="${properties.kcFormGroupClass!}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="password-new" class="${properties.kcLabelClass!}">${msg("passwordNew")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="password" id="password-new" name="password-new" class="${properties.kcInputClass!}" autofocus autocomplete="new-password" />
-                </div>
+            <div class="labelInputRegister ${properties.kcFormGroupClass!}">
+                <label for="password-new" class="${properties.kcLabelClass!}">${msg("passwordNew")}</label>
+                <input type="password" id="password-new" name="password-new" class="${properties.kcInputClass!}" autofocus autocomplete="new-password" />
             </div>
 
-            <div class="${properties.kcFormGroupClass!}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="password" id="password-confirm" name="password-confirm" class="${properties.kcInputClass!}" autocomplete="new-password" />
-                </div>
+            <div class="labelInputRegister ${properties.kcFormGroupClass!}">
+                <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
+                <input type="password" id="password-confirm" name="password-confirm" class="${properties.kcInputClass!}" autocomplete="new-password" />
             </div>
 
             <div class="${properties.kcFormGroupClass!}">
@@ -32,7 +24,7 @@
                 </div>
 
                 <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
-                    <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doSubmit")}"/>
+                    <input style="width : auto;" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doSubmit")}"/>
                 </div>
             </div>
         </form>

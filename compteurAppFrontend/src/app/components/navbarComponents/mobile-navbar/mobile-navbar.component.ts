@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({
@@ -6,7 +6,7 @@ import { KeycloakService } from 'keycloak-angular';
   templateUrl: './mobile-navbar.component.html',
   styleUrls: ['./mobile-navbar.component.css']
 })
-export class MobileNavbarComponent implements OnInit {
+export class MobileNavbarComponent implements OnInit, AfterViewInit {
 
   role: string = 'fournisseur';
 
@@ -29,6 +29,16 @@ export class MobileNavbarComponent implements OnInit {
     this.isClient = this.keycloakService.isUserInRole('client') ? true : false;
   }
 
+  ngAfterViewInit(): void {
+    this.items.forEach(item => {
+      item.nativeElement.addEventListener('click', () => {
+        if (this.open) {
+          this.openClose();
+        }
+      });
+    });
+  }
+
   openClose(){
     this.navbar.nativeElement.style.width = this.open ? '150px' : '95%';
     this.navbar.nativeElement.style.left = this.open ? 'calc(50% - 75px)' : '2.5%';
@@ -41,4 +51,24 @@ export class MobileNavbarComponent implements OnInit {
     this.open = !this.open;
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.navbar.nativeElement.contains(event.target) && this.open) {
+      this.openClose();
+    }
+  }
+
+  logout() {
+    this.keycloakService.logout();
+  }
+
+  isPopup: boolean = false;
+
+  openPopupDeconnexion(){
+    this.isPopup = true;
+  }
+
+  closePopup(){
+    this.isPopup = false;
+  }
 }

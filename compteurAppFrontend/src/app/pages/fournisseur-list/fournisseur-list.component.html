@@ -4,11 +4,23 @@
   </div>
   <div class="searchAndCategory">
     <div class="filterPlacementListProvider">
-      <div class="searchBarPlacement">
-        <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
+      <div class="div">
+        <input class="searchbar" [(ngModel)]="searchValue" (input)="searchFournisseur()">
       </div>
-      <div class="categoryList">
-        <app-dropdown [category]="items"  (change)="filterByCategory($event)"></app-dropdown>
+      <div class="dropdown-categories">
+        <select
+          name="categories"
+          id="categories"
+          (change)="filterByCategory($event)"
+        >
+          <option value="0">Toutes les catégories</option>
+          <option
+            *ngFor="let category of categories$ | async"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -23,7 +35,7 @@
 <div class="popupAjoutReussiFournisseur" *ngIf="closeOrOpenPopup">
   <div class="popupAjoutReussiFournisseurContent">
     <div class="popupAjoutReussiFournisseurContentText">
-      <p>Le fournisseur a bien été ajouté</p>
+      <p>{{ message }}</p>
     </div>
     <div class="popupAjoutReussiFournisseurContentButton">
       <button (click)="closePopup()">OK</button>

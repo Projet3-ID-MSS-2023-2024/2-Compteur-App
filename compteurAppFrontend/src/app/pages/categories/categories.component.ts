@@ -1,73 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
+import { Observable, map, startWith } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit{
+export class CategoriesComponent implements OnInit, OnDestroy {
+  public categories$!: Observable<any[]>;
+  public selectedCategoryId: number | null = null;
+  private destroy$ = new Subject<void>();
 
-  public categories: any[] = [];
+  constructor(private categoryService: CategoryService) { }
 
-  constructor(
-    private categroyService: CategoryService,
-  ) { }
-
-ngOnInit(): void {
-  this.categroyService.getAll().subscribe(
-    data => {
-      this.categories = data.map((category, index) => [category.id, (index + 1).toString(), category.name]);
-    },
-    error => {
-      console.log(error);
-    }
-  );
-}
-
-
-  attributLegend = ['N°', 'Nom'];
-  buttonOption = ['delete.svg'];
-
-  closeOrOpenDelete:boolean = false;
-  idFocus!:number;
-
-  buttonPress(arrayData: any){
-    switch(arrayData[0]){
-      case 'btn1':
-        this.closeOrOpenDelete = true;
-        break;
-    }
-    this.idFocus = arrayData[1];
+  ngOnInit(): void {
+    this.loadCategories();
   }
 
-  closeDelete(){
-    this.closeOrOpenDelete = false;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  deleteCategory(){
-    this.categroyService.delete(this.idFocus).subscribe(
-      data => {
-        this.closeDelete();
-        this.ngOnInit();
-      },
-      error => {
-        console.log(error);
-      }
+  loadCategories(): void {
+    this.categories$ = this.categoryService.getAll().pipe(
+      map(data => data.map((category, index) => ({id: category.id, index: (index + 1).toString(), name: category.name}))),
+      takeUntil(this.destroy$)
     );
   }
 
-  categoryName: string = '';
+  closeDelete(): void {
+    this.selectedCategoryId = null;
+  }
 
-  onSubmit() {
-    this.categroyService.create(this.categoryName).subscribe(
-      data => {
-        this.ngOnInit();
+  openDelete(id: number): void {
+    this.selectedCategoryId = id;
+  }
+
+  deleteCategory(id: number): void {
+    this.categoryService.delete(id).pipe(takeUntil(this.destroy$)).subscribe(
+      () => {
+        this.closeDelete();
+        this.loadCategories();
       },
-      error => {
-        console.log(error);
-      }
+      error => console.error(error)
+    );
+  }
+
+  categoryName = '';
+
+  onSubmit(): void {
+    this.categoryService.create(this.categoryName).pipe(takeUntil(this.destroy$)).subscribe(
+      () => this.loadCategories(),
+      error => console.error(error)
     );
   }
 }
