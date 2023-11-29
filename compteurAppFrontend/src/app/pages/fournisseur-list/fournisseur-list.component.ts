@@ -4,9 +4,9 @@ import { KeycloakService } from 'keycloak-angular';
 import { CategoryService } from 'src/app/_services/category.service';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { MessageService } from 'src/app/_services/message.service';
-import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-fournisseur-list',
@@ -14,13 +14,14 @@ import { Category } from 'src/models/category';
   styleUrls: ['./fournisseur-list.component.css'],
 })
 export class FournisseurListComponent implements OnInit {
-  authenticated = false;
-  isAdmin = false;
-  isFournisseur = false;
-  isClient = false;
-
-  fournisseurData: AddFournisseurSpring[] = [];
+  searchValue = '';
+  message!: string;
+  closeOrOpenPopup!: boolean;
+  categories$!: Observable<Category[]>;
+  categories: any = [];
+  fournisseurData$!: Observable<AddFournisseurSpring[]>;
   filterData: AddFournisseurSpring[] = [];
+  fournisseurData: AddFournisseurSpring[] = [];
 
   constructor(
     private readonly keycloak: KeycloakService,
@@ -30,92 +31,61 @@ export class FournisseurListComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
-  message!: string;
-  closeOrOpenPopup!: boolean;
-  public categories: Category[] = [];
-  public categoriesName: string[] = [];
-
   ngOnInit(): void {
-    this.fournisseurService.getFournisseurSpring().subscribe((data: any) => {
-      this.fournisseurData = data;
-      this.filterData = [...this.fournisseurData];
-      console.log(this.fournisseurData);
-    });
-
+    this.initCategories();
+    this.initFournisseurs();
     this.messageService.currentMessage.subscribe(message => this.message = message);
-    this.messageService.currentPopup.subscribe(popup => this.closeOrOpenPopup = popup);
-
-
-    this.categoryService.getAll().subscribe(
-      (data) => {
-        this.categories = data;
-        console.log(data[0]['name']);
-        this.categoriesName.push('Tout');
-        this.categories.forEach((category) => {
-          if (category.name) {
-            this.categoriesName.push(category.name);
-          }
-        });
-
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.messageService.currentPopup.subscribe(closeOrOpenPopup => this.closeOrOpenPopup = closeOrOpenPopup);
   }
 
-  searchBarDataReceip(data: any) {
-    if (data.search == '') {
+
+  private initFournisseurs() {
+    this.fournisseurData$ = this.fournisseurService.getFournisseurSpring();
+    this.fournisseurData$.subscribe((data: any) => {
+      this.fournisseurData = data;
+      this.filterData = [...data];
+    });
+  }
+
+  private initCategories() {
+    this.categories$ = this.categoryService.getAll();
+    this.categories$.subscribe((data: any) => {
+      this.categories.push({id: 'all', name: 'Tout'});
+      data.forEach((category: Category) => {
+        if (category.name) {
+          this.categories.push({id: category.id, name: category.name});
+        }
+      });
+    });
+
+    console.log(this.categories);
+  }
+
+
+  filterByCategory(event: any) {
+    if (event.target.value == 0) {
       this.filterData = [...this.fournisseurData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) => {
-        if (
-          fournisseur.userName
-            ?.toLowerCase()
-            .includes(data.search.toLowerCase())
-        ) {
-          console.log(fournisseur.userName == data.search);
-          return fournisseur;
-        } else
-          console.log(
-            'From list' + fournisseur.userName + 'From search' + data.search
-          );
-        return null;
+        return fournisseur.idCategory == event.target.value;
       });
+      console.log(this.filterData);
     }
   }
 
-  filterByCategory(event: any) {
-    const category = event.target.value;
-    if (category == 'Tout') {
+  searchFournisseur() {
+    if (!this.searchValue) {
       this.filterData = [...this.fournisseurData];
     } else {
-      this.categoryService.getAll().subscribe(
-        (data: any) => {
-          this.filterData = this.fournisseurData.filter((fournisseur) => {
-            let categoryFournisseur = data.find(
-              (cat: { id: string | undefined }) =>
-                cat.id == fournisseur.idCategory
-            );
-            return (
-              categoryFournisseur &&
-              categoryFournisseur.name.toLowerCase() == category.toLowerCase()
-            );
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
+      this.filterData = this.fournisseurData.filter((fournisseur) =>
+        fournisseur.userName?.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     }
   }
-  items = ['Tout', 'Eau', 'Gaz', 'Électricité'];
 
   goToFournisseurInfo(userName: string | undefined) {
     this.route.navigate(['/fournisseur-info', userName]);
   }
-
-
 
   closePopup() {
     this.messageService.changePopup(false);

@@ -69,7 +69,7 @@
               <label for="category">Catégorie</label>
               <select formControlName="category" id="category">
                 <option
-                  *ngFor="let category of categories"
+                  *ngFor="let category of (categories$ | async)"
                   [value]="category.id"
                 >
                   {{ category.name }}
@@ -79,7 +79,7 @@
           </div>
         </div>
         <div class="buttondiv">
-          <button type="submit">Modifier</button>
+          <button class="modifyVtn" type="submit">Modifier</button>
           <button type="delete" (click)="openDelete()" class="button-delete">
             Supprimer
           </button>

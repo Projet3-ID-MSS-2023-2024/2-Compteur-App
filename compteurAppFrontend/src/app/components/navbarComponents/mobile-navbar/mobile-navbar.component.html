@@ -1,27 +1,39 @@
-<div class="mobileNavbar" #navbar>
-  <div class="topOpenClose" (click)="openClose()">
-    <div class="icone">
-      <img [src]="'./assets/navbarIcone/'+showHideImg" alt="show" #imgShow>
+  <div class="mobileNavbar" #navbar>
+    <div class="topOpenClose" (click)="openClose()">
+      <div class="icone">
+        <img [src]="'./assets/navbarIcone/'+showHideImg" alt="show" #imgShow>
+      </div>
+    </div>
+    <div class="homePlacement" #items>
+      <app-navbar-card [icone]="'home.svg'" [title]="'Home'" [path]="'/homePage'"></app-navbar-card>
+    </div>
+
+    <div class="navbarPosition" #items>
+      <app-client-navbar *ngIf="isClient"></app-client-navbar>
+      <app-provider-navbar *ngIf="isFournisseur"></app-provider-navbar>
+      <app-lock-navbar *ngIf="role=='lock'"></app-lock-navbar>
+      <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
+    </div>
+
+    <div class="homePlacement" #items>
+      <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'" (click)="openPopupDeconnexion()"></app-navbar-card>
+    </div>
+
+    <div class="containerBottom" #items>
+      <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'" [surname]="'Robert Johns'"
+        [lock]="role"></app-profil-card-navbar>
+    </div>
+
+  </div>
+
+  <div class="popupDeconnexion" *ngIf="isPopup">
+    <div class="popupDeconnexionContent">
+      <div class="popupDeconnexionTitle">
+        <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
+      </div>
+      <div class="popupDeconnexionButtons">
+        <button (click)="logout()" class="popupDeconnexionButtonYes">Oui</button>
+        <button (click)="closePopup()" class="popupDeconnexionButtonNo">Non</button>
+      </div>
     </div>
   </div>
-  <div class="homePlacement" #items>
-    <app-navbar-card [icone]="'home.svg'" [title]="'Home'" [path]="'/homePage'"></app-navbar-card>
-  </div>
-
-  <div class="navbarPosition" #items>
-    <app-client-navbar *ngIf="isClient"></app-client-navbar>
-    <app-provider-navbar *ngIf="isFournisseur"></app-provider-navbar>
-    <app-lock-navbar *ngIf="role=='lock'"></app-lock-navbar>
-    <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
-  </div>
-
-  <div class="homePlacement" #items>
-    <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'"></app-navbar-card>
-  </div>
-
-  <div class="containerBottom" #items>
-    <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'" [surname]="'Robert Johns'"
-      [lock]="role"></app-profil-card-navbar>
-  </div>
-
-</div>
