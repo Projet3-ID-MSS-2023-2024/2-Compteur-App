@@ -6,6 +6,8 @@
     <div class="modifyMetterPlacement">
       <app-add-meter (data)="sendData($event)" [category]="category" [provider]="provider"></app-add-meter>
     </div>
-    <div class="closePopUp" (click)="sendData('close')"></div>
+    <div class="closePopUp" (click)="sendData('close')">
+      <img src="./assets/navbarIcone/hide_picture.svg" alt="close">
+    </div>
   </div>
 </div>
