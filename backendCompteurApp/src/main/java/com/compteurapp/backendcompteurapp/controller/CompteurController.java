@@ -40,6 +40,9 @@ public class CompteurController {
     @Autowired
     CompteurMapper compteurMapper;
 
+    @Autowired
+    CompteurService compteurService;
+
 
     @PostMapping("/compteur")
     public CompteurSenderDTO createCompteur(@RequestBody CompteurDto compteurDto){
@@ -51,6 +54,11 @@ public class CompteurController {
     @GetMapping("/compteur/{id}")
     public List<CompteurSenderDTO> getUserCompter(@PathVariable String id){
         return this.compteurMapper.getCompteurList(id);
+    }
+
+    @DeleteMapping("/compteur/{id}")
+    public boolean delete(@PathVariable Long id){
+        return this.compteurService.deleteById(id);
     }
 
 

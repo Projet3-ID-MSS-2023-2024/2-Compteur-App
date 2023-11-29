@@ -29,4 +29,12 @@ export class CompteurService {
     };
     return this.http.get<CompteurDTO[]>(`/api/compteur/${id}`, { headers });
   }
+
+  deleteCompteurs(id:string){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.delete<Compteur>(`/api/compteur/${id}`, { headers });
+  }
 }

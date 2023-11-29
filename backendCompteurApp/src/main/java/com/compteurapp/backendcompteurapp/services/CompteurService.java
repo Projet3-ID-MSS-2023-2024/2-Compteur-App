@@ -4,7 +4,7 @@ import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.repository.CompteurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.Optional;
 import java.util.List;
 
 
@@ -18,5 +18,12 @@ public class CompteurService {
     }
 
     public List<Compteur> findCompteurByIdUser(String id){ return repository.findByUserKeycloack(id); }
+
+    public boolean deleteById(Long id){
+        this.repository.deleteById(id);
+        Optional<Compteur> compteur = this.repository.findById(id);
+        return compteur.isEmpty();
+    }
+
 
 }

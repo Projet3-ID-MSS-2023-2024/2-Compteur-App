@@ -23,7 +23,7 @@ export class SendStatementComponent {
   showSendStatement: boolean = false;
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
-  idFocus!: number;
+  idFocus!: string;
   category: Category[] = [];
 
   provider: UserGet[] = [];
@@ -65,6 +65,7 @@ export class SendStatementComponent {
   }
 
   buttonPress(arrayData: any) {
+    this.idFocus = arrayData[1];
     switch (arrayData[0]) {
       case 'btn1':
         this.showPopUpModifyMetter = true;
@@ -76,7 +77,6 @@ export class SendStatementComponent {
         this.showSendStatement = true;
         break;
     }
-    this.idFocus = arrayData[1];
   }
 
   sendStatement(choice: any) {
@@ -87,7 +87,9 @@ export class SendStatementComponent {
 
   deleteChoice(choice: boolean) {
     console.log(choice);
-    console.log(this.idFocus);
+    if(choice){
+      this.compteurService.deleteCompteurs(this.idFocus).subscribe();
+    }
     this.showPopUpDelete = false;
   }
 
