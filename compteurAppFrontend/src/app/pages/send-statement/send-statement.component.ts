@@ -12,6 +12,7 @@ import { CompteurService } from 'src/app/_services/compteur.service';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { from } from 'rxjs';
+import { CompteurDTO } from 'src/models/compteurDTO';
 
 @Component({
   selector: 'app-send-statement',
@@ -27,9 +28,11 @@ export class SendStatementComponent {
 
   provider: UserGet[] = [];
 
+  compteur!:CompteurDTO;
+
   attributLegend = ['Nom compteur', 'Fournisseur', 'Catégorie'];
   buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
-  data: Compteur[] = [];
+  data: any[][] = [];
 
   idUserConnecter: any;
 
@@ -44,12 +47,20 @@ export class SendStatementComponent {
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
-    this.category = await this.getCategory();
-    this.provider = await this.getProvider();
-    //this.data = await this.getCompteurs();
     let user = await this.getDataUser().toPromise();
     if(user)
     this.idUserConnecter = user.id;
+    this.category = await this.getCategory();
+    this.provider = await this.getProvider();
+    let compteurList = await this.getCompteurs(this.idUserConnecter);
+    compteurList.forEach((compteur) => {
+      this.data.push([
+        compteur.id,
+        compteur.nom,
+        compteur.nom_fournisseur,
+        compteur.nom_category,
+      ]);
+    });
     this.loadingService.emettreEvenement('sucess');
   }
 
@@ -99,12 +110,12 @@ export class SendStatementComponent {
     console.log(data);
   }
 
-  getCategory(): Promise<Category[]> {
+  async getCategory(): Promise<Category[]> {
     const observable = this.categoryService.getAll();
     return lastValueFrom(observable);
   }
 
-  getProvider(): Promise<UserGet[]> {
+  async getProvider(): Promise<UserGet[]> {
     const observable = this.providerService.getFournisseurSpring();
     return lastValueFrom(observable);
   }
@@ -119,8 +130,8 @@ export class SendStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getCompteurs(): Promise<Compteur[]> {
-    const observable = this.compteurService.getCompteurs();
+  async getCompteurs(id:string): Promise<CompteurDTO[]> {
+    const observable = this.compteurService.getCompteurs(id);
     return lastValueFrom(observable);
   }
 

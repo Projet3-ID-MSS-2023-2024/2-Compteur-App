@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { KeycloakService } from 'keycloak-angular';
 import { Compteur } from 'src/models/compteur';
+import { CompteurDTO } from 'src/models/compteurDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,11 @@ export class CompteurService {
     return this.http.post<any>(`/api/compteur`, compteur, { headers });
   }
 
-  getCompteurs(){
+  getCompteurs(id:string){
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<any>(`/api/compteur`, { headers });
+    return this.http.get<CompteurDTO[]>(`/api/compteur/${id}`, { headers });
   }
 }

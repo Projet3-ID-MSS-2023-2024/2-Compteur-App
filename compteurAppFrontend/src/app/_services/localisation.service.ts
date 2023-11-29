@@ -12,7 +12,7 @@ export class LocalisationService {
   constructor(private http: HttpClient) {}
 
   getLocalisation(latitude: number, longitude: number): Observable<any> {
-    return this.http.get<any>(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`).pipe(delay(1000));
+    return this.http.get<any>(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`).pipe(delay(2000));
   }
 
 }

@@ -5,6 +5,8 @@ import com.compteurapp.backendcompteurapp.repository.CompteurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CompteurService {
@@ -14,5 +16,7 @@ public class CompteurService {
     public Compteur createCompteur(Compteur compteur){
         return repository.save(compteur);
     }
+
+    public List<Compteur> findCompteurByIdUser(String id){ return repository.findByUserKeycloack(id); }
 
 }

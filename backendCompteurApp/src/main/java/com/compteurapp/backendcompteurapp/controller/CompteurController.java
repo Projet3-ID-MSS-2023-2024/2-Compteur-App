@@ -42,10 +42,15 @@ public class CompteurController {
 
 
     @PostMapping("/compteur")
-    public CompteurSenderDTO createCompteur(@RequestBody CompteurDto compteurDto) throws IOException, IOException {
-        CompteurSenderDTO compteur;
+    public CompteurSenderDTO createCompteur(@RequestBody CompteurDto compteurDto){
+        CompteurSenderDTO compteur = new CompteurSenderDTO();
         compteur = this.compteurMapper.createCompteurMapping(compteurDto);
         return compteur;
+    }
+
+    @GetMapping("/compteur/{id}")
+    public List<CompteurSenderDTO> getUserCompter(@PathVariable String id){
+        return this.compteurMapper.getCompteurList(id);
     }
 
 
