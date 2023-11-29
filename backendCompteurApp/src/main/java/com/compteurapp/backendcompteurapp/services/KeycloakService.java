@@ -26,6 +26,25 @@ public class KeycloakService {
         this.keycloakUtil = keycloakUtil;
     }
 
+    public User getUser(String username){
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        User user = new Provider();
+        for (UserRepresentation userRepresentation : userRepresentations) {
+            if (userRepresentation.getAttributes() != null) {
+                if (userRepresentation.getUsername().equals(username)) {
+                    user.setId(userRepresentation.getId());
+                    user.setUserName(userRepresentation.getUsername());
+                    user.setFirstName(userRepresentation.getFirstName());
+                    user.setLastName(userRepresentation.getLastName());
+                    user.setEmail(userRepresentation.getEmail());
+                    user.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
+                }
+            }
+        }
+        return user;
+    }
+
     public Response deleteUser(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
