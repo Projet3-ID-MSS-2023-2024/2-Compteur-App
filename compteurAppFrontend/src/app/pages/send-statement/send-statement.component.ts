@@ -28,7 +28,7 @@ export class SendStatementComponent {
 
   provider: UserGet[] = [];
 
-  compteur!:CompteurDTO;
+  compteur!: CompteurDTO;
 
   attributLegend = ['Nom compteur', 'Fournisseur', 'Catégorie'];
   buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
@@ -47,21 +47,24 @@ export class SendStatementComponent {
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
-    let user = await this.getDataUser().toPromise();
-    if(user)
-    this.idUserConnecter = user.id;
-    this.category = await this.getCategory();
-    this.provider = await this.getProvider();
-    let compteurList = await this.getCompteurs(this.idUserConnecter);
-    compteurList.forEach((compteur) => {
-      this.data.push([
-        compteur.id,
-        compteur.nom,
-        compteur.nom_fournisseur,
-        compteur.nom_category,
-      ]);
-    });
-    this.loadingService.emettreEvenement('sucess');
+    try {
+      let user = await this.getDataUser().toPromise();
+      if (user) this.idUserConnecter = user.id;
+      this.category = await this.getCategory();
+      this.provider = await this.getProvider();
+      let compteurList = await this.getCompteurs(this.idUserConnecter);
+      compteurList.forEach((compteur) => {
+        this.data.push([
+          compteur.id,
+          compteur.nom,
+          compteur.nom_fournisseur,
+          compteur.nom_category,
+        ]);
+      });
+      this.loadingService.emettreEvenement('sucess');
+    } catch {
+      this.loadingService.emettreEvenement('error');
+    }
   }
 
   buttonPress(arrayData: any) {
@@ -85,42 +88,76 @@ export class SendStatementComponent {
     this.showSendStatement = false;
   }
 
-  deleteChoice(choice: boolean) {
-    console.log(choice);
-    if(choice){
-      this.compteurService.deleteCompteurs(this.idFocus).subscribe();
-    }
+  async deleteChoice(choice: boolean) {
     this.showPopUpDelete = false;
+    this.loadingService.emettreEvenement('loading');
+    if (choice) {
+      try {
+        await this.deleteCompteur(this.idFocus);
+        this.data = this.data.filter((item) => item[0] !== this.idFocus);
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
+        this.loadingService.emettreEvenement('error');
+      }
+    }
   }
 
   async newMetter(data: any) {
-    this.loadingService.emettreEvenement('sucess');
-    let adresse = await this.addAdresse(data[1]);
-    let compteur = new Compteur(
-      data[0].nom,
-      this.idUserConnecter,
-      data[0].fournisseur,
-      adresse.id,
-      data[0].categorie
-    );
-    let test = await this.addCompteur(compteur);
-    console.log(test);
+    try {
+      let adresse = await this.addAdresse(data[1]);
+      let compteur = new Compteur(
+        data[0].nom,
+        this.idUserConnecter,
+        data[0].fournisseur,
+        adresse.id,
+        data[0].categorie
+      );
+      let newCompteur = await this.addCompteur(compteur);
+      this.data.push([
+        newCompteur.id,
+        newCompteur.nom,
+        newCompteur.nom_fournisseur,
+        newCompteur.nom_category,
+      ]);
+
+      this.loadingService.emettreEvenement('sucess');
+    } catch {
+      console.log('error');
+      this.loadingService.emettreEvenement('error');
+    }
   }
 
   async modifyMetter(data: any) {
     this.showPopUpModifyMetter = false;
-    let adresse = await this.addAdresse(data[1]);
-    let compteur = new Compteur(
-      data[0].nom,
-      this.idUserConnecter,
-      data[0].fournisseur,
-      adresse.id,
-      data[0].categorie,
-      this.idFocus
-    );
-    console.log(compteur);
-    let test = await this.updateCompteur(compteur);
-    console.log(test);
+    try {
+      let adresse = await this.addAdresse(data[1]);
+      let compteur = new Compteur(
+        data[0].nom,
+        this.idUserConnecter,
+        data[0].fournisseur,
+        adresse.id,
+        data[0].categorie,
+        this.idFocus
+      );
+      let modifiedCompteur = await this.updateCompteur(compteur);
+      let index = this.data.findIndex(
+        (item) => item[0] === modifiedCompteur.id
+      );
+
+      if (index !== -1) {
+        this.data[index] = [
+          modifiedCompteur.id,
+          modifiedCompteur.nom,
+          modifiedCompteur.nom_fournisseur,
+          modifiedCompteur.nom_category,
+        ];
+      }
+      
+      this.loadingService.emettreEvenement('sucess');
+    } catch {
+      console.log('error');
+      this.loadingService.emettreEvenement('error');
+    }
   }
 
   async getCategory(): Promise<Category[]> {
@@ -138,12 +175,12 @@ export class SendStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async addCompteur(compteur: Compteur): Promise<Compteur> {
+  async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
     return lastValueFrom(observable);
   }
 
-  async getCompteurs(id:string): Promise<CompteurDTO[]> {
+  async getCompteurs(id: string): Promise<CompteurDTO[]> {
     const observable = this.compteurService.getCompteurs(id);
     return lastValueFrom(observable);
   }
@@ -152,9 +189,13 @@ export class SendStatementComponent {
     return from(this.keycloackService.loadUserProfile());
   }
 
-  async updateCompteur(compteur:Compteur): Promise<Compteur> {
+  async updateCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.updateCompteurs(compteur);
     return lastValueFrom(observable);
   }
 
+  async deleteCompteur(id: string): Promise<Compteur> {
+    const observable = this.compteurService.deleteCompteurs(id);
+    return lastValueFrom(observable);
+  }
 }

@@ -19,7 +19,7 @@ export class CompteurService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.post<any>(`/api/compteur`, compteur, { headers });
+    return this.http.post<CompteurDTO>(`/api/compteur`, compteur, { headers });
   }
 
   getCompteurs(id:string){
@@ -43,6 +43,6 @@ export class CompteurService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.put<Compteur>(`/api/compteur`, compteur, { headers });
+    return this.http.put<CompteurDTO>(`/api/compteur`, compteur, { headers });
   }
 }
