@@ -10,7 +10,7 @@ import { addAdresse } from 'src/models/add-adresse';
 import { LoadingService } from 'src/app/_services/loading.service';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { Category } from 'src/models/category';
-import { UserGet } from 'src/models/user-get';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'app-add-meter',
@@ -20,7 +20,7 @@ import { UserGet } from 'src/models/user-get';
 export class AddMeterComponent {
   @Output() data: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() category: Category[] = [];
-  @Input() provider: UserGet[] = [];
+  @Input() provider: User[] = [];
   adresse!: addAdresse;
 
   addMeter = new FormGroup({

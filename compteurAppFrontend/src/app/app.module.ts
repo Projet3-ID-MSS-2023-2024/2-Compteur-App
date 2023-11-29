@@ -39,6 +39,7 @@ import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-i
 import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { FormsModule } from '@angular/forms';
+import { LoaderAPIComponent } from './components/universalComponents/loader-api/loader-api.component';
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 
@@ -77,6 +78,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HomePageComponent,
     NavbarComponent,
     NavbarCardComponent,
+    LoaderAPIComponent,
     ProfilCardNavbarComponent,
     ClientNavbarComponent,
     ProviderNavbarComponent,

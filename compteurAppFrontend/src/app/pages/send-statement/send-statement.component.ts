@@ -4,7 +4,7 @@ import { Observable, firstValueFrom, last, lastValueFrom } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
 import { Category } from 'src/models/category';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
-import { UserGet } from 'src/models/user-get';
+import { User } from 'src/models/user';
 import { addAdresse } from 'src/models/add-adresse';
 import { AdresseService } from 'src/app/_services/adresse.service';
 import { Compteur } from 'src/models/compteur';
@@ -26,7 +26,7 @@ export class SendStatementComponent {
   idFocus!: string;
   category: Category[] = [];
 
-  provider: UserGet[] = [];
+  provider: User[] = [];
 
   compteur!: CompteurDTO;
 
@@ -167,7 +167,7 @@ export class SendStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getProvider(): Promise<UserGet[]> {
+  async getProvider(): Promise<User[]> {
     const observable = this.providerService.getFournisseurSpring();
     return lastValueFrom(observable);
   }

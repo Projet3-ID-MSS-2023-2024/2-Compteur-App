@@ -6,7 +6,7 @@ import { LoadingService } from 'src/app/_services/loading.service';
   templateUrl: './loader-api.component.html',
   styleUrls: ['./loader-api.component.css'],
 })
-export class LoaderAPIComponent implements OnInit {
+export class LoaderAPIComponent {
 
   @ViewChild('loader') loader!: ElementRef;
   @ViewChild('response') response!: ElementRef;
@@ -15,7 +15,7 @@ export class LoaderAPIComponent implements OnInit {
 
   constructor(private loadingService: LoadingService) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.loadingService.loader.subscribe((message) => {
       console.log(message);
       if (message === 'loading') {
