@@ -6,7 +6,6 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LocalisationService } from 'src/app/_services/localisation.service';
 import { addAdresse } from 'src/models/add-adresse';
 import { LoadingService } from 'src/app/_services/loading.service';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
@@ -31,7 +30,6 @@ export class AddMeterComponent {
   });
 
   constructor(
-    private localisationService: LocalisationService,
     private loadingService: LoadingService
   ) {}
 
@@ -49,22 +47,29 @@ export class AddMeterComponent {
   }
 
   getAdresse(): Promise<any> {
-    const observable = this.localisationService.getLocalisation(
-      50.4169699,
-      4.3252908
-    );
-    return firstValueFrom(observable)
-      .then((data) => {
-        this.adresse = new addAdresse(
-          data.address.road,
-          data.address.house_number,
-          data.address.postcode,
-          data.address.town,
-          data.address.country
-        );
-      })
-      .catch((error) => {
-        return Promise.reject(error);
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            this.adresse = new addAdresse(
+              data.address.road,
+              data.address.house_number,
+              data.address.postcode,
+              data.address.town,
+              data.address.country
+            );
+            resolve(this.adresse);
+          })
+          .catch(error => {
+            reject(error);
+          });
       });
+    });
   }
+
 }

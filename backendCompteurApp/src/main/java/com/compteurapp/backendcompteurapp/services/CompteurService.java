@@ -25,5 +25,9 @@ public class CompteurService {
         return compteur.isEmpty();
     }
 
+    public Optional<Compteur> getOneCompteur(Long id){
+        return repository.findById(id);
+    }
+
 
 }

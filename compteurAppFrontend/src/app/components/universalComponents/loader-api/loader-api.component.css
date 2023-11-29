@@ -13,6 +13,7 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   transition: all 0.3s;
   transform: translateY(-120%);
+  z-index: 5000;
 }
 
 .apiLoader i{
@@ -35,6 +36,7 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   transition: all 0.3s;
   transform: translateY(-120%);
+  z-index: 5000;
 }
 
 .responseCard p{

@@ -129,34 +129,36 @@ export class SendStatementComponent {
 
   async modifyMetter(data: any) {
     this.showPopUpModifyMetter = false;
-    try {
-      let adresse = await this.addAdresse(data[1]);
-      let compteur = new Compteur(
-        data[0].nom,
-        this.idUserConnecter,
-        data[0].fournisseur,
-        adresse.id,
-        data[0].categorie,
-        this.idFocus
-      );
-      let modifiedCompteur = await this.updateCompteur(compteur);
-      let index = this.data.findIndex(
-        (item) => item[0] === modifiedCompteur.id
-      );
+    if (data != 'close') {
+      try {
+        let adresse = await this.addAdresse(data[1]);
+        let compteur = new Compteur(
+          data[0].nom,
+          this.idUserConnecter,
+          data[0].fournisseur,
+          adresse.id,
+          data[0].categorie,
+          this.idFocus
+        );
+        let modifiedCompteur = await this.updateCompteur(compteur);
+        let index = this.data.findIndex(
+          (item) => item[0] === modifiedCompteur.id
+        );
 
-      if (index !== -1) {
-        this.data[index] = [
-          modifiedCompteur.id,
-          modifiedCompteur.nom,
-          modifiedCompteur.nom_fournisseur,
-          modifiedCompteur.nom_category,
-        ];
+        if (index !== -1) {
+          this.data[index] = [
+            modifiedCompteur.id,
+            modifiedCompteur.nom,
+            modifiedCompteur.nom_fournisseur,
+            modifiedCompteur.nom_category,
+          ];
+        }
+
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
+        console.log('error');
+        this.loadingService.emettreEvenement('error');
       }
-      
-      this.loadingService.emettreEvenement('sucess');
-    } catch {
-      console.log('error');
-      this.loadingService.emettreEvenement('error');
     }
   }
 
