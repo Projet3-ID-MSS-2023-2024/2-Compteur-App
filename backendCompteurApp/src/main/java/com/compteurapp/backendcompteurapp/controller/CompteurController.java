@@ -61,6 +61,13 @@ public class CompteurController {
         return this.compteurService.deleteById(id);
     }
 
+    @PutMapping("/compteur")
+    public CompteurSenderDTO updateAdresse(@RequestBody CompteurDto compteurDto) throws Exception {
+        CompteurSenderDTO compteurSenderDTO = new CompteurSenderDTO();
+        compteurSenderDTO = this.compteurMapper.createCompteurMapping(compteurDto);
+        return compteurSenderDTO;
+    }
+
 
 
 }

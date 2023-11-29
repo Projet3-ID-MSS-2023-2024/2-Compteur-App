@@ -37,4 +37,12 @@ export class CompteurService {
     };
     return this.http.delete<Compteur>(`/api/compteur/${id}`, { headers });
   }
+
+  updateCompteurs(compteur:Compteur){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.put<Compteur>(`/api/compteur`, compteur, { headers });
+  }
 }

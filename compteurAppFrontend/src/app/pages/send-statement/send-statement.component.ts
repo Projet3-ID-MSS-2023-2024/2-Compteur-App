@@ -107,9 +107,20 @@ export class SendStatementComponent {
     console.log(test);
   }
 
-  modifyMetter(data: any) {
+  async modifyMetter(data: any) {
     this.showPopUpModifyMetter = false;
-    console.log(data);
+    let adresse = await this.addAdresse(data[1]);
+    let compteur = new Compteur(
+      data[0].nom,
+      this.idUserConnecter,
+      data[0].fournisseur,
+      adresse.id,
+      data[0].categorie,
+      this.idFocus
+    );
+    console.log(compteur);
+    let test = await this.updateCompteur(compteur);
+    console.log(test);
   }
 
   async getCategory(): Promise<Category[]> {
@@ -139,6 +150,11 @@ export class SendStatementComponent {
 
   getDataUser(): Observable<KeycloakProfile> {
     return from(this.keycloackService.loadUserProfile());
+  }
+
+  async updateCompteur(compteur:Compteur): Promise<Compteur> {
+    const observable = this.compteurService.updateCompteurs(compteur);
+    return lastValueFrom(observable);
   }
 
 }

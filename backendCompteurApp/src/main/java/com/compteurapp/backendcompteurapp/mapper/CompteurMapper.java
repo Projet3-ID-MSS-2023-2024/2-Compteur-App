@@ -45,6 +45,7 @@ public class CompteurMapper {
         return compteurSenderDTOList;
     }
 
+
     public Compteur mappingNewCompteur(CompteurDto compteurDto){
         Adresse adresse = new Adresse();
         adresse.setId(compteurDto.id_adresse);
@@ -53,6 +54,9 @@ public class CompteurMapper {
         category.setId(compteurDto.id_category);
 
         Compteur compteur = new Compteur();
+        if(compteurDto.id != null){
+            compteur.setId(compteurDto.id);
+        }
         compteur.setNom(compteurDto.nom);
         compteur.setCategory(category);
         compteur.setAdresse(adresse);
@@ -111,4 +115,5 @@ public class CompteurMapper {
         }
         return compteurSenderDTOList;
     }
+
 }
