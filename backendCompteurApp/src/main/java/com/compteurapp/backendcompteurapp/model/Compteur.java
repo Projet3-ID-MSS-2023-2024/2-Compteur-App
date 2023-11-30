@@ -13,13 +13,26 @@ public class Compteur {
     private Long id;
     private String nom;
 
-    @OneToMany(mappedBy = "compteur", cascade = CascadeType.ALL)
-    private List<CompteurData> compteurData;
+    private String userKeycloack;
 
-    public Compteur(Long id, String nom, List<CompteurData> compteurData) {
+    private String fournisseurKeycloack;
+
+    @ManyToOne
+    @JoinColumn(name="adresse_id", nullable=false)
+    private Adresse adresse;
+
+    @ManyToOne
+    @JoinColumn(name="categorie_id", nullable=false)
+    private Category category;
+
+
+    public Compteur(Long id, String nom, String user, String fournisseur, Adresse adresse, Category category) {
         this.id = id;
         this.nom = nom;
-        this.compteurData = compteurData;
+        this.userKeycloack = user;
+        this.fournisseurKeycloack = fournisseur;
+        this.adresse = adresse;
+        this.category = category;
     }
 
     public Compteur(){}
@@ -40,11 +53,35 @@ public class Compteur {
         this.nom = nom;
     }
 
-    public List<CompteurData> getCompteurData() {
-        return compteurData;
+    public String getUser() {
+        return userKeycloack;
     }
 
-    public void setCompteurData(List<CompteurData> compteurData) {
-        this.compteurData = compteurData;
+    public void setUser(String user) {
+        this.userKeycloack = user;
+    }
+
+    public String getFournisseur() {
+        return fournisseurKeycloack;
+    }
+
+    public void setFournisseur(String fournisseur) {
+        this.fournisseurKeycloack = fournisseur;
+    }
+
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

@@ -1,0 +1,23 @@
+.flex{
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  margin : 0;
+  padding-left: 0;
+}
+.placementList{
+  width: 90%;
+  position: relative;
+  border-radius: 10px;
+  margin-left: 2.5%;
+  margin-top: 20px;
+  min-height: 100px;
+  background-color: #3a475b;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.flex-wrap{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

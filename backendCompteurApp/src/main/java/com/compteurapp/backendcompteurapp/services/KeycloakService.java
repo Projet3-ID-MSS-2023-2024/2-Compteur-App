@@ -8,6 +8,7 @@ import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -30,6 +31,25 @@ public class KeycloakService {
     private String realm;
     public KeycloakService(KeycloakSecurityUtil keycloakUtil) {
         this.keycloakUtil = keycloakUtil;
+    }
+
+    public User getUser(String username){
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        User user = new Provider();
+        for (UserRepresentation userRepresentation : userRepresentations) {
+            if (userRepresentation.getAttributes() != null) {
+                if (userRepresentation.getUsername().equals(username)) {
+                    user.setId(userRepresentation.getId());
+                    user.setUserName(userRepresentation.getUsername());
+                    user.setFirstName(userRepresentation.getFirstName());
+                    user.setLastName(userRepresentation.getLastName());
+                    user.setEmail(userRepresentation.getEmail());
+                    user.setPhoneNumber(userRepresentation.getAttributes().get("phoneNumber").get(0));
+                }
+            }
+        }
+        return user;
     }
 
     public Response deleteUser(@PathVariable String id) {
@@ -180,5 +200,11 @@ public class KeycloakService {
         cred.setValue(user.getPassword());
         userRep.setCredentials(Collections.singletonList(cred));
         return userRep;
+    }
+
+    public UserRepresentation getUserById(String id){
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        UserRepresentation userRepresentation = keycloak.realm(realm).users().get(id).toRepresentation();
+        return userRepresentation;
     }
 }

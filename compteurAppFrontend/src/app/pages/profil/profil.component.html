@@ -1,5 +1,149 @@
 <div class="pageContent">
   <div class="pageNamePlacement">
-    <app-page-name [pageName]="'Profil'"></app-page-name>
+    <app-page-name [pageName]="editPageName"></app-page-name>
   </div>
+  <form [formGroup]="registerForm">
+    <div class="placementList" *ngIf="user$ | async as user">
+      <div class="containeur-form">
+        <div class="left">
+          <div class="form-group">
+            <label for="username">Nom : </label>
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastname">Nom de famille: </label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastname"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="firstName">Prénom : </label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstname"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Numéro de téléphone : </label>
+            <input
+              type="text"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              [readonly]="!editMode"
+            />
+          </div>
+        </div>
+        <div class="right">
+          <div class="form-group">
+            <label for="email">Adresse email: </label>
+            <input type="text" id="email" formControlName="email" [readonly]="!editMode" />
+          </div>
+          <div class="form-group" *ngIf="editMode">
+            <label for="password">Mot de passe : </label>
+            <input type="password" id="password" formControlName="password" [readonly]="!editMode"/>
+          </div>
+        </div>
+      </div>
+      <div class="buttondiv" *ngIf="editMode">
+        <button (click)="editUser()">Confirmer modification</button>
+      </div>
+      <div class="buttondiv">
+        <button (click)="turnEditMode()">Modifier profil</button>
+      </div>
+    </div>
+  </form>
+  <form [formGroup]="registerForm">
+    <div class="placementList" *ngIf="fournisseur$ | async as user">
+      <div class="containeur-form">
+        <div class="left">
+          <div class="form-group">
+            <label for="username">Nom : </label>
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Nom de famille: </label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastname"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="firstname">Prénom : </label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstname"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phoneNumber">Numéro de téléphone : </label>
+            <input
+              type="text"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              [readonly]="!editMode"
+            />
+          </div>
+        </div>
+        <div class="right">
+          <div class="form-group">
+            <label for="email">Adresse email: </label>
+            <input type="text" id="email" formControlName="email" [readonly]="!editMode" />
+          </div>
+          <div class="form-group">
+            <label for="tva">TVA : </label>
+            <input type="text" id="tva" formControlName="TVA" [readonly]="!editMode" />
+          </div>
+          <div class="form-group">
+            <label for="idCategory">Categorie: </label>
+            <input
+              type="text"
+              id="idCategory"
+              formControlName="category"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group" *ngIf="editMode">
+            <label for="password">Mot de passe : </label>
+            <input type="password" id="password" formControlName="password" [readonly]="!editMode"/>
+          </div>
+        </div>
+      </div>
+      <div class="buttondiv" *ngIf="editMode">
+        <button (click)="editUser()">Confirmer modification</button>
+      </div>
+      <div class="buttondiv">
+        <button (click)="turnEditMode()">Modifier profil</button>
+      </div>
+    </div>
+  </form>
 </div>
+
+<!-- <div class="adresse"></div>
+
+<div class="placementList">
+  <app-indice-list
+    [attributLegend]="attributLegend"
+    [data]="data"
+    [buttonOption]="buttonOption"
+    (buttonPressed)="buttonPress($event)"
+  ></app-indice-list>
+</div> -->
