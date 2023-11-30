@@ -39,6 +39,7 @@ import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-i
 import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { FormsModule } from '@angular/forms';
+import { PaypalComponent } from './components/universalComponents/paypal/paypal.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -101,7 +102,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AdminNavbarComponent,
     FournisseurInfoComponent,
     FournisseurListComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    PaypalComponent
   ],
   imports: [
     BrowserModule,

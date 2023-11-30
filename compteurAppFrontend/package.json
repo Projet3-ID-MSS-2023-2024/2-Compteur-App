@@ -18,10 +18,13 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "creditcardpayments": "^1.0.3",
     "keycloak-angular": "^14.1.0",
     "keycloak-js": "^22.0.5",
+    "paypal-checkout": "^4.0.338",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xcomponent": "^6.0.68",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
