@@ -1,25 +1,14 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot,Router,RouterStateSnapshot } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
-import { WebApiService } from '../_services/web-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard extends KeycloakAuthGuard {
-  private user: any;
-  private isAdmin!: boolean;
-  private isFournisseur!: boolean;
-  private isClient!: boolean;
-
   constructor(
     protected override readonly router: Router,
-    protected readonly keycloak: KeycloakService,
-    private webApiService: WebApiService // Injectez votre service WebApi
+    protected readonly keycloak: KeycloakService
   ) {
     super(router, keycloak);
   }
@@ -35,14 +24,6 @@ export class AuthGuard extends KeycloakAuthGuard {
       });
     }
 
-    // Get the user details from the server
-    this.user = await this.webApiService.getUserById(this.keycloak.getKeycloakInstance().subject).toPromise();
-    if (this.user != null) {
-      this.isAdmin = this.user.role == "admin";
-      this.isFournisseur = this.user.role == "fournisseur";
-      this.isClient = this.user.role == "client";
-    }
-
     // Get the roles required from the route.
     const requiredRoles = route.data['roles'];
 
@@ -52,11 +33,6 @@ export class AuthGuard extends KeycloakAuthGuard {
     }
 
     // Allow the user to proceed if all the required roles are present.
-    return requiredRoles.every((role) => {
-      if (role === 'admin') return this.isAdmin;
-      if (role === 'fournisseur') return this.isFournisseur;
-      if (role === 'client') return this.isClient;
-      return false;
-    });
+    return requiredRoles.every((role) => this.roles.includes(role));
   }
 }
