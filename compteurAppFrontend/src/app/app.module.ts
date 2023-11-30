@@ -42,6 +42,8 @@ import { FormsModule } from '@angular/forms';
 import { LoaderAPIComponent } from './components/universalComponents/loader-api/loader-api.component';
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
+import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
+import { DetailFactureComponent } from './pages/detail-facture/detail-facture.component';
 
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -107,7 +109,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     FournisseurInfoComponent,
     FournisseurListComponent,
     CategoriesComponent,
-    DropdownCategoryComponent
+    DropdownCategoryComponent,
+    PaypalBtnComponent,
+    DetailFactureComponent
   ],
   imports: [
     BrowserModule,
