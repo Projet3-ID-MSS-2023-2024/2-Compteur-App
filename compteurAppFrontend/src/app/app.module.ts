@@ -40,32 +40,35 @@ import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-l
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { FormsModule } from '@angular/forms';
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
+import { WebApiService } from './_services/web-api.service';
 
-function initializeKeycloak(keycloak: KeycloakService) {
+function initializeKeycloak(keycloak: KeycloakService, webApiService: WebApiService) {
   return () =>
-    keycloak.init({
-      config: {
-        url: 'http://localhost:8082',
-        realm: 'compteurapp',
-        clientId: 'angular'
-      },
-      loadUserProfileAtStartUp: true,
-      initOptions: {
-        onLoad: 'login-required',
-        checkLoginIframe: true
-      },
-      shouldAddToken: (request) => {
-        const { method, url } = request;
+    keycloak
+      .init({
+        config: {
+          url: 'http://localhost:8082',
+          realm: 'compteurapp',
+          clientId: 'angular',
+        },
+        loadUserProfileAtStartUp: true,
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: true,
+        },
+        shouldAddToken: (request) => {
+          const { method, url } = request;
 
-        const isGetRequest = 'GET' === method.toUpperCase();
-        const acceptablePaths = ['/assets', '/clients/public'];
-        const isAcceptablePathMatch = acceptablePaths.some((path) =>
-          url.includes(path)
-        );
+          const isGetRequest = 'GET' === method.toUpperCase();
+          const acceptablePaths = ['/assets', '/clients/public'];
+          const isAcceptablePathMatch = acceptablePaths.some((path) =>
+            url.includes(path)
+          );
 
-        return !(isGetRequest && isAcceptablePathMatch);
-      }
-    });
+          return !(isGetRequest && isAcceptablePathMatch);
+        },
+      })
+      .then(() => webApiService.syncUser().toPromise());
 }
 
 @NgModule({
@@ -119,7 +122,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, WebApiService],
     },
   ],
   bootstrap: [AppComponent]

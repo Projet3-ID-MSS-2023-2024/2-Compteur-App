@@ -33,9 +33,6 @@ public class UserDB {
     private String username;
 
     @Column
-    private String password;
-
-    @Column
     private String role;
 
     @Column
@@ -43,9 +40,6 @@ public class UserDB {
 
     @Column
     private String phoneNumber;
-
-    @Column
-    private String category;
 
     @Column
     private String categoryId;

@@ -7,7 +7,7 @@ import { WebApiService } from './_services/web-api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy, AfterViewInit{
+export class AppComponent implements OnDestroy{
   title = 'compteurAppFrontend';
   timer: any;
 
@@ -25,11 +25,8 @@ export class AppComponent implements OnDestroy, AfterViewInit{
     this.timer = setTimeout(() => this.logout(), 300000); // 300000 ms = 5 min
   }
 
-  constructor(private keycloak: KeycloakService, private webApiService: WebApiService) {
+  constructor(private keycloak: KeycloakService) {
     this.resetTimer();
-  }
-  ngAfterViewInit(): void {
-    this.webApiService.syncUser().subscribe();
   }
 
   logout() {

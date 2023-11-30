@@ -12,4 +12,9 @@ export class WebApiService {
   public syncUser(): Observable<string> {
     return this.http.get(`api/syncUser`, {responseType:'text'});
   }
+
+  public getUserById(id: string | undefined): Observable<any> {
+    return this.http.get(`api/userDB/${id}`);
+  }
+
 }
