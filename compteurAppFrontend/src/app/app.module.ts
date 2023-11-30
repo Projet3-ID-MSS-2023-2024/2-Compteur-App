@@ -49,6 +49,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         realm: 'compteurapp',
         clientId: 'angular'
       },
+      loadUserProfileAtStartUp: true,
       initOptions: {
         onLoad: 'login-required',
         checkLoginIframe: true
