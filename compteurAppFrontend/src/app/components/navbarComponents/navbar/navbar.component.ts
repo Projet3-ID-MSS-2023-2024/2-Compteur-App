@@ -27,6 +27,10 @@ export class NavbarComponent implements AfterViewInit {
       this.isAdmin = this.keycloak.isUserInRole('admin');
       this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
       this.isClient = this.keycloak.isUserInRole('client');
+
+      if(this.isAdmin && this.isClient){
+        this.isClient = false;
+      }
     }
     if (!this.isAdmin) {
       location.reload();

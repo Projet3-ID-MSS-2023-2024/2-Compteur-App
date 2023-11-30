@@ -12,7 +12,6 @@
   height: auto 100%;
   position: relative;
   margin-top: 20px;
-  overflow-y: scroll;
 }
 
 .movePagePlacement {
@@ -70,6 +69,10 @@ hr {
   transition: all 0.3s ease;
 }
 
+table{
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
 .addCategoryForm button:hover{
   background-color: #000000;
   color: #ffffff;
@@ -101,6 +104,7 @@ th, td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  width: 11px;
 }
 
 
@@ -123,7 +127,7 @@ tr:nth-child(even) {
 
 .tdDelete{
   text-align: center;
-  width: 100px;
+  width: 11px;
 }
 
 .deleteBtn {
@@ -131,9 +135,7 @@ tr:nth-child(even) {
     border: none;
     padding: 0;
     cursor: pointer;
-
-    width: 80px;
-    height: 40px;
+    height: 25px;
 }
 
 

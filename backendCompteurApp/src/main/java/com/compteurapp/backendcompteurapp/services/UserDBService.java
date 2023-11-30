@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +20,10 @@ public class UserDBService {
     }
 
     public UserDB getUserById(String id) {
-        return userDBRepository.findById(id);
+        Optional<UserDB> userDBOptional = userDBRepository.findById(id);
+        return userDBOptional.orElse(null);
     }
+
 
     public void syncUser(UserDB user) {
         userDBRepository.save(user);
@@ -33,6 +36,9 @@ public class UserDBService {
     }
 
     public void deleteUser(String id) {
-        userDBRepository.deleteById(id);
+        if (this.userDBRepository.existsById(id)) {
+            this.userDBRepository.deleteById(id);
+        }
     }
+
 }

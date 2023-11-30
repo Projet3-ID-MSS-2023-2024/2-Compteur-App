@@ -14,6 +14,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   public categories$!: Observable<any[]>;
   public selectedCategoryId: number | null = null;
   private destroy$ = new Subject<void>();
+  selectedCategory!: Category;
+  displayPopup = false;
 
   constructor(private categoryService: CategoryService) { }
 
@@ -35,13 +37,17 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   closeDelete(): void {
     this.selectedCategoryId = null;
+    this.displayPopup = false;
   }
 
-  openDelete(id: number): void {
-    this.selectedCategoryId = id;
+  openDelete(category: Category) {
+    console.log('openDelete method called with category:', category);
+    this.displayPopup = true;
+    this.selectedCategory = category;
   }
 
-  deleteCategory(id: number): void {
+
+  deleteCategory(id: number | undefined): void {
     this.categoryService.delete(id).pipe(takeUntil(this.destroy$)).subscribe(
       () => {
         this.closeDelete();

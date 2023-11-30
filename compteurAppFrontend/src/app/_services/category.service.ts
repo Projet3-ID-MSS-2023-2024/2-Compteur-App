@@ -36,7 +36,7 @@ export class CategoryService {
     return this.http.get<any>(`api/getCategory/${id}`, { headers });
   }
 
-  delete(id: number) {
+  delete(id: number |undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {
       Authorization: `Bearer ${token}`,
