@@ -26,6 +26,10 @@ export class NavbarComponent implements AfterViewInit{
       this.isAdmin = this.user.role == "admin";
       this.isFournisseur = this.user.role == "fournisseur";
       this.isClient = this.user.role == "client";
+
+      console.log("IsAdmin : "+this.isAdmin);
+      console.log("IsFournisseur : "+this.isFournisseur);
+      console.log("IsClient : "+this.isClient);
     }
 
 
