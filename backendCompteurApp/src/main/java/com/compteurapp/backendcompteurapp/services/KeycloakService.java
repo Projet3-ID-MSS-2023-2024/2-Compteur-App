@@ -14,6 +14,7 @@ import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +65,7 @@ public class KeycloakService {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
 
-        UserDB userDB = this.userDBRepository.findById(id);
+        UserDB userDB = this.userDBRepository.findById(id).get();
         userDB.setFirstname(user.getFirstName());
         userDB.setLastname(user.getLastName());
         userDB.setEmail(user.getEmail());
@@ -158,7 +159,7 @@ public class KeycloakService {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
 
-        UserDB userDB = this.userDBRepository.findById(id);
+        UserDB userDB = this.userDBRepository.findById(id).get();
         userDB.setFirstname(provider.getFirstName());
         userDB.setLastname(provider.getLastName());
         userDB.setEmail(provider.getEmail());
@@ -174,8 +175,14 @@ public class KeycloakService {
     public Response deleteProvider(@PathVariable String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
+        try {
+            this.userDBRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            // Gérer l'exception ici
+        }
         return Response.ok().build();
     }
+
 
     private User mapUser(UserRepresentation userRep) {
         User user = new User();

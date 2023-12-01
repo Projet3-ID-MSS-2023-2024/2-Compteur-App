@@ -8,6 +8,7 @@ import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-fournisseur-info',
@@ -21,6 +22,7 @@ export class FournisseurInfoComponent {
   public idProvider: number | undefined;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
   showDiv = false;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,7 +31,8 @@ export class FournisseurInfoComponent {
     private readonly keycloak: KeycloakService,
     private CategoryService: CategoryService,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private location: Location
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -76,6 +79,7 @@ export class FournisseurInfoComponent {
   }
 
   addFournisseur() {
+    this.isLoading = true;
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
       this.fournisseurSpring$.subscribe((fournisseurSpring) => {
@@ -99,6 +103,10 @@ export class FournisseurInfoComponent {
           .subscribe(
             (data) => {
               console.log(data);
+              this.isLoading = false;
+              this.messageService.changeMessage('Fournisseur modifié avec succès');
+              this.messageService.changePopup(true);
+              this.router.navigate(['/listFournisseur']);
             },
             (error) => {
               console.log('error');
@@ -110,11 +118,13 @@ export class FournisseurInfoComponent {
   }
 
   deleteFournisseur() {
+    this.isLoading = true;
     this.fournisseurService.deleteFournisseurSpring(this.idProvider).subscribe(
       (data) => {
         console.log(data);
         this.messageService.changeMessage('Fournisseur supprimé avec succès');
         this.messageService.changePopup(true);
+        this.isLoading = false;
         this.router.navigate(['/listFournisseur']);
       },
       (error) => {
@@ -124,6 +134,15 @@ export class FournisseurInfoComponent {
   }
 
   closeOrOpenDelete: boolean = false;
+  closeOrOpenModify: boolean = false;
+
+  closeModify() {
+    this.closeOrOpenModify = false;
+  }
+
+  openModify() {
+    this.closeOrOpenModify = true;
+  }
 
   closeDelete() {
     this.closeOrOpenDelete = false;
@@ -132,4 +151,8 @@ export class FournisseurInfoComponent {
   openDelete() {
     this.closeOrOpenDelete = true;
   }
+
+  goBack() {
+  this.location.back();
+}
 }

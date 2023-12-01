@@ -19,20 +19,20 @@
       <tr *ngFor="let category of categories">
         <td>{{category.index}}</td>
         <td>{{category.name}}</td>
-        <td class="tdDelete"><img class="deleteBtn" (click)="openDelete(category.id)" src="../../../assets/navbarIcone/delete-category.svg" alt=""></td>
-        <!-- <button class="deleteBtn" (click)="openDelete(category.id)">Supprimer</button> -->
-        <div class="popupDelete" *ngIf="selectedCategoryId === category.id">
-          <div class="popupDeleteContent">
-            <div class="popupDeleteText">
-              <p>Êtes-vous sûr de vouloir supprimer cette catégorie ?</p>
-            </div>
-            <div class="popupDeleteButton">
-              <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
-              <button class="buttonDelete" (click)="deleteCategory(category.id)">Supprimer</button>
-            </div>
-          </div>
-        </div>
+        <td class="tdDelete"><img class="deleteBtn" (click)="openDelete(category)" src="../../../assets/navbarIcone/delete-category.svg" alt="">
+        </td>
       </tr>
     </table>
+    <div class="popupDelete" *ngIf="displayPopup">
+      <div class="popupDeleteContent">
+        <div class="popupDeleteText">
+          <p>Êtes-vous sûr de vouloir supprimer cette catégorie ?</p>
+        </div>
+        <div class="popupDeleteButton">
+          <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
+          <button class="buttonDelete" (click)="deleteCategory(selectedCategory.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
