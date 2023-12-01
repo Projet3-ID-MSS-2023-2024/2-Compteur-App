@@ -1,28 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { WebApiService } from 'src/app/_services/web-api.service';
+import { UserDB } from 'src/models/userDB';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit{
-
+export class NavbarComponent implements AfterViewInit {
   isAdmin = false;
   isFournisseur = false;
   isClient = false;
+  user: UserDB | undefined;
 
-  constructor(private readonly keycloak: KeycloakService) {}
+  constructor(
+    private readonly keycloak: KeycloakService,
+    private webApiService: WebApiService
+  ) {}
 
-  ngOnInit(): void {
-    this.keycloak.isLoggedIn().then((authenticated) => {
-      if (authenticated) {
-        console.log(this.keycloak.getToken());
-        this.isAdmin = this.keycloak.isUserInRole('admin');
-        this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
-        this.isClient = this.keycloak.isUserInRole('client');
+  async ngAfterViewInit(): Promise<void> {
+    const authenticated = await this.keycloak.isLoggedIn();
+    if (authenticated) {
+      const token = await this.keycloak.getToken();
+      console.log(token);
+      this.isAdmin = this.keycloak.isUserInRole('admin');
+      this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
+      this.isClient = this.keycloak.isUserInRole('client');
+
+      if(this.isAdmin && this.isClient){
+        this.isClient = false;
       }
-    });
+    }
+    if (!this.isAdmin) {
+      location.reload();
+    }
   }
 
   logout() {
@@ -31,11 +43,11 @@ export class NavbarComponent implements OnInit{
 
   isPopup: boolean = false;
 
-  openPopupDeconnexion(){
+  openPopupDeconnexion() {
     this.isPopup = true;
   }
 
-  closePopup(){
+  closePopup() {
     this.isPopup = false;
   }
 }

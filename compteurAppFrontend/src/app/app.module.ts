@@ -42,34 +42,35 @@ import { FormsModule } from '@angular/forms';
 import { LoaderAPIComponent } from './components/universalComponents/loader-api/loader-api.component';
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
-import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
-import { DetailFactureComponent } from './pages/detail-facture/detail-facture.component';
+import { WebApiService } from './_services/web-api.service';
 
-
-function initializeKeycloak(keycloak: KeycloakService) {
+function initializeKeycloak(keycloak: KeycloakService, webApiService: WebApiService) {
   return () =>
-    keycloak.init({
-      config: {
-        url: 'http://localhost:8082',
-        realm: 'compteurapp',
-        clientId: 'angular'
-      },
-      initOptions: {
-        onLoad: 'login-required',
-        checkLoginIframe: true
-      },
-      shouldAddToken: (request) => {
-        const { method, url } = request;
+    keycloak
+      .init({
+        config: {
+          url: 'http://localhost:8082',
+          realm: 'compteurapp',
+          clientId: 'angular',
+        },
+        loadUserProfileAtStartUp: true,
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: true,
+        },
+        shouldAddToken: (request) => {
+          const { method, url } = request;
 
-        const isGetRequest = 'GET' === method.toUpperCase();
-        const acceptablePaths = ['/assets', '/clients/public'];
-        const isAcceptablePathMatch = acceptablePaths.some((path) =>
-          url.includes(path)
-        );
+          const isGetRequest = 'GET' === method.toUpperCase();
+          const acceptablePaths = ['/assets', '/clients/public'];
+          const isAcceptablePathMatch = acceptablePaths.some((path) =>
+            url.includes(path)
+          );
 
-        return !(isGetRequest && isAcceptablePathMatch);
-      }
-    });
+          return !(isGetRequest && isAcceptablePathMatch);
+        },
+      })
+      .then(() => webApiService.syncUser().toPromise());
 }
 
 @NgModule({
@@ -109,9 +110,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     FournisseurInfoComponent,
     FournisseurListComponent,
     CategoriesComponent,
-    DropdownCategoryComponent,
-    PaypalBtnComponent,
-    DetailFactureComponent
+    DropdownCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -126,7 +125,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, WebApiService],
     },
   ],
   bootstrap: [AppComponent]

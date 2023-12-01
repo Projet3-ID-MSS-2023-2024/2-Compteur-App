@@ -6,7 +6,10 @@
   </div>
   <div class="containeur-wrappeur">
     <div class="container">
-      <form [formGroup]="registerForm" (ngSubmit)="addFournisseur()">
+      <div class="back" (click)="goBack()">
+        <img src="../../../assets/navbarIcone/arrow-back.svg" alt="">
+      </div>
+      <form [formGroup]="registerForm">
         <div class="containeur-form">
           <div class="left">
             <div class="form-group">
@@ -79,7 +82,7 @@
           </div>
         </div>
         <div class="buttondiv">
-          <button class="modifyVtn" type="submit">Modifier</button>
+          <button class="modifyVtn" (click)="openModify()" type="submit">Modifier</button>
           <button type="delete" (click)="openDelete()" class="button-delete">
             Supprimer
           </button>
@@ -90,7 +93,7 @@
 </div>
 
 <div class="popupDelete" *ngIf="closeOrOpenDelete">
-  <div class="popupDeleteContent">
+  <div class="popupDeleteContent" *ngIf="!isLoading">
     <div class="popupDeleteText">
       <p>Êtes-vous sûr de vouloir supprimer ce fournisseur ?</p>
     </div>
@@ -101,4 +104,24 @@
       </button>
     </div>
   </div>
+  <!-- Le loader s'affiche à la place du contenu de la popup -->
+  <div class="loader" *ngIf="isLoading"></div>
 </div>
+
+<div class="popupDelete" *ngIf="closeOrOpenModify">
+  <div class="popupDeleteContent" *ngIf="!isLoading">
+    <div class="popupDeleteText">
+      <p>Êtes-vous sûr de vouloir modifier ce fournisseur ?</p>
+    </div>
+    <div class="popupDeleteButton">
+      <button class="buttonCancel" (click)="closeModify()">Annuler</button>
+      <button class="buttonDelete" (click)="addFournisseur()">
+        Modifier
+      </button>
+    </div>
+  </div>
+  <!-- Le loader s'affiche à la place du contenu de la popup -->
+  <div class="loader" *ngIf="isLoading"></div>
+</div>
+
+
