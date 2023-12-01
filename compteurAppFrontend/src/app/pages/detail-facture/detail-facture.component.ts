@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./detail-facture.component.css']
 })
 export class DetailFactureComponent {
+  facturePayee = false;
 
 }

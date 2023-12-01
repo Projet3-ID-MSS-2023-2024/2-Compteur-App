@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { CategoryService } from 'src/app/_services/category.service';
@@ -11,5 +11,4 @@ import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent{
-
 }

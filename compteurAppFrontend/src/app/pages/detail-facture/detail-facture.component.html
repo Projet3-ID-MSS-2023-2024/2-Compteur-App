@@ -1,1 +1,10 @@
-<p>detail-facture works!</p>
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Détail facture'"></app-page-name>
+  </div>
+
+
+  <div *ngIf="!facturePayee">
+  <app-paypal-btn></app-paypal-btn>
+  </div>
+</div>
