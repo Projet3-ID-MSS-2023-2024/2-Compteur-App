@@ -14,7 +14,8 @@ import { LoadingService } from 'src/app/_services/loading.service';
 })
 export class ReceivedStatementComponent {
 
-  attributLegend = ['Date', 'Montant', 'Statut'];
+  attributLegend = ['Nom Client', 'Valeur', 'Date'];
+
   buttonOption = ['picture.svg', 'facture.svg'];
 
   traiterFilterChoice:string = 'choiceOne';
@@ -28,20 +29,15 @@ export class ReceivedStatementComponent {
   idFocus!:number;
   idUserConnecter: any;
 
-  data: any[][] = [
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-    [1, '2023-11-21', 100.50, 'En cours'],
-    [2, '2023-11-22', 75.20, 'Terminé'],
-    [3, '2023-11-23', 120.00, 'En attente'],
-    [4, '2023-11-24', 50.75, 'Annulé'],
-  ];
+  data: any[][] = [];
+
+  dataCompteurNonTraiter: any[][] = [];
+  dataCompteurTraiterPayer: any[][] = [];
+  dataCompteurTraiterImpayer: any[][] = [];
+
+  historyPagedataCompteurNonTraiter: any[][] = [];
+  historyPagedataCompteurTraiterPayer: any[][] = [];
+  historyPagedataCompteurTraiterImpayer: any[][] = [];
 
   constructor(private compteurDataService: CompteurDataService,
     private keycloackService: KeycloakService,
@@ -52,8 +48,12 @@ export class ReceivedStatementComponent {
     try {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
-      let compteurData:CompteurDataReq[] = await this.getCompteurDataByVendeurIdWithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd);
-      console.log(compteurData);
+
+      let compteurData:CompteurDataReq[] = await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd);
+      this.dataCompteurNonTraiter = this.setDataCompteur(compteurData, false, false);
+      this.transferDataSlice(this.dataCompteurNonTraiter);
+
+
       this.loadingService.emettreEvenement('sucess');
     } catch {
       this.loadingService.emettreEvenement('error');
@@ -73,7 +73,6 @@ export class ReceivedStatementComponent {
     this.idFocus = arrayData[1];
   }
 
-  delete(id: number){}
 
   searchBarDataReceip(data:any){
     console.log(data);
@@ -81,6 +80,17 @@ export class ReceivedStatementComponent {
 
   traiterFilter(data: string){
     this.traiterFilterChoice = data;
+    console.log(data);
+    switch(data){
+      case 'choiceOne':
+
+
+        break;
+      case 'choiceTwo':
+
+
+        break;
+    }
   }
 
   payerFilter(data: string){
@@ -111,7 +121,7 @@ export class ReceivedStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getCompteurDataByVendeurIdWithoutFacture(idVendeur:string, start:number, end:number): Promise<CompteurDataReq[]> {
+  async WithoutFacture(idVendeur:string, start:number, end:number): Promise<CompteurDataReq[]> {
     const observable = this.compteurDataService.getCompteurDataByVendeurIdWithoutFacture(idVendeur, start, end);
     return lastValueFrom(observable);
   }
@@ -121,7 +131,7 @@ export class ReceivedStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getCompteurDataByVendeurIdAndFactureEtat(idVendeur:string, etat:string,start:number, end:number): Promise<CompteurDataReq[]> {
+  async FactureEtat(idVendeur:string, etat:string,start:number, end:number): Promise<CompteurDataReq[]> {
     const observable = this.compteurDataService.getCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat,start, end);
     return lastValueFrom(observable);
   }
@@ -134,5 +144,37 @@ export class ReceivedStatementComponent {
   getDataUser(): Observable<KeycloakProfile> {
     return from(this.keycloackService.loadUserProfile());
   }
+
+  setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
+    let compteurData: any[][] = [];
+    let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
+    let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
+    this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
+    compteurDataReq.forEach(element => {
+      let date = new Date(element.date);
+      let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      let data = [element.id, element.client, element.valeur, formattedDate];
+      if(traiter){
+        let etat = payer ? "Payé" : "Impayé";
+        data.push(etat);
+      }
+      compteurData.push(data);
+  });
+  return compteurData;
+  }
+
+  transferDataSlice(arrayCompteurData:any[][]) {
+    this.data = [];
+    let slice = arrayCompteurData.slice(this.pageStart, this.pageEnd);
+    for (let element of slice) {
+        this.data.push(element);
+    }
+  }
+
+  async fillMeterData(traiter:boolean, payer:boolean){
+    let compteurDataReq:Promise<CompteurDataReq[]> = traiter ? await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd) : await this.FactureEtat(this.idUserConnecter, payer ? 'Payé' : 'Impayé', this.pageStart, this.pageEnd);
+    
+  }
+
 
 }
