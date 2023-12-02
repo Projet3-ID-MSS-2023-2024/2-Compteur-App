@@ -1,10 +1,12 @@
 package com.compteurapp.backendcompteurapp.DTO;
 
-public class CompteurDataDTO {
+import java.util.Date;
+
+public class CompteurDataSenderDTO {
     public Long id;
     public double valeur;
     public String photo;
     public String client;
     public String provider;
-    public Long compteur;
+    public Date date;
 }

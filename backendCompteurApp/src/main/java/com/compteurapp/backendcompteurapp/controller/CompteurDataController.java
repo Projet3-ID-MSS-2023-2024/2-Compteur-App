@@ -1,6 +1,8 @@
 package com.compteurapp.backendcompteurapp.controller;
 
+import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
+import com.compteurapp.backendcompteurapp.mapper.CompteurDataMapper;
 import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
@@ -44,41 +46,16 @@ public class CompteurDataController {
     @Autowired
     CompteurDataService service;
 
+    @Autowired
+    CompteurDataMapper compteurDataMapper;
+
     @PostMapping("/createCompteurData")
-    public CompteurData createCompteurData(@RequestParam("image") MultipartFile image,
-                                           @RequestParam String client,
-                                           @RequestParam String vendeur,
-                                           @RequestParam double valeur,
-                                           @RequestParam Long idCompteur ) throws IOException, IOException {
-        String fileName;
-
-        //Genere un nom de 15 caracteres
-        fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
-
-
-        String uploadDir = "src/main/resources/ImgCompteur/";
-
-        // Créez le répertoire s'il n'existe pas
-        File uploadDirectory = new File(uploadDir);
-        if (!uploadDirectory.exists()) {
-            uploadDirectory.mkdir();
-        }
-
-        // Transférez le fichier vers le répertoire
-        Path uploadPath = Paths.get(uploadDir + fileName);
-        image.transferTo(uploadPath);
-
-        CompteurData compteurData = new CompteurData();
-        compteurData.setPhoto(fileName);
-        compteurData.setVendeur(vendeur);
-        compteurData.setClient(client);
-        compteurData.setValeur(valeur);
-
-        Compteur compteur = new Compteur();
-        compteur.setId(idCompteur);
-        compteurData.setCompteur(compteur);
-
-        return service.createCompteurData(compteurData);
+    public CompteurDataSenderDTO createCompteurData(@RequestParam("image") MultipartFile image,
+                                                    @RequestParam String client,
+                                                    @RequestParam String vendeur,
+                                                    @RequestParam double valeur,
+                                                    @RequestParam Long idCompteur ) throws IOException, IOException {
+       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur);
     }
 
 

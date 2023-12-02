@@ -5,7 +5,6 @@ import com.compteurapp.backendcompteurapp.DTO.CompteurSenderDTO;
 import com.compteurapp.backendcompteurapp.model.*;
 import com.compteurapp.backendcompteurapp.repository.CategoryRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
-import com.compteurapp.backendcompteurapp.services.KeycloakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -20,11 +19,7 @@ public class CompteurMapper {
 
     @Autowired
     CompteurService service;
-    @Autowired
-    KeycloakService keycloakService;
 
-    @Autowired
-    CategoryRepository categoryRepository;
 
     public CompteurSenderDTO createCompteurMapping(CompteurDto compteurDto){
         Compteur compteur;
