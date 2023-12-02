@@ -46,11 +46,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtUserSyncFilter jwtAuthUserFilterBean() {
-        return new JwtUserSyncFilter();
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);

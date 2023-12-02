@@ -13,6 +13,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { from } from 'rxjs';
 import { CompteurDTO } from 'src/models/compteurDTO';
+import { CompteurDataSender } from 'src/models/compteurDataSender';
 
 @Component({
   selector: 'app-send-statement',
@@ -85,6 +86,17 @@ export class SendStatementComponent {
   sendStatement(choice: any) {
     console.log(choice);
     console.log(this.idFocus);
+    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[1],
+      choice[0],
+      this.idUserConnecter,
+      this.idUserConnecter,//provider
+      this.idFocus,
+      choice[2].addAdresse.rue,
+      choice[2].addAdresse.numero,
+      choice[2].addAdresse.codePostal,
+      choice[2].addAdresse.ville,
+      choice[2].addAdresse.pays);
+      console.log(compteurDataSender);
     this.showSendStatement = false;
   }
 

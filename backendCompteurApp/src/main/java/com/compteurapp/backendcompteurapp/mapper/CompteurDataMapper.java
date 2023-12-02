@@ -9,6 +9,7 @@ import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+@Component
 public class CompteurDataMapper {
 
     @Autowired

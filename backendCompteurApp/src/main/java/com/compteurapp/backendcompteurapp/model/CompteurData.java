@@ -47,5 +47,9 @@ public class CompteurData {
     @JoinColumn(name="id_compteur")
     private Compteur compteur;
 
+    @OneToMany(mappedBy = "compteurData")
+    private List<Facture> factures;
+
+
 
 }
