@@ -72,38 +72,38 @@ public class CompteurDataController {
     /* On récupere tout les relevés d'un client */
 
     @GetMapping("/getCompteurDataByClientId/{idClient}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByClientId(@PathVariable String idClient, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByClientId(idClient, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByClientId(@PathVariable String idClient, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByClientId(idClient, start, end);
     }
 
     /* On récupere les CompteurData pour les relevés pas encore traiter */
 
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(@PathVariable String idVendeur, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdWithoutFacture(idVendeur, start,end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdWithoutFacture(@PathVariable String idVendeur, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdWithoutFacture(idVendeur, start, end);
     }
 
 
     /* On récupere les CompteurData d'un client qui ne sont pas traité */
 
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdWithoutFacture/{id_Vendeur}/{idClient}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient, start, end);
     }
 
     /* On récupere les CompteurData ou les factures en fonction d'un état */
 
     @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}/{etat}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
     }
 
 
     /* On récupere les CompteurData ou les factures sont impayé ou payé pour un client */
 
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/{idVendeur}/{idClient}/{etat}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat, start, end);
     }
 
 }

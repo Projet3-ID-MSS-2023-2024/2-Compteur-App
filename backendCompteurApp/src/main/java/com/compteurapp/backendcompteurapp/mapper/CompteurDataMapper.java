@@ -2,23 +2,24 @@ package com.compteurapp.backendcompteurapp.mapper;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataDTO;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
 import com.compteurapp.backendcompteurapp.DTO.CompteurSenderDTO;
-import com.compteurapp.backendcompteurapp.model.Adresse;
-import com.compteurapp.backendcompteurapp.model.Compteur;
-import com.compteurapp.backendcompteurapp.model.CompteurData;
-import com.compteurapp.backendcompteurapp.model.UserDB;
+import com.compteurapp.backendcompteurapp.model.*;
+import com.compteurapp.backendcompteurapp.repository.FactureRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Component
@@ -85,7 +86,45 @@ public class CompteurDataMapper {
         return compteurDataSenderDTO;
     }
 
-    public CompteurDataSenderDTO mappingCompteurDataByVendeurIdWithoutFacture()
+    public List<CompteurDataSenderDTO> mappingCompteurDataByClientId(String idClient, int start, int end){
+        List<CompteurData> compteurDataList = service.getCompteurDataByClientId(idClient, start, end);
+        return mappingCompteurDataSenderList(compteurDataList);
+    }
+
+    public List<CompteurDataSenderDTO> mappingCompteurDataByVendeurIdWithoutFacture(String idVendeur, int start, int end){
+        List<CompteurData> compteurDataList = service.getCompteurDataByVendeurIdWithoutFacture(idVendeur, start, end);
+        return mappingCompteurDataSenderList(compteurDataList);
+    }
+
+    public List<CompteurDataSenderDTO> mappingCompteurDataByVendeurIdAndClientIdWithoutFacture(String idVendeur, String idClient,int start, int end){
+        List<CompteurData> compteurDataList = service.getCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient,start, end);
+        return mappingCompteurDataSenderList(compteurDataList);
+    }
+
+    public List<CompteurDataSenderDTO> mappingCompteurDataByVendeurIdAndFactureEtat(String idVendeur, FactureStatement etat, int start, int end){
+        List<CompteurData> compteurDataList = service.getCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
+        return mappingCompteurDataSenderList(compteurDataList);
+    }
+
+    public List<CompteurDataSenderDTO> mappingCompteurDataByVendeurIdAndClientIdAndFactureEtat(String idVendeur, String idClient, FactureStatement etat, int start, int end){
+        List<CompteurData> compteurDataList = service.getCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat,start, end);
+        return mappingCompteurDataSenderList(compteurDataList);
+    }
+
+    public List<CompteurDataSenderDTO> mappingCompteurDataSenderList(List<CompteurData> compteurDataList){
+        List<CompteurDataSenderDTO> compteurDataSenderDTOList = new ArrayList<>();
+        for (CompteurData compteurData : compteurDataList) {
+            CompteurDataSenderDTO compteurDataSenderDTO = new CompteurDataSenderDTO();
+            compteurDataSenderDTO.id = compteurData.getId();
+            compteurDataSenderDTO.date = compteurData.getDate();
+            compteurDataSenderDTO.valeur = compteurData.getValeur();
+            compteurDataSenderDTO.photo = compteurData.getPhoto();
+            compteurDataSenderDTO.client = compteurData.getClient().getFirstname();
+            compteurDataSenderDTO.provider = compteurData.getProvider().getFirstname();
+            compteurDataSenderDTOList.add(compteurDataSenderDTO);
+        }
+        return compteurDataSenderDTOList;
+    }
 
 
 }
