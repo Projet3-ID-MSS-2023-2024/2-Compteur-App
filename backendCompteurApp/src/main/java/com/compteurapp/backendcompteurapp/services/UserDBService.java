@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +25,23 @@ public class UserDBService {
         return userDBOptional.orElse(null);
     }
 
+    public List<UserDB> getProviders() {
+        return userDBRepository.findAll().stream()
+                .filter(user -> user.getRole() != null && user.getRole().equals("fournisseur"))
+                .collect(Collectors.toList());
+    }
+
+    public UserDB getUserByName(String username) {
+        return userDBRepository.findByUsername(username);
+    }
+
 
     public void syncUser(UserDB user) {
         userDBRepository.save(user);
     }
-
-
-
     public void jwtAuthUserFilterBean() {
         new JwtUserSyncFilter();
     }
 
-    public void deleteUser(String id) {
-        if (this.userDBRepository.existsById(id)) {
-            this.userDBRepository.deleteById(id);
-        }
-    }
 
 }

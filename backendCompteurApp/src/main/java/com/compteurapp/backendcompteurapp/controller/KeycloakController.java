@@ -21,11 +21,6 @@ public class KeycloakController {
 
     //------------------User------------------//
 
-    @GetMapping("/user/{username}")
-    public User getUser(@PathVariable String username) {
-        return this.keycloakService.getUser(username);
-    }
-
     @PutMapping("/user/{id}")
     public Response updateUser(@PathVariable String id, @RequestBody User user) {
         return this.keycloakService.updateUser(id, user);
@@ -37,15 +32,6 @@ public class KeycloakController {
     }
 
     //------------------Provider------------------//
-    @GetMapping("/provider")
-    public List<Provider> getProviders() {
-        return this.keycloakService.getProviders();
-    }
-
-    @GetMapping("/provider/{username}")
-    public Provider getProvider(@PathVariable String username) {
-        return this.keycloakService.getProviderByUsername(username);
-    }
 
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")

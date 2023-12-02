@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { WebApiService } from './_services/web-api.service';
+import { UserDBService } from './_services/userDB.service';
 
 @Component({
   selector: 'app-root',

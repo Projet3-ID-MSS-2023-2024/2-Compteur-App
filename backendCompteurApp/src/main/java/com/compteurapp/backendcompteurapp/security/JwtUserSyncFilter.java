@@ -29,13 +29,11 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
 
     @Value("${realm}")
     private String realm;
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             String id = String.valueOf(token.getTokenAttributes().get("sub"));
-
             // Vérifiez si l'utilisateur existe déjà
             UserDB user = userDBService.getUserById(id);
             if (user == null) {
