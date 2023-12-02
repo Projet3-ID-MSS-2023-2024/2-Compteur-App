@@ -85,5 +85,7 @@ public class CompteurDataMapper {
         return compteurDataSenderDTO;
     }
 
+    public CompteurDataSenderDTO mappingCompteurDataByVendeurIdWithoutFacture()
+
 
 }

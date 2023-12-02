@@ -23,7 +23,7 @@ public class CompteurDataService {
         return repository.save(compteurData);
     }
 
-    public List<CompteurData> getCompteurDataByClientId(Long idClient, int start, int end){
+    public List<CompteurData> getCompteurDataByClientId(String idClient, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
         Page<CompteurData> page = repository.findByClient(idClient, pageable);
         if (page.isEmpty()) {
@@ -32,7 +32,7 @@ public class CompteurDataService {
         return page.getContent();
     }
 
-    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(Long idVendeur, int start, int end){
+    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(String idVendeur, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
         Page<CompteurData> page = repository.findByProviderAndFacturesIsNull(idVendeur, pageable);
         if (page.isEmpty()) {
@@ -41,7 +41,7 @@ public class CompteurDataService {
         return page.getContent();
     }
 
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(Long idVendeur, Long idClient,int start, int end){
+    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(String idVendeur, String idClient,int start, int end){
         Pageable pageable = PageRequest.of(start, end);
         Page<CompteurData> page = repository.findByProviderAndClientAndFacturesIsNull(idVendeur, idClient, pageable);
         if (page.isEmpty()) {
@@ -50,7 +50,7 @@ public class CompteurDataService {
         return page.getContent();
     }
 
-    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(Long idVendeur, FactureStatement etat, int start, int end){
+    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(String idVendeur, FactureStatement etat, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
         Page<CompteurData> page = repository.findByProviderAndFacturesEtat(idVendeur, etat, pageable);
         if (page.isEmpty()) {
@@ -59,7 +59,7 @@ public class CompteurDataService {
         return page.getContent();
     }
 
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(Long idVendeur, Long idClient, FactureStatement etat, int start, int end){
+    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(String idVendeur, String idClient, FactureStatement etat, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
         Page<CompteurData> page = repository.findByProviderAndClientAndFacturesEtat(idVendeur, idClient, etat, pageable);
         if (page.isEmpty()) {
