@@ -2,10 +2,12 @@ package com.compteurapp.backendcompteurapp.mapper;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataDTO;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
 import com.compteurapp.backendcompteurapp.DTO.CompteurSenderDTO;
+import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
+import com.compteurapp.backendcompteurapp.services.CompteurService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+
 @Component
 public class CompteurDataMapper {
 
     @Autowired
     CompteurDataService service;
 
-    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur) throws IOException {
+    @Autowired
+    CompteurService compteurService;
+
+    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays) throws IOException {
 
         CompteurData compteurData = new CompteurData();
         compteurData = saveBDCompteurData(image, client, vendeur, valeur, idCompteur);
@@ -78,5 +84,6 @@ public class CompteurDataMapper {
         compteurDataSenderDTO.provider = compteurData.getProvider().getFirstname();
         return compteurDataSenderDTO;
     }
+
 
 }

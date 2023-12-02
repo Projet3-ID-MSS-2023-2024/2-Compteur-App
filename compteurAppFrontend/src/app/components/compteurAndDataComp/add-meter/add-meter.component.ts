@@ -11,6 +11,7 @@ import { LoadingService } from 'src/app/_services/loading.service';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { Category } from 'src/models/category';
 import { User } from 'src/models/user';
+import { UserDB } from 'src/models/userDB';
 
 @Component({
   selector: 'app-add-meter',
@@ -20,7 +21,7 @@ import { User } from 'src/models/user';
 export class AddMeterComponent {
   @Output() data: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() category: Category[] = [];
-  @Input() provider: User[] = [];
+  @Input() provider: UserDB[] = [];
   adresse!: addAdresse;
 
   addMeter = new FormGroup({

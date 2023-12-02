@@ -54,8 +54,13 @@ public class CompteurDataController {
                                                     @RequestParam String client,
                                                     @RequestParam String vendeur,
                                                     @RequestParam double valeur,
-                                                    @RequestParam Long idCompteur ) throws IOException, IOException {
-       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur);
+                                                    @RequestParam Long idCompteur,
+                                                    @RequestParam String rue,
+                                                    @RequestParam String numeros,
+                                                    @RequestParam String codePostal,
+                                                    @RequestParam String ville,
+                                                    @RequestParam String pays) throws IOException, IOException {
+       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays);
     }
 
 

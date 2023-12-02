@@ -3,8 +3,8 @@ import { CategoryService } from 'src/app/_services/category.service';
 import { Observable, firstValueFrom, last, lastValueFrom } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
 import { Category } from 'src/models/category';
-import { FournisseurService } from 'src/app/_services/fournisseur.service';
-import { User } from 'src/models/user';
+import { UserDBService } from 'src/app/_services/userDB.service';
+import { UserDB } from 'src/models/userDB';
 import { addAdresse } from 'src/models/add-adresse';
 import { AdresseService } from 'src/app/_services/adresse.service';
 import { Compteur } from 'src/models/compteur';
@@ -14,6 +14,7 @@ import { KeycloakProfile } from 'keycloak-js';
 import { from } from 'rxjs';
 import { CompteurDTO } from 'src/models/compteurDTO';
 import { CompteurDataSender } from 'src/models/compteurDataSender';
+import { CompteurDataService } from 'src/app/_services/compteur-data.service';
 
 @Component({
   selector: 'app-send-statement',
@@ -27,7 +28,7 @@ export class SendStatementComponent {
   idFocus!: string;
   category: Category[] = [];
 
-  provider: User[] = [];
+  provider: UserDB[] = [];
 
   compteur!: CompteurDTO;
 
@@ -40,10 +41,11 @@ export class SendStatementComponent {
   constructor(
     private loadingService: LoadingService,
     private categoryService: CategoryService,
-    private providerService: FournisseurService,
+    private providerService: UserDBService,
     private adresseService: AdresseService,
     private compteurService: CompteurService,
-    private keycloackService: KeycloakService
+    private keycloackService: KeycloakService,
+    private compteurDataService: CompteurDataService
   ) {}
 
   async ngAfterViewInit() {
@@ -83,20 +85,20 @@ export class SendStatementComponent {
     }
   }
 
-  sendStatement(choice: any) {
-    console.log(choice);
+  async sendStatement(choice: any) {
     console.log(this.idFocus);
-    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[1],
-      choice[0],
+    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
+      choice[1][0],
       this.idUserConnecter,
       this.idUserConnecter,//provider
       this.idFocus,
-      choice[2].addAdresse.rue,
-      choice[2].addAdresse.numero,
-      choice[2].addAdresse.codePostal,
-      choice[2].addAdresse.ville,
-      choice[2].addAdresse.pays);
+      choice[3].rue,
+      choice[3].numero,
+      choice[3].codePostal,
+      choice[3].ville,
+      choice[3].pays);
       console.log(compteurDataSender);
+      await this.addCompteurData(compteurDataSender);
     this.showSendStatement = false;
   }
 
@@ -180,8 +182,8 @@ export class SendStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getProvider(): Promise<User[]> {
-    const observable = this.providerService.getFournisseurSpring();
+  async getProvider(): Promise<UserDB[]> {
+    const observable = this.providerService.getAllProviders();
     return lastValueFrom(observable);
   }
 
@@ -192,6 +194,11 @@ export class SendStatementComponent {
 
   async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
+    return lastValueFrom(observable);
+  }
+
+  async addCompteurData(compteurData: CompteurDataSender): Promise<any> {
+    const observable = this.compteurDataService.addCompteurData(compteurData);
     return lastValueFrom(observable);
   }
 

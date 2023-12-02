@@ -13,6 +13,7 @@ export class SendCompteurDataComponent {
 
   dataSend = new FormGroup({
     valeur: new FormControl('', Validators.required),
+    photo: new FormControl(''),
   });
 
   async dataSender(choice: boolean) {
