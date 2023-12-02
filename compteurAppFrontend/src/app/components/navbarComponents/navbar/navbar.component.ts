@@ -32,7 +32,10 @@ export class NavbarComponent implements AfterViewInit {
         this.isClient = false;
       }
     }
-    
+    if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
+      location.reload();
+    }
+
   }
 
   logout() {
