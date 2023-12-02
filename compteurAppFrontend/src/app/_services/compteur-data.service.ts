@@ -41,7 +41,7 @@ export class CompteurDataService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<CompteurDataReq>(`/api/getCompteurDataByClientId/${idClient}/${start}/${end}`, { headers });
+    return this.http.get<CompteurDataReq[]>(`/api/getCompteurDataByClientId/${idClient}/${start}/${end}`, { headers });
   }
 
   getCompteurDataByVendeurIdWithoutFacture(idVendeur:string, start:number, end:number){
@@ -49,7 +49,7 @@ export class CompteurDataService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<CompteurDataReq>(`/api/getCompteurDataByVendeurIdWithoutFacture/${idVendeur}/${start}/${end}`, { headers });
+    return this.http.get<CompteurDataReq[]>(`/api/getCompteurDataByVendeurIdWithoutFacture/${idVendeur}/${start}/${end}`, { headers });
   }
 
   getCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur:string, idClient:string,start:number, end:number){
@@ -57,7 +57,7 @@ export class CompteurDataService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<CompteurDataReq>(`/api/getCompteurDataByVendeurIdAndClientIdWithoutFacture/${idVendeur}/${idClient}/${start}/${end}`, { headers });
+    return this.http.get<CompteurDataReq[]>(`/api/getCompteurDataByVendeurIdAndClientIdWithoutFacture/${idVendeur}/${idClient}/${start}/${end}`, { headers });
   }
 
   getCompteurDataByVendeurIdAndFactureEtat(idVendeur:string, etat:string,start:number, end:number){
@@ -65,7 +65,7 @@ export class CompteurDataService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<CompteurDataReq>(`/api/getCompteurDataByVendeurIdAndFactureEtat/${idVendeur}/${etat}/${start}/${end}`, { headers });
+    return this.http.get<CompteurDataReq[]>(`/api/getCompteurDataByVendeurIdAndFactureEtat/${idVendeur}/${etat}/${start}/${end}`, { headers });
   }
 
   getCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur:string, idClient:string, etat:string, start:number, end:number){
@@ -73,7 +73,7 @@ export class CompteurDataService {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.get<CompteurDataReq>(`/api/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/${idVendeur}/${idClient}/${etat}/${start}/${end}`, { headers });
+    return this.http.get<CompteurDataReq[]>(`/api/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/${idVendeur}/${idClient}/${etat}/${start}/${end}`, { headers });
   }
 
 }

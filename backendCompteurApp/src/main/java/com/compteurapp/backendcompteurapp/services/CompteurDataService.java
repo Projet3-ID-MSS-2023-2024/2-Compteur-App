@@ -25,7 +25,7 @@ public class CompteurDataService {
 
     public List<CompteurData> getCompteurDataByClientId(String idClient, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByClient(idClient, pageable);
+        Page<CompteurData> page = repository.findByClient_Id(idClient, pageable);
         if (page.isEmpty()) {
             throw new ResourceNotFoundException("No CompteurData found with client id " + idClient);
         }
@@ -34,7 +34,7 @@ public class CompteurDataService {
 
     public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(String idVendeur, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByProviderAndFacturesIsNull(idVendeur, pageable);
+        Page<CompteurData> page = repository.findByProvider_IdAndFacturesIsNull(idVendeur, pageable);
         if (page.isEmpty()) {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " without Facture");
         }
@@ -43,7 +43,7 @@ public class CompteurDataService {
 
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(String idVendeur, String idClient,int start, int end){
         Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByProviderAndClientAndFacturesIsNull(idVendeur, idClient, pageable);
+        Page<CompteurData> page = repository.findByProvider_IdAndClientAndFacturesIsNull(idVendeur, idClient, pageable);
         if (page.isEmpty()) {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and client id " + idClient + " without Facture");
         }
@@ -52,7 +52,7 @@ public class CompteurDataService {
 
     public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(String idVendeur, FactureStatement etat, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByProviderAndFacturesEtat(idVendeur, etat, pageable);
+        Page<CompteurData> page = repository.findByProvider_IdAndFacturesEtat(idVendeur, etat, pageable);
         if (page.isEmpty()) {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + " and Facture etat " + etat);
         }
@@ -61,7 +61,7 @@ public class CompteurDataService {
 
     public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(String idVendeur, String idClient, FactureStatement etat, int start, int end){
         Pageable pageable = PageRequest.of(start, end);
-        Page<CompteurData> page = repository.findByProviderAndClientAndFacturesEtat(idVendeur, idClient, etat, pageable);
+        Page<CompteurData> page = repository.findByProvider_IdAndClientAndFacturesEtat(idVendeur, idClient, etat, pageable);
         if (page.isEmpty()) {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + ", client id " + idClient + " and Facture etat " + etat);
         }
