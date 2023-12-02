@@ -46,8 +46,8 @@ public class CompteurDataController {
 
     @PostMapping("/createCompteurData")
     public CompteurData createCompteurData(@RequestParam("image") MultipartFile image,
-                                           @RequestParam Long client,
-                                           @RequestParam Long vendeur,
+                                           @RequestParam String client,
+                                           @RequestParam String vendeur,
                                            @RequestParam double valeur,
                                            @RequestParam Long idCompteur ) throws IOException, IOException {
         String fileName;

@@ -6,8 +6,6 @@ import com.compteurapp.backendcompteurapp.model.*;
 import com.compteurapp.backendcompteurapp.repository.CategoryRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import com.compteurapp.backendcompteurapp.services.KeycloakService;
-import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -68,13 +66,14 @@ public class CompteurMapper {
         return compteur;
     }
 
-    public CompteurSenderDTO mappingSenderDto(Compteur compteur){
+    public CompteurSenderDTO mappingSenderDto(Compteur compteurReq){
         CompteurSenderDTO compteurSenderDTO = new CompteurSenderDTO();
-        compteurSenderDTO.id = compteur.getId();
-        compteurSenderDTO.nom = compteur.getNom();
-        compteurSenderDTO.nom_category = compteur.getCategory().getName();
-        compteurSenderDTO.nom_fournisseur = compteur.getProvider().getFirstname();
-        compteurSenderDTO.nom_user = compteur.getClient().getFirstname();
+        Optional<Compteur> compteur = service.getOneCompteur(compteurReq.getId());
+        compteurSenderDTO.id = compteur.get().getId();
+        compteurSenderDTO.nom = compteur.get().getNom();
+        compteurSenderDTO.nom_category = compteur.get().getCategory().getName();
+        compteurSenderDTO.nom_fournisseur = compteur.get().getProvider().getFirstname();
+        compteurSenderDTO.nom_user = compteur.get().getClient().getFirstname();
 
         return compteurSenderDTO;
 

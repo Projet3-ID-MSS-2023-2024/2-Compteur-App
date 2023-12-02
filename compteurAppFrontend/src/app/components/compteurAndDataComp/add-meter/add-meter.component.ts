@@ -57,11 +57,11 @@ export class AddMeterComponent {
           .then(response => response.json())
           .then(data => {
             this.adresse = new addAdresse(
+              data.address.town,
+              data.address.country,
+              data.address.postcode,
               data.address.road,
               data.address.house_number,
-              data.address.postcode,
-              data.address.town,
-              data.address.country
             );
             resolve(this.adresse);
           })

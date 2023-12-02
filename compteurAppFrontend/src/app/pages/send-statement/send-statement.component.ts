@@ -105,6 +105,7 @@ export class SendStatementComponent {
   async newMetter(data: any) {
     try {
       let adresse = await this.addAdresse(data[1]);
+      console.log(data)
       let compteur = new Compteur(
         data[0].nom,
         this.idUserConnecter,
