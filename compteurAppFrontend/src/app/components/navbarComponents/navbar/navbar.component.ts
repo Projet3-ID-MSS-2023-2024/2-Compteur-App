@@ -38,6 +38,7 @@ export class NavbarComponent implements AfterViewInit {
     if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
       location.reload();
     }
+
   }
 
   logout() {
