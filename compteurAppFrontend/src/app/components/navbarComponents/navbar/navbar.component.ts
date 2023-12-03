@@ -20,24 +20,24 @@ export class NavbarComponent implements AfterViewInit {
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
-    const authenticated = await this.keycloak.isLoggedIn();
-    if (authenticated) {
-      const token = await this.keycloak.getToken();
-      console.log(token);
-      this.isAdmin = this.keycloak.isUserInRole('admin');
-      this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
-      this.isClient = this.keycloak.isUserInRole('client');
+    // const authenticated = await this.keycloak.isLoggedIn();
+    // if (authenticated) {
+    //   const token = await this.keycloak.getToken();
+    //   console.log(token);
+    //   this.isAdmin = this.keycloak.isUserInRole('admin');
+    //   this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
+    //   this.isClient = this.keycloak.isUserInRole('client');
 
-      if(this.isAdmin && this.isClient){
-        this.isClient = false;
-      }
-      if(this.isFournisseur && this.isClient){
-        this.isClient = false;
-      }
-    }
-    if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
-      location.reload();
-    }
+    //   if(this.isAdmin && this.isClient){
+    //     this.isClient = false;
+    //   }
+    //   if(this.isFournisseur && this.isClient){
+    //     this.isClient = false;
+    //   }
+    // }
+    // if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
+    //   location.reload();
+    // }
 
   }
 
