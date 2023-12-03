@@ -36,6 +36,14 @@ export class CompteurDataService {
     });
   }
 
+  getCompteurDataById(id:string){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.get<CompteurDataReq>(`/api/CompteurData/${id}`, { headers });
+  }
+
   getCompteurDataByClientId(idClient:string, start:number, end:number){
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {

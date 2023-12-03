@@ -6,10 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CompteurDataRepository extends JpaRepository<CompteurData, Long> {
 
+    Optional<CompteurData> findById(Long id);
     Page<CompteurData> findByClient_Id(String idClient, Pageable pageable);
     Page<CompteurData> findByProvider_IdAndFacturesIsNull(String idVendeur, Pageable pageable);
     Page<CompteurData> findByProvider_IdAndClientAndFacturesIsNull(String idVendeur, String idClient, Pageable pageable);

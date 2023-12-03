@@ -63,6 +63,11 @@ public class CompteurDataController {
        return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays);
     }
 
+    @GetMapping("/CompteurData/{id}")
+    public CompteurDataSenderDTO getCompteurDataById(@PathVariable Long id) {
+        return compteurDataMapper.findById(id);
+    }
+
 
 
     /**/

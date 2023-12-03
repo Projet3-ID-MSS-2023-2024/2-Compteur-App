@@ -41,6 +41,8 @@ export class ReceivedStatementComponent {
   historyPagedataCompteurTraiterPayer: any[][] = [];
   historyPagedataCompteurTraiterImpayer: any[][] = [];
 
+  photoCompteur!: string;
+
   constructor(private compteurDataService: CompteurDataService,
     private keycloackService: KeycloakService,
     private loadingService: LoadingService,) {}
@@ -59,7 +61,7 @@ export class ReceivedStatementComponent {
 
 
 
-  buttonPress(arrayData: any){
+  async buttonPress(arrayData: any){
     switch(arrayData[0]){
       case 'btn1':
         this.closeOrOpenPicture = true;
@@ -68,12 +70,11 @@ export class ReceivedStatementComponent {
         break;
     }
     this.idFocus = arrayData[1];
+    this.photoCompteur = (await this.getCompteurById(arrayData[1].toString())).photo;
+   
   }
 
 
-  searchBarDataReceip(data:any){
-    console.log(data);
-  }
 
   //FILTRER LES COMPTEURSDATA PAS TRAITER/TRAITER
   async traiterFilter(data: string){
@@ -257,6 +258,11 @@ export class ReceivedStatementComponent {
 
   getDataUser(): Observable<KeycloakProfile> {
     return from(this.keycloackService.loadUserProfile());
+  }
+
+  getCompteurById(id:string): Promise<CompteurDataReq> {
+    const observable = this.compteurDataService.getCompteurDataById(id);
+    return lastValueFrom(observable);
   }
 
 

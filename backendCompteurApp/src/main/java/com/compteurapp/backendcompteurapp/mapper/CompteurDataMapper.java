@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -41,11 +42,16 @@ public class CompteurDataMapper {
         return compteurSenderDTO;
     }
 
+    public CompteurDataSenderDTO findById(Long id){
+        Optional<CompteurData> compteurData = service.findById(id);
+        return mappingSenderDto(compteurData.get());
+    }
+
 
     public String saveMetterImage(MultipartFile image) throws IOException {
         String fileName;
         fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
-        String uploadDir = "src/main/resources/ImgCompteur/";
+        String uploadDir = "src/main/resources/static/ImgCompteur/";
 
         File uploadDirectory = new File(uploadDir);
         if (!uploadDirectory.exists()) {
