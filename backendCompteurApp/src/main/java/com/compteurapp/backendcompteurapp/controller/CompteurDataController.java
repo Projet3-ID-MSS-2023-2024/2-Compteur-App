@@ -59,8 +59,13 @@ public class CompteurDataController {
                                                     @RequestParam String numeros,
                                                     @RequestParam String codePostal,
                                                     @RequestParam String ville,
-                                                    @RequestParam String pays) throws IOException, IOException {
+                                                    @RequestParam String pays) throws Exception {
        return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays);
+    }
+
+    @GetMapping("/CompteurData/{id}")
+    public CompteurDataSenderDTO getCompteurDataById(@PathVariable Long id) {
+        return compteurDataMapper.findById(id);
     }
 
 

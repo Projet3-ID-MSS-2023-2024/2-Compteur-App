@@ -26,6 +26,7 @@ export class SendStatementComponent {
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
   idFocus!: string;
+  providerFocus!: string;
   category: Category[] = [];
 
   provider: UserDB[] = [];
@@ -86,19 +87,21 @@ export class SendStatementComponent {
   }
 
   async sendStatement(choice: any) {
-    console.log(this.idFocus);
+    console.log(choice);
+    if(choice[0]){
+      let provider = await this.getProvideurCompteur(this.idFocus);
     let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
       choice[1][0],
       this.idUserConnecter,
-      this.idUserConnecter,//provider
+      provider["result"],
       this.idFocus,
       choice[3].rue,
       choice[3].numero,
       choice[3].codePostal,
       choice[3].ville,
       choice[3].pays);
-      console.log(compteurDataSender);
       await this.addCompteurData(compteurDataSender);
+    }
     this.showSendStatement = false;
   }
 
@@ -119,7 +122,6 @@ export class SendStatementComponent {
   async newMetter(data: any) {
     try {
       let adresse = await this.addAdresse(data[1]);
-      console.log(data)
       let compteur = new Compteur(
         data[0].nom,
         this.idUserConnecter,
@@ -131,8 +133,8 @@ export class SendStatementComponent {
       this.data.push([
         newCompteur.id,
         newCompteur.nom,
-        newCompteur.nom_fournisseur,
-        newCompteur.nom_category,
+        this.provider.find((item) => item.id === data[0].fournisseur)?.firstname,
+        this.category.find((item) => item.id == data[0].categorie)?.name,
       ]);
 
       this.loadingService.emettreEvenement('sucess');
@@ -218,6 +220,11 @@ export class SendStatementComponent {
 
   async deleteCompteur(id: string): Promise<Compteur> {
     const observable = this.compteurService.deleteCompteurs(id);
+    return lastValueFrom(observable);
+  }
+
+  async getProvideurCompteur(id: string): Promise<any> {
+    const observable = this.compteurService.getProvideurCompteur(id);
     return lastValueFrom(observable);
   }
 }

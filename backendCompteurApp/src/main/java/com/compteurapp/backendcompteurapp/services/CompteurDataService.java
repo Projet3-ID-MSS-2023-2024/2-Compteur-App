@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CompteurDataService {
@@ -21,6 +21,10 @@ public class CompteurDataService {
 
     public CompteurData createCompteurData(CompteurData compteurData){
         return repository.save(compteurData);
+    }
+
+    public Optional<CompteurData> findById(Long id){
+        return repository.findById(id);
     }
 
     public List<CompteurData> getCompteurDataByClientId(String idClient, int start, int end){

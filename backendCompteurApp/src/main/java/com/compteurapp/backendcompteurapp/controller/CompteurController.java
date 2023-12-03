@@ -26,10 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -55,6 +52,15 @@ public class CompteurController {
     public List<CompteurSenderDTO> getUserCompter(@PathVariable String id){
         return this.compteurMapper.getCompteurList(id);
     }
+
+    @GetMapping("/getProvideurCompteur/{id}")
+    public Map<String, String> getProvideurCompteur(@PathVariable Long id){
+        String result = this.compteurMapper.getProvideurCompteur(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("result", result);
+        return response;
+    }
+
 
     @DeleteMapping("/compteur/{id}")
     public boolean delete(@PathVariable Long id){

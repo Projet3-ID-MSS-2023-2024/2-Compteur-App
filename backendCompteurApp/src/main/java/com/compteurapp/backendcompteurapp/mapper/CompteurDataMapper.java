@@ -14,6 +14,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.json.JSONObject;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +38,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -33,19 +50,27 @@ public class CompteurDataMapper {
     @Autowired
     CompteurService compteurService;
 
-    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays) throws IOException {
+    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays) throws Exception {
 
         CompteurData compteurData = new CompteurData();
+        if(!verifyAdresse(idCompteur, ville, pays)) {
+            throw new Exception("Adresse invalide");
+        }
         compteurData = saveBDCompteurData(image, client, vendeur, valeur, idCompteur);
         CompteurDataSenderDTO compteurSenderDTO = mappingSenderDto(compteurData);
         return compteurSenderDTO;
+    }
+
+    public CompteurDataSenderDTO findById(Long id){
+        Optional<CompteurData> compteurData = service.findById(id);
+        return mappingSenderDto(compteurData.get());
     }
 
 
     public String saveMetterImage(MultipartFile image) throws IOException {
         String fileName;
         fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
-        String uploadDir = "src/main/resources/ImgCompteur/";
+        String uploadDir = "src/main/resources/static/ImgCompteur/";
 
         File uploadDirectory = new File(uploadDir);
         if (!uploadDirectory.exists()) {
@@ -57,7 +82,7 @@ public class CompteurDataMapper {
         return fileName;
     }
 
-    public CompteurData saveBDCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur) throws IOException {
+    public CompteurData saveBDCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur)throws IOException {
         CompteurData compteurData = new CompteurData();
 
         UserDB clientCompteur = new UserDB();
@@ -127,6 +152,62 @@ public class CompteurDataMapper {
         }
         return compteurDataSenderDTOList;
     }
+
+    public static JsonNode getCoordinates(String city, String country) throws Exception {
+        String encodedAddress = URLEncoder.encode(city + ", " + country, StandardCharsets.UTF_8.toString());
+        URL url = new URL("https://geocode.maps.co/search?q=" + encodedAddress);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestProperty("accept", "application/json");
+
+        InputStream responseStream = connection.getInputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(responseStream);
+
+        return root.get(0); // return the first result
+    }
+
+
+
+
+    public boolean verifyAdresse(Long idCompteur, String ville, String pays) throws Exception {
+        Compteur compteur = compteurService.getOneCompteur(idCompteur).get();
+        String villeCompteur = compteur.getAdresse().getVille();
+        String paysCompteur = compteur.getAdresse().getPays();
+
+        // Get coordinates for the two cities
+        JsonNode jsonVille = getCoordinates(ville, pays);
+        JsonNode jsonVilleCompteur = getCoordinates(villeCompteur, paysCompteur);
+
+        // Get the latitude and longitude
+        double latVille = jsonVille.path("lat").asDouble();
+        double lonVille = jsonVille.path("lon").asDouble();
+        double latVilleCompteur = jsonVilleCompteur.path("lat").asDouble();
+        double lonVilleCompteur = jsonVilleCompteur.path("lon").asDouble();
+
+        // Calculate the distance between the two cities
+        double distance = calculateDistance(latVille, lonVille, latVilleCompteur, lonVilleCompteur);
+
+        // Check if the distance is less than 50 km
+        return distance < 50;
+    }
+
+
+
+
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radius of the earth in km
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
+
+
 
 
 }

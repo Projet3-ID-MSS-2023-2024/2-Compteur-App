@@ -25,6 +25,7 @@ public class CompteurMapper {
         Compteur compteur;
         compteur = mappingNewCompteur(compteurDto);
         compteur = service.createCompteur(compteur);
+        compteur = service.getOneCompteur(compteur.getId()).get();
         CompteurSenderDTO compteurSenderDTO = mappingSenderDto(compteur);
         return compteurSenderDTO;
     }
@@ -33,6 +34,10 @@ public class CompteurMapper {
         List<Compteur> compteurList = service.findCompteurByIdUser(id);
         List<CompteurSenderDTO> compteurSenderDTOList = mappingMultipleCompteur(compteurList);
         return compteurSenderDTOList;
+    }
+
+    public String getProvideurCompteur(Long id){
+        return service.getOneCompteur(id).get().getProvider().getId();
     }
 
 
@@ -61,14 +66,13 @@ public class CompteurMapper {
         return compteur;
     }
 
-    public CompteurSenderDTO mappingSenderDto(Compteur compteurReq){
+    public CompteurSenderDTO mappingSenderDto(Compteur compteur){
         CompteurSenderDTO compteurSenderDTO = new CompteurSenderDTO();
-        Optional<Compteur> compteur = service.getOneCompteur(compteurReq.getId());
-        compteurSenderDTO.id = compteur.get().getId();
-        compteurSenderDTO.nom = compteur.get().getNom();
-        compteurSenderDTO.nom_category = compteur.get().getCategory().getName();
-        compteurSenderDTO.nom_fournisseur = compteur.get().getProvider().getFirstname();
-        compteurSenderDTO.nom_user = compteur.get().getClient().getFirstname();
+        compteurSenderDTO.id = compteur.getId();
+        compteurSenderDTO.nom = compteur.getNom();
+        compteurSenderDTO.nom_category = compteur.getCategory().getName();
+        compteurSenderDTO.nom_fournisseur = compteur.getProvider().getFirstname();
+        compteurSenderDTO.nom_user = compteur.getClient().getFirstname();
 
         return compteurSenderDTO;
 
