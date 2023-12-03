@@ -30,6 +30,7 @@ export class ReceivedStatementComponent {
   idUserConnecter: any;
 
   data: any[][] = [];
+  pageActuelle!: string;
 
   dataCompteurNonTraiter: any[][] = [];
   dataCompteurTraiterPayer: any[][] = [];
@@ -48,11 +49,7 @@ export class ReceivedStatementComponent {
     try {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
-
-      await this.fillMeterData(false, false);
-      this.transferDataSlice(this.dataCompteurNonTraiter);
-
-
+      this.mainFunctionShowData('Non traité');
       this.loadingService.emettreEvenement('sucess');
     } catch {
       this.loadingService.emettreEvenement('error');
@@ -79,32 +76,16 @@ export class ReceivedStatementComponent {
 
   async traiterFilter(data: string){
     this.traiterFilterChoice = data;
-    this.resetPage();
-    switch(data){
-      case 'choiceOne':
-        await this.fillMeterData(false, false);
-        this.transferDataSlice(this.dataCompteurNonTraiter);
-        break;
-      case 'choiceTwo':
-        await this.fillMeterData(true, false);
-        this.transferDataSlice(this.dataCompteurTraiterImpayer);
-        break;
-    }
+    this.pageStart = 0;
+    data = data == 'choiceOne' ? 'Non traité' : 'Impayé';
+    this.mainFunctionShowData(data);
   }
 
   async payerFilter(data: string){
     this.traiterFilterChoice = data;
-    this.resetPage();
-    switch(data){
-      case 'choiceOne':
-        await this.fillMeterData(true, false);
-        this.transferDataSlice(this.dataCompteurTraiterImpayer);
-        break;
-      case 'choiceTwo':
-        await this.fillMeterData(true, true);
-        this.transferDataSlice(this.dataCompteurTraiterPayer);
-        break;
-    }
+    this.pageStart = 0;
+    data = data == 'choiceOne' ? 'Impayé' : 'Payé';
+    this.mainFunctionShowData(data);
   }
 
   closePicture(close:boolean){
@@ -114,16 +95,15 @@ export class ReceivedStatementComponent {
   changePage(data:string){
     switch(data){
       case 'next':
-        this.pageStart += 10;
-        this.pageEnd += 10;
+        this.pageStart += 1;
         break;
       case 'previous':
         if(this.pageStart > 0){
-          this.pageStart -= 10;
-          this.pageEnd -= 10;
+          this.pageStart -= 1;
         }
         break;
     }
+    this.mainFunctionShowData(this.pageActuelle);
   }
 
   async getCompteurDataByClientId(idClient:string, start:number, end:number): Promise<CompteurDataReq[]> {
@@ -155,35 +135,50 @@ export class ReceivedStatementComponent {
     return from(this.keycloackService.loadUserProfile());
   }
 
-  setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
-    //On affiche l'etat si compteur traiter
-    let compteurData: any[][] = [];
-    let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
-    let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
-    this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
-    //
-
-    //On formate les dataCompteur pour l'affichage
-    compteurDataReq.forEach(element => {
-      let date = new Date(element.date);
-      let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-      let data = [element.id, element.client, element.valeur, formattedDate];
-      if(traiter){
-        let etat = payer ? "Payé" : "Impayé";
-        data.push(etat);
-      }
-      compteurData.push(data);
-  });
-  return compteurData;
+  /**/
+  /* FONCTION PRINCIPALE */
+  /* PARMIS 3 CHOIX : Non traité, Payé, Impayé */
+  /* ON VA AFFICHER SUR LA PAGE LES DONNNES CORRESPONDANTES */
+  /**/
+  async mainFunctionShowData(page:string){
+    switch(page){
+      case 'Non traité':
+        if(!this.historyPagedataCompteurNonTraiter.includes([this.pageStart, false])){
+          await this.fillMeterData(false, false);
+          this.transferDataSlice(this.dataCompteurTraiterImpayer);
+        }
+        this.pageActuelle = 'Non traité';
+        break;
+      case 'Payé':
+        if(!this.historyPagedataCompteurTraiterPayer.includes([this.pageStart, false])){
+          await this.fillMeterData(true, true);
+          this.transferDataSlice(this.dataCompteurTraiterPayer);
+        }
+        this.pageActuelle = 'Payé';
+        break;
+      case 'Impayé':
+        if(!this.historyPagedataCompteurTraiterImpayer.includes([this.pageStart, false])){
+          await this.fillMeterData(true, false);
+          this.transferDataSlice(this.dataCompteurTraiterImpayer);
+        }
+        this.pageActuelle = 'Impayé';
+        break;
+    }
   }
 
-
+  /**/
+  /* FONCTION RECUPERER DONNEE ET GARDIR HISTORIQUE */
+  /* ON RECUPERE LES DONNEES ET ON LES GARDENT DANS UN TABLEAU */
+  /* ON GARDE AUSSI L'HISTORIQUE DES PAGES POUR EVITER LES APPELLES BD INUTILE*/
+  /**/
   async fillMeterData(traiter:boolean, payer:boolean){
-    //On recupere les dataCompteur et on sauvegarde les pages historique
-    let compteurDataReq = traiter ? await this.FactureEtat(this.idUserConnecter, payer ? 'PAYER' : 'IMPAYER', this.pageStart, this.pageEnd) : await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd);
-    let historyPageable = [this.pageStart, this.pageEnd];
 
-    //On ajoute les nouvelles dataCompteur dans les tableaux DataTraiterPayer/Impayer, NonTraitrer 
+    let end = this.pageStart == 0 ? 10 : this.pageStart*10;
+    //SUIVANT LES BOOLEANS ON APPELLE LES FONCTIONS CORRESPONDANTES
+    let compteurDataReq = traiter ? await this.FactureEtat(this.idUserConnecter, payer ? 'PAYER' : 'IMPAYER', this.pageStart, end) : await this.WithoutFacture(this.idUserConnecter, this.pageStart, end);
+    let historyPageable = [this.pageStart, compteurDataReq.length>0];
+
+    //GARNISSAGE TABLEAU DONNEE
     if(!traiter){
       this.dataCompteurNonTraiter.push(this.setDataCompteur(compteurDataReq, traiter, payer));
       this.historyPagedataCompteurNonTraiter.push(historyPageable);
@@ -198,25 +193,45 @@ export class ReceivedStatementComponent {
         this.historyPagedataCompteurTraiterImpayer.push(historyPageable);
       }
     }
-
-    //Doit aussi faire en sorte que si on à déjà les dataCompteur on ne les recupere pas + verifier si il y a encore des datas
-    //Sinon bloque les request
   }
 
+  /**/
+  /* FONCTION FORMATAGE DONNEE */
+  /* ON FORMATE LES DONNEES POUR L'AFFICHAGE */
+  /**/
+  setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
+    //ON ADAPTE LA LEGENDE DE LA LISTE
+    let compteurData: any[][] = [];
+    let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
+    let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
+    this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
+
+
+    //FORMATAGE DES DONNEES
+    compteurDataReq.forEach(element => {
+      let date = new Date(element.date);
+      let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      let data = [element.id, element.client, element.valeur, formattedDate];
+      if(traiter){
+        let etat = payer ? "Payé" : "Impayé";
+        data.push(etat);
+      }
+      compteurData.push(data);
+  });
+  return compteurData;
+  }
+
+
+  /**/
+  /* FONCTION TRANSFERT DONNEE FORMATER VERS DONNEE AFFICHER */
+  /**/
   transferDataSlice(arrayCompteurData:any[][]) {
     //On transfert les dataCompteur dans data
     this.data = [];
-    let slice = arrayCompteurData.slice(this.pageStart, this.pageEnd);
-    for (let index = 0; index < slice.length+1; index++) {
-        this.data.push(slice[0][index]);
-    }
+    let end = this.pageStart == 0 ? 10 : this.pageStart*10;
+    let slice = arrayCompteurData.slice(this.pageStart*10, end);
+    console.log(slice);
   }
-
-  resetPage(){
-    this.pageStart = 0;
-    this.pageEnd = 10;
-  }
-
 
 
 }
