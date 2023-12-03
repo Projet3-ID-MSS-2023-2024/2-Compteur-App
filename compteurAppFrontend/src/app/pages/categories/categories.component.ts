@@ -60,9 +60,11 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   categoryName = '';
 
   onSubmit(): void {
-    this.categoryService.create(this.categoryName).pipe(takeUntil(this.destroy$)).subscribe(
-      () => this.loadCategories(),
-      error => console.error(error)
-    );
+    if(this.categoryName != '') {
+      this.categoryService.create(this.categoryName).pipe(takeUntil(this.destroy$)).subscribe(
+        () => this.loadCategories(),
+        error => console.error(error)
+      );
+    }
   }
 }

@@ -120,14 +120,14 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService, UserDBService],
-    },
-  ],
+  // providers: [
+  //   {
+  //     provide: APP_INITIALIZER,
+  //     useFactory: initializeKeycloak,
+  //     multi: true,
+  //     // deps: [KeycloakService, UserDBService],
+  //   },
+  // ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
