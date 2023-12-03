@@ -7,6 +7,9 @@ import { MessageService } from 'src/app/_services/message.service';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
 import { Observable } from 'rxjs';
+import { UserDBService } from 'src/app/_services/userDB.service';
+import { UserDB } from 'src/models/userDB';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'app-fournisseur-list',
@@ -20,15 +23,16 @@ export class FournisseurListComponent implements OnInit {
   categories$!: Observable<Category[]>;
   categories: any = [];
   fournisseurData$!: Observable<AddFournisseurSpring[]>;
-  filterData: AddFournisseurSpring[] = [];
-  fournisseurData: AddFournisseurSpring[] = [];
+  filterData: UserDB[] = [];
+  fournisseurData: UserDB[] = [];
+
+  userDB!: UserDB[];
 
   constructor(
-    private readonly keycloak: KeycloakService,
     private route: Router,
-    private fournisseurService: FournisseurService,
     private categoryService: CategoryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userDBService: UserDBService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +44,7 @@ export class FournisseurListComponent implements OnInit {
 
 
   private initFournisseurs() {
-    this.fournisseurData$ = this.fournisseurService.getFournisseurSpring();
+    this.fournisseurData$ = this.userDBService.getAllProviders();
     this.fournisseurData$.subscribe((data: any) => {
       this.fournisseurData = data;
       this.filterData = [...data];
@@ -67,7 +71,7 @@ export class FournisseurListComponent implements OnInit {
       this.filterData = [...this.fournisseurData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) => {
-        return fournisseur.idCategory == event.target.value;
+        return fournisseur.categoryId == event.target.value;
       });
       console.log(this.filterData);
     }
@@ -78,7 +82,7 @@ export class FournisseurListComponent implements OnInit {
       this.filterData = [...this.fournisseurData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) =>
-        fournisseur.userName?.toLowerCase().includes(this.searchValue.toLowerCase())
+        fournisseur.username?.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     }
   }

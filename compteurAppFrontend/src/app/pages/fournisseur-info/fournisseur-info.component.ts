@@ -9,6 +9,7 @@ import { MessageService } from 'src/app/_services/message.service';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
 import { Location } from '@angular/common';
+import { UserDBService } from 'src/app/_services/userDB.service';
 
 @Component({
   selector: 'app-fournisseur-info',
@@ -17,7 +18,7 @@ import { Location } from '@angular/common';
 })
 export class FournisseurInfoComponent {
   public registerForm: FormGroup;
-  public fournisseurSpring$!: Observable<AddFournisseurSpring>;
+  public fournisseurSpring$!: Observable<any>;
   public categories$!: Observable<Category[]>;
   public idProvider: number | undefined;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
@@ -32,7 +33,8 @@ export class FournisseurInfoComponent {
     private CategoryService: CategoryService,
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private location: Location
+    private location: Location,
+    private userDBService: UserDBService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -51,18 +53,18 @@ export class FournisseurInfoComponent {
     console.log(userName);
     if (userName) {
       // Vérifie si 'userName' n'est pas null
-      this.fournisseurSpring$ =
-        this.fournisseurService.getFournisseurSpringByUserName(userName);
+      this.fournisseurSpring$ = this.userDBService.getProviderByUserName(userName);
       this.fournisseurSpring$.subscribe(
         (data) => {
+          console.log(data);
           this.idProvider = data.id;
           this.registerForm.patchValue({
-            username: data.userName,
+            username: data.username,
             email: data.email,
             phoneNumber: data.phoneNumber,
             TVA: data.tva,
             password: data.password,
-            category: data.idCategory,
+            category: data.categoryId,
           });
         },
         (error) => {
@@ -78,10 +80,9 @@ export class FournisseurInfoComponent {
     console.error('Une erreur est survenue : ', error);
   }
 
-  addFournisseur() {
+  updateFournisseur() {
     this.isLoading = true;
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
       this.fournisseurSpring$.subscribe((fournisseurSpring) => {
         const updatedFournisseur: AddFournisseurSpring = {
           ...fournisseurSpring,
@@ -97,7 +98,6 @@ export class FournisseurInfoComponent {
           idCategory: this.registerForm.value.category,
         };
 
-        console.log(updatedFournisseur);
         this.fournisseurService
           .updateFournisseurSpring(updatedFournisseur, this.idProvider)
           .subscribe(

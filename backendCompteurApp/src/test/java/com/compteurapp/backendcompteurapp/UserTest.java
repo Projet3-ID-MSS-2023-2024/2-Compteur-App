@@ -2,8 +2,12 @@ package com.compteurapp.backendcompteurapp;
 
 import com.compteurapp.backendcompteurapp.model.Provider;
 import com.compteurapp.backendcompteurapp.model.User;
+import com.compteurapp.backendcompteurapp.model.UserDB;
+import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtilTest;
+import com.compteurapp.backendcompteurapp.services.UserDBService;
 import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,11 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class KeycloakControllerTest{
+public class UserTest {
 
-@Autowired
-KeycloakSecurityUtilTest keycloakUtil;
 
+    @Autowired
+    KeycloakSecurityUtilTest keycloakUtil;
+
+    @Autowired
+    UserDBRepository userDBRepository;
+
+    @Autowired
+    UserDBService userDBService;
 
     @Value("compteurapptest")
     private String realm;
@@ -37,20 +47,26 @@ KeycloakSecurityUtilTest keycloakUtil;
     @Order(0)
     public void init() {
         List<User> users;
+        List<UserDB> userDBS;
+        // ------------ User 1 ----------------
         User user1 = new User();
         user1.setFirstName("test1");
         user1.setLastName("test1");
         user1.setEmail("test1@gmail.com");
         user1.setUserName("test1");
         user1.setPassword("test1");
-        User user2 = new User();
-        user2.setFirstName("test2");
-        user2.setLastName("test2");
-        user2.setEmail("test2@gmail.com");
-        user2.setUserName("test2");
-        user2.setPassword("test2");
-        users = List.of(user1, user2);
 
+        UserDB userDB1 = new UserDB();
+        userDB1.setFirstname(user1.getFirstName());
+        userDB1.setLastname(user1.getLastName());
+        userDB1.setEmail(user1.getEmail());
+        userDB1.setUsername(user1.getUserName());
+
+        // ------------ User 2 ----------------
+
+        users = List.of(user1);
+
+        // ------------ Provider ----------------
         Provider provider = new Provider();
         provider.setFirstName("test3Provider");
         provider.setLastName("test3Provider");
@@ -60,136 +76,136 @@ KeycloakSecurityUtilTest keycloakUtil;
         provider.setTva("BE123456789");
         provider.setPhoneNumber("0477777777");
 
+        UserDB userDB3 = new UserDB();
+        userDB3.setFirstname(provider.getFirstName());
+        userDB3.setLastname(provider.getLastName());
+        userDB3.setEmail(provider.getEmail());
+        userDB3.setUsername(provider.getUserName());
+        userDB3.setTva(provider.getTva());
+        userDB3.setPhoneNumber(provider.getPhoneNumber());
+        userDB3.setRole("fournisseur");
+
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         for (User user : users) {
             UserRepresentation userRep = mapUserRep(user);
             keycloak.realm(realm).users().create(userRep);
+            userDB1.setId(keycloak.realm(realm).users().search(user.getUserName()).get(0).getId());
         }
+
         UserRepresentation providerRep = mapUserRep(provider);
         Response createProviderResponse = keycloak.realm(realm).users().create(providerRep);
         String userId;
         if (createProviderResponse.getStatus() == 201) {
             userId = CreatedResponseUtil.getCreatedId(createProviderResponse);
+            userDB3.setId(userId);
             RoleRepresentation providerRole = keycloak.realm(realm).roles().get("fournisseur").toRepresentation();
             keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(providerRole));
         }
-
+        userDBS = List.of(userDB1, userDB3);
+        userDBRepository.saveAll(userDBS);
     }
 
     @Test
     @Order(1)
+    public void getUserByIdTest() {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        String userId = keycloak.realm(realm).users().search("test1").get(0).getId();
+        UserDB userDB = this.userDBService.getUserById(userId);
+
+        assertEquals(userDB.getUsername(), "test1");
+        assertEquals(userDB.getEmail(), "test1@gmail.com");
+    }
+
+    @Test
+    @Order(2)
     public void updateUserTest() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         User user = new User();
-        user.setFirstName("test2modified");
-        user.setLastName("test2modified");
-        user.setEmail("test2modified@gmail.com");
-        user.setUserName("test2");
-        user.setPassword("test2modified");
+        user.setFirstName("test1modified");
+        user.setLastName("test1modified");
+        user.setEmail("test1modified@gmail.com");
+        user.setUserName("test1");
+        user.setPassword("test1modified");
+
         UserRepresentation userRep = mapUserRep(user);
 
-        String userId = keycloak.realm(realm).users().search("test2").get(0).getId();
+        String userId = keycloak.realm(realm).users().search("test1").get(0).getId();
+
+        UserDB userDB = new UserDB();
+        userDB.setFirstname(user.getFirstName());
+        userDB.setLastname(user.getLastName());
+        userDB.setEmail(user.getEmail());
+        userDB.setUsername(user.getUserName());
+        userDB.setId(userId);
+
         keycloak.realm(realm).users().get(userId).update(userRep);
-
-        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
-        List<User> users = userRepresentations.stream().map(this::mapUser).toList();
-
-        assertEquals(users.size(), 4);
-        assertEquals(users.get(2).getUserName(), "test2");
-        assertEquals(users.get(2).getEmail(), "test2modified@gmail.com");
-    }
-    @Test
-    @Order(2)
-    public void deleteUserTest() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-
-        String userId = keycloak.realm(realm).users().search("test2").get(0).getId();
-        keycloak.realm(realm).users().delete(userId);
+        userDBRepository.save(userDB);
 
         List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
         List<User> users = userRepresentations.stream().map(this::mapUser).toList();
 
         assertEquals(users.size(), 3);
+        assertEquals(users.get(1).getUserName(), "test1");
+        assertEquals(users.get(1).getEmail(), "test1modified@gmail.com");
+
+        UserDB userDBsearch = this.userDBService.getUserById(userId);
+
+        assertEquals(userDBsearch.getUsername(), "test1");
+        assertEquals(userDBsearch.getEmail(), "test1modified@gmail.com");
     }
+
     @Test
     @Order(3)
-    public void getProvidersTest() {
+    public void deleteUserTest() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> usersWithRole = keycloak.realm(realm).roles().get("fournisseur").getUserMembers();
 
-        assertEquals(usersWithRole.size(), 1);
+        String userId = keycloak.realm(realm).users().search("test1").get(0).getId();
+        keycloak.realm(realm).users().delete(userId);
+        userDBRepository.deleteById(userId);
+
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        List<User> users = userRepresentations.stream().map(this::mapUser).toList();
+
+        assertEquals(users.size(), 2);
     }
+
     @Test
     @Order(4)
-    public void createProviderTest() {
+    public void createUserTest() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        Provider provider = new Provider();
-        provider.setFirstName("test4provider");
-        provider.setLastName("test4provider");
-        provider.setEmail("test4provider@gmail.com");
-        provider.setUserName("test4provider");
-        provider.setPassword("test4provider");
-        provider.setTva("BE123456789");
-        provider.setPhoneNumber("0477777777");
+        User user = new User();
+        user.setFirstName("test4");
+        user.setLastName("test4");
+        user.setEmail("test4@gmail.com");
+        user.setUserName("test4");
+        user.setPassword("test4");
 
-        UserRepresentation userRep = mapUserRep(provider);
-        Response createProviderResponse = keycloak.realm(realm).users().create(userRep);
+        UserDB userDB = new UserDB();
+        userDB.setFirstname(user.getFirstName());
+        userDB.setLastname(user.getLastName());
+        userDB.setEmail(user.getEmail());
+        userDB.setUsername(user.getUserName());
 
-        String userId;
-        if (createProviderResponse.getStatus() == 201) {
-            userId = CreatedResponseUtil.getCreatedId(createProviderResponse);
-            RoleRepresentation providerRole = keycloak.realm(realm).roles().get("fournisseur").toRepresentation();
-            keycloak.realm(realm).users().get(userId).roles().realmLevel().add(Collections.singletonList(providerRole));
-        }
+        UserRepresentation userRep = mapUserRep(user);
+        Response createUserResponse = keycloak.realm(realm).users().create(userRep);
+        String userId = userId = CreatedResponseUtil.getCreatedId(createUserResponse);
+        userDB.setId(userId);
+        userDBRepository.save(userDB);
 
-        List<UserRepresentation> usersWithRole = keycloak.realm(realm).roles().get("fournisseur").getUserMembers();
-        List<User> providers = usersWithRole.stream().map(this::mapUser).toList();
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        List<User> users = userRepresentations.stream().map(this::mapUser).toList();
 
-        assertEquals(providers.size(), 2);
+        assertEquals(users.get(2).getUserName(), "test4");
+        assertEquals(users.get(2).getEmail(), "test4@gmail.com");
+
+        UserDB userDBsearch = this.userDBService.getUserById(userId);
+
+        assertEquals(userDBsearch.getUsername(), "test4");
+        assertEquals(userDBsearch.getEmail(), "test4@gmail.com");
     }
 
     @Test
     @Order(5)
-    public void deleteProviderTest() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> usersWithRole = keycloak.realm(realm).roles().get("fournisseur").getUserMembers();
-        String userId = usersWithRole.get(0).getId();
-        keycloak.realm(realm).users().delete(userId);
-
-        usersWithRole = keycloak.realm(realm).roles().get("fournisseur").getUserMembers();
-        List<User> providers = usersWithRole.stream().map(this::mapUser).toList();
-
-        assertEquals(providers.size(), 1);
-    }
-
-    @Test
-    @Order(6)
-    public void updateProviderTest() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        Provider provider = new Provider();
-        provider.setFirstName("test4providerModified");
-        provider.setLastName("test4providerModified");
-        provider.setEmail("test4providermodified@gmail.com");
-        provider.setUserName("test4provider");
-        provider.setPassword("test4providerModified");
-        provider.setTva("BE123456789");
-        provider.setPhoneNumber("0477777777");
-
-        UserRepresentation userRep = mapUserRep(provider);
-        String userId = keycloak.realm(realm).users().search("test4provider").get(0).getId();
-        keycloak.realm(realm).users().get(userId).update(userRep);
-
-        List<UserRepresentation> usersWithRole = keycloak.realm(realm).roles().get("fournisseur").getUserMembers();
-        List<User> providers = usersWithRole.stream().map(this::mapUser).toList();
-
-        assertEquals(providers.get(0).getUserName(), "test4provider");
-        assertEquals(providers.get(0).getEmail(), "test4providermodified@gmail.com");
-
-    }
-
-
-    @Test
-    @Order(7)
     public void clean() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         List<UserRepresentation> users = keycloak.realm(realm).users().list();
@@ -197,7 +213,11 @@ KeycloakSecurityUtilTest keycloakUtil;
             if(!user.getUsername().contains("admin"))
                 keycloak.realm(realm).users().delete(user.getId());
         }
+        userDBRepository.delete(userDBRepository.findByUsername("test3Provider"));
+        userDBRepository.delete(userDBRepository.findByUsername("test4"));
     }
+
+
 
     private User mapUser(UserRepresentation userRep) {
         User user = new User();
@@ -223,5 +243,4 @@ KeycloakSecurityUtilTest keycloakUtil;
         userRep.setCredentials(Collections.singletonList(cred));
         return userRep;
     }
-
 }

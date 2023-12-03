@@ -1,6 +1,8 @@
 package com.compteurapp.backendcompteurapp.controller;
 
+import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
+import com.compteurapp.backendcompteurapp.mapper.CompteurDataMapper;
 import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
@@ -44,41 +46,21 @@ public class CompteurDataController {
     @Autowired
     CompteurDataService service;
 
+    @Autowired
+    CompteurDataMapper compteurDataMapper;
+
     @PostMapping("/createCompteurData")
-    public CompteurData createCompteurData(@RequestParam("image") MultipartFile image,
-                                           @RequestParam Long client,
-                                           @RequestParam Long vendeur,
-                                           @RequestParam double valeur,
-                                           @RequestParam Long idCompteur ) throws IOException, IOException {
-        String fileName;
-
-        //Genere un nom de 15 caracteres
-        fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(image.getOriginalFilename());
-
-
-        String uploadDir = "src/main/resources/ImgCompteur/";
-
-        // Créez le répertoire s'il n'existe pas
-        File uploadDirectory = new File(uploadDir);
-        if (!uploadDirectory.exists()) {
-            uploadDirectory.mkdir();
-        }
-
-        // Transférez le fichier vers le répertoire
-        Path uploadPath = Paths.get(uploadDir + fileName);
-        image.transferTo(uploadPath);
-
-        CompteurData compteurData = new CompteurData();
-        compteurData.setPhoto(fileName);
-        compteurData.setVendeur(vendeur);
-        compteurData.setClient(client);
-        compteurData.setValeur(valeur);
-
-        Compteur compteur = new Compteur();
-        compteur.setId(idCompteur);
-        compteurData.setCompteur(compteur);
-
-        return service.createCompteurData(compteurData);
+    public CompteurDataSenderDTO createCompteurData(@RequestParam("image") MultipartFile image,
+                                                    @RequestParam String client,
+                                                    @RequestParam String vendeur,
+                                                    @RequestParam double valeur,
+                                                    @RequestParam Long idCompteur,
+                                                    @RequestParam String rue,
+                                                    @RequestParam String numeros,
+                                                    @RequestParam String codePostal,
+                                                    @RequestParam String ville,
+                                                    @RequestParam String pays) throws IOException, IOException {
+       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays);
     }
 
 
@@ -90,38 +72,38 @@ public class CompteurDataController {
     /* On récupere tout les relevés d'un client */
 
     @GetMapping("/getCompteurDataByClientId/{idClient}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByClientId(@PathVariable Long idClient, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByClientId(idClient, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByClientId(@PathVariable String idClient, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByClientId(idClient, start, end);
     }
 
     /* On récupere les CompteurData pour les relevés pas encore traiter */
 
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdWithoutFacture(@PathVariable Long idVendeur, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdWithoutFacture(idVendeur, start,end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdWithoutFacture(@PathVariable String idVendeur, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdWithoutFacture(idVendeur, start, end);
     }
 
 
     /* On récupere les CompteurData d'un client qui ne sont pas traité */
 
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdWithoutFacture/{id_Vendeur}/{idClient}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndClientIdWithoutFacture(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndClientIdWithoutFacture(idVendeur, idClient, start, end);
     }
 
     /* On récupere les CompteurData ou les factures en fonction d'un état */
 
     @GetMapping("/getCompteurDataByVendeurIdAndFactureEtat/{idVendeur}/{etat}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndFactureEtat(idVendeur, etat, start, end);
     }
 
 
     /* On récupere les CompteurData ou les factures sont impayé ou payé pour un client */
 
     @GetMapping("/getCompteurDataByVendeurIdAndClientIdAndFactureEtat/{idVendeur}/{idClient}/{etat}/{start}/{end}")
-    public List<CompteurData> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable Long idVendeur, @PathVariable Long idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
-        return service.getCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat, start, end);
+    public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdAndClientIdAndFactureEtat(@PathVariable String idVendeur, @PathVariable String idClient, @PathVariable FactureStatement etat, @PathVariable int start, @PathVariable int end){
+        return compteurDataMapper.mappingCompteurDataByVendeurIdAndClientIdAndFactureEtat(idVendeur, idClient, etat, start, end);
     }
 
 }

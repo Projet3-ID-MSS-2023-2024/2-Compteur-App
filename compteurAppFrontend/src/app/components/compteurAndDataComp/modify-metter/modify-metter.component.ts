@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Category } from 'src/models/category';
 import { User } from 'src/models/user';
+import { UserDB } from 'src/models/userDB';
 
 @Component({
   selector: 'app-modify-metter',
@@ -11,7 +12,7 @@ export class ModifyMetterComponent {
 
   @Output() data: EventEmitter<any> = new EventEmitter<any>();
   @Input() category:Category[] = [];
-  @Input() provider:User[] = [];
+  @Input() provider:UserDB[] = [];
 
   sendData(data:any){
     this.data.emit(data);

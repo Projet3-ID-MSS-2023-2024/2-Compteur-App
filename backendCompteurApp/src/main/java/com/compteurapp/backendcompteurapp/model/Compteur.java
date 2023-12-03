@@ -1,11 +1,17 @@
 package com.compteurapp.backendcompteurapp.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "compteur")
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Compteur {
 
     @Id
@@ -13,9 +19,13 @@ public class Compteur {
     private Long id;
     private String nom;
 
-    private String userKeycloack;
+    @ManyToOne
+    @JoinColumn(name="client_id", nullable=false)
+    private UserDB client;
 
-    private String fournisseurKeycloack;
+    @ManyToOne
+    @JoinColumn(name="provider_id", nullable=false)
+    private UserDB provider;
 
     @ManyToOne
     @JoinColumn(name="adresse_id", nullable=false)
@@ -26,62 +36,5 @@ public class Compteur {
     private Category category;
 
 
-    public Compteur(Long id, String nom, String user, String fournisseur, Adresse adresse, Category category) {
-        this.id = id;
-        this.nom = nom;
-        this.userKeycloack = user;
-        this.fournisseurKeycloack = fournisseur;
-        this.adresse = adresse;
-        this.category = category;
-    }
 
-    public Compteur(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getUser() {
-        return userKeycloack;
-    }
-
-    public void setUser(String user) {
-        this.userKeycloack = user;
-    }
-
-    public String getFournisseur() {
-        return fournisseurKeycloack;
-    }
-
-    public void setFournisseur(String fournisseur) {
-        this.fournisseurKeycloack = fournisseur;
-    }
-
-    public Adresse getAdresse() {
-        return adresse;
-    }
-
-    public void setAdresse(Adresse adresse) {
-        this.adresse = adresse;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 }
