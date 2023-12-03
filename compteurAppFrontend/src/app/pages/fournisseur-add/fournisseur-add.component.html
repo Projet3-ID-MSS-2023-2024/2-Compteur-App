@@ -2,13 +2,16 @@
   <div class="pageNamePlacement">
     <app-page-name [pageName]="'Ajouter fournisseur'"></app-page-name>
   </div>
+  <div class="loader-popup" *ngIf="isLoading">
+    <div class="loader"></div>
+  </div>
   <div class="containeur-wrappeur">
     <div class="container">
       <div class="back" (click)="goBack()">
         <img src="../../../assets/navbarIcone/arrow-back.svg" alt="">
       </div>
       <form [formGroup]="registerForm" (ngSubmit)="addFournisseur()">
-        <div class="containeur-form" *ngIf="!isLoading">
+        <div class="containeur-form">
           <div class="left">
             <div class="form-group">
               <label for="username">Nom du fournisseur :</label>
@@ -67,9 +70,6 @@
               </select>
             </div>
           </div>
-        </div>
-        <div class="loader-popup" *ngIf="isLoading">
-          <div class="loader"></div>
         </div>
         <div class="buttondiv"><button type="submit">Ajouter</button></div>
       </form>
