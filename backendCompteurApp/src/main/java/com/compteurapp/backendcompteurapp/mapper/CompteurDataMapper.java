@@ -57,7 +57,7 @@ public class CompteurDataMapper {
         return fileName;
     }
 
-    public CompteurData saveBDCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur) throws IOException {
+    public CompteurData saveBDCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur)throws IOException {
         CompteurData compteurData = new CompteurData();
 
         UserDB clientCompteur = new UserDB();
