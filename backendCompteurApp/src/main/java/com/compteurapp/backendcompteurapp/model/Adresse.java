@@ -30,6 +30,14 @@ public class Adresse {
         this.ville = ville;
         this.pays = pays;
     }
+    public Adresse(Long id,String rue, String numero, String codePostal, String ville, String pays) {
+        this.rue = rue;
+        this.numero = numero;
+        this.codePostal = codePostal;
+        this.ville = ville;
+        this.pays = pays;
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

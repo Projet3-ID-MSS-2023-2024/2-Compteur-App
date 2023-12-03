@@ -1,12 +1,12 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.model.Adresse;
-import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import com.compteurapp.backendcompteurapp.services.AdresseService;
+
 
 
 @RestController
@@ -14,29 +14,25 @@ import java.util.Optional;
 public class AdresseController {
 
     @Autowired
-    AdresseRepository repository;
+    AdresseService adresseService;
 
     @GetMapping("/getAdresses")
     public List<Adresse> getAdresses(){
-        return repository.findAll();
+        return adresseService.getAdresses();
     }
 
 
     @PostMapping("/addAdresse")
     public Adresse addAdresse(@RequestBody Adresse adresse){
-        return repository.save(adresse);
+        return adresseService.addAdresse(adresse);
     }
 
     @PutMapping
-    public Adresse updateAdresse(@RequestBody Adresse adresse) throws Exception {
-        if(adresse.getId() <= 0){
-            throw new Exception("No id provided");
-        }
-        return repository.save(adresse);
-    }
+    public void updateAdresse(@RequestBody Adresse adresse) throws Exception { adresseService.updateAdresse(adresse); }
 
     @DeleteMapping
-    public void delete(@RequestParam long id){
-        repository.deleteById(id);
-    }
+    public void delete(@RequestParam long id){ adresseService.delete(id); }
+
+    @GetMapping
+    public Adresse getAdresseById(@RequestParam long id){ return adresseService.getAdresseById(id).get();}
 }

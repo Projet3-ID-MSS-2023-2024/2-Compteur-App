@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.services;
 
+import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.security.JwtUserSyncFilter;
@@ -25,6 +26,8 @@ public class UserDBService {
     public void syncUser(UserDB user) {
         userDBRepository.save(user);
     }
+
+    public Adresse getAdresseByUserId(String id){ return userDBRepository.findAdresseByUserId(id);}
 
 
 

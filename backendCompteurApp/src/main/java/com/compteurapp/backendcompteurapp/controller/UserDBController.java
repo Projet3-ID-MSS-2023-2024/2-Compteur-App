@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.controller;
 
+import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +30,6 @@ public class UserDBController {
         return userDBService.getUserById(id);
     }
 
+    @RequestMapping("/userDB/getAdresse/{id}")
+    public Adresse getAdresseByUserId(@PathVariable String id){ return userDBService.getAdresseByUserId(id);}
 }
