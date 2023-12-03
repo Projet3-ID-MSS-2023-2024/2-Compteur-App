@@ -27,10 +27,6 @@ public class UserDBService {
         userDBRepository.save(user);
     }
 
-    public Adresse getAdresseByUserId(String id){ return userDBRepository.findAdresseByUserId(id);}
-
-
-
     public void jwtAuthUserFilterBean() {
         new JwtUserSyncFilter();
     }
@@ -38,4 +34,6 @@ public class UserDBService {
     public void deleteUser(String id) {
         userDBRepository.deleteById(id);
     }
+
+    public Adresse getAdresseByUsername(String username){ return userDBRepository.findAdresseByUserName(username);}
 }

@@ -1,11 +1,14 @@
+import { Adresse } from "./adresse";
+
 export class UserDB {
-  id: string | undefined;
+  id: number | undefined;
   categoryId: string | undefined;
   email: string | undefined;
-  firstname: string | undefined;
-  lastname: string | undefined;
-  phone_number: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  phoneNumber: string | undefined;
   role: string | undefined;
   tva: string | undefined;
-  username: string | undefined;
+  userName: string | undefined;
+  adresse: Adresse | undefined;
 }

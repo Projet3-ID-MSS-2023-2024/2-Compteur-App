@@ -49,7 +49,7 @@ public class AdresseTest {
         assertEquals("123", updatedAdress.get().getNumero());
         assertEquals("75001", updatedAdress.get().getCodePostal());
         assertEquals("Paris", updatedAdress.get().getVille());
-        assertEquals("France", updatedAdress.get().getPays()); 
+        assertEquals("France", updatedAdress.get().getPays());
     }
 
     @Test

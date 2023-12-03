@@ -46,11 +46,21 @@
         <div class="right">
           <div class="form-group">
             <label for="email">Adresse email: </label>
-            <input type="text" id="email" formControlName="email" [readonly]="!editMode" />
+            <input
+              type="text"
+              id="email"
+              formControlName="email"
+              [readonly]="!editMode"
+            />
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="password">Mot de passe : </label>
-            <input type="password" id="password" formControlName="password" [readonly]="!editMode"/>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              [readonly]="!editMode"
+            />
           </div>
         </div>
       </div>
@@ -106,11 +116,21 @@
         <div class="right">
           <div class="form-group">
             <label for="email">Adresse email: </label>
-            <input type="text" id="email" formControlName="email" [readonly]="!editMode" />
+            <input
+              type="text"
+              id="email"
+              formControlName="email"
+              [readonly]="!editMode"
+            />
           </div>
           <div class="form-group">
             <label for="tva">TVA : </label>
-            <input type="text" id="tva" formControlName="TVA" [readonly]="!editMode" />
+            <input
+              type="text"
+              id="tva"
+              formControlName="TVA"
+              [readonly]="!editMode"
+            />
           </div>
           <div class="form-group">
             <label for="idCategory">Categorie: </label>
@@ -123,7 +143,12 @@
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="password">Mot de passe : </label>
-            <input type="password" id="password" formControlName="password" [readonly]="!editMode"/>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              [readonly]="!editMode"
+            />
           </div>
         </div>
       </div>
@@ -132,6 +157,64 @@
       </div>
       <div class="buttondiv">
         <button (click)="turnEditMode()">Modifier profil</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- RegisterAdresse -->
+
+  <form [formGroup]="adresseForm">
+    <div class="placementList" *ngIf="adresse$ | async as adresse">
+      <div class="containeur-form">
+        <div class="left">
+          <div class="form-group">
+            <label for="rue">Rue : </label>
+            <input
+              type="text"
+              id="rue"
+              formControlName="rue"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="numero">Numéro : </label>
+            <input
+              type="text"
+              id="numero"
+              formControlName="numero"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="codePostal">Code Postal : </label>
+            <input
+              type="text"
+              id="codePostal"
+              formControlName="codePostal"
+              [readonly]="!editMode"
+            />
+          </div>
+          <div class="form-group">
+            <label for="ville">Ville : </label>
+            <input
+              type="text"
+              id="ville"
+              formControlName="ville"
+              [readonly]="!editMode"
+            />
+          </div>
+        </div>
+        <div class="right">
+          <div class="form-group">
+            <label for="pays">Pays : </label>
+            <input
+              type="text"
+              id="pays"
+              formControlName="pays"
+              [readonly]="!editMode"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </form>

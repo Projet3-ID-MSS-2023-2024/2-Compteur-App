@@ -7,6 +7,7 @@ import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { User } from 'src/models/user';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Adresse } from 'src/models/adresse';
 
 @Component({
   selector: 'app-profil',
@@ -23,6 +24,7 @@ export class ProfilComponent implements OnInit {
 
   data!: any[][];
   public registerForm!: FormGroup;
+  public adresseForm!: FormGroup;
   userName!: string | undefined;
   isClient!: boolean;
   user$!: Observable<User>;
@@ -32,20 +34,31 @@ export class ProfilComponent implements OnInit {
   idUser!: number;
   idProvider!: number;
   editMode: boolean = false;
-  editPageName:string = "Profil";
+  editPageName: string = 'Profil';
+  adresse$!: Observable<Adresse>;
 
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
     private fournisseurService: FournisseurService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private adresseFormBuilder: FormBuilder
+  ) {
+    this.adresseForm = this.adresseFormBuilder.group({
+      rue: ['', [Validators.required]],
+      numero: ['', [Validators.required, Validators.email]],
+      codePostal: ['', [Validators.required]], // Validation pour 10 chiffres |
+      ville: ['', [Validators.required]],
+      pays: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit(): void {
-    this.initUser();
+    this.initUser().then(() => this.initAdresse());
   }
 
   private async initUser() {
+    console.log("initUser")
     const isLoggedIn = await this.keycloak.isLoggedIn();
     if (isLoggedIn) {
       const profile = await this.keycloak.loadUserProfile();
@@ -61,7 +74,7 @@ export class ProfilComponent implements OnInit {
           lastname: ['', [Validators.required]],
           firstname: ['', [Validators.required]],
         });
-        this.user$ = this.userService.getUserByUserName(this.userName);
+        this.user$ = await this.userService.getUserByUserName(this.userName);
         this.user$.subscribe((data) => {
           this.idUser = data.id ? data.id : -1;
           this.registerForm.patchValue({
@@ -88,7 +101,7 @@ export class ProfilComponent implements OnInit {
         this.fournisseur$ =
           this.fournisseurService.getFournisseurSpringByUserName(this.userName);
         this.fournisseur$.subscribe((data) => {
-          console.log(data,this.idProvider,this.userName);
+          console.log(data, this.idProvider, this.userName);
           this.idProvider = data.id ? data.id : -1;
 
           this.registerForm.patchValue({
@@ -167,17 +180,31 @@ export class ProfilComponent implements OnInit {
     }
   }
   turnEditMode() {
-    if(!this.editMode){
-      this.editPageName = "Modification du profil";
-    } else this.editPageName = "Profil";
+    if (!this.editMode) {
+      this.editPageName = 'Modification du profil';
+    } else this.editPageName = 'Profil';
     this.editMode = !this.editMode;
-
   }
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
   }
-  testerMdp(chaine:string){
+  testerMdp(chaine: string) {
     const regexVerif = /[A-Z][a-z][\d][!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]]/;
     return regexVerif.test(chaine);
+  }
+  private async initAdresse() {
+    console.log("initAdresse")
+    this.adresse$ = await this.userService.getAdresseByUserName(this.userName);
+    console.log(this.userName)
+    this.adresse$.subscribe((data) => {
+      console.log(data);
+      this.adresseForm.patchValue({
+        rue: data.rue,
+        codePostal: data.codePostal,
+        numero: data.numero,
+        ville: data.ville,
+        pays: data.pays,
+      });
+    });
   }
 }

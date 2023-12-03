@@ -14,9 +14,6 @@ public interface UserDBRepository extends JpaRepository<UserDB, Long> {
 
     void deleteById(String id);
 
-    @Query("SELECT u.adresse FROM UserDB u WHERE u.id = :userId")
-    Adresse findAdresseByUserId(@Param("userId") String userId);
-
-/*    String getRoleFromUser(String id);*/
-
-}
+    @Query("SELECT u.adresse FROM UserDB u WHERE u.username = :userName")
+    Adresse findAdresseByUserName(@Param("userName") String userName);
+    }

@@ -30,6 +30,6 @@ public class UserDBController {
         return userDBService.getUserById(id);
     }
 
-    @RequestMapping("/userDB/getAdresse/{id}")
-    public Adresse getAdresseByUserId(@PathVariable String id){ return userDBService.getAdresseByUserId(id);}
+    @RequestMapping("userDB/getAdresse/{username}")
+public Adresse getAdresseByUsername(@PathVariable String username){ return  userDBService.getAdresseByUsername(username);}
 }
