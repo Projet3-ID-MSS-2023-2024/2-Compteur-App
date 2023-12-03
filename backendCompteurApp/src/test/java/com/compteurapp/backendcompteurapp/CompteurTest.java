@@ -5,15 +5,24 @@ import static org.mockito.Mockito.*;
 
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.model.*;
+import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
+import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
+import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtilTest;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import com.compteurapp.backendcompteurapp.services.UserDBService;
+import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.*;
+import org.keycloak.admin.client.CreatedResponseUtil;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -35,6 +44,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,47 +54,82 @@ public class CompteurTest {
     @Autowired
     CompteurService compteurService;
 
+
+    @Autowired
+    UserDBRepository userDBRepository;
+
+    @Autowired
+    UserDBService userDBService;
+
+    @Autowired
+    AdresseRepository adresseRepository;
+
+    public UserDB provider;
+    public UserDB client;
+    public Adresse adresse;
+    public Category category;
+
     public Long id;
 
+
     @BeforeEach
-    public void init(){
+    @Test
+    @Order(0)
+    public void init() {
+
+        UserDB userDB = new UserDB();
+        userDB.setFirstname("test44");
+        userDB.setLastname("test4");
+        userDB.setEmail("test4@gmail.com");
+        userDB.setUsername("test4");
+        userDB.setId("99999test");
+        userDBRepository.save(userDB);
+
+        UserDB provider = new UserDB();
+        provider.setFirstname("test4");
+        provider.setLastname("test4");
+        provider.setEmail("test4@gmail.com");
+        provider.setUsername("test4");
+        provider.setId("9999providertest");
+        provider.setTva("BE123456789");
+        provider.setPhoneNumber("0477777777");
+        provider.setCategoryId("1");
+
+        userDBRepository.save(provider);
+
         Adresse adresse = new Adresse();
-        adresse.setId(2L);
+        adresse.setRue("rue de test");
+        adresse.setNumero("1");
+        adresse.setVille("test");
+        adresse.setCodePostal("1000");
+        adresse.setPays("test");
+        adresse.setId(59999L);
+        adresseRepository.save(adresse);
+
         Category category = new Category();
         category.setId(1L);
+
+        this.category = category;
+        this.provider = provider;
+        this.adresse = adresse;
+        this.client = userDB;
+
         Compteur compteur = new Compteur();
         compteur.setNom("test");
-        compteur.setAdresse(adresse);
-        compteur.setCategory(category);
-        compteur.setFournisseur("6293da1e-5978-4f79-ba57-3b33d8f5bff1");
-        compteur.setUser("e712c55e-696b-4136-bcc8-2d3e9d53111f");
+        compteur.setAdresse(this.adresse);
+        compteur.setCategory(this.category);
+        compteur.setProvider(this.provider);
+        compteur.setClient(this.client);
         Compteur compteurCreate = compteurService.createCompteur(compteur);
         this.id = compteurCreate.getId();
+
     }
 
-    @Order(1)
-    @Test
-    public void testAddCompteur(){
-        Adresse adresse = new Adresse();
-        adresse.setId(2L);
-        Category category = new Category();
-        category.setId(1L);
-        Compteur compteur = new Compteur();
-        compteur.setNom("test");
-        compteur.setAdresse(adresse);
-        compteur.setCategory(category);
-        compteur.setFournisseur("6293da1e-5978-4f79-ba57-3b33d8f5bff1");
-        compteur.setUser("e712c55e-696b-4136-bcc8-2d3e9d53111f");
-
-
-        Compteur compteurCreate = compteurService.createCompteur(compteur);
-        assertEquals("test", compteurCreate.getNom());
-    }
 
     @Order(2)
     @Test
     public void testGetCompteurs(){
-        List<Compteur> compteurCreate = compteurService.findCompteurByIdUser("e712c55e-696b-4136-bcc8-2d3e9d53111f");
+        Optional<Compteur> compteurCreate = compteurService.getOneCompteur(this.id);
         assertFalse(compteurCreate.isEmpty());
     }
 
@@ -92,16 +137,12 @@ public class CompteurTest {
     @Test
     public void testModifyCompteur(){
         Compteur compteur = new Compteur();
-        compteur.setId(this.id);
-        Adresse adresse = new Adresse();
-        adresse.setId(2L);
-        Category category = new Category();
-        category.setId(3L);
         compteur.setNom("modified");
-        compteur.setAdresse(adresse);
-        compteur.setCategory(category);
-        compteur.setFournisseur("6293da1e-5978-4f79-ba57-3b33d8f5bff1");
-        compteur.setUser("e712c55e-696b-4136-bcc8-2d3e9d53111f");
+        compteur.setId(this.id);
+        compteur.setAdresse(this.adresse);
+        compteur.setClient(this.client);
+        compteur.setCategory(this.category);
+        compteur.setProvider(this.provider);
         compteurService.createCompteur(compteur);
         Optional<Compteur> compteurModified = compteurService.getOneCompteur(this.id);
         assertEquals("modified", compteurModified.get().getNom());
@@ -115,10 +156,17 @@ public class CompteurTest {
         assertTrue(compteurDeleted.isEmpty());
     }
 
-
-
-
-
+    @Test
+    @Order(5)
+    void clean() {
+        try {
+            userDBRepository.deleteById(this.client.getId());
+            userDBRepository.deleteById(this.provider.getId());
+            adresseRepository.deleteById(this.adresse.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
