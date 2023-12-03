@@ -49,8 +49,7 @@ export class ReceivedStatementComponent {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
 
-      let compteurData:CompteurDataReq[] = await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd);
-      this.dataCompteurNonTraiter = this.setDataCompteur(compteurData, false, false);
+      await this.fillMeterData(false, false);
       this.transferDataSlice(this.dataCompteurNonTraiter);
 
 
@@ -78,23 +77,34 @@ export class ReceivedStatementComponent {
     console.log(data);
   }
 
-  traiterFilter(data: string){
+  async traiterFilter(data: string){
     this.traiterFilterChoice = data;
-    console.log(data);
+    this.resetPage();
     switch(data){
       case 'choiceOne':
-
-
+        await this.fillMeterData(false, false);
+        this.transferDataSlice(this.dataCompteurNonTraiter);
         break;
       case 'choiceTwo':
-
-
+        await this.fillMeterData(true, false);
+        this.transferDataSlice(this.dataCompteurTraiterImpayer);
         break;
     }
   }
 
-  payerFilter(data: string){
-    this.payerFilterChoice = data;
+  async payerFilter(data: string){
+    this.traiterFilterChoice = data;
+    this.resetPage();
+    switch(data){
+      case 'choiceOne':
+        await this.fillMeterData(true, false);
+        this.transferDataSlice(this.dataCompteurTraiterImpayer);
+        break;
+      case 'choiceTwo':
+        await this.fillMeterData(true, true);
+        this.transferDataSlice(this.dataCompteurTraiterPayer);
+        break;
+    }
   }
 
   closePicture(close:boolean){
@@ -146,10 +156,14 @@ export class ReceivedStatementComponent {
   }
 
   setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
+    //On affiche l'etat si compteur traiter
     let compteurData: any[][] = [];
     let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
     let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
     this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
+    //
+
+    //On formate les dataCompteur pour l'affichage
     compteurDataReq.forEach(element => {
       let date = new Date(element.date);
       let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -163,18 +177,46 @@ export class ReceivedStatementComponent {
   return compteurData;
   }
 
+
+  async fillMeterData(traiter:boolean, payer:boolean){
+    //On recupere les dataCompteur et on sauvegarde les pages historique
+    let compteurDataReq = traiter ? await this.FactureEtat(this.idUserConnecter, payer ? 'PAYER' : 'IMPAYER', this.pageStart, this.pageEnd) : await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd);
+    let historyPageable = [this.pageStart, this.pageEnd];
+
+    //On ajoute les nouvelles dataCompteur dans les tableaux DataTraiterPayer/Impayer, NonTraitrer 
+    if(!traiter){
+      this.dataCompteurNonTraiter.push(this.setDataCompteur(compteurDataReq, traiter, payer));
+      this.historyPagedataCompteurNonTraiter.push(historyPageable);
+    }
+    else{
+      if(payer){
+        this.dataCompteurTraiterPayer.push(this.setDataCompteur(compteurDataReq, traiter, payer));
+        this.historyPagedataCompteurTraiterPayer.push(historyPageable);
+      }
+      else{
+        this.dataCompteurTraiterImpayer.push(this.setDataCompteur(compteurDataReq, traiter, payer));
+        this.historyPagedataCompteurTraiterImpayer.push(historyPageable);
+      }
+    }
+
+    //Doit aussi faire en sorte que si on à déjà les dataCompteur on ne les recupere pas + verifier si il y a encore des datas
+    //Sinon bloque les request
+  }
+
   transferDataSlice(arrayCompteurData:any[][]) {
+    //On transfert les dataCompteur dans data
     this.data = [];
     let slice = arrayCompteurData.slice(this.pageStart, this.pageEnd);
-    for (let element of slice) {
-        this.data.push(element);
+    for (let index = 0; index < slice.length+1; index++) {
+        this.data.push(slice[0][index]);
     }
   }
 
-  async fillMeterData(traiter:boolean, payer:boolean){
-    let compteurDataReq:Promise<CompteurDataReq[]> = traiter ? await this.WithoutFacture(this.idUserConnecter, this.pageStart, this.pageEnd) : await this.FactureEtat(this.idUserConnecter, payer ? 'Payé' : 'Impayé', this.pageStart, this.pageEnd);
-    
+  resetPage(){
+    this.pageStart = 0;
+    this.pageEnd = 10;
   }
+
 
 
 }

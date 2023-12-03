@@ -20,14 +20,14 @@ public class Facture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Date date;
+    private Date date = new Date(System.currentTimeMillis());
     @Min(value = 0)
     private double prix;
     @Enumerated(EnumType.STRING)
     private FactureStatement etat;
 
     @ManyToOne
-    @JoinColumn(name = "compteurData_id", nullable = false)
+    @JoinColumn(name = "compteur_data_id", nullable = false)
     private CompteurData compteurData;
 
 
