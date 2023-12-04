@@ -27,12 +27,12 @@ public class AdresseController {
         return adresseService.addAdresse(adresse);
     }
 
-    @PutMapping
+    @PutMapping("/updateAdresse")
     public void updateAdresse(@RequestBody Adresse adresse) throws Exception { adresseService.updateAdresse(adresse); }
 
     @DeleteMapping
     public void delete(@RequestParam long id){ adresseService.delete(id); }
 
-    @GetMapping
+    @GetMapping("/getAdresseById/{id}")
     public Adresse getAdresseById(@RequestParam long id){ return adresseService.getAdresseById(id).get();}
 }

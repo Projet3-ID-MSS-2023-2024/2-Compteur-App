@@ -8,6 +8,10 @@ import { User } from 'src/models/user';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Adresse } from 'src/models/adresse';
+import { AdresseService } from 'src/app/_services/adresse.service';
+import { CompteurService } from 'src/app/_services/compteur.service';
+import { CompteurDTO } from 'src/models/compteurDTO';
+import { CompteurDataService } from 'src/app/_services/compteur-data.service';
 
 @Component({
   selector: 'app-profil',
@@ -15,38 +19,46 @@ import { Adresse } from 'src/models/adresse';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
+  // Affichage des données de compteur
   attributLegend = ['Mon compteur', 'Fournisseur', 'Categorie'];
   buttonOption = ['edit.svg'];
-
   closeOrOpenPicture: boolean = false;
-
   idFocus!: number;
+  dataCompteurs$!: Observable<CompteurDTO[]>;
 
-  data!: any[][];
+  // Affichage des données du client
   public registerForm!: FormGroup;
   public adresseForm!: FormGroup;
+
+  // Données du client
   userName!: string | undefined;
   isClient!: boolean;
   user$!: Observable<User>;
   fournisseur$!: Observable<AddFournisseurSpring>;
+  adresse$!: Observable<Adresse>;
+
+  // Modification du profil
   providerEdit: AddFournisseurSpring | undefined;
   userEdit!: User | undefined;
   idUser!: number;
+  idAdresse!: number | undefined;
   idProvider!: number;
   editMode: boolean = false;
   editPageName: string = 'Profil';
-  adresse$!: Observable<Adresse>;
+  adresseEdit!: Adresse | undefined;
 
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
     private fournisseurService: FournisseurService,
     private formBuilder: FormBuilder,
-    private adresseFormBuilder: FormBuilder
+    private adresseFormBuilder: FormBuilder,
+    private adresseService: AdresseService,
+    private compteurService: CompteurDataService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
       rue: ['', [Validators.required]],
-      numero: ['', [Validators.required, Validators.email]],
+      numero: ['', [Validators.required]],
       codePostal: ['', [Validators.required]], // Validation pour 10 chiffres |
       ville: ['', [Validators.required]],
       pays: ['', [Validators.required]],
@@ -54,11 +66,11 @@ export class ProfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initUser().then(() => this.initAdresse());
+    this.initUser().then(() => (this.initAdresse(),this.initCompteur()));
   }
 
   private async initUser() {
-    console.log("initUser")
+    console.log('initUser');
     const isLoggedIn = await this.keycloak.isLoggedIn();
     if (isLoggedIn) {
       const profile = await this.keycloak.loadUserProfile();
@@ -179,6 +191,32 @@ export class ProfilComponent implements OnInit {
       }
     }
   }
+  editAdresse() {
+    console.log(this.adresseForm);
+    if (this.adresseForm.valid) {
+      console.log(this.adresseForm.value);
+      this.adresseEdit = {
+        rue: this.adresseForm.value.rue,
+        codePostal: this.adresseForm.value.codePostal,
+        numero: this.adresseForm.value.numero,
+        ville: this.adresseForm.value.ville,
+        pays: this.adresseForm.value.pays,
+        id: this.idAdresse
+      };
+      console.log(this.adresseEdit, this.idAdresse);
+      this.adresseService
+        .updateAdresse(this.adresseEdit)
+        .subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log('error');
+            this.handleError(error);
+          }
+        );
+    }
+  }
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
@@ -193,11 +231,12 @@ export class ProfilComponent implements OnInit {
     return regexVerif.test(chaine);
   }
   private async initAdresse() {
-    console.log("initAdresse")
+    console.log('initAdresse');
     this.adresse$ = await this.userService.getAdresseByUserName(this.userName);
-    console.log(this.userName)
+    console.log(this.userName);
     this.adresse$.subscribe((data) => {
       console.log(data);
+      this.idAdresse = data.id;
       this.adresseForm.patchValue({
         rue: data.rue,
         codePostal: data.codePostal,
@@ -206,5 +245,14 @@ export class ProfilComponent implements OnInit {
         pays: data.pays,
       });
     });
+  }
+  editButton() {
+    this.editAdresse();
+    this.editUser();
+  }
+  async initCompteur(){
+    console.log("initCompteur : "+ this.idUser);
+    this.dataCompteurs$ = await this.compteurService.getCompteursByClientid(this.idUser.toString(),0,100);
+    this.dataCompteurs$.subscribe((data) => console.log(data));
   }
 }
