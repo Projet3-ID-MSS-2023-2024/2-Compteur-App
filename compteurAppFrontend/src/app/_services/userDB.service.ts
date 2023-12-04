@@ -30,5 +30,4 @@ export class UserDBService {
     console.log(user);
     return this.http.put(`api/updateUserDB/${id}`, user);
   }
-
 }

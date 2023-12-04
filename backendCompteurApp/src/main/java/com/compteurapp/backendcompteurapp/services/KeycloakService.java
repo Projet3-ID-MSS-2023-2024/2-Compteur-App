@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.services;
 
+import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.Provider;
 import com.compteurapp.backendcompteurapp.model.User;
 import com.compteurapp.backendcompteurapp.model.UserDB;
@@ -33,14 +34,14 @@ public class KeycloakService {
         this.keycloakUtil = keycloakUtil;
     }
 
-    public Response deleteUser(@PathVariable String id) {
+    public Response deleteUser(String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
         this.userDBRepository.deleteById(id);
         return Response.ok().build();
     }
 
-    public Response updateUser(@PathVariable String id, @RequestBody User user) {
+    public Response updateUser(String id, User user) {
         UserRepresentation userRep = mapUserRep(user);
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
@@ -58,7 +59,7 @@ public class KeycloakService {
 
 
 
-    public Response createProvider(@RequestBody Provider provider) {
+    public Response createProvider(Provider provider) {
         UserRepresentation userRep = mapUserRep(provider);
         Map<String, List<String>> attributes = new HashMap<>();
         attributes.put("tva", Collections.singletonList(provider.getTva()));
@@ -82,7 +83,10 @@ public class KeycloakService {
             userDB.setUsername(provider.getUserName());
             userDB.setTva(provider.getTva());
             userDB.setPhoneNumber(provider.getPhoneNumber());
-            userDB.setCategoryId(provider.getIdCategory());
+
+            Category category = new Category();
+            category.setId(Long.parseLong(provider.getIdCategory()));
+            userDB.setCategory(category);
             userDB.setRole("fournisseur");
             this.userDBRepository.save(userDB);
         }
@@ -105,7 +109,9 @@ public class KeycloakService {
             userDB.setUsername(provider.getUserName());
             userDB.setTva(provider.getTva());
             userDB.setPhoneNumber(provider.getPhoneNumber());
-            userDB.setCategoryId(provider.getIdCategory());
+            Category category = new Category();
+            category.setId(Long.parseLong(provider.getIdCategory()));
+            userDB.setCategory(category);
             this.userDBRepository.save(userDB);
         });
 

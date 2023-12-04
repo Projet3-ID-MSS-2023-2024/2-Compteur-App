@@ -1,10 +1,7 @@
 package com.compteurapp.backendcompteurapp.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -41,7 +38,8 @@ public class UserDB {
     @Column
     private String phoneNumber;
 
-    @Column
-    private String categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }

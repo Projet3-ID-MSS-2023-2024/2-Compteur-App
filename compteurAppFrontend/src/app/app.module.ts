@@ -44,34 +44,34 @@ import { LoaderAPIComponent } from './components/universalComponents/loader-api/
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 import { UserDBService } from './_services/userDB.service';
 
-// function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
-//   return () =>
-//     keycloak
-//       .init({
-//         config: {
-//           url: 'http://localhost:8082',
-//           realm: 'compteurapp',
-//           clientId: 'angular',
-//         },
-//         loadUserProfileAtStartUp: true,
-//         initOptions: {
-//           onLoad: 'login-required',
-//           checkLoginIframe: true,
-//         },
-//         shouldAddToken: (request) => {
-//           const { method, url } = request;
+function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
+  return () =>
+    keycloak
+      .init({
+        config: {
+          url: 'http://localhost:8082',
+          realm: 'compteurapp',
+          clientId: 'angular',
+        },
+        loadUserProfileAtStartUp: true,
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: true,
+        },
+        shouldAddToken: (request) => {
+          const { method, url } = request;
 
-//           const isGetRequest = 'GET' === method.toUpperCase();
-//           const acceptablePaths = ['/assets', '/clients/public'];
-//           const isAcceptablePathMatch = acceptablePaths.some((path) =>
-//             url.includes(path)
-//           );
+          const isGetRequest = 'GET' === method.toUpperCase();
+          const acceptablePaths = ['/assets', '/clients/public'];
+          const isAcceptablePathMatch = acceptablePaths.some((path) =>
+            url.includes(path)
+          );
 
-//           return !(isGetRequest && isAcceptablePathMatch);
-//         },
-//       })
-//       .then(() => userDBService.syncUser().toPromise());
-// }
+          return !(isGetRequest && isAcceptablePathMatch);
+        },
+      })
+      .then(() => userDBService.syncUser().toPromise());
+}
 
 @NgModule({
   declarations: [
@@ -120,14 +120,14 @@ import { UserDBService } from './_services/userDB.service';
     ReactiveFormsModule,
     FormsModule
   ],
-  // providers: [
-  //   {
-  //     provide: APP_INITIALIZER,
-  //     useFactory: initializeKeycloak,
-  //     multi: true,
-  //     deps: [KeycloakService, UserDBService],
-  //   },
-  // ],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService, UserDBService],
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
