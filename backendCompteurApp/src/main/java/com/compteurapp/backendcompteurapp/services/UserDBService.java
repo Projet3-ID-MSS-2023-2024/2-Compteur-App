@@ -43,5 +43,8 @@ public class UserDBService {
         new JwtUserSyncFilter();
     }
 
+    public List<UserDB> getProvidersByCategory(Long id) {
+        return userDBRepository.findUserDBByCategory_Id(id);
+    }
 
 }

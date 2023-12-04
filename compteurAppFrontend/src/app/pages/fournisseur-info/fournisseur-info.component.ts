@@ -64,7 +64,7 @@ export class FournisseurInfoComponent {
             phoneNumber: data.phoneNumber,
             TVA: data.tva,
             password: data.password,
-            category: data.categoryId,
+            category: data.category.id,
           });
         },
         (error) => {

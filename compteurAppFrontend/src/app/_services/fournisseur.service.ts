@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 
@@ -57,6 +58,8 @@ export class FournisseurService {
     return this.http.delete<any>(`/api/provider/${id}`, { headers });
   }
 
-
+  public getUserByCategoryId(id: number | undefined): Observable<any> {
+    return this.http.get(`api/listProvidersByCategory/${id}`);
+  }
 
 }

@@ -7,7 +7,9 @@
 
 .placementList {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: auto 100%;
   position: relative;
@@ -138,6 +140,23 @@ tr:nth-child(even) {
     height: 25px;
 }
 
+.messageSuccess{
+  color: red;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.messageError{
+  color: green;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
 
 @media screen and (max-width: 950px) {
 

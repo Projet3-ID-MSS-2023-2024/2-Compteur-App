@@ -10,6 +10,8 @@
     </form>
   </div>
   <div class="placementList" *ngIf="categories$ | async as categories">
+    <p class="messageSuccess">{{deleteMessageSucces}}</p>
+    <p class="messageError">{{deleteMessageError}}</p>
     <table>
       <tr>
         <th>n°</th>

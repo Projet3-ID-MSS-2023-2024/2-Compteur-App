@@ -275,29 +275,6 @@ img{
   }
 }
 
-.slogan-text, .slogan-btn {
-  animation-name: slideDown;
-  animation-duration: 1s;
-  animation-fill-mode: both;
-}
-
-.slogan-text:nth-child(1) {
-  animation-delay: 0.5s;
-}
-
-.slogan-text:nth-child(2) {
-  animation-delay: 1s;
-}
-
-.slogan-text:nth-child(3) {
-  animation-delay: 1.5s;
-}
-
-.slogan-btn {
-  animation-delay: 2s;
-}
-
-
 @keyframes slideRight {
   0% {
     transform: translateX(100%);
@@ -309,34 +286,56 @@ img{
   }
 }
 
+.slogan-text, .slogan-btn {
+  animation-name: slideDown;
+  animation-duration: 0.5s; /* réduit de 1s à 0.5s */
+  animation-fill-mode: both;
+}
+
+.slogan-text:nth-child(1) {
+  animation-delay: 0.25s; /* réduit de 0.5s à 0.25s */
+}
+
+.slogan-text:nth-child(2) {
+  animation-delay: 0.5s; /* réduit de 1s à 0.5s */
+}
+
+.slogan-text:nth-child(3) {
+  animation-delay: 0.75s; /* réduit de 1.5s à 0.75s */
+}
+
+.slogan-btn {
+  animation-delay: 1s; /* réduit de 2s à 1s */
+}
+
 .component1, .component2, .component3, .component4, .component5, .component6 {
   animation-name: slideRight;
-  animation-duration: 1s;
+  animation-duration: 0.5s; /* réduit de 1s à 0.5s */
   animation-fill-mode: both;
 }
 
 .component1 {
-  animation-delay: 2.5s;
+  animation-delay: 1.25s; /* réduit de 2.5s à 1.25s */
 }
 
 .component2 {
-  animation-delay: 3s;
+  animation-delay: 1.5s; /* réduit de 3s à 1.5s */
 }
 
 .component3 {
-  animation-delay: 3.5s;
+  animation-delay: 1.75s; /* réduit de 3.5s à 1.75s */
 }
 
 .component4 {
-  animation-delay: 4.5s;
+  animation-delay: 2.25s; /* réduit de 4.5s à 2.25s */
 }
 
 .component5 {
-  animation-delay: 5s;
+  animation-delay: 2.5s; /* réduit de 5s à 2.5s */
 }
 
 .component6 {
-  animation-delay: 4s;
+  animation-delay: 2s; /* réduit de 4s à 2s */
 }
 
 @media screen and (max-width: 950px) {

@@ -38,4 +38,9 @@ public class UserDBController {
         return userDBService.getUserByName(username);
     }
 
+    @GetMapping("/listProvidersByCategory/{id}")
+    public List<UserDB> getProvidersByCategory(@PathVariable Long id) {
+        return userDBService.getProvidersByCategory(id);
+    }
+
 }

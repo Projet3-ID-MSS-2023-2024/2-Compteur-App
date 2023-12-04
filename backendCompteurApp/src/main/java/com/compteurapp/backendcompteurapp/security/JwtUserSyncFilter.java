@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.security;
 
+import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
 import jakarta.servlet.FilterChain;
@@ -46,7 +47,9 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
                 user.setEmail(String.valueOf(token.getTokenAttributes().get("email")));
                 user.setTva(String.valueOf(token.getTokenAttributes().get("tva")));
                 user.setPhoneNumber(String.valueOf(token.getTokenAttributes().get("phoneNumber")));
-                user.setCategoryId(String.valueOf(token.getTokenAttributes().get("idCategory")));
+                Category category = new Category();
+                category.setId(Long.parseLong(String.valueOf(token.getTokenAttributes().get("idCategory"))));
+                user.setCategory(category);
 
                 String realm_access = String.valueOf(token.getTokenAttributes().get("realm_access"));
                 List<String> rolesList = Arrays.stream(realm_access.substring(realm_access.indexOf("[") + 1, realm_access.indexOf("]")).split(",")).map(String::trim).toList();
