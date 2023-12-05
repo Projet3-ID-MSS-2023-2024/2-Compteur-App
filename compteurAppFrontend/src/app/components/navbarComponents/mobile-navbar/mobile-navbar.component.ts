@@ -23,10 +23,23 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit {
     private keycloakService: KeycloakService,
   ) { }
 
-  ngOnInit(): void {
-    this.isFournisseur = this.keycloakService.isUserInRole('fournisseur') ? true : false;
-    this.isAdmin = this.keycloakService.isUserInRole('admin') ? true : false;
-    this.isClient = this.keycloakService.isUserInRole('client') ? true : false;
+  async ngOnInit(): Promise<void> {
+    const authenticated = await this.keycloakService.isLoggedIn();
+    if (authenticated) {
+      this.isAdmin = this.keycloakService.isUserInRole('admin');
+      this.isFournisseur = this.keycloakService.isUserInRole('fournisseur');
+      this.isClient = this.keycloakService.isUserInRole('client');
+
+      if(this.isAdmin && this.isClient){
+        this.isClient = false;
+      }
+      if(this.isFournisseur && this.isClient){
+        this.isClient = false;
+      }
+    }
+    if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
+      location.reload();
+    }
   }
 
   ngAfterViewInit(): void {
