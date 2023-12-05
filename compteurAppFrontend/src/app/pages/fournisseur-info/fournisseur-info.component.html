@@ -15,7 +15,8 @@
             <div class="imageContainer">
               <div class="card" *ngIf="!photoNull">
                 <div class="face face1">
-                  <img [src]="photoUrl" alt="Photo">
+                  <img [src]="photoNull ? '' : 'http://localhost:8080/pdp/'+photoUrl" alt="Photo">
+
                 </div>
                 <div class="face face2">
                   <button (click)="onFileSelect($event)">Modifier</button>
@@ -26,7 +27,7 @@
               <div class="cardPhotoNull" *ngIf="photoNull">
                 <div class="faceNul">
                   <button (click)="onFileSelect($event)">Ajouter</button>
-                  <input type="file" #fileInput style="display: none" (change)="onFileChange($event)">
+                  <input type="file" #fileInput style="display: none" (change)="onFileChangeAdd($event)">
                 </div>
               </div>
             </div>

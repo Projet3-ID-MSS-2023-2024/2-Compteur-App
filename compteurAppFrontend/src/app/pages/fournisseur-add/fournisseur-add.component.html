@@ -11,6 +11,16 @@
         <img src="../../../assets/navbarIcone/arrow-back.svg" alt="">
       </div>
       <form [formGroup]="registerForm" (ngSubmit)="addFournisseur()">
+        <div class="addPdpContaineur">
+          <div class="addPdp" (click)="fileInput.click()" *ngIf="!previewUrl">Choisir une photo</div>
+          <input type="file" #fileInput (change)='handleImages($event)'>
+          <div class="pdpPreview" *ngIf="previewUrl">
+            <img class="pdpPreview" [src]="previewUrl" alt="Image preview">
+            <span class="removeImage" (click)="removeImage()" *ngIf="previewUrl">x</span>
+          </div>
+        </div>
+
+
         <div class="containeur-form">
 
           <div class="left">
@@ -43,9 +53,6 @@
                 value="MotDePasse"
               />
             </div>
-
-
-              <input type="file" (change)='handleImages($event)'>
 
           </div>
           <div class="right">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KeycloakService } from 'keycloak-angular';
 import { FournisseurService } from '../../_services/fournisseur.service';
@@ -47,16 +47,20 @@ export class FournisseurAddComponent {
     this.categories$ = this.CategoryService.getAll();
   }
 
-  selectedFile!: File;
+
 
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
   }
+  selectedFile: File | null = null;
+
+  previewUrl: any = null;
 
   handleImages(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
+    this.previewUrl = URL.createObjectURL(this.selectedFile);
   }
 
   addFournisseur() {
@@ -73,7 +77,10 @@ export class FournisseurAddComponent {
         idCategory: this.registerForm.value.category
       };
       this.fournisseurService.AddFournisseurSpring(fournisseurSpring).subscribe(
-        (data) => this.handleSuccess(data),
+        (data) => {
+          this.handleSuccess(data)
+          this.previewUrl = null;
+        },
         (error) => this.handleError(error)
       );
     }
@@ -101,6 +108,14 @@ export class FournisseurAddComponent {
       console.log('Aucun fichier sélectionné, ID utilisateur non défini ou service photoProfilService non défini');
     }
   }
+
+@ViewChild('fileInput') fileInput!: ElementRef;
+removeImage() {
+  this.previewUrl = null;
+  this.selectedFile = null;
+  this.fileInput.nativeElement.value = '';
+}
+
 
   goBack() {
     this.location.back();

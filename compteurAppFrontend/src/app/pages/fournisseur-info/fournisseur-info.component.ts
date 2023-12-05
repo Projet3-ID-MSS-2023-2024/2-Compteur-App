@@ -53,7 +53,7 @@ export class FournisseurInfoComponent implements OnInit {
   photoNull!: boolean;
 
   ngOnInit() {
-    this.photoNull = false;
+    this.photoNull = true;
     let userName = this.route.snapshot.paramMap.get('userName');
     console.log(userName);
     if (userName) {
@@ -165,6 +165,23 @@ export class FournisseurInfoComponent implements OnInit {
     const files = target.files as FileList;
     this.selectedFile = files[0];
     this.photoProfilService.updatePhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
+      (data) => {
+        console.log(data);
+        this.photoUrl = data.path;
+        this.photoNull = false;
+        this.ngOnInit();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  onFileChangeAdd(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    this.selectedFile = files[0];
+    this.photoProfilService.uploadPhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
       (data) => {
         console.log(data);
         this.photoUrl = data.path;

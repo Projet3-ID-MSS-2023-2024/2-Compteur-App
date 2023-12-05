@@ -19,12 +19,12 @@ public class PhotoController {
     }
 
     @PostMapping("/AddphotoProfile/{id}")
-    public Photo uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+    public Boolean uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
         return photoService.addPhoto(file, id);
     }
 
     @PutMapping("/UpdatephotoProfile/{id}")
-    public Photo updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+    public Boolean updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
         return photoService.updatePhoto(file, id);
     }
 
