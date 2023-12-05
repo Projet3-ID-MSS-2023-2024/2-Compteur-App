@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { WebApiService } from 'src/app/_services/web-api.service';
+import { UserDBService } from 'src/app/_services/userDB.service';
 import { UserDB } from 'src/models/userDB';
 
 @Component({
@@ -16,7 +16,7 @@ export class NavbarComponent implements AfterViewInit {
 
   constructor(
     private readonly keycloak: KeycloakService,
-    private webApiService: WebApiService
+    private userDBService: UserDBService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -27,10 +27,18 @@ export class NavbarComponent implements AfterViewInit {
       this.isAdmin = this.keycloak.isUserInRole('admin');
       this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
       this.isClient = this.keycloak.isUserInRole('client');
+
+      if(this.isAdmin && this.isClient){
+        this.isClient = false;
+      }
+      if(this.isFournisseur && this.isClient){
+        this.isClient = false;
+      }
     }
-    if (!this.isAdmin) {
+    if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
       location.reload();
     }
+
   }
 
   logout() {

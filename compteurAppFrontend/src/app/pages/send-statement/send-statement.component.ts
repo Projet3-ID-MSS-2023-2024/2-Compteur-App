@@ -3,8 +3,8 @@ import { CategoryService } from 'src/app/_services/category.service';
 import { Observable, firstValueFrom, last, lastValueFrom } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
 import { Category } from 'src/models/category';
-import { FournisseurService } from 'src/app/_services/fournisseur.service';
-import { User } from 'src/models/user';
+import { UserDBService } from 'src/app/_services/userDB.service';
+import { UserDB } from 'src/models/userDB';
 import { addAdresse } from 'src/models/add-adresse';
 import { AdresseService } from 'src/app/_services/adresse.service';
 import { Compteur } from 'src/models/compteur';
@@ -13,6 +13,8 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { from } from 'rxjs';
 import { CompteurDTO } from 'src/models/compteurDTO';
+import { CompteurDataSender } from 'src/models/compteurDataSender';
+import { CompteurDataService } from 'src/app/_services/compteur-data.service';
 
 @Component({
   selector: 'app-send-statement',
@@ -24,9 +26,10 @@ export class SendStatementComponent {
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
   idFocus!: string;
+  providerFocus!: string;
   category: Category[] = [];
 
-  provider: User[] = [];
+  provider: UserDB[] = [];
 
   compteur!: CompteurDTO;
 
@@ -39,10 +42,11 @@ export class SendStatementComponent {
   constructor(
     private loadingService: LoadingService,
     private categoryService: CategoryService,
-    private providerService: FournisseurService,
+    private providerService: UserDBService,
     private adresseService: AdresseService,
     private compteurService: CompteurService,
-    private keycloackService: KeycloakService
+    private keycloackService: KeycloakService,
+    private compteurDataService: CompteurDataService
   ) {}
 
   async ngAfterViewInit() {
@@ -82,9 +86,22 @@ export class SendStatementComponent {
     }
   }
 
-  sendStatement(choice: any) {
+  async sendStatement(choice: any) {
     console.log(choice);
-    console.log(this.idFocus);
+    if(choice[0]){
+      let provider = await this.getProvideurCompteur(this.idFocus);
+    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
+      choice[1][0],
+      this.idUserConnecter,
+      provider["result"],
+      this.idFocus,
+      choice[3].rue,
+      choice[3].numero,
+      choice[3].codePostal,
+      choice[3].ville,
+      choice[3].pays);
+      await this.addCompteurData(compteurDataSender);
+    }
     this.showSendStatement = false;
   }
 
@@ -116,8 +133,8 @@ export class SendStatementComponent {
       this.data.push([
         newCompteur.id,
         newCompteur.nom,
-        newCompteur.nom_fournisseur,
-        newCompteur.nom_category,
+        this.provider.find((item) => item.id === data[0].fournisseur)?.firstname,
+        this.category.find((item) => item.id == data[0].categorie)?.name,
       ]);
 
       this.loadingService.emettreEvenement('sucess');
@@ -167,8 +184,8 @@ export class SendStatementComponent {
     return lastValueFrom(observable);
   }
 
-  async getProvider(): Promise<User[]> {
-    const observable = this.providerService.getFournisseurSpring();
+  async getProvider(): Promise<UserDB[]> {
+    const observable = this.providerService.getAllProviders();
     return lastValueFrom(observable);
   }
 
@@ -179,6 +196,11 @@ export class SendStatementComponent {
 
   async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
+    return lastValueFrom(observable);
+  }
+
+  async addCompteurData(compteurData: CompteurDataSender): Promise<any> {
+    const observable = this.compteurDataService.addCompteurData(compteurData);
     return lastValueFrom(observable);
   }
 
@@ -198,6 +220,11 @@ export class SendStatementComponent {
 
   async deleteCompteur(id: string): Promise<Compteur> {
     const observable = this.compteurService.deleteCompteurs(id);
+    return lastValueFrom(observable);
+  }
+
+  async getProvideurCompteur(id: string): Promise<any> {
+    const observable = this.compteurService.getProvideurCompteur(id);
     return lastValueFrom(observable);
   }
 }

@@ -42,9 +42,9 @@ import { FormsModule } from '@angular/forms';
 import { LoaderAPIComponent } from './components/universalComponents/loader-api/loader-api.component';
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
-import { WebApiService } from './_services/web-api.service';
+import { UserDBService } from './_services/userDB.service';
 
-function initializeKeycloak(keycloak: KeycloakService, webApiService: WebApiService) {
+function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
     keycloak
       .init({
@@ -70,7 +70,7 @@ function initializeKeycloak(keycloak: KeycloakService, webApiService: WebApiServ
           return !(isGetRequest && isAcceptablePathMatch);
         },
       })
-      .then(() => webApiService.syncUser().toPromise());
+      .then(() => userDBService.syncUser().toPromise());
 }
 
 @NgModule({
@@ -125,7 +125,7 @@ function initializeKeycloak(keycloak: KeycloakService, webApiService: WebApiServ
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService, WebApiService],
+      deps: [KeycloakService, UserDBService],
     },
   ],
   bootstrap: [AppComponent]

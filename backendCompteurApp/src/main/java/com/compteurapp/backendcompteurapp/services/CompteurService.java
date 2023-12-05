@@ -17,7 +17,7 @@ public class CompteurService {
         return repository.save(compteur);
     }
 
-    public List<Compteur> findCompteurByIdUser(String id){ return repository.findByUserKeycloack(id); }
+    public List<Compteur> findCompteurByIdUser(String id){ return repository.findByClient_Id(id); }
 
     public boolean deleteById(Long id){
         this.repository.deleteById(id);
@@ -28,6 +28,5 @@ public class CompteurService {
     public Optional<Compteur> getOneCompteur(Long id){
         return repository.findById(id);
     }
-
 
 }

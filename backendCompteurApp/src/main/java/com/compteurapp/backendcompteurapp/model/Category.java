@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "category")
@@ -15,6 +17,9 @@ public class Category {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<UserDB> users;
 
     public Category() {
     }

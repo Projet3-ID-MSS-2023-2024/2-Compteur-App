@@ -7,7 +7,8 @@ import java.util.List;
 
 
 public interface CompteurRepository extends JpaRepository<Compteur, Long> {
-    List<Compteur> findByUserKeycloack(String idUser);
+    List<Compteur> findByClient_Id(String idUser);
+
 }
 
 

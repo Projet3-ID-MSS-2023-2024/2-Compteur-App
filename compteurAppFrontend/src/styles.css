@@ -112,9 +112,8 @@ button{
 .pageContentRow{
   display: flex;
   flex-wrap: wrap;
-
   width: calc(100% - 16.5% - 40px);
-  min-height: calc(100vh - 20px);
+  height: calc(100vh - 20px);
   position: absolute;
   left: calc(16.5% + 25px);
   border: 1px solid rgba(0, 0, 0, 0.116);
@@ -122,6 +121,7 @@ button{
   border-radius: 15px;
   flex-direction: row;
   align-content: flex-start;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 
 }
 

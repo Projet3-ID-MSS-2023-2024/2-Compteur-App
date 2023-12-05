@@ -8,6 +8,7 @@ import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
 import { MessageService } from 'src/app/_services/message.service';
 import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-fournisseur-add',
@@ -19,6 +20,7 @@ export class FournisseurAddComponent {
   public authToken = localStorage.getItem('access_token');
   public fournisseurSpring$!: Observable<AddFournisseurSpring>;
   public categories$!: Observable<Category[]>;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +28,8 @@ export class FournisseurAddComponent {
     private fournisseurService: FournisseurService,
     private readonly keycloak: KeycloakService,
     private CategoryService: CategoryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private location: Location
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -45,6 +48,7 @@ export class FournisseurAddComponent {
   }
 
   addFournisseur() {
+    this.isLoading = true;
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
       const fournisseurSpring: AddFournisseurSpring = {
@@ -58,12 +62,11 @@ export class FournisseurAddComponent {
         idCategory: this.registerForm.value.category
       };
 
-      this.fournisseurService
-        .AddFournisseurSpring(fournisseurSpring)
-        .subscribe(
-          (data) => {
+      this.fournisseurService.AddFournisseurSpring(fournisseurSpring).subscribe((data) =>
+        {
             this.messageService.changeMessage('Fournisseur ajouté avec succès');
             this.messageService.changePopup(true);
+            this.isLoading = false;
             this.router.navigate(['/listFournisseur']);
           },
           (error) => {
@@ -78,5 +81,9 @@ export class FournisseurAddComponent {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0] as File;
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

@@ -38,8 +38,9 @@ public class UserDB {
     @Column
     private String phoneNumber;
 
-    @Column
-    private String categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "adresse_id")
