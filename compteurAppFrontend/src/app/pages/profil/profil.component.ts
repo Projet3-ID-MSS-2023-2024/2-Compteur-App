@@ -30,7 +30,7 @@ export class ProfilComponent implements OnInit {
   providerEdit: AddFournisseurSpring | undefined;
   userEdit!: User | undefined;
   idUser!: number;
-  idProvider!: number;
+  idProvider!: string | undefined;
   editMode: boolean = false;
   editPageName:string = "Profil";
 
@@ -89,7 +89,7 @@ export class ProfilComponent implements OnInit {
           this.fournisseurService.getFournisseurSpringByUserName(this.userName);
         this.fournisseur$.subscribe((data) => {
           console.log(data,this.idProvider,this.userName);
-          this.idProvider = data.id ? data.id : -1;
+          this.idProvider = data.id
 
           this.registerForm.patchValue({
             username: data.userName,

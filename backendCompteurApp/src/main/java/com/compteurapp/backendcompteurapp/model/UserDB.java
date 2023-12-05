@@ -1,6 +1,8 @@
 package com.compteurapp.backendcompteurapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +13,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserDB {
 
     @Id
@@ -42,4 +45,7 @@ public class UserDB {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Photo photo;
 }

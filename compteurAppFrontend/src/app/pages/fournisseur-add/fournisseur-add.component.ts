@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KeycloakService } from 'keycloak-angular';
 import { FournisseurService } from '../../_services/fournisseur.service';
@@ -9,6 +9,8 @@ import { Category } from 'src/models/category';
 import { MessageService } from 'src/app/_services/message.service';
 import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
+import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
+import { UserDBService } from 'src/app/_services/userDB.service';
 
 @Component({
   selector: 'app-fournisseur-add',
@@ -29,7 +31,9 @@ export class FournisseurAddComponent {
     private readonly keycloak: KeycloakService,
     private CategoryService: CategoryService,
     private messageService: MessageService,
-    private location: Location
+    private location: Location,
+    private photoProfilService: PhotoProfilService,
+    private userDBService: UserDBService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -43,14 +47,25 @@ export class FournisseurAddComponent {
     this.categories$ = this.CategoryService.getAll();
   }
 
+
+
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
+  }
+  selectedFile: File | null = null;
+
+  previewUrl: any = null;
+
+  handleImages(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    this.selectedFile = files[0];
+    this.previewUrl = URL.createObjectURL(this.selectedFile);
   }
 
   addFournisseur() {
     this.isLoading = true;
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
       const fournisseurSpring: AddFournisseurSpring = {
         userName: this.registerForm.value.username,
         email: this.registerForm.value.email,
@@ -61,29 +76,49 @@ export class FournisseurAddComponent {
         tva: this.registerForm.value.TVA,
         idCategory: this.registerForm.value.category
       };
-
-      this.fournisseurService.AddFournisseurSpring(fournisseurSpring).subscribe((data) =>
-        {
-            this.messageService.changeMessage('Fournisseur ajouté avec succès');
-            this.messageService.changePopup(true);
-            this.isLoading = false;
-            this.router.navigate(['/listFournisseur']);
-          },
-          (error) => {
-            console.log('error');
-            this.handleError(error);
-          }
-        );
+      this.fournisseurService.AddFournisseurSpring(fournisseurSpring).subscribe(
+        (data) => {
+          this.handleSuccess(data)
+          this.previewUrl = null;
+        },
+        (error) => this.handleError(error)
+      );
     }
   }
 
-  selectedFile: File | null = null;
-
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] as File;
+  handleSuccess(data: any) {
+    this.messageService.changeMessage('Fournisseur ajouté avec succès');
+    this.messageService.changePopup(true);
+    this.isLoading = false;
+    this.userDBService.getProviderByUserName(this.registerForm.value.username).subscribe(
+      (data) => this.handleProvider(data),
+      (error) => this.handleError(error)
+    );
   }
+
+  handleProvider(data: any) {
+    const id = data.id;
+    if (this.selectedFile) {
+      console.log(this.selectedFile)
+      this.photoProfilService.uploadPhotoProfil(this.selectedFile, id).subscribe(
+        response => this.router.navigate(['/listFournisseur']),
+        error => this.handleError(error)
+      );
+    } else {
+      console.log('Aucun fichier sélectionné, ID utilisateur non défini ou service photoProfilService non défini');
+    }
+  }
+
+@ViewChild('fileInput') fileInput!: ElementRef;
+removeImage() {
+  this.previewUrl = null;
+  this.selectedFile = null;
+  this.fileInput.nativeElement.value = '';
+}
+
 
   goBack() {
     this.location.back();
   }
 }
+
