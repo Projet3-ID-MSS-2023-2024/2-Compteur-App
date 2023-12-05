@@ -11,7 +11,7 @@ import { Adresse } from 'src/models/adresse';
 import { AdresseService } from 'src/app/_services/adresse.service';
 import { CompteurService } from 'src/app/_services/compteur.service';
 import { CompteurDTO } from 'src/models/compteurDTO';
-import { CompteurDataService } from 'src/app/_services/compteur-data.service';
+import { Compteur } from 'src/models/compteur';
 
 @Component({
   selector: 'app-profil',
@@ -54,7 +54,7 @@ export class ProfilComponent implements OnInit {
     private formBuilder: FormBuilder,
     private adresseFormBuilder: FormBuilder,
     private adresseService: AdresseService,
-    private compteurService: CompteurDataService
+    private compteurService: CompteurService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
       rue: ['', [Validators.required]],
@@ -69,66 +69,78 @@ export class ProfilComponent implements OnInit {
     this.initUser().then(() => (this.initAdresse(),this.initCompteur()));
   }
 
-  private async initUser() {
+  private async initUser(): Promise<void> {
     console.log('initUser');
-    const isLoggedIn = await this.keycloak.isLoggedIn();
-    if (isLoggedIn) {
-      const profile = await this.keycloak.loadUserProfile();
-      this.userName = profile.username;
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const isLoggedIn = await this.keycloak.isLoggedIn();
 
-      if (!this.keycloak.isUserInRole('fournisseur')) {
-        this.isClient = true;
-        this.registerForm = this.formBuilder.group({
-          username: ['', [Validators.required, Validators.minLength(3)]],
-          email: ['', [Validators.required, Validators.email]],
-          phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-          password: [''],
-          lastname: ['', [Validators.required]],
-          firstname: ['', [Validators.required]],
-        });
-        this.user$ = await this.userService.getUserByUserName(this.userName);
-        this.user$.subscribe((data) => {
-          this.idUser = data.id ? data.id : -1;
-          this.registerForm.patchValue({
-            username: data.userName,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            password: data.password,
-            lastname: data.lastName,
-            firstname: data.firstName,
-          });
-        });
-      } else {
-        this.isClient = false;
-        this.registerForm = this.formBuilder.group({
-          username: ['', [Validators.required, Validators.minLength(3)]],
-          email: ['', [Validators.required, Validators.email]],
-          phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-          TVA: ['', [Validators.required]],
-          password: [''],
-          category: ['', [Validators.required]],
-          lastname: ['', [Validators.required]],
-          firstname: ['', [Validators.required]],
-        });
-        this.fournisseur$ =
-          this.fournisseurService.getFournisseurSpringByUserName(this.userName);
-        this.fournisseur$.subscribe((data) => {
-          console.log(data, this.idProvider, this.userName);
-          this.idProvider = data.id ? data.id : -1;
+        if (isLoggedIn) {
+          const profile = await this.keycloak.loadUserProfile();
+          this.userName = profile.username;
 
-          this.registerForm.patchValue({
-            username: data.userName,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            TVA: data.tva,
-            password: data.password,
-            category: data.idCategory,
-            lastname: data.lastName,
-            firstname: data.firstName,
-          });
-        });
+          if (!this.keycloak.isUserInRole('fournisseur')) {
+            this.isClient = true;
+            this.registerForm = this.formBuilder.group({
+              username: ['', [Validators.required, Validators.minLength(3)]],
+              email: ['', [Validators.required, Validators.email]],
+              phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
+              password: [''],
+              lastname: ['', [Validators.required]],
+              firstname: ['', [Validators.required]],
+            });
+            this.user$ = await this.userService.getUserByUserName(this.userName);
+            this.user$.subscribe((data) => {
+              this.idUser = data.id ? data.id : -1;
+              console.log("IdUser : "+this.idUser)
+              this.registerForm.patchValue({
+                username: data.userName,
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+                password: data.password,
+                lastname: data.lastName,
+                firstname: data.firstName,
+              });
+              resolve();
+            });
+          } else {
+            this.isClient = false;
+            this.registerForm = this.formBuilder.group({
+              username: ['', [Validators.required, Validators.minLength(3)]],
+              email: ['', [Validators.required, Validators.email]],
+              phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
+              TVA: ['', [Validators.required]],
+              password: [''],
+              category: ['', [Validators.required]],
+              lastname: ['', [Validators.required]],
+              firstname: ['', [Validators.required]],
+            });
+            this.fournisseur$ =
+              this.fournisseurService.getFournisseurSpringByUserName(this.userName);
+            this.fournisseur$.subscribe((data) => {
+              console.log(data, this.idProvider, this.userName);
+              this.idProvider = data.id ? data.id : -1;
+
+              this.registerForm.patchValue({
+                username: data.userName,
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+                TVA: data.tva,
+                password: data.password,
+                category: data.idCategory,
+                lastname: data.lastName,
+                firstname: data.firstName,
+              });
+              resolve();
+            });
+          }
+        } else {
+          reject('L\'utilisateur n\'est pas connecté.');
+        }
+      } catch (error) {
+        reject('Une erreur s\'est produite : ' + error);
       }
-    }
+    });
   }
   buttonPress(arrayData: any) {
     switch (arrayData[0]) {
@@ -231,8 +243,8 @@ export class ProfilComponent implements OnInit {
     return regexVerif.test(chaine);
   }
   private async initAdresse() {
-    console.log('initAdresse');
-    this.adresse$ = await this.userService.getAdresseByUserName(this.userName);
+    console.log('initAdresse : ' + this.idUser);
+    this.adresse$ = this.userService.getAdresseByUserName(this.userName);
     console.log(this.userName);
     this.adresse$.subscribe((data) => {
       console.log(data);
@@ -252,7 +264,7 @@ export class ProfilComponent implements OnInit {
   }
   async initCompteur(){
     console.log("initCompteur : "+ this.idUser);
-    this.dataCompteurs$ = await this.compteurService.getCompteursByClientid(this.idUser.toString(),0,100);
+    this.dataCompteurs$ = await this.compteurService.getCompteurs(this.idUser.toString());
     this.dataCompteurs$.subscribe((data) => console.log(data));
   }
 }

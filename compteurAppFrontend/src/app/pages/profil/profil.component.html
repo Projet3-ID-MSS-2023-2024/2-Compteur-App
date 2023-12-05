@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="buttondiv" *ngIf="editMode">
-        <button (click)="editButton()" >Confirmer modification</button>
+        <button (click)="editButton()">Confirmer modification</button>
       </div>
       <div class="buttondiv">
         <button (click)="turnEditMode()">Modifier profil</button>
@@ -218,15 +218,14 @@
       </div>
     </div>
   </form>
-</div>
+  <div class="adresse"></div>
 
-<div class="adresse"></div>
-
-<div class="placementList" *ngIf="dataCompteurs$ | async as data">
-  <app-indice-list
-    [attributLegend]="attributLegend"
-    [data]="data"
-    [buttonOption]="buttonOption"
-    (buttonPressed)="buttonPress($event)"
-  ></app-indice-list>
+  <div class="placementList" *ngIf="dataCompteurs$ | async as data">
+    <app-indice-list
+      [attributLegend]="attributLegend"
+      [data]="data"
+      [buttonOption]="buttonOption"
+      (buttonPressed)="buttonPress($event)"
+    ></app-indice-list>
+  </div>
 </div>
