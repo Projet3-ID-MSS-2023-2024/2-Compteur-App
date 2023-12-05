@@ -43,6 +43,7 @@ import { LoaderAPIComponent } from './components/universalComponents/loader-api/
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 import { UserDBService } from './_services/userDB.service';
+import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -110,7 +111,8 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FournisseurInfoComponent,
     FournisseurListComponent,
     CategoriesComponent,
-    DropdownCategoryComponent
+    DropdownCategoryComponent,
+    PaypalBtnComponent
   ],
   imports: [
     BrowserModule,
