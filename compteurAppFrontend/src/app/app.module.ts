@@ -44,6 +44,7 @@ import { LoaderAPIComponent } from './components/universalComponents/loader-api/
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 import { UserDBService } from './_services/userDB.service';
 import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
+import {NgxPayPalModule} from "ngx-paypal";
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -120,7 +121,8 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     KeycloakAngularModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPayPalModule
   ],
   providers: [
     {
