@@ -2,6 +2,10 @@
   overflow-x: hidden;
 }
 
+.pageContentRow{
+  height: 100vh;
+}
+
 .container{
   height: 100%;
   width: 100%;
