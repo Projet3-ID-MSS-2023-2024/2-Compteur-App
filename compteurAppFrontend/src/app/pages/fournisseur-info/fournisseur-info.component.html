@@ -10,6 +10,29 @@
         <img src="../../../assets/navbarIcone/arrow-back.svg" alt="">
       </div>
       <form [formGroup]="registerForm">
+        <div class="containeurPhoto">
+          <div class="photoProfil">
+            <div class="imageContainer">
+              <div class="card" *ngIf="!photoNull">
+                <div class="face face1">
+                  <img [src]="photoUrl" alt="Photo">
+                </div>
+                <div class="face face2">
+                  <button (click)="onFileSelect($event)">Modifier</button>
+                  <input type="file" #fileInput style="display: none" (change)="onFileChange($event)">
+                  <button (click)="deletePhotoProfil()">Supprimer</button>
+                </div>
+              </div>
+              <div class="cardPhotoNull" *ngIf="photoNull">
+                <div class="faceNul">
+                  <button (click)="onFileSelect($event)">Ajouter</button>
+                  <input type="file" #fileInput style="display: none" (change)="onFileChange($event)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="containeur-form">
           <div class="left">
             <div class="form-group">

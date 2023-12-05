@@ -1,8 +1,8 @@
 package com.compteurapp.backendcompteurapp.services;
 
 import com.compteurapp.backendcompteurapp.model.Category;
-import com.compteurapp.backendcompteurapp.model.Provider;
-import com.compteurapp.backendcompteurapp.model.User;
+import com.compteurapp.backendcompteurapp.DTO.ProviderDTO;
+import com.compteurapp.backendcompteurapp.DTO.UserDTO;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 
@@ -27,6 +26,9 @@ public class KeycloakService {
 
     @Autowired
     public UserDBRepository userDBRepository;
+
+    @Autowired
+    public PhotoService photoService;
 
     @Value("${realm}")
     private String realm;
@@ -41,30 +43,30 @@ public class KeycloakService {
         return Response.ok().build();
     }
 
-    public Response updateUser(String id, User user) {
-        UserRepresentation userRep = mapUserRep(user);
+    public Response updateUser(String id, UserDTO userDTO) {
+        UserRepresentation userRep = mapUserRep(userDTO);
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
 
         this.userDBRepository.findById(id).ifPresent(userDB -> {
-            userDB.setFirstname(user.getFirstName());
-            userDB.setLastname(user.getLastName());
-            userDB.setEmail(user.getEmail());
-            userDB.setUsername(user.getUserName());
+            userDB.setFirstname(userDTO.getFirstName());
+            userDB.setLastname(userDTO.getLastName());
+            userDB.setEmail(userDTO.getEmail());
+            userDB.setUsername(userDTO.getUserName());
             this.userDBRepository.save(userDB);
         });
 
-        return Response.ok(user).build();
+        return Response.ok(userDTO).build();
     }
 
 
 
-    public Response createProvider(Provider provider) {
-        UserRepresentation userRep = mapUserRep(provider);
+    public Response createProvider(ProviderDTO providerDTO) {
+        UserRepresentation userRep = mapUserRep(providerDTO);
         Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("tva", Collections.singletonList(provider.getTva()));
-        attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
-        attributes.put("idCategory", Collections.singletonList(provider.getIdCategory()));
+        attributes.put("tva", Collections.singletonList(providerDTO.getTva()));
+        attributes.put("phoneNumber", Collections.singletonList(providerDTO.getPhoneNumber()));
+        attributes.put("idCategory", Collections.singletonList(providerDTO.getIdCategory()));
         userRep.setAttributes(attributes);
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         Response createUserResponse = keycloak.realm(realm).users().create(userRep);
@@ -77,45 +79,45 @@ public class KeycloakService {
 
             UserDB userDB = new UserDB();
             userDB.setId(userId);
-            userDB.setFirstname(provider.getFirstName());
-            userDB.setLastname(provider.getLastName());
-            userDB.setEmail(provider.getEmail());
-            userDB.setUsername(provider.getUserName());
-            userDB.setTva(provider.getTva());
-            userDB.setPhoneNumber(provider.getPhoneNumber());
+            userDB.setFirstname(providerDTO.getFirstName());
+            userDB.setLastname(providerDTO.getLastName());
+            userDB.setEmail(providerDTO.getEmail());
+            userDB.setUsername(providerDTO.getUserName());
+            userDB.setTva(providerDTO.getTva());
+            userDB.setPhoneNumber(providerDTO.getPhoneNumber());
 
             Category category = new Category();
-            category.setId(Long.parseLong(provider.getIdCategory()));
+            category.setId(Long.parseLong(providerDTO.getIdCategory()));
             userDB.setCategory(category);
             userDB.setRole("fournisseur");
             this.userDBRepository.save(userDB);
         }
-        return Response.ok(provider).build();
+        return Response.ok(providerDTO).build();
     }
 
-    public Response updateProvider(String id, Provider provider) {
-        UserRepresentation userRep = mapUserRep(provider);
+    public Response updateProvider(String id, ProviderDTO providerDTO) {
+        UserRepresentation userRep = mapUserRep(providerDTO);
         Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("tva", Collections.singletonList(provider.getTva()));
-        attributes.put("phoneNumber", Collections.singletonList(provider.getPhoneNumber()));
-        attributes.put("idCategory", Collections.singletonList(provider.getIdCategory()));
+        attributes.put("tva", Collections.singletonList(providerDTO.getTva()));
+        attributes.put("phoneNumber", Collections.singletonList(providerDTO.getPhoneNumber()));
+        attributes.put("idCategory", Collections.singletonList(providerDTO.getIdCategory()));
         userRep.setAttributes(attributes);
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().get(id).update(userRep);
         this.userDBRepository.findById(id).ifPresent(userDB -> {
-            userDB.setFirstname(provider.getFirstName());
-            userDB.setLastname(provider.getLastName());
-            userDB.setEmail(provider.getEmail());
-            userDB.setUsername(provider.getUserName());
-            userDB.setTva(provider.getTva());
-            userDB.setPhoneNumber(provider.getPhoneNumber());
+            userDB.setFirstname(providerDTO.getFirstName());
+            userDB.setLastname(providerDTO.getLastName());
+            userDB.setEmail(providerDTO.getEmail());
+            userDB.setUsername(providerDTO.getUserName());
+            userDB.setTva(providerDTO.getTva());
+            userDB.setPhoneNumber(providerDTO.getPhoneNumber());
             Category category = new Category();
-            category.setId(Long.parseLong(provider.getIdCategory()));
+            category.setId(Long.parseLong(providerDTO.getIdCategory()));
             userDB.setCategory(category);
             this.userDBRepository.save(userDB);
         });
 
-        return Response.ok(provider).build();
+        return Response.ok(providerDTO).build();
     }
 
 
@@ -123,6 +125,7 @@ public class KeycloakService {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         keycloak.realm(realm).users().delete(id);
         try {
+            this.photoService.deletePhotoByIdUser(id);
             this.userDBRepository.deleteById(id);
         } catch (EmptyResultDataAccessException ex) {
             // Gérer l'exception ici
@@ -130,17 +133,17 @@ public class KeycloakService {
         return Response.ok().build();
     }
 
-    private UserRepresentation mapUserRep(User user) {
+    private UserRepresentation mapUserRep(UserDTO userDTO) {
         UserRepresentation userRep = new UserRepresentation();
-        userRep.setUsername(user.getUserName());
-        userRep.setFirstName(user.getFirstName());
-        userRep.setLastName(user.getLastName());
-        userRep.setEmail(user.getEmail());
+        userRep.setUsername(userDTO.getUserName());
+        userRep.setFirstName(userDTO.getFirstName());
+        userRep.setLastName(userDTO.getLastName());
+        userRep.setEmail(userDTO.getEmail());
         userRep.setEnabled(true);
         userRep.setEmailVerified(true);
         CredentialRepresentation cred = new CredentialRepresentation();
         cred.setTemporary(false);
-        cred.setValue(user.getPassword());
+        cred.setValue(userDTO.getPassword());
         userRep.setCredentials(Collections.singletonList(cred));
         return userRep;
     }

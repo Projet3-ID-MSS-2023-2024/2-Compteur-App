@@ -1,7 +1,7 @@
-package com.compteurapp.backendcompteurapp.model;
+package com.compteurapp.backendcompteurapp.DTO;
 
 
-public class User {
+public class UserDTO {
     private String id;
     private String firstName;
 

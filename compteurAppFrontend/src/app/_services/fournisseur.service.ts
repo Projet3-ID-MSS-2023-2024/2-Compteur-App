@@ -26,7 +26,7 @@ export class FournisseurService {
     return this.http.post<AddFournisseurSpring>(`/api/provider`, user, { headers });
   }
 
-  updateFournisseurSpring(user: AddFournisseurSpring | undefined, id: number | undefined) {
+  updateFournisseurSpring(user: AddFournisseurSpring | undefined, id: string | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ export class FournisseurService {
     return this.http.get<any>(`/api/provider/${userName}`, { headers });
   }
 
-  deleteFournisseurSpring(id: number | undefined) {
+  deleteFournisseurSpring(id: string | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { CategoryService } from 'src/app/_services/category.service';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
 import { MessageService } from 'src/app/_services/message.service';
@@ -10,17 +10,18 @@ import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { Category } from 'src/models/category';
 import { Location } from '@angular/common';
 import { UserDBService } from 'src/app/_services/userDB.service';
+import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
 
 @Component({
   selector: 'app-fournisseur-info',
   templateUrl: './fournisseur-info.component.html',
   styleUrls: ['./fournisseur-info.component.css'],
 })
-export class FournisseurInfoComponent {
+export class FournisseurInfoComponent implements OnInit {
   public registerForm: FormGroup;
   public fournisseurSpring$!: Observable<any>;
   public categories$!: Observable<Category[]>;
-  public idProvider: number | undefined;
+  public idProvider: string | undefined;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
   showDiv = false;
   isLoading = false;
@@ -34,7 +35,8 @@ export class FournisseurInfoComponent {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private location: Location,
-    private userDBService: UserDBService
+    private userDBService: UserDBService,
+    private photoProfilService: PhotoProfilService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -44,17 +46,20 @@ export class FournisseurInfoComponent {
       password: [''],
       category: ['', [Validators.required]],
     });
-
     this.categories$ = this.CategoryService.getAll();
   }
 
+  public photoUrl!: string;
+  photoNull!: boolean;
+
   ngOnInit() {
+    this.photoNull = false;
     let userName = this.route.snapshot.paramMap.get('userName');
     console.log(userName);
     if (userName) {
       // Vérifie si 'userName' n'est pas null
       this.fournisseurSpring$ = this.userDBService.getProviderByUserName(userName);
-      this.fournisseurSpring$.subscribe(
+      this.fournisseurSpring$.pipe(take(1)).subscribe(
         (data) => {
           console.log(data);
           this.idProvider = data.id;
@@ -66,6 +71,20 @@ export class FournisseurInfoComponent {
             password: data.password,
             category: data.category.id,
           });
+          this.photoProfilService.getPhotoProfil(data.id).pipe(take(1)).subscribe(
+            response => {
+              if(response) {
+                this.photoUrl = response.path;
+                this.photoNull = false;
+              }
+              else{
+                this.photoNull = true;
+              }
+            },
+            error => {
+              console.log(error);
+            }
+          );
         },
         (error) => {
           console.log(error);
@@ -83,7 +102,7 @@ export class FournisseurInfoComponent {
   updateFournisseur() {
     this.isLoading = true;
     if (this.registerForm.valid) {
-      this.fournisseurSpring$.subscribe((fournisseurSpring) => {
+      this.fournisseurSpring$.pipe(take(1)).subscribe((fournisseurSpring) => {
         const updatedFournisseur: AddFournisseurSpring = {
           ...fournisseurSpring,
           userName: this.registerForm.value.username,
@@ -100,6 +119,7 @@ export class FournisseurInfoComponent {
 
         this.fournisseurService
           .updateFournisseurSpring(updatedFournisseur, this.idProvider)
+          .pipe(take(1))
           .subscribe(
             (data) => {
               console.log(data);
@@ -119,13 +139,37 @@ export class FournisseurInfoComponent {
 
   deleteFournisseur() {
     this.isLoading = true;
-    this.fournisseurService.deleteFournisseurSpring(this.idProvider).subscribe(
+    this.fournisseurService.deleteFournisseurSpring(this.idProvider).pipe(take(1)).subscribe(
       (data) => {
         console.log(data);
         this.messageService.changeMessage('Fournisseur supprimé avec succès');
         this.messageService.changePopup(true);
         this.isLoading = false;
         this.router.navigate(['/listFournisseur']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  selectedFile!: File;
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  onFileSelect(event: Event) {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    this.selectedFile = files[0];
+    this.photoProfilService.updatePhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
+      (data) => {
+        console.log(data);
+        this.photoUrl = data.path;
+        this.photoNull = false;
+        this.ngOnInit();
       },
       (error) => {
         console.log(error);
@@ -153,6 +197,18 @@ export class FournisseurInfoComponent {
   }
 
   goBack() {
-  this.location.back();
-}
+    this.location.back();
+  }
+
+  deletePhotoProfil() {
+    this.photoProfilService.deletePhotoProfil(this.idProvider).pipe(take(1)).subscribe(
+      (data) => {
+        console.log(data);
+        this.ngOnInit();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }
