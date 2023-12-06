@@ -3,7 +3,6 @@ package com.compteurapp.backendcompteurapp.services;
 import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
-/*import com.compteurapp.backendcompteurapp.security.JwtUserSyncFilter;*/
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
 import jakarta.servlet.ServletException;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +56,6 @@ public class UserDBService {
     public void syncUser(UserDB user) {
         userDBRepository.save(user);
     }
-/*    public void jwtAuthUserFilterBean() {
-        new JwtUserSyncFilter();
-    }*/
 
     public List<UserDB> getProvidersByCategory(Long id) {
         return userDBRepository.findUserDBByCategory_Id(id);
