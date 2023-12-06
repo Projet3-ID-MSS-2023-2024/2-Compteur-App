@@ -6,4 +6,6 @@ export class User {
   userName?: string | undefined;
   password?: string | undefined;
   phoneNumber?: string | undefined;
+  tva?: string | undefined;
+  category?:any | undefined;
 }

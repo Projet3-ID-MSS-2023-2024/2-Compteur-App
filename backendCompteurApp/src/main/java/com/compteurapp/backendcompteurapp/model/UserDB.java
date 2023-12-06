@@ -48,4 +48,9 @@ public class UserDB {
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private Photo photo;
+    
+    @ManyToOne
+    @JoinColumn(name = "adresse_id")
+    private Adresse adresse;
+
 }
