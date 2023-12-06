@@ -19,7 +19,7 @@ public class PhotoController {
     }
 
     @PostMapping("/AddphotoProfile/{id}")
-    public Boolean uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+    public String uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
         return photoService.addPhoto(file, id);
     }
 

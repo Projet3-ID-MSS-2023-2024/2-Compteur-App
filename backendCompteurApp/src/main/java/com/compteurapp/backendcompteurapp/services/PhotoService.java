@@ -29,7 +29,7 @@ public class PhotoService {
         this.photoRepository = photoRepository;
     }
 
-    public Boolean addPhoto(MultipartFile file, String id) {
+    public String addPhoto(MultipartFile file, String id) {
         try {
             String fileName;
             fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
@@ -55,10 +55,10 @@ public class PhotoService {
 
             this.photoRepository.save(photo);
 
-            return true;
+            return fileName;
         } catch (Exception ex) {
             // Gérer les exceptions ici
-            return false;
+            return null;
         }
     }
 
@@ -86,7 +86,7 @@ public class PhotoService {
 
 
     @Transactional
-    public void deletePhotoByIdUser(String id){
+    public Boolean deletePhotoByIdUser(String id){
         // Récupérer la photo de l'utilisateur
         Photo photo = photoRepository.findByUserId(id);
 
@@ -106,9 +106,38 @@ public class PhotoService {
 
             // Supprimer la photo de la base de données
             photoRepository.deleteByUser_Id(id);
+
+            return true;
         }
+
+        return false;
     }
 
+    public Boolean deletePhotoById(Long id) {
+        // Récupérer la photo
+        Photo photo = photoRepository.findById(id).orElse(null);
 
+        if (photo != null) {
+            // Récupérer le chemin de la photo
+            String path = photo.getPath();
+
+            path = "src/main/resources/static/pdp/" + path;
+
+            try {
+                // Supprimer le fichier de la photo
+                Files.deleteIfExists(Paths.get(path));
+            } catch (IOException e) {
+                // Gérer les exceptions ici
+                e.printStackTrace();
+            }
+
+            // Supprimer la photo de la base de données
+            photoRepository.delete(photo);
+
+            return true;
+        }
+
+        return false;
+    }
 
 }

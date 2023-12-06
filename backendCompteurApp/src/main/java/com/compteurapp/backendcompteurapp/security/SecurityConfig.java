@@ -62,4 +62,9 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public JwtUserSyncFilter jwtAuthUserFilterBean() {
+        return new JwtUserSyncFilter();
+    }
+
 }

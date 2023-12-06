@@ -48,8 +48,11 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
                 user.setTva(String.valueOf(token.getTokenAttributes().get("tva")));
                 user.setPhoneNumber(String.valueOf(token.getTokenAttributes().get("phoneNumber")));
                 Category category = new Category();
-                category.setId(Long.parseLong(String.valueOf(token.getTokenAttributes().get("idCategory"))));
-                user.setCategory(category);
+                if(token.getTokenAttributes().get("idCategory") != null)
+                {
+                    category.setId(Long.parseLong(String.valueOf(token.getTokenAttributes().get("idCategory"))));
+                    user.setCategory(category);
+                }
 
                 String realm_access = String.valueOf(token.getTokenAttributes().get("realm_access"));
                 List<String> rolesList = Arrays.stream(realm_access.substring(realm_access.indexOf("[") + 1, realm_access.indexOf("]")).split(",")).map(String::trim).toList();
