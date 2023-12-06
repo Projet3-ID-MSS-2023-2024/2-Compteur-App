@@ -1,6 +1,6 @@
 export class UserDB {
   id: string | undefined;
-  categoryId: string | undefined;
+  categoryId: any | undefined;
   email: string | undefined;
   firstname: string | undefined;
   lastname: string | undefined;
@@ -8,4 +8,6 @@ export class UserDB {
   role: string | undefined;
   tva: string | undefined;
   username: string | undefined;
+  category: any | undefined;
+  phoneNumber:string | undefined;
 }
