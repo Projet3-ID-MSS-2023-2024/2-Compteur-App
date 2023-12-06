@@ -66,23 +66,34 @@ public class PhotoService {
         return photoRepository.findByUserId(id);
     }
 
-    public Boolean updatePhoto(MultipartFile file, String id) {
+    public String updatePhoto(MultipartFile file, String id) {
         try {
             String uploadDir = "src/main/resources/static/pdp/";
 
             // Récupérer la photo existante
             Photo existingPhoto = photoRepository.findByUserId(id);
 
+            // Vérifiez que existingPhoto n'est pas null
+            if (existingPhoto == null) {
+                throw new Exception("La photo n'existe pas.");
+            }
+
             // Copier le fichier dans le répertoire de destination
             Path uploadPath = Paths.get(uploadDir + existingPhoto.getPath());
             file.transferTo(uploadPath);
 
-            return true;
+            // Vérifiez que le fichier a été correctement transféré
+            if (!Files.exists(uploadPath)) {
+                throw new Exception("Le transfert du fichier a échoué.");
+            }
+
+            return existingPhoto.getPath();
         } catch (Exception ex) {
             // Gérer les exceptions ici
-            return false;
+            return null;
         }
     }
+
 
 
     @Transactional

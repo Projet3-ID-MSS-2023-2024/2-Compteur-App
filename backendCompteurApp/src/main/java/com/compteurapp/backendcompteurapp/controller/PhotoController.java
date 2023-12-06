@@ -24,7 +24,7 @@ public class PhotoController {
     }
 
     @PutMapping("/UpdatephotoProfile/{id}")
-    public Boolean updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+    public String updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
         return photoService.updatePhoto(file, id);
     }
 
