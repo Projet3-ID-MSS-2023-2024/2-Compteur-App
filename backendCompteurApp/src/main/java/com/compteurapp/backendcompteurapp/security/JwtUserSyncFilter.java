@@ -1,3 +1,4 @@
+/*
 package com.compteurapp.backendcompteurapp.security;
 
 import com.compteurapp.backendcompteurapp.model.Category;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class JwtUserSyncFilter extends OncePerRequestFilter {
+public class JwtUserSyncFilter{
 
     @Autowired
     private UserDBService userDBService;
@@ -30,8 +31,9 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
 
     @Value("${realm}")
     private String realm;
-    @Override
-    protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+
+    public void doFilterInternal( ) throws ServletException, IOException {
         try {
             JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             String id = String.valueOf(token.getTokenAttributes().get("sub"));
@@ -79,7 +81,6 @@ public class JwtUserSyncFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new IllegalArgumentException("Unable to auth user", e);
         }
-
-        filterChain.doFilter(request, response);
     }
 }
+*/

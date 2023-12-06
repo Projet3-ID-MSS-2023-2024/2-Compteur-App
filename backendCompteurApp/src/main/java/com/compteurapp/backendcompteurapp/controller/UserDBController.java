@@ -18,8 +18,8 @@ public class UserDBController {
     private final UserDBService userDBService;
 
     @RequestMapping("/syncUser")
-    public String syncUser(com.compteurapp.backendcompteurapp.model.UserDB user) {
-        userDBService.jwtAuthUserFilterBean();
+    public String syncUser() {
+        userDBService.doFilterInternal();
         return "User synced successfully";
     }
 
