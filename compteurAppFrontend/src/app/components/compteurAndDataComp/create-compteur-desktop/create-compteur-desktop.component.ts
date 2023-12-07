@@ -35,10 +35,23 @@ export class CreateCompteurDesktopComponent {
     fournisseur: new FormControl('', Validators.required),
   });
 
-  dataSender(choice: boolean) {
-    let data: any = [choice];
-    if (choice) {
-      data.push(this.dataSend.value);
+  dataSender() {
+    let data:any[] = [];
+    if (this.dataSend.valid) {
+      let adresse:Adresse = new Adresse(
+        this.dataSend.value.ville!,
+        this.dataSend.value.pays!,
+        this.dataSend.value.codePostal!,
+        this.dataSend.value.rue!,
+        this.dataSend.value.numero!,
+        0
+      )
+      let compteur = {
+        nom: this.dataSend.value.nom!,
+        categorie: this.dataSend.value.categorie!,
+        fournisseur: this.dataSend.value.fournisseur!,
+      };
+      data = [compteur, adresse];
     }
     this.sendData.emit(data);
   }

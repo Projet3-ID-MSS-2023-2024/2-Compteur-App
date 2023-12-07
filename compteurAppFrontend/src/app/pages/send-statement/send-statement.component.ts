@@ -100,48 +100,60 @@ export class SendStatementComponent {
     }
   }
 
-  showPopUpSendMetterDesktop(){
+  showPopUpSendMetterDesktop() {
     this.showPopUpNewMetterDesktop = true;
   }
 
   async sendStatement(choice: any) {
-    console.log(choice);
-    if(choice[0]){
-      let provider = await this.getProvideurCompteur(this.idFocus);
-      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
-      choice[1][0],
-      this.idUserConnecter,
-      provider["result"],
-      this.idFocus,
-      choice[3].rue,
-      choice[3].numeros,
-      choice[3].codePostal,
-      choice[3].ville,
-      choice[3].pays,
-      "mobile"
-      );
-      await this.addCompteurData(compteurDataSender);
+    try {
+      this.loadingService.emettreEvenement('loading');
+      if (choice[0]) {
+        let provider = await this.getProvideurCompteur(this.idFocus);
+        let compteurDataSender: CompteurDataSender = new CompteurDataSender(
+          choice[2],
+          choice[1][0],
+          this.idUserConnecter,
+          provider['result'],
+          this.idFocus,
+          choice[3].rue,
+          choice[3].numeros,
+          choice[3].codePostal,
+          choice[3].ville,
+          choice[3].pays,
+          'mobile'
+        );
+        await this.addCompteurData(compteurDataSender);
+      }
+      this.loadingService.emettreEvenement('sucess');
+    } catch {
+      this.loadingService.emettreEvenement('error');
     }
     this.showSendStatement = false;
   }
 
   async sendStatementDesktop(choice: any) {
-    console.log(choice);
-    if(choice[0]){
-      let provider = await this.getProvideurCompteur(this.idFocus);
-      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2].valeur,
-      choice[1][0],
-      this.idUserConnecter,
-      provider["result"],
-      this.idFocus,
-      choice[2].rue,
-      choice[2].numeros,
-      choice[2].codePostal,
-      choice[2].ville,
-      choice[2].pays,
-      "desktop"
-      );
-      await this.addCompteurData(compteurDataSender);
+    try {
+      this.loadingService.emettreEvenement('loading');
+      if (choice[0]) {
+        let provider = await this.getProvideurCompteur(this.idFocus);
+        let compteurDataSender: CompteurDataSender = new CompteurDataSender(
+          choice[2].valeur,
+          choice[1][0],
+          this.idUserConnecter,
+          provider['result'],
+          this.idFocus,
+          choice[2].rue,
+          choice[2].numeros,
+          choice[2].codePostal,
+          choice[2].ville,
+          choice[2].pays,
+          'desktop'
+        );
+        await this.addCompteurData(compteurDataSender);
+        this.loadingService.emettreEvenement('sucess');
+      }
+    } catch {
+      this.loadingService.emettreEvenement('error');
     }
     this.showPopUpSendStatementDesktop = false;
   }
@@ -160,8 +172,10 @@ export class SendStatementComponent {
     }
   }
 
-  async newMetter(data: any) {
+  async newMetter(data: any){
+    if(data.length > 0){
     try {
+      this.loadingService.emettreEvenement('loading');
       let adresse = await this.addAdresse(data[1]);
       let compteur = new Compteur(
         data[0].nom,
@@ -177,42 +191,13 @@ export class SendStatementComponent {
         this.provider.find((item) => item.id === data[0].fournisseur)?.firstname,
         this.category.find((item) => item.id == data[0].categorie)?.name,
       ]);
-
       this.loadingService.emettreEvenement('sucess');
     } catch {
       console.log('error');
       this.loadingService.emettreEvenement('error');
     }
   }
-
-  async newMetterDesktop(data: any) {
-    if(data[0]){
-      try{
-        console.log(data[1]);
-        let adresse:Adresse = new Adresse(data[1].ville,data[1].pays,data[1].codePostal,data[1].rue,data[1].numero,0);
-        let newAdresse = await this.addAdresse(adresse);
-        let compteur = new Compteur(
-          data[1].nom,
-          this.idUserConnecter,
-          data[1].fournisseur,
-          newAdresse.id,
-          data[1].categorie
-        );
-        let newCompteur = await this.addCompteur(compteur);
-        this.data.push([
-          newCompteur.id,
-          newCompteur.nom,
-          this.provider.find((item) => item.id === data[1].fournisseur)?.firstname,
-          this.category.find((item) => item.id == data[1].categorie)?.name,
-        ]);
-        this.loadingService.emettreEvenement('sucess');
-      }
-      catch{
-        this.loadingService.emettreEvenement('error');
-
-      }
-    }
-    this.showPopUpSendStatementDesktop = false;
+  this.showPopUpNewMetterDesktop = false;
   }
 
   async modifyMetter(data: any) {
@@ -298,4 +283,5 @@ export class SendStatementComponent {
     const observable = this.compteurService.getProvideurCompteur(id);
     return lastValueFrom(observable);
   }
+
 }
