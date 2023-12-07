@@ -29,7 +29,7 @@ export class AdresseFieldSendDataComponent {
         'input[formControlName="photo"]'
       ) as HTMLInputElement;
       data.push(photo.files);
-      data.push(this.dataSend.value.valeur);
+      data.push(this.dataSend.value);
     }
     this.sendData.emit(data);
   }

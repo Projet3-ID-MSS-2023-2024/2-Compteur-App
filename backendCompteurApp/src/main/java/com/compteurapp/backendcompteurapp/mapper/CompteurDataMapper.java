@@ -53,7 +53,7 @@ public class CompteurDataMapper {
     public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays, String device) throws Exception {
 
         CompteurData compteurData = new CompteurData();
-        if(device.equals("mobile")){
+        if(device=="mobile"){
             if(!verifyAdresse(idCompteur, ville, pays)) {
                 throw new Exception("Adresse invalide");
             }

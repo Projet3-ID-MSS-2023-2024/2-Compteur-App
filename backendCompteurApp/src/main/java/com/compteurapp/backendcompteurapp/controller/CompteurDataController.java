@@ -61,7 +61,7 @@ public class CompteurDataController {
                                                     @RequestParam String ville,
                                                     @RequestParam String pays,
                                                     @RequestParam String device) throws Exception {
-       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays);
+       return compteurDataMapper.createCompteurData(image, client, vendeur, valeur, idCompteur, rue, numeros, codePostal, ville, pays, device);
     }
 
     @GetMapping("/CompteurData/{id}")

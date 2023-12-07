@@ -106,7 +106,9 @@ export class SendStatementComponent {
       choice[3].numero,
       choice[3].codePostal,
       choice[3].ville,
-      choice[3].pays);
+      choice[3].pays,
+      "mobile"
+      );
       await this.addCompteurData(compteurDataSender);
     }
     this.showSendStatement = false;
@@ -116,7 +118,7 @@ export class SendStatementComponent {
     console.log(choice);
     if(choice[0]){
       let provider = await this.getProvideurCompteur(this.idFocus);
-      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
+      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2].valeur,
       choice[1][0],
       this.idUserConnecter,
       provider["result"],
@@ -125,7 +127,9 @@ export class SendStatementComponent {
       choice[2].numero,
       choice[2].codePostal,
       choice[2].ville,
-      choice[2].pays);
+      choice[2].pays,
+      "desktop"
+      );
       await this.addCompteurData(compteurDataSender);
     }
     this.showPopUpSendStatementDesktop = false;
