@@ -1,4 +1,3 @@
-/*
 package com.compteurapp.backendcompteurapp;
 
 
@@ -78,6 +77,9 @@ public class CompteurTest {
     @Order(0)
     public void init() {
 
+        Category category = new Category();
+        category.setId(1L);
+
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
         userDB.setLastname("test4");
@@ -94,7 +96,7 @@ public class CompteurTest {
         provider.setId("9999providertest");
         provider.setTva("BE123456789");
         provider.setPhoneNumber("0477777777");
-        provider.setCategoryId("1");
+        provider.setCategory(category);
 
         userDBRepository.save(provider);
 
@@ -106,9 +108,6 @@ public class CompteurTest {
         adresse.setPays("test");
         adresse.setId(59999L);
         adresseRepository.save(adresse);
-
-        Category category = new Category();
-        category.setId(1L);
 
         this.category = category;
         this.provider = provider;
@@ -170,4 +169,4 @@ public class CompteurTest {
     }
 
 
-}*/
+}
