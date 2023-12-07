@@ -25,6 +25,8 @@ export class SendStatementComponent {
   showSendStatement: boolean = false;
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
+  showPopUpSendStatementDesktop: boolean = false;
+
   idFocus!: string;
   providerFocus!: string;
   category: Category[] = [];
@@ -81,7 +83,12 @@ export class SendStatementComponent {
         this.showPopUpDelete = true;
         break;
       case 'btn3':
-        this.showSendStatement = true;
+        //si c'est un smartphone
+        if (window.innerWidth <= 768) {
+          this.showSendStatement = true;
+        } else {
+          this.showPopUpSendStatementDesktop = true;
+        }
         break;
     }
   }
@@ -90,7 +97,7 @@ export class SendStatementComponent {
     console.log(choice);
     if(choice[0]){
       let provider = await this.getProvideurCompteur(this.idFocus);
-    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
+      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
       choice[1][0],
       this.idUserConnecter,
       provider["result"],
@@ -103,6 +110,25 @@ export class SendStatementComponent {
       await this.addCompteurData(compteurDataSender);
     }
     this.showSendStatement = false;
+  }
+
+  async sendStatementDesktop(choice: any) {
+    console.log(choice);
+    if(choice[0]){
+      let provider = await this.getProvideurCompteur(this.idFocus);
+      let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
+      choice[1][0],
+      this.idUserConnecter,
+      provider["result"],
+      this.idFocus,
+      choice[2].rue,
+      choice[2].numero,
+      choice[2].codePostal,
+      choice[2].ville,
+      choice[2].pays);
+      await this.addCompteurData(compteurDataSender);
+    }
+    this.showPopUpSendStatementDesktop = false;
   }
 
   async deleteChoice(choice: boolean) {

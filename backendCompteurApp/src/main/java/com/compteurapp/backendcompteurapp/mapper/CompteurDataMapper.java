@@ -50,12 +50,20 @@ public class CompteurDataMapper {
     @Autowired
     CompteurService compteurService;
 
-    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays) throws Exception {
+    public CompteurDataSenderDTO createCompteurData(MultipartFile image, String client, String vendeur, double valeur, Long idCompteur, String rue, String numeros, String codePostal, String ville, String pays, String device) throws Exception {
 
         CompteurData compteurData = new CompteurData();
-        if(!verifyAdresse(idCompteur, ville, pays)) {
-            throw new Exception("Adresse invalide");
+        if(device.equals("mobile")){
+            if(!verifyAdresse(idCompteur, ville, pays)) {
+                throw new Exception("Adresse invalide");
+            }
         }
+        else{
+            if(!verifieAdresseDesktop(idCompteur, ville, pays, rue, numeros, codePostal)) {
+                throw new Exception("Adresse invalide");
+            }
+        }
+
         compteurData = saveBDCompteurData(image, client, vendeur, valeur, idCompteur);
         CompteurDataSenderDTO compteurSenderDTO = mappingSenderDto(compteurData);
         return compteurSenderDTO;
@@ -207,6 +215,20 @@ public class CompteurDataMapper {
         return R * c;
     }
 
+    public boolean verifieAdresseDesktop(Long idCompteur, String ville, String pays, String rue, String numeros, String codePostal) throws Exception {
+        Compteur compteur = compteurService.getOneCompteur(idCompteur).get();
+        String villeCompteur = compteur.getAdresse().getVille();
+        String paysCompteur = compteur.getAdresse().getPays();
+        String rueCompteur = compteur.getAdresse().getRue();
+        String numeroCompteur = compteur.getAdresse().getNumero();
+        String codePostalCompteur = compteur.getAdresse().getCodePostal();
+        if(ville.equals(villeCompteur) && pays.equals(paysCompteur) && rue.equals(rueCompteur) && numeros.equals(numeroCompteur) && codePostal.equals(codePostalCompteur)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 
 

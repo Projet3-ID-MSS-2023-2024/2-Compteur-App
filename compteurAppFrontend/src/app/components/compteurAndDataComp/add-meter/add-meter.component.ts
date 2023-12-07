@@ -84,10 +84,9 @@ export class AddMeterComponent {
     const selectedCategoryId = Number(selectElement.value);
     const selectedCategoryName = this.category.find(item => item.id === selectedCategoryId)?.name;
     if(selectedCategoryName) {
-    this.updateSelectedCategory(selectedCategoryName);
+      this.updateSelectedCategory(selectedCategoryName);
     }
   }
-
 
   updateSelectedCategory(categoryName: string) {
     this.filteredProviders = this.provider.filter(provider => provider.category.name === categoryName);
