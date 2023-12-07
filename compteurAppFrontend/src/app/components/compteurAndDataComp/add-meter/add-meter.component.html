@@ -17,7 +17,6 @@
       <select formControlName="fournisseur">
         <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
       </select>
-
     </div>
     <div class="sendMeter" (click)="sendData()">
       <img src="./assets/navbarIcone/add.svg" alt="add" />

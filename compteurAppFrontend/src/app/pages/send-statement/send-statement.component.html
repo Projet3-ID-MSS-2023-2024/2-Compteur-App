@@ -19,3 +19,4 @@
 <app-delete-confirmation (delete)="deleteChoice($event)" *ngIf="showPopUpDelete"></app-delete-confirmation>
 <app-modify-metter (data)="modifyMetter($event)" [category]="category" [provider]="provider" *ngIf="showPopUpModifyMetter"></app-modify-metter>
 <app-loader-api></app-loader-api>
+<app-create-compteur-desktop (sendData)="newMetterDesktop($event)" [category]="category" [provider]="provider"></app-create-compteur-desktop>

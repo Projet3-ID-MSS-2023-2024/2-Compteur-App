@@ -174,6 +174,10 @@ export class SendStatementComponent {
     }
   }
 
+  async newMetterDesktop(data: any) {
+    console.log(data);
+  }
+
   async modifyMetter(data: any) {
     this.showPopUpModifyMetter = false;
     if (data != 'close') {

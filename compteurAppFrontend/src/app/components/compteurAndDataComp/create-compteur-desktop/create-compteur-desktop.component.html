@@ -1,0 +1,37 @@
+<div class="adresseField">
+  <div class="formulaire">
+    <div class="placement">
+      <h1>Entrez vos informations</h1>
+    </div>
+
+    <div class="formField" [formGroup]="dataSend">
+      <div class="fieldPlacement">
+        <input type="text" placeholder="Pays" formControlName="pays">
+        <input type="text" placeholder="Ville" formControlName="ville">
+      </div>
+      <div class="fieldPlacement">
+        <input type="text" placeholder="Code postal" formControlName="codePostal">
+        <input type="text" placeholder="Rue" formControlName="rue">
+      </div>
+      <div class="fieldPlacement">
+        <input type="text" placeholder="Numeros" formControlName="numeros">
+        <input type="text" placeholder="Nom" formControlName="nom">
+      </div>
+      <div class="fieldPlacement">
+        <select formControlName="categorie" (change)="onCategoryChange($event)">
+          <option [value]="item.id" *ngFor="let item of category">{{item.name}}</option>
+        </select>
+        <select formControlName="fournisseur">
+          <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="placement">
+      <div class="button" (click)="dataSender(true)">
+        <p>Valider</p>
+      </div>
+    </div>
+    <div class="croix" (click)="dataSender(false)"></div>
+  </div>
+</div>

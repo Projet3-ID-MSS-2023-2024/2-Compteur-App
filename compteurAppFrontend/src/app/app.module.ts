@@ -44,6 +44,7 @@ import { LoaderAPIComponent } from './components/universalComponents/loader-api/
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 import { UserDBService } from './_services/userDB.service';
 import { AdresseFieldSendDataComponent } from './components/compteurAndDataComp/adresse-field-send-data/adresse-field-send-data.component';
+import { CreateCompteurDesktopComponent } from './components/compteurAndDataComp/create-compteur-desktop/create-compteur-desktop.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -113,6 +114,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     CategoriesComponent,
     DropdownCategoryComponent,
     AdresseFieldSendDataComponent,
+    CreateCompteurDesktopComponent,
   ],
   imports: [
     BrowserModule,
