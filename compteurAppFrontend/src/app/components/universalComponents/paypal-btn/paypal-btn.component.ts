@@ -9,13 +9,10 @@ import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 export class PaypalBtnComponent implements OnInit{
 
   //@Input() facture:Facture;
+  @Input() factureInfo: any[] = [];
 
   public payPalConfig ? : IPayPalConfig;
-  prixFacture : string;
 
-  constructor() {
-    this.prixFacture = '12.99';
-  }
 
   ngOnInit(): void {
     this.initConfig();
@@ -31,11 +28,11 @@ export class PaypalBtnComponent implements OnInit{
         purchase_units: [{
           amount: {
             currency_code: 'EUR',
-            value: this.prixFacture,
+            value: this.factureInfo[4],
             breakdown: {
               item_total: {
                 currency_code: 'EUR',
-                value: this.prixFacture
+                value: this.factureInfo[4]
               }
             }
           },
@@ -45,7 +42,7 @@ export class PaypalBtnComponent implements OnInit{
             category: 'DIGITAL_GOODS',
             unit_amount: {
               currency_code: 'EUR',
-              value: this.prixFacture,
+              value: this.factureInfo[4],
             },
           }]
         }]

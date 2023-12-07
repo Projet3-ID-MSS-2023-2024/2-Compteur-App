@@ -8,4 +8,4 @@
 </div>
 
 
-<app-paypal-pop-up *ngIf="ligneFacture.length>0" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>
+<app-paypal-pop-up *ngIf="ligneFacture.length>0" [data]="ligneFacture" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>

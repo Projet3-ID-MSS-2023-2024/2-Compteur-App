@@ -9,7 +9,7 @@ export class FactureComponent {
 
   ligneFacture: any[] = [];
 
-  
+
   attributLegend =['Nom du compteur', 'Nom du fournisseur', 'Date', 'Prix'];
 
   data: any[][] = [
