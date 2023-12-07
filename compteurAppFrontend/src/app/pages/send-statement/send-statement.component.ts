@@ -15,6 +15,7 @@ import { from } from 'rxjs';
 import { CompteurDTO } from 'src/models/compteurDTO';
 import { CompteurDataSender } from 'src/models/compteurDataSender';
 import { CompteurDataService } from 'src/app/_services/compteur-data.service';
+import { Adresse } from 'src/models/adresse';
 
 @Component({
   selector: 'app-send-statement',
@@ -25,6 +26,9 @@ export class SendStatementComponent {
   showSendStatement: boolean = false;
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
+  showPopUpSendStatementDesktop: boolean = false;
+  showPopUpNewMetterDesktop: boolean = false;
+
   idFocus!: string;
   providerFocus!: string;
   category: Category[] = [];
@@ -34,10 +38,12 @@ export class SendStatementComponent {
   compteur!: CompteurDTO;
 
   attributLegend = ['Nom compteur', 'Fournisseur', 'Catégorie'];
-  buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
+  buttonOption = ['delete.svg', 'send.svg'];
   data: any[][] = [];
 
   idUserConnecter: any;
+
+  device: string = 'desktop';
 
   constructor(
     private loadingService: LoadingService,
@@ -51,6 +57,9 @@ export class SendStatementComponent {
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
+    if (window.innerWidth <= 768) {
+      this.device = 'mobile';
+    }
     try {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
@@ -75,73 +84,83 @@ export class SendStatementComponent {
     this.idFocus = arrayData[1];
     switch (arrayData[0]) {
       case 'btn1':
-        this.showPopUpModifyMetter = true;
-        break;
-      case 'btn2':
         this.showPopUpDelete = true;
         break;
-      case 'btn3':
-        this.showSendStatement = true;
+      case 'btn2':
+        //si c'est un smartphone
+        if (window.innerWidth <= 768) {
+          this.showSendStatement = true;
+        } else {
+          this.showPopUpSendStatementDesktop = true;
+        }
         break;
     }
   }
 
-  async sendStatement(choice: any) {
-    console.log(choice);
-    if(choice[0]){
-      let provider = await this.getProvideurCompteur(this.idFocus);
-    let compteurDataSender:CompteurDataSender = new CompteurDataSender(choice[2],
-      choice[1][0],
-      this.idUserConnecter,
-      provider["result"],
-      this.idFocus,
-      choice[3].rue,
-      choice[3].numero,
-      choice[3].codePostal,
-      choice[3].ville,
-      choice[3].pays);
-      await this.addCompteurData(compteurDataSender);
-    }
-    this.showSendStatement = false;
+  showPopUpSendMetterDesktop() {
+    this.showPopUpNewMetterDesktop = true;
   }
 
-  async deleteChoice(choice: boolean) {
-    this.showPopUpDelete = false;
-    this.loadingService.emettreEvenement('loading');
-    if (choice) {
+  async sendCompteurData(choice: any) {
+    console.log(choice);
+    if (choice[0]) {
+      let index = this.device === 'desktop' ? 2 : 3;
+      let valeur = this.device === 'desktop' ? choice[2].valeur : choice[2];
       try {
-        await this.deleteCompteur(this.idFocus);
-        this.data = this.data.filter((item) => item[0] !== this.idFocus);
+        this.loadingService.emettreEvenement('loading');
+        if (choice[0]) {
+          let provider = await this.getProvideurCompteur(this.idFocus);
+          let compteurDataSender: CompteurDataSender = new CompteurDataSender(
+            valeur,
+            choice[1][0],
+            this.idUserConnecter,
+            provider['result'],
+            this.idFocus,
+            choice[index].rue,
+            choice[index].numero,
+            choice[index].codePostal,
+            choice[index].ville,
+            choice[index].pays,
+            this.device
+          );
+          await this.addCompteurData(compteurDataSender);
+        }
         this.loadingService.emettreEvenement('sucess');
       } catch {
         this.loadingService.emettreEvenement('error');
       }
     }
+    this.showSendStatement = false;
+    this.showPopUpSendStatementDesktop = false;
   }
 
   async newMetter(data: any) {
-    try {
-      let adresse = await this.addAdresse(data[1]);
-      let compteur = new Compteur(
-        data[0].nom,
-        this.idUserConnecter,
-        data[0].fournisseur,
-        adresse.id,
-        data[0].categorie
-      );
-      let newCompteur = await this.addCompteur(compteur);
-      this.data.push([
-        newCompteur.id,
-        newCompteur.nom,
-        this.provider.find((item) => item.id === data[0].fournisseur)?.firstname,
-        this.category.find((item) => item.id == data[0].categorie)?.name,
-      ]);
-
-      this.loadingService.emettreEvenement('sucess');
-    } catch {
-      console.log('error');
-      this.loadingService.emettreEvenement('error');
+    if (data.length > 0) {
+      try {
+        this.loadingService.emettreEvenement('loading');
+        let adresse = await this.addAdresse(data[1]);
+        let compteur = new Compteur(
+          data[0].nom,
+          this.idUserConnecter,
+          data[0].fournisseur,
+          adresse.id,
+          data[0].categorie
+        );
+        let newCompteur = await this.addCompteur(compteur);
+        this.data.push([
+          newCompteur.id,
+          newCompteur.nom,
+          this.provider.find((item) => item.id === data[0].fournisseur)
+            ?.firstname,
+          this.category.find((item) => item.id == data[0].categorie)?.name,
+        ]);
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
+        console.log('error');
+        this.loadingService.emettreEvenement('error');
+      }
     }
+    this.showPopUpNewMetterDesktop = false;
   }
 
   async modifyMetter(data: any) {
@@ -174,6 +193,20 @@ export class SendStatementComponent {
         this.loadingService.emettreEvenement('sucess');
       } catch {
         console.log('error');
+        this.loadingService.emettreEvenement('error');
+      }
+    }
+  }
+
+  async deleteChoice(choice: boolean) {
+    this.showPopUpDelete = false;
+    this.loadingService.emettreEvenement('loading');
+    if (choice) {
+      try {
+        await this.deleteCompteur(this.idFocus);
+        this.data = this.data.filter((item) => item[0] !== this.idFocus);
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
         this.loadingService.emettreEvenement('error');
       }
     }

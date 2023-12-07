@@ -9,8 +9,9 @@ export class CompteurDataSender {
   codePostal!:string;
   ville!:string;
   pays!:string;
+  device!:string;
 
-  constructor(valeur:number, photo:File, client:string, provider:string, compteur:string, rue:string, numero:string, codePostal:string, ville:string, pays:string) {
+  constructor(valeur:number, photo:File, client:string, provider:string, compteur:string, rue:string, numero:string, codePostal:string, ville:string, pays:string, device:string) {
     this.valeur = valeur;
     this.photo = photo;
     this.client = client;
@@ -21,6 +22,7 @@ export class CompteurDataSender {
     this.codePostal = codePostal;
     this.ville = ville;
     this.pays = pays;
+    this.device = device;
   }
 
 
