@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { KeycloakService } from 'keycloak-angular';
 import { addAdresse } from 'src/models/add-adresse';
 import { Adresse } from 'src/models/adresse';
+import { AdresseDTO } from 'src/models/adresseDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,12 @@ export class AdresseService {
     };
     return this.http.get<Adresse>(`/api/getAdresseByUsername/${username}`, { headers })
   }
-  updateAdresse(adresse:Adresse){
+  updateAdresse(adresse:AdresseDTO){
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    return this.http.put<Adresse>(`/api/updateAdresse`,adresse, { headers })
+    return this.http.put<AdresseDTO>(`/api/updateAdresse`,adresse, { headers })
   }
   getAdresses(){
     const token = this.keycloak.getKeycloakInstance().token;

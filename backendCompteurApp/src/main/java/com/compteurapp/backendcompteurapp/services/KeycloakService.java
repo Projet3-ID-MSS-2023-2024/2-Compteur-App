@@ -53,6 +53,7 @@ public class KeycloakService {
             userDB.setLastname(userDTO.getLastName());
             userDB.setEmail(userDTO.getEmail());
             userDB.setUsername(userDTO.getUserName());
+            userDB.setPhoneNumber(userDTO.getPhoneNumber());
             this.userDBRepository.save(userDB);
         });
 

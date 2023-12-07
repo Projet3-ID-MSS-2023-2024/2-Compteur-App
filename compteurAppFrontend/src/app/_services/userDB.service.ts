@@ -30,4 +30,7 @@ export class UserDBService {
     console.log(user);
     return this.http.put(`api/updateUserDB/${id}`, user);
   }
+  public hasAddressAndMeter(idClient: string |undefined){
+    return this.http.get(`api/hasAddressAndMeter/${idClient}`);
+  }
 }
