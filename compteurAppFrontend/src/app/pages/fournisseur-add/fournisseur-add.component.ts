@@ -36,18 +36,17 @@ export class FournisseurAddComponent {
     private userDBService: UserDBService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-      TVA: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]], // Validation pour 10 chiffres
+      TVA: ['', [Validators.required, Validators.pattern('BE0[0-9]{9}')]], // Validation pour TVA belge
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
       category: ['', [Validators.required]],
+
     });
 
     this.categories$ = this.CategoryService.getAll();
   }
-
-
 
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
@@ -56,14 +55,30 @@ export class FournisseurAddComponent {
 
   previewUrl: any = null;
 
+  closeOrOpenPopup: boolean = false;
+
+  closePopup() {
+    this.closeOrOpenPopup = false;
+  }
+
   handleImages(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
+
+    // Vérifier si le fichier est une image
+    if (this.selectedFile.type.match(/image\/*/) == null) {
+      this.closeOrOpenPopup = true;
+      return;
+    }
+
     this.previewUrl = URL.createObjectURL(this.selectedFile);
   }
 
+  submitted = false;
+
   addFournisseur() {
+    this.submitted = true;
     this.isLoading = true;
     if (this.registerForm.valid) {
       const fournisseurSpring: AddFournisseurSpring = {
@@ -74,15 +89,18 @@ export class FournisseurAddComponent {
         lastName: this.registerForm.value.username,
         phoneNumber: this.registerForm.value.phoneNumber,
         tva: this.registerForm.value.TVA,
-        idCategory: this.registerForm.value.category
+        idCategory: this.registerForm.value.category,
       };
       this.fournisseurService.AddFournisseurSpring(fournisseurSpring).subscribe(
         (data) => {
-          this.handleSuccess(data)
+          this.handleSuccess(data);
           this.previewUrl = null;
         },
         (error) => this.handleError(error)
       );
+    } else {
+      this.isLoading = false;
+      this.registerForm.markAllAsTouched();
     }
   }
 
@@ -90,36 +108,40 @@ export class FournisseurAddComponent {
     this.messageService.changeMessage('Fournisseur ajouté avec succès');
     this.messageService.changePopup(true);
     this.isLoading = false;
-    this.userDBService.getProviderByUserName(this.registerForm.value.username).subscribe(
-      (data) => this.handleProvider(data),
-      (error) => this.handleError(error)
-    );
+    this.userDBService
+      .getProviderByUserName(this.registerForm.value.username)
+      .subscribe(
+        (data) => this.handleProvider(data),
+        (error) => this.handleError(error)
+      );
   }
 
   handleProvider(data: any) {
     const id = data.id;
     if (this.selectedFile) {
-      console.log(this.selectedFile)
-      this.photoProfilService.uploadPhotoProfil(this.selectedFile, id).subscribe(
-        response => this.router.navigate(['/listFournisseur']),
-        error => this.handleError(error)
-      );
+      console.log(this.selectedFile);
+      this.photoProfilService
+        .uploadPhotoProfil(this.selectedFile, id)
+        .subscribe(
+          (response) => this.router.navigate(['/listFournisseur']),
+          (error) => this.handleError(error)
+        );
     } else {
-      console.log('Aucun fichier sélectionné, ID utilisateur non défini ou service photoProfilService non défini');
-      this.router.navigate(['/listFournisseur'])
+      console.log(
+        'Aucun fichier sélectionné, ID utilisateur non défini ou service photoProfilService non défini'
+      );
+      this.router.navigate(['/listFournisseur']);
     }
   }
 
-@ViewChild('fileInput') fileInput!: ElementRef;
-removeImage() {
-  this.previewUrl = null;
-  this.selectedFile = null;
-  this.fileInput.nativeElement.value = '';
-}
-
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  removeImage() {
+    this.previewUrl = null;
+    this.selectedFile = null;
+    this.fileInput.nativeElement.value = '';
+  }
 
   goBack() {
     this.location.back();
   }
 }
-

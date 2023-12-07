@@ -5,6 +5,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FournisseurService } from 'src/app/_services/fournisseur.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-categories',
@@ -18,11 +19,17 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   selectedCategory!: Category;
   displayPopupSucces = false;
   displayPopupError = false;
-
+  submitted = false;
+  registerForm: FormGroup;
   constructor(
     private categoryService: CategoryService,
-    private fournisseurService: FournisseurService
-  ) {}
+    private fournisseurService: FournisseurService,
+    private formBuilder: FormBuilder
+  ) {
+    this.registerForm = this.formBuilder.group({
+      categoryName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
+    });
+  }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -86,6 +93,11 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   categoryName = '';
 
   onSubmit(): void {
+    this.submitted = true;
+    if(this.registerForm.invalid){
+      this.registerForm.markAllAsTouched();
+      return;
+    }
     if (this.categoryName != '') {
       this.categoryService
         .create(this.categoryName)

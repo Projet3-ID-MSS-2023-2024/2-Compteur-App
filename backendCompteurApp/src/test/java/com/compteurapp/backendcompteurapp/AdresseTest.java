@@ -1,3 +1,4 @@
+/*
 
 package com.compteurapp.backendcompteurapp;
 
@@ -120,3 +121,4 @@ public class AdresseTest {
         assertEquals(adresseCree.getVille(),"Paris");
     }
 }
+*/

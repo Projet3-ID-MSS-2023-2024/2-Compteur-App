@@ -41,12 +41,12 @@ export class FournisseurInfoComponent implements OnInit {
     private compteurService: CompteurService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-      TVA: ['', [Validators.required]],
-      password: [''],
-      confirmPassword: ['', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]], // Validation pour 10 chiffres
+      TVA: ['', [Validators.required, Validators.pattern('BE0[0-9]{9}')]], // Validation pour TVA belge
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
+      confirmPassword: ['', [Validators.required]],
       category: ['', [Validators.required]],
     }, { validator: this.checkPasswords });
     this.categories$ = this.CategoryService.getAll();
@@ -113,6 +113,8 @@ export class FournisseurInfoComponent implements OnInit {
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
   }
+
+  submitted = false;
 
   updateFournisseur() {
     this.isLoading = true;
@@ -181,12 +183,13 @@ export class FournisseurInfoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
+    if (this.selectedFile.type.match(/image\/*/) == null) {
+      alert("Seules les images sont supportées");
+      return;
+    }
     this.photoProfilService.updatePhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
       (data) => {
-        console.log(data);
-        console.log("HEREEEE");
         this.photoUrl = data.path;
-        console.log(this.photoUrl);
         this.photoNull = false;
         this.ngOnInit();
       },
@@ -200,6 +203,11 @@ export class FournisseurInfoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
+    if (this.selectedFile.type.match(/image\/*/) == null) {
+      this.messagePopup = "Seules les images sont supportées";
+      this.displayPopupErreurFournisseur = true;
+      return;
+    }
     this.photoProfilService.uploadPhotoProfil(this.selectedFile, this.idProvider).subscribe(
       (data) => {
         console.log(data);
@@ -221,7 +229,12 @@ export class FournisseurInfoComponent implements OnInit {
   }
 
   openModify() {
-    this.closeOrOpenModify = true;
+    this.submitted = true;
+    if(this.registerForm.invalid){
+      this.registerForm.markAllAsTouched();
+    } else {
+      this.closeOrOpenModify = true;
+    }
   }
 
   closeDelete() {

@@ -159,6 +159,13 @@ tr:nth-child(even) {
   font-weight: bold;
 }
 
+.error-msg{
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
 @media screen and (max-width: 950px) {
 
   .filterPlacement {

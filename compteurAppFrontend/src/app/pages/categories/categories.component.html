@@ -3,9 +3,15 @@
     <app-page-name [pageName]="'Catégorie'"></app-page-name>
   </div>
   <div class="addCategoryForm">
-    <form (ngSubmit)="onSubmit()">
+    <div class="error-msg" *ngIf="submitted && registerForm.get('categoryName')?.hasError('required')">
+      Le nom de la catégorie est requis.
+    </div>
+    <div class="error-msg" *ngIf="submitted && registerForm.get('categoryName')?.hasError('pattern')">
+      Le nom de la catégorie doit contenir uniquement des lettres.
+    </div>
+    <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <label class="categoryName" for="categoryName">Nom de la catégorie :</label>
-      <input type="text" id="categoryName" [(ngModel)]="categoryName" name="categoryName" required>
+      <input type="text" id="categoryName" formControlName="categoryName" required>
       <button type="submit">Ajouter</button>
     </form>
   </div>
