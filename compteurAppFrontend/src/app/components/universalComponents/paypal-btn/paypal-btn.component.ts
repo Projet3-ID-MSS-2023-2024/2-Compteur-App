@@ -22,6 +22,7 @@ export class PaypalBtnComponent implements OnInit{
   }
 
   private initConfig(): void {
+    // @ts-ignore
     this.payPalConfig = {
       currency: 'EUR',
       clientId: 'AT36iU7eUC9ZgW3nLx3D9TjNehsHZL4MjY6sl3a8fQ0o8SSXxvcTQIOCtvREqR-d3VsCK9K7NZENQHqM',
@@ -56,7 +57,7 @@ export class PaypalBtnComponent implements OnInit{
         label: 'paypal',
         layout: 'vertical',
         color: 'blue',
-        shape: 'rect'
+        shape: 'pill'
       },
       onApprove: (data, actions) => {
         console.log('onApprove - transaction was approved, but not authorized', data, actions);

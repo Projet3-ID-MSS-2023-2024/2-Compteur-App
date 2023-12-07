@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-facture',
@@ -7,10 +7,9 @@ import { Component } from '@angular/core';
 })
 export class FactureComponent {
 
-  //facture: any[];
-  showPopup: boolean = false;
   ligneFacture: any[] = [];
 
+  
   attributLegend =['Nom du compteur', 'Nom du fournisseur', 'Date', 'Prix'];
 
   data: any[][] = [
@@ -22,6 +21,7 @@ export class FactureComponent {
   ]
 
   async buttonPress(arrayData: any){
+    console.log(arrayData);
     this.ligneFacture= arrayData;
   }
 

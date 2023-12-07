@@ -11,19 +11,36 @@
 
 .content{
   display: flex;
+  flex-direction: row;
   position: relative;
   width: 80%;
   height: 80%;
-  background-color: red;
 }
 
-.demi{
+.demi-info{
   display: flex;
   position: relative;
-  width: 50%;
+  width: 70%;
   height: 100%;
-  background-color: green;
+  background-color: white;
 }
+
+.demi-paypal{
+  display: flex;
+  position: relative;
+  width: 30%;
+  height: 100%;
+  background-color: darkslategrey;
+  justify-content: center;
+  align-items: center;
+}
+
+.demi-paypal app-paypal-btn {
+  width: 80% !important; /* Le composant prend 80% de la largeur de la div parente */
+  height: auto !important; /* La hauteur est automatiquement ajustée */
+}
+
+
 
 .croix{
   position: absolute;
@@ -31,5 +48,7 @@
   right: -45px;
   width: 35px;
   height: 35px;
-  background-color: blue;
+  background: rgba(16, 16, 16, 0.34) url("../../../assets/navbarIcone/hide_picture.svg") no-repeat center;
+  background-size: cover;
 }
+

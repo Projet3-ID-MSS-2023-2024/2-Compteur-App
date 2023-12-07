@@ -12,7 +12,6 @@ export class FactureListComponent {
   @Output() buttonPressed: EventEmitter<any> = new EventEmitter<any>();
 
   buttonPress(any: any){
-    console.log(any);
     this.buttonPressed.emit(any);
   }
 
