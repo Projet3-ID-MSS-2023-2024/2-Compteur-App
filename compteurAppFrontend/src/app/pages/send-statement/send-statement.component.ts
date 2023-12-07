@@ -38,7 +38,7 @@ export class SendStatementComponent {
   compteur!: CompteurDTO;
 
   attributLegend = ['Nom compteur', 'Fournisseur', 'Catégorie'];
-  buttonOption = ['edit.svg', 'delete.svg', 'send.svg'];
+  buttonOption = ['delete.svg', 'send.svg'];
   data: any[][] = [];
 
   idUserConnecter: any;
@@ -84,7 +84,7 @@ export class SendStatementComponent {
     this.idFocus = arrayData[1];
     switch (arrayData[0]) {
       case 'btn1':
-        this.showPopUpModifyMetter = true;
+        //this.showPopUpModifyMetter = true;
         break;
       case 'btn2':
         this.showPopUpDelete = true;
@@ -104,7 +104,9 @@ export class SendStatementComponent {
     this.showPopUpNewMetterDesktop = true;
   }
 
-  async sendStatement(choice: any) {
+  async sendCompteurData(choice: any) {
+    console.log(choice);
+    let index = this.device==='desktop'? 2:3;
     try {
       this.loadingService.emettreEvenement('loading');
       if (choice[0]) {
@@ -115,12 +117,12 @@ export class SendStatementComponent {
           this.idUserConnecter,
           provider['result'],
           this.idFocus,
-          choice[3].rue,
-          choice[3].numeros,
-          choice[3].codePostal,
-          choice[3].ville,
-          choice[3].pays,
-          'mobile'
+          choice[index].rue,
+          choice[index].numero,
+          choice[index].codePostal,
+          choice[index].ville,
+          choice[index].pays,
+          this.device,
         );
         await this.addCompteurData(compteurDataSender);
       }
@@ -129,47 +131,7 @@ export class SendStatementComponent {
       this.loadingService.emettreEvenement('error');
     }
     this.showSendStatement = false;
-  }
-
-  async sendStatementDesktop(choice: any) {
-    try {
-      this.loadingService.emettreEvenement('loading');
-      if (choice[0]) {
-        let provider = await this.getProvideurCompteur(this.idFocus);
-        let compteurDataSender: CompteurDataSender = new CompteurDataSender(
-          choice[2].valeur,
-          choice[1][0],
-          this.idUserConnecter,
-          provider['result'],
-          this.idFocus,
-          choice[2].rue,
-          choice[2].numeros,
-          choice[2].codePostal,
-          choice[2].ville,
-          choice[2].pays,
-          'desktop'
-        );
-        await this.addCompteurData(compteurDataSender);
-        this.loadingService.emettreEvenement('sucess');
-      }
-    } catch {
-      this.loadingService.emettreEvenement('error');
-    }
     this.showPopUpSendStatementDesktop = false;
-  }
-
-  async deleteChoice(choice: boolean) {
-    this.showPopUpDelete = false;
-    this.loadingService.emettreEvenement('loading');
-    if (choice) {
-      try {
-        await this.deleteCompteur(this.idFocus);
-        this.data = this.data.filter((item) => item[0] !== this.idFocus);
-        this.loadingService.emettreEvenement('sucess');
-      } catch {
-        this.loadingService.emettreEvenement('error');
-      }
-    }
   }
 
   async newMetter(data: any){
@@ -230,6 +192,20 @@ export class SendStatementComponent {
         this.loadingService.emettreEvenement('sucess');
       } catch {
         console.log('error');
+        this.loadingService.emettreEvenement('error');
+      }
+    }
+  }
+
+  async deleteChoice(choice: boolean) {
+    this.showPopUpDelete = false;
+    this.loadingService.emettreEvenement('loading');
+    if (choice) {
+      try {
+        await this.deleteCompteur(this.idFocus);
+        this.data = this.data.filter((item) => item[0] !== this.idFocus);
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
         this.loadingService.emettreEvenement('error');
       }
     }
