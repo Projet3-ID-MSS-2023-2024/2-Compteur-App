@@ -84,12 +84,9 @@ export class SendStatementComponent {
     this.idFocus = arrayData[1];
     switch (arrayData[0]) {
       case 'btn1':
-        //this.showPopUpModifyMetter = true;
-        break;
-      case 'btn2':
         this.showPopUpDelete = true;
         break;
-      case 'btn3':
+      case 'btn2':
         //si c'est un smartphone
         if (window.innerWidth <= 768) {
           this.showSendStatement = true;
@@ -106,60 +103,64 @@ export class SendStatementComponent {
 
   async sendCompteurData(choice: any) {
     console.log(choice);
-    let index = this.device==='desktop'? 2:3;
-    try {
-      this.loadingService.emettreEvenement('loading');
-      if (choice[0]) {
-        let provider = await this.getProvideurCompteur(this.idFocus);
-        let compteurDataSender: CompteurDataSender = new CompteurDataSender(
-          choice[2],
-          choice[1][0],
-          this.idUserConnecter,
-          provider['result'],
-          this.idFocus,
-          choice[index].rue,
-          choice[index].numero,
-          choice[index].codePostal,
-          choice[index].ville,
-          choice[index].pays,
-          this.device,
-        );
-        await this.addCompteurData(compteurDataSender);
+    if (choice[0]) {
+      let index = this.device === 'desktop' ? 2 : 3;
+      let valeur = this.device === 'desktop' ? choice[2].valeur : choice[2];
+      try {
+        this.loadingService.emettreEvenement('loading');
+        if (choice[0]) {
+          let provider = await this.getProvideurCompteur(this.idFocus);
+          let compteurDataSender: CompteurDataSender = new CompteurDataSender(
+            valeur,
+            choice[1][0],
+            this.idUserConnecter,
+            provider['result'],
+            this.idFocus,
+            choice[index].rue,
+            choice[index].numero,
+            choice[index].codePostal,
+            choice[index].ville,
+            choice[index].pays,
+            this.device
+          );
+          await this.addCompteurData(compteurDataSender);
+        }
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
+        this.loadingService.emettreEvenement('error');
       }
-      this.loadingService.emettreEvenement('sucess');
-    } catch {
-      this.loadingService.emettreEvenement('error');
     }
     this.showSendStatement = false;
     this.showPopUpSendStatementDesktop = false;
   }
 
-  async newMetter(data: any){
-    if(data.length > 0){
-    try {
-      this.loadingService.emettreEvenement('loading');
-      let adresse = await this.addAdresse(data[1]);
-      let compteur = new Compteur(
-        data[0].nom,
-        this.idUserConnecter,
-        data[0].fournisseur,
-        adresse.id,
-        data[0].categorie
-      );
-      let newCompteur = await this.addCompteur(compteur);
-      this.data.push([
-        newCompteur.id,
-        newCompteur.nom,
-        this.provider.find((item) => item.id === data[0].fournisseur)?.firstname,
-        this.category.find((item) => item.id == data[0].categorie)?.name,
-      ]);
-      this.loadingService.emettreEvenement('sucess');
-    } catch {
-      console.log('error');
-      this.loadingService.emettreEvenement('error');
+  async newMetter(data: any) {
+    if (data.length > 0) {
+      try {
+        this.loadingService.emettreEvenement('loading');
+        let adresse = await this.addAdresse(data[1]);
+        let compteur = new Compteur(
+          data[0].nom,
+          this.idUserConnecter,
+          data[0].fournisseur,
+          adresse.id,
+          data[0].categorie
+        );
+        let newCompteur = await this.addCompteur(compteur);
+        this.data.push([
+          newCompteur.id,
+          newCompteur.nom,
+          this.provider.find((item) => item.id === data[0].fournisseur)
+            ?.firstname,
+          this.category.find((item) => item.id == data[0].categorie)?.name,
+        ]);
+        this.loadingService.emettreEvenement('sucess');
+      } catch {
+        console.log('error');
+        this.loadingService.emettreEvenement('error');
+      }
     }
-  }
-  this.showPopUpNewMetterDesktop = false;
+    this.showPopUpNewMetterDesktop = false;
   }
 
   async modifyMetter(data: any) {
@@ -259,5 +260,4 @@ export class SendStatementComponent {
     const observable = this.compteurService.getProvideurCompteur(id);
     return lastValueFrom(observable);
   }
-
 }
