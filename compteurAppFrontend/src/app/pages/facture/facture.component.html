@@ -1,0 +1,11 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Facture'"></app-page-name>
+  </div>
+  <div class="placementList">
+    <app-facture-list [attributLegend]="attributLegend" [data]="data" (buttonPressed)="buttonPress($event)"></app-facture-list>
+  </div>
+</div>
+
+
+<app-paypal-pop-up *ngIf="ligneFacture.length>0" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>

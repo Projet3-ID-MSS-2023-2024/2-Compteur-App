@@ -45,6 +45,12 @@ import { DropdownCategoryComponent } from './components/category/dropdown-catego
 import { UserDBService } from './_services/userDB.service';
 import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
 import {NgxPayPalModule} from "ngx-paypal";
+import { FactureComponent } from './pages/facture/facture.component';
+import { FactureProviderComponent } from './pages/facture-provider/facture-provider.component';
+import { ShoppingBtnComponent } from './components/universalComponents/shopping-btn/shopping-btn.component';
+import {NgOptimizedImage} from "@angular/common";
+import { FactureListComponent } from './components/universalComponents/facture-list/facture-list.component';
+import { PaypalPopUpComponent } from './components/paypal-pop-up/paypal-pop-up.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -113,7 +119,12 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FournisseurListComponent,
     CategoriesComponent,
     DropdownCategoryComponent,
-    PaypalBtnComponent
+    PaypalBtnComponent,
+    FactureComponent,
+    FactureProviderComponent,
+    ShoppingBtnComponent,
+    FactureListComponent,
+    PaypalPopUpComponent
   ],
   imports: [
     BrowserModule,
@@ -122,7 +133,8 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPayPalModule
+    NgxPayPalModule,
+    NgOptimizedImage
   ],
   providers: [
     {

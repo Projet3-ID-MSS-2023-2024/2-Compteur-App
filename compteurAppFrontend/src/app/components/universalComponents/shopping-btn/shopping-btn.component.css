@@ -1,0 +1,67 @@
+.indiceBar{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.indice{
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+p{
+
+  font-size: 1.3em;
+  color: rgba(0, 0, 0, 0.637);
+  font-weight: 600;
+}
+
+.indiceButton{
+  display: flex;
+  width: 5%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+
+.showMore{
+  display: flex;
+  width: 20px;
+  height: 80%;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.indiceButton img{
+  width: 50%;
+  height: auto;
+}
+
+
+
+.button{
+  display: flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.button img{
+  width: 100%;
+  height: auto;
+}
+
+hr{
+  margin-top: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.103);
+}
+
+

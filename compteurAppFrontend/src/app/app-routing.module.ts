@@ -10,6 +10,8 @@ import { ReceivedStatementComponent } from './pages/received-statement/received-
 import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-info.component';
 import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
+import { FactureComponent } from './pages/facture/facture.component';
+import { FactureProviderComponent } from './pages/facture-provider/facture-provider.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'homePage', pathMatch: 'full'},
@@ -22,6 +24,8 @@ const routes: Routes = [
   {path: 'send-statement', component: SendStatementComponent},
   {path: 'received-statement', component: ReceivedStatementComponent},
   {path: 'profil', component: ProfilComponent},
+  {path: 'facture', component: FactureComponent },
+  {path: 'facture-provider', component: FactureProviderComponent },
   {path: '**', redirectTo: 'home'}
 ];
 

@@ -1,0 +1,9 @@
+.placementList {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin-left: 2.5%;
+  height: calc(100vh - 410px);
+  margin-top: 10px;
+  position: relative;
+}
