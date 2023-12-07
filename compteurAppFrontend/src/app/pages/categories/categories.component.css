@@ -96,10 +96,11 @@ table{
 }
 
 table {
-  width: 50%;
+  width: 90%;
   border-collapse: separate;
   border-spacing: 0;
   margin: 20px 0;
+  font-size: larger;
 }
 
 th, td {

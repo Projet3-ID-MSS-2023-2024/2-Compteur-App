@@ -19,13 +19,19 @@ public class PhotoController {
     }
 
     @PostMapping("/AddphotoProfile/{id}")
-    public String uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
-        return photoService.addPhoto(file, id);
+    public Photo uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+        photoService.addPhoto(file, id);
+        Photo photo = new Photo();
+        photo.setPath(file.getOriginalFilename());
+        return photo;
     }
 
     @PutMapping("/UpdatephotoProfile/{id}")
-    public String updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
-        return photoService.updatePhoto(file, id);
+    public Photo updatePhoto(@RequestParam("file") MultipartFile file, @PathVariable("id") String id) {
+        photoService.updatePhoto(file, id);
+        Photo photo = new Photo();
+        photo.setPath(file.getOriginalFilename());
+        return photo;
     }
 
     @DeleteMapping("/DeletephotoProfile/{id}")

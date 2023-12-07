@@ -73,19 +73,36 @@ public class PhotoService {
             // Récupérer la photo existante
             Photo existingPhoto = photoRepository.findByUserId(id);
 
-            // Vérifiez que existingPhoto n'est pas null
+            // Supprimer l'ancien fichier
             if (existingPhoto == null) {
                 throw new Exception("La photo n'existe pas.");
             }
+            else
+                Files.deleteIfExists(Paths.get(uploadDir + existingPhoto.getPath()));
 
-            // Copier le fichier dans le répertoire de destination
-            Path uploadPath = Paths.get(uploadDir + existingPhoto.getPath());
+            // Générer un nouveau nom de fichier
+            String fileName;
+            fileName = RandomStringUtils.randomAlphanumeric(15) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+
+            // Créer le nouveau fichier
+            File uploadDirectory = new File(uploadDir);
+            if (!uploadDirectory.exists()) {
+                uploadDirectory.mkdir();
+            }
+
+            Path uploadPath = Paths.get(uploadDir + fileName);
             file.transferTo(uploadPath);
 
             // Vérifiez que le fichier a été correctement transféré
             if (!Files.exists(uploadPath)) {
                 throw new Exception("Le transfert du fichier a échoué.");
             }
+
+            // Mettre à jour la photo
+            existingPhoto.setPath(fileName);
+            existingPhoto.setDate(new Date().toString());
+
+            this.photoRepository.save(existingPhoto);
 
             return existingPhoto.getPath();
         } catch (Exception ex) {

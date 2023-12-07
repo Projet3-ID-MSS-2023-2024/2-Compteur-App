@@ -10,8 +10,6 @@
     </form>
   </div>
   <div class="placementList" *ngIf="categories$ | async as categories">
-    <p class="messageSuccess">{{deleteMessageSucces}}</p>
-    <p class="messageError">{{deleteMessageError}}</p>
     <table>
       <tr>
         <th>n°</th>
@@ -25,14 +23,25 @@
         </td>
       </tr>
     </table>
-    <div class="popupDelete" *ngIf="displayPopup">
+    <div class="popupDelete" *ngIf="displayPopupSucces">
       <div class="popupDeleteContent">
         <div class="popupDeleteText">
-          <p>Êtes-vous sûr de vouloir supprimer cette catégorie ?</p>
+          <h1>Êtes-vous sûr de vouloir supprimer cette catégorie ?</h1>
         </div>
         <div class="popupDeleteButton">
           <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
           <button class="buttonDelete" (click)="deleteCategory(selectedCategory.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popupDelete" *ngIf="displayPopupError">
+      <div class="popupDeleteContent">
+        <div class="popupDeleteText">
+          <h1>Impossible de supprimer cette catégorie car elle contient des utilisateurs</h1 >
+        </div>
+        <div class="popupDeleteButton">
+          <button class="buttonCancel" (click)="closeDelete()">Ok</button>
         </div>
       </div>
     </div>

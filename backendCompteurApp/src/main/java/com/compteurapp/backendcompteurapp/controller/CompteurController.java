@@ -61,6 +61,11 @@ public class CompteurController {
         return response;
     }
 
+    @GetMapping("/compteurProvider/{id}")
+    public List<CompteurSenderDTO> getProviderCompter(@PathVariable String id){
+        return this.compteurMapper.getCompteurListProvider(id);
+    }
+
 
     @DeleteMapping("/compteur/{id}")
     public boolean delete(@PathVariable Long id){

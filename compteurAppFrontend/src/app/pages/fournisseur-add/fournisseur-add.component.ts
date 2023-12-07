@@ -106,6 +106,7 @@ export class FournisseurAddComponent {
       );
     } else {
       console.log('Aucun fichier sélectionné, ID utilisateur non défini ou service photoProfilService non défini');
+      this.router.navigate(['/listFournisseur'])
     }
   }
 
