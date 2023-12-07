@@ -28,7 +28,7 @@ export class CreateCompteurDesktopComponent {
     ville: new FormControl('', Validators.required),
     codePostal: new FormControl('', Validators.required),
     rue: new FormControl('', Validators.required),
-    numeros: new FormControl('', Validators.required),
+    numero: new FormControl('', Validators.required),
 
     nom: new FormControl('', Validators.required),
     categorie: new FormControl('', Validators.required),

@@ -15,6 +15,7 @@ import { from } from 'rxjs';
 import { CompteurDTO } from 'src/models/compteurDTO';
 import { CompteurDataSender } from 'src/models/compteurDataSender';
 import { CompteurDataService } from 'src/app/_services/compteur-data.service';
+import { Adresse } from 'src/models/adresse';
 
 @Component({
   selector: 'app-send-statement',
@@ -26,6 +27,7 @@ export class SendStatementComponent {
   showPopUpDelete: boolean = false;
   showPopUpModifyMetter: boolean = false;
   showPopUpSendStatementDesktop: boolean = false;
+  showPopUpNewMetterDesktop: boolean = false;
 
   idFocus!: string;
   providerFocus!: string;
@@ -41,6 +43,8 @@ export class SendStatementComponent {
 
   idUserConnecter: any;
 
+  device: string = 'desktop';
+
   constructor(
     private loadingService: LoadingService,
     private categoryService: CategoryService,
@@ -53,6 +57,9 @@ export class SendStatementComponent {
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
+    if (window.innerWidth <= 768) {
+      this.device = 'mobile';
+    }
     try {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
@@ -93,6 +100,10 @@ export class SendStatementComponent {
     }
   }
 
+  showPopUpSendMetterDesktop(){
+    this.showPopUpNewMetterDesktop = true;
+  }
+
   async sendStatement(choice: any) {
     console.log(choice);
     if(choice[0]){
@@ -103,7 +114,7 @@ export class SendStatementComponent {
       provider["result"],
       this.idFocus,
       choice[3].rue,
-      choice[3].numero,
+      choice[3].numeros,
       choice[3].codePostal,
       choice[3].ville,
       choice[3].pays,
@@ -124,7 +135,7 @@ export class SendStatementComponent {
       provider["result"],
       this.idFocus,
       choice[2].rue,
-      choice[2].numero,
+      choice[2].numeros,
       choice[2].codePostal,
       choice[2].ville,
       choice[2].pays,
@@ -175,7 +186,33 @@ export class SendStatementComponent {
   }
 
   async newMetterDesktop(data: any) {
-    console.log(data);
+    if(data[0]){
+      try{
+        console.log(data[1]);
+        let adresse:Adresse = new Adresse(data[1].ville,data[1].pays,data[1].codePostal,data[1].rue,data[1].numero,0);
+        let newAdresse = await this.addAdresse(adresse);
+        let compteur = new Compteur(
+          data[1].nom,
+          this.idUserConnecter,
+          data[1].fournisseur,
+          newAdresse.id,
+          data[1].categorie
+        );
+        let newCompteur = await this.addCompteur(compteur);
+        this.data.push([
+          newCompteur.id,
+          newCompteur.nom,
+          this.provider.find((item) => item.id === data[1].fournisseur)?.firstname,
+          this.category.find((item) => item.id == data[1].categorie)?.name,
+        ]);
+        this.loadingService.emettreEvenement('sucess');
+      }
+      catch{
+        this.loadingService.emettreEvenement('error');
+
+      }
+    }
+    this.showPopUpSendStatementDesktop = false;
   }
 
   async modifyMetter(data: any) {

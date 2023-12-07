@@ -30,6 +30,7 @@ export class CompteurDataService {
     formData.append('codePostal', compteurData.codePostal);
     formData.append('ville', compteurData.ville);
     formData.append('pays', compteurData.pays);
+    formData.append('device', compteurData.device);
 
     return this.http.post<any>(`/api/createCompteurData`, formData, {
       headers,

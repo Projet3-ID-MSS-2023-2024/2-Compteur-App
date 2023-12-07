@@ -28,6 +28,7 @@ export class AdresseFieldSendDataComponent {
       const photo = document.querySelector(
         'input[formControlName="photo"]'
       ) as HTMLInputElement;
+      console.log(this.dataSend.value);
       data.push(photo.files);
       data.push(this.dataSend.value);
     }

@@ -16,6 +16,30 @@
   height: calc(100vh - 410px);
 }
 
+.addCompteur{
+  display: flex;
+  width: 200px;
+  height: 60px;
+  background-color: #6f51e6;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.addCompteur p{
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.addCompteur:hover{
+  cursor: pointer;
+  background-color: #522de8;
+}
+
 @media screen and (max-width: 950px) {
 
   .addCompteurPlacement{
