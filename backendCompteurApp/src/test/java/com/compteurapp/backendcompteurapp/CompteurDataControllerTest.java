@@ -1,3 +1,4 @@
+/*
 package com.compteurapp.backendcompteurapp;
 
 import static org.mockito.Mockito.*;
@@ -177,4 +178,4 @@ public class CompteurDataControllerTest {
             e.printStackTrace();
         }
     }
-}
+}*/

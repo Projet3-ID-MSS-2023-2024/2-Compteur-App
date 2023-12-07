@@ -1,10 +1,10 @@
-package com.compteurapp.backendcompteurapp.model;
+package com.compteurapp.backendcompteurapp.DTO;
 
-public class Provider extends User{
+public class ProviderDTO extends UserDTO {
     private String tva;
     private String idCategory;
 
-    public Provider() {
+    public ProviderDTO() {
         super();
     }
 

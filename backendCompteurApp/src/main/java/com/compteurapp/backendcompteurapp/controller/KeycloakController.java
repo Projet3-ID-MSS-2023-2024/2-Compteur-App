@@ -1,8 +1,7 @@
 package com.compteurapp.backendcompteurapp.controller;
 
-import java.util.*;
-import com.compteurapp.backendcompteurapp.model.Provider;
-import com.compteurapp.backendcompteurapp.model.User;
+import com.compteurapp.backendcompteurapp.DTO.ProviderDTO;
+import com.compteurapp.backendcompteurapp.DTO.UserDTO;
 import com.compteurapp.backendcompteurapp.services.KeycloakService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,8 @@ public class KeycloakController {
     //------------------User------------------//
 
     @PutMapping("/user/{id}")
-    public Response updateUser(@PathVariable String id, @RequestBody User user) {
-        return this.keycloakService.updateUser(id, user);
+    public Response updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        return this.keycloakService.updateUser(id, userDTO);
     }
 
     @DeleteMapping("/user/{id}")
@@ -35,14 +34,14 @@ public class KeycloakController {
 
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")
-    public Response createProvider(@RequestBody Provider provider) {
-        return this.keycloakService.createProvider(provider);
+    public Response createProvider(@RequestBody ProviderDTO providerDTO) {
+        return this.keycloakService.createProvider(providerDTO);
     }
 
     @PreAuthorize("hasRole('admin')")
     @PutMapping("/provider/{id}")
-    public Response updateProvider(@PathVariable String id, @RequestBody Provider provider) {
-        return this.keycloakService.updateProvider(id, provider);
+    public Response updateProvider(@PathVariable String id, @RequestBody ProviderDTO providerDTO) {
+        return this.keycloakService.updateProvider(id, providerDTO);
     }
     @PreAuthorize("hasRole('admin')")
     @DeleteMapping("/provider/{id}")
