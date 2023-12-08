@@ -119,8 +119,9 @@ public class UserDBService {
         }
     }
 
-    public boolean hasAddressAndMeter(String clientId){
+    public boolean hasAddressAndMeter(String username){
         boolean verif = true;
+        String clientId =  userDBRepository.findByUsername(username).getId();
         if(adresseRepository.findAdresseByUserId(clientId) == null)
             verif = false;
         if(compteurRepository.findByClient_Id(clientId).isEmpty())

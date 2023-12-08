@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.repository;
 
 
+import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import org.springframework.data.jpa.repository.JpaRepository;
 

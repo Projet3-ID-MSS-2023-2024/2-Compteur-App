@@ -5,14 +5,16 @@ import { Observable } from 'rxjs';
 import { UserDB } from 'src/models/userDB';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserDBService {
-
-  constructor(private http: HttpClient, private readonly keycloak: KeycloakService) { }
+  constructor(
+    private http: HttpClient,
+    private readonly keycloak: KeycloakService
+  ) {}
 
   public syncUser(): Observable<string> {
-    return this.http.get(`api/syncUser`, {responseType:'text'});
+    return this.http.get(`api/syncUser`, { responseType: 'text' });
   }
 
   public getUserById(id: string | undefined): Observable<any> {
@@ -46,7 +48,7 @@ export class UserDBService {
     });
     return this.http.put(`api/updateUserDB/${id}`, user, { headers });
   }
-  public hasAddressAndMeter(idClient: string |undefined){
-    return this.http.get(`api/hasAddressAndMeter/${idClient}`);
+  public hasAddressAndMeter(username: string | undefined) {
+    return this.http.get(`api/hasAddressAndMeter/${username}`);
   }
 }
