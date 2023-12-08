@@ -9,7 +9,7 @@
 
     <app-client-navbar *ngIf="isClient"></app-client-navbar>
     <app-provider-navbar *ngIf="isFournisseur"></app-provider-navbar>
-    <app-lock-navbar *ngIf="0"></app-lock-navbar>
+    <app-lock-navbar *ngIf="navBarIsLocked"></app-lock-navbar>
     <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
 
     <div (click)="openPopupDeconnexion()" class="logout">
