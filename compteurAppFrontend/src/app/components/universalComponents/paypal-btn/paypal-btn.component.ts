@@ -28,11 +28,11 @@ export class PaypalBtnComponent implements OnInit{
         purchase_units: [{
           amount: {
             currency_code: 'EUR',
-            value: this.factureInfo[4],
+            value: this.factureInfo[6],
             breakdown: {
               item_total: {
                 currency_code: 'EUR',
-                value: this.factureInfo[4]
+                value: this.factureInfo[6]
               }
             }
           },
@@ -42,7 +42,7 @@ export class PaypalBtnComponent implements OnInit{
             category: 'DIGITAL_GOODS',
             unit_amount: {
               currency_code: 'EUR',
-              value: this.factureInfo[4],
+              value: this.factureInfo[6],
             },
           }]
         }]
