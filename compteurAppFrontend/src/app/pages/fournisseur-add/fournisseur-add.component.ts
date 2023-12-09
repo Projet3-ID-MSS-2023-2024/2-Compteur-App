@@ -38,12 +38,12 @@ export class FournisseurAddComponent {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]], // Validation pour 10 chiffres
+      phoneNumber: ['', [Validators.required, Validators.pattern('^(\\+32|0)[1-9]\\d{8}$')]], // Validation pour 10 chiffres
       TVA: ['', [Validators.required, Validators.pattern('BE0[0-9]{9}')]], // Validation pour TVA belge
-      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
       category: ['', [Validators.required]],
-
     });
+
 
     this.categories$ = this.CategoryService.getAll();
   }

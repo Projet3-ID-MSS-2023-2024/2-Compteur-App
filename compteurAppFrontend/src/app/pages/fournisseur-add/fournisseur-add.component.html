@@ -30,7 +30,7 @@
           <div class="left">
             <div class="form-group">
               <label for="username">Nom du fournisseur :</label>
-              <input type="text" id="username" formControlName="username" />
+              <input type="text" id="username" formControlName="username" placeholder="fournisseur" />
               <div class="error-message" *ngIf="submitted && registerForm.get('username')?.hasError('required')">
                 Est requis.
               </div>
@@ -47,6 +47,7 @@
                 type="email"
                 id="email"
                 formControlName="email"
+                placeholder="fournisseur@mail.com"
               />
               <div class="error-message" *ngIf="submitted && registerForm.get('email')?.hasError('required')">
                 Est requise.
@@ -62,6 +63,7 @@
                 type="password"
                 id="password"
                 formControlName="password"
+                placeholder="Motdepasse@01"
               />
               <div class="error-message" *ngIf="submitted && registerForm.get('password')?.hasError('required')">
                 Est requis.
@@ -79,6 +81,7 @@
                 type="text"
                 id="phoneNumber"
                 formControlName="phoneNumber"
+                placeholder="0470000000"
               />
               <div class="error-message" *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('required')">
                 Est requis.
@@ -94,6 +97,7 @@
                 type="text"
                 id="TVA"
                 formControlName="TVA"
+                placeholder="BE0000000000"
               />
               <div class="error-message" *ngIf="submitted && registerForm.get('TVA')?.hasError('required')">
                 Est requis.
