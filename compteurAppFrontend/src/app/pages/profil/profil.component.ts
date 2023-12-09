@@ -11,6 +11,11 @@ import { addAdresse } from 'src/models/add-adresse';
 import { AdresseService } from 'src/app/_services/adresse.service';
 import { Adresse } from 'src/models/adresse';
 import { UserDB } from 'src/models/userDB';
+import { CompteurService } from 'src/app/_services/compteur.service';
+import { CompteurDTO } from 'src/models/compteurDTO';
+import { UserDBService } from 'src/app/_services/userDB.service';
+import { AdresseDTO } from 'src/models/adresseDTO';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-profil',
@@ -32,8 +37,9 @@ export class ProfilComponent implements OnInit {
   isClient!: boolean;
   user$!: Observable<UserDB>;
   fournisseur$!: Observable<AddFournisseurSpring>;
-  adresse$!: Observable<Adresse>;
-  adresseUser!: Adresse;
+  compteur$!: Observable<CompteurDTO[]>;
+  adresse$: Observable<Adresse> = new Observable<Adresse>();
+  adresseUser!: AdresseDTO;
   providerEdit: AddFournisseurSpring | undefined;
   userEdit!: User | undefined;
   idUser!: string | undefined;
@@ -47,29 +53,41 @@ export class ProfilComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private adresseFormBuilder: FormBuilder,
-    private adresseService: AdresseService
+    private adresseService: AdresseService,
+    private compteurService: CompteurService,
+    private userDbService: UserDBService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
-      rue: ['', [Validators.required, Validators.minLength(3)]],
-      codePostal: ['', [Validators.required]],
-      ville: ['', [Validators.required]], // Validation pour 10 chiffres |
-      pays: [''],
-      numero: ['', [Validators.required]],
+      rue: [[Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
+      codePostal: [[Validators.pattern(/^\d{0,5}$/)]], // Maximum 5 chiffres
+      ville: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      pays: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      numero: [[Validators.pattern(/^\d+$/)]], // Composé uniquement de chiffres
     });
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-      tva: [''],
-      password: [''],
+      username: [[Validators.required, Validators.minLength(3)]],
+      email: [[Validators.required, Validators.email]],
+      phoneNumber: [[Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
+      tva: [['', Validators.pattern(/^\d{0,15}$/)]], // Maximum 15 chiffres
+      password: [
+        [
+          Validators.minLength(6),
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
+          ),
+        ],
+      ],
       category: [''],
-      lastname: [''],
-      firstname: [''],
+      lastname: [[Validators.minLength(1)]], // Au moins 1 caractère
+      firstname: [[Validators.minLength(1)]], // Au moins 1 caractère
+      passwordConf: [['']],
     });
   }
 
   ngOnInit(): void {
-    this.initUser().then(() => this.initAdresse());
+    this.initUser().then(() => {
+      this.initAdresse();
+    });
   }
 
   private async initUser(): Promise<void> {
@@ -87,7 +105,7 @@ export class ProfilComponent implements OnInit {
           this.user$ = this.userService.getUserByUserName(this.userName);
           this.user$.subscribe((data) => {
             this.idUser = data.id;
-            console.log(data, this.idUser, this.userName);
+            console.log('HEREEEE');
 
             this.registerForm.patchValue({
               username: data.username,
@@ -95,7 +113,8 @@ export class ProfilComponent implements OnInit {
               phoneNumber: data.phoneNumber,
               tva: data.tva,
               password: '',
-              category: data.category.name,
+              passwordConf: '',
+              category: !this.isClient ? data.category.name : null,
               lastname: data.lastname,
               firstname: data.firstname,
             });
@@ -121,7 +140,6 @@ export class ProfilComponent implements OnInit {
   }
   editUser() {
     console.log(this.registerForm);
-    console.log(this.registerForm.value);
     if (this.registerForm.valid) {
       this.userEdit = {
         email: this.registerForm.value.email,
@@ -130,19 +148,21 @@ export class ProfilComponent implements OnInit {
         phoneNumber: this.registerForm.value.phoneNumber,
         userName: this.registerForm.value.username,
         password: this.registerForm.value.password,
+        passwordConf: this.registerForm.value.passwordConf,
         tva: this.registerForm.value.tva,
-        category: !this.isClient?this.registerForm.value.category.id:null
+        category: !this.isClient ? this.registerForm.value.category.id : null,
       };
-      console.log(this.userEdit, this.idUser);
-      this.userService.updateUser(this.userEdit, this.idUser).subscribe(
-        (data) => {
-          console.log(data);
-        },
-        (error) => {
-          console.log('error');
-          this.handleError(error);
-        }
-      );
+      console.log('newwww' + this.registerForm.value.phoneNumber);
+      if (this.userEdit.password == this.userEdit.passwordConf)
+        this.userService.updateUser(this.userEdit, this.idUser).subscribe(
+          (data) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log('error');
+            this.handleError(error);
+          }
+        );
     }
   }
   turnEditMode() {
@@ -154,13 +174,9 @@ export class ProfilComponent implements OnInit {
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
   }
-  testerMdp(chaine: string) {
-    const regexVerif = /[A-Z][a-z][\d][!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]]/;
-    return regexVerif.test(chaine);
-  }
   editAdresse() {
     console.log('editAdresse');
-    console.log(this.adresseForm.value);
+    console.log(this.adresseForm);
     if (this.adresseForm.valid) {
       this.adresseUser = {
         rue: this.adresseForm.value.rue,
@@ -169,26 +185,30 @@ export class ProfilComponent implements OnInit {
         pays: this.adresseForm.value.pays,
         numero: this.adresseForm.value.numero,
         id: this.idAdresse,
+        idClient: this.idUser,
       };
+      console.log(this.adresseUser.id);
       console.log(this.adresseUser);
+      this.adresseUser.idClient = this.idUser;
       this.adresseService.updateAdresse(this.adresseUser).subscribe();
     }
   }
   initAdresse() {
     console.log('initAdresse');
     this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
-
     this.adresse$.subscribe((data) => {
-      console.log(data);
-      this.idAdresse = data.id;
-      console.log('IdAdresse : ' + this.idAdresse);
-      this.adresseForm.patchValue({
-        rue: data.rue,
-        ville: data.ville,
-        pays: data.pays,
-        numero: data.numero,
-        codePostal: data.codePostal,
-      });
+      if (data != null) {
+        console.log(data);
+        this.idAdresse = data.id;
+        console.log('IdAdresse : ' + this.idAdresse);
+        this.adresseForm.patchValue({
+          rue: data.rue,
+          ville: data.ville,
+          pays: data.pays,
+          numero: data.numero,
+          codePostal: data.codePostal,
+        });
+      }
     });
   }
   editButton() {

@@ -71,7 +71,9 @@ export class FournisseurListComponent implements OnInit {
       this.filterData = [...this.fournisseurData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) => {
-        return fournisseur.categoryId == event.target.value;
+        console.log(fournisseur);
+        console.log(event.target.value);
+        return fournisseur.category.id == event.target.value;
       });
       console.log(this.filterData);
     }

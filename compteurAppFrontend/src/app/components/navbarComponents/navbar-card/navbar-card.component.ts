@@ -15,6 +15,7 @@ export class NavbarCardComponent {
   constructor(private router: Router) { }
 
   routerLink() {
+   if(this.path != undefined)
     this.router.navigate([this.path]);
   }
 

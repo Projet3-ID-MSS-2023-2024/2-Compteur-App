@@ -152,9 +152,8 @@ form {
 
 label {
   display: block;
-  margin-top: 10px;
   color: #000000;
-  font-size: x-large;
+  font-size: larger;
   transition: all 0.3s ease;
 }
 
@@ -269,8 +268,8 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
   border-radius: 50%;
   border: 1px solid #e9e9f8;
   border-radius: 50%;
@@ -297,9 +296,23 @@ input[type="submit"]:hover {
   flex-direction: column;
 }
 
+.error{
+  text-align: center;
+  color: #e9e9f8;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
 
+.error-message{
+  width: 250px;
+}
 
-
+.error-message-global{
+  text-align: center;
+  margin-top: 15px;
+}
 @media screen and (max-width: 600px) {
   .containeur-form{
     flex-direction: column;

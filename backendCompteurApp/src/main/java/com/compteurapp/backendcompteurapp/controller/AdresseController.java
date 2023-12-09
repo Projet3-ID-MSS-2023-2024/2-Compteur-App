@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.model.Adresse;
+import com.compteurapp.backendcompteurapp.model.AdresseDTO;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.services.AdresseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AdresseController {
     }
 
     @PutMapping("/updateAdresse")
-    public Adresse updateAdresse(@RequestBody Adresse adresse) throws Exception {
+    public Adresse updateAdresse(@RequestBody AdresseDTO adresse) throws Exception {
        return adresseService.updateAdresse(adresse);
     }
 

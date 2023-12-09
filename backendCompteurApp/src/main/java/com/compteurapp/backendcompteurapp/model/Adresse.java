@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,10 @@ public class Adresse {
 
     @OneToMany(mappedBy = "adresse", cascade = CascadeType.ALL)
     private List<Compteur> compteur;
+
+    @OneToOne(mappedBy = "adresse")
+    @JsonIgnore
+    private UserDB user;
 
     public Adresse(String rue, String numero, String codePostal, String ville, String pays) {
         this.rue = rue;

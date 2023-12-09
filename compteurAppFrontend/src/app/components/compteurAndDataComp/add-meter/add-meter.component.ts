@@ -19,10 +19,16 @@ import { UserDB } from 'src/models/userDB';
   styleUrls: ['./add-meter.component.css'],
 })
 export class AddMeterComponent {
+
+
   @Output() data: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() category: Category[] = [];
   @Input() provider: UserDB[] = [];
   adresse!: addAdresse;
+
+  selectedCategory!: number;
+  filteredProviders!: UserDB[];
+
 
   addMeter = new FormGroup({
     nom: new FormControl('', Validators.required),
@@ -72,5 +78,20 @@ export class AddMeterComponent {
       });
     });
   }
+
+  onCategoryChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedCategoryId = Number(selectElement.value);
+    const selectedCategoryName = this.category.find(item => item.id === selectedCategoryId)?.name;
+    if(selectedCategoryName) {
+      this.updateSelectedCategory(selectedCategoryName);
+    }
+  }
+
+  updateSelectedCategory(categoryName: string) {
+    this.filteredProviders = this.provider.filter(provider => provider.category.name === categoryName);
+  }
+
+
 
 }

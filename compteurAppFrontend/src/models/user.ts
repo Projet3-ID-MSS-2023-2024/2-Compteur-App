@@ -7,5 +7,6 @@ export class User {
   password?: string | undefined;
   phoneNumber?: string | undefined;
   tva?: string | undefined;
-  category?:any | undefined;
+  category?: any | undefined;
+  passwordConf?: string | undefined;
 }

@@ -49,7 +49,4 @@ public class CompteurData {
 
     @OneToMany(mappedBy = "compteurData")
     private List<Facture> factures;
-
-
-
 }

@@ -27,7 +27,10 @@ export class UserService {
     return this.http.get<UserDB>(`/api/getUserByName/${userName}`, { headers });
   }
   public updateUserDB(id: string | undefined, user: User): Observable<User> {
-    console.log(user);
-    return this.http.put(`api/updateUserDB/${id}`, user);
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put(`api/updateUserDB/${id}`, user, { headers });
   }
 }

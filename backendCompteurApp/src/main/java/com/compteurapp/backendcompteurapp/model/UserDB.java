@@ -49,7 +49,7 @@ public class UserDB {
     @JsonIgnore
     private Photo photo;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
 

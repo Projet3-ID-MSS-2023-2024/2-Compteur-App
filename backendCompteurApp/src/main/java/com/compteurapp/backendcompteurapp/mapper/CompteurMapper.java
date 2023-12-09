@@ -40,6 +40,12 @@ public class CompteurMapper {
         return service.getOneCompteur(id).get().getProvider().getId();
     }
 
+    public List<CompteurSenderDTO> getCompteurListProvider(String id){
+        List<Compteur> compteurList = service.findCompteurByIdProvider(id);
+        List<CompteurSenderDTO> compteurSenderDTOList = mappingMultipleCompteur(compteurList);
+        return compteurSenderDTOList;
+    }
+
 
     public Compteur mappingNewCompteur(CompteurDto compteurDto){
         Adresse adresse = new Adresse();

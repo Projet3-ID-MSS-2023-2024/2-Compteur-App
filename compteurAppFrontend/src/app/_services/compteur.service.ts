@@ -38,6 +38,15 @@ export class CompteurService {
     return this.http.get<any>(`/api/getProvideurCompteur/${id}`, { headers });
   }
 
+  getCompteurProvider(id:string){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.get<any>(`/api/compteurProvider/${id}`, { headers });
+  }
+
+
   deleteCompteurs(id:string){
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {

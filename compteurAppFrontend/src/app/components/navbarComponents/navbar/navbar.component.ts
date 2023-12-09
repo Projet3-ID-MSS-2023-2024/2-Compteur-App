@@ -13,6 +13,7 @@ export class NavbarComponent implements AfterViewInit {
   isFournisseur = false;
   isClient = false;
   user: UserDB | undefined;
+  navBarIsLocked = true;
 
   constructor(
     private readonly keycloak: KeycloakService,
@@ -39,6 +40,10 @@ export class NavbarComponent implements AfterViewInit {
       location.reload();
     }
 
+    this.userDBService.hasAddressAndMeter((await this.keycloak.loadUserProfile()).username).subscribe((data) => {
+      console.log(data)
+      data ? (this.navBarIsLocked = false) : (this.navBarIsLocked = true);
+    })
   }
 
   logout() {

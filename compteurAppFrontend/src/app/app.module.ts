@@ -43,14 +43,8 @@ import { LoaderAPIComponent } from './components/universalComponents/loader-api/
 
 import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
 import { UserDBService } from './_services/userDB.service';
-import { PaypalBtnComponent } from './components/universalComponents/paypal-btn/paypal-btn.component';
-import {NgxPayPalModule} from "ngx-paypal";
-import { FactureComponent } from './pages/facture/facture.component';
-import { FactureProviderComponent } from './pages/facture-provider/facture-provider.component';
-import { ShoppingBtnComponent } from './components/universalComponents/shopping-btn/shopping-btn.component';
-import {NgOptimizedImage} from "@angular/common";
-import { FactureListComponent } from './components/universalComponents/facture-list/facture-list.component';
-import { PaypalPopUpComponent } from './components/paypal-pop-up/paypal-pop-up.component';
+import { AdresseFieldSendDataComponent } from './components/compteurAndDataComp/adresse-field-send-data/adresse-field-send-data.component';
+import { CreateCompteurDesktopComponent } from './components/compteurAndDataComp/create-compteur-desktop/create-compteur-desktop.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -119,12 +113,8 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FournisseurListComponent,
     CategoriesComponent,
     DropdownCategoryComponent,
-    PaypalBtnComponent,
-    FactureComponent,
-    FactureProviderComponent,
-    ShoppingBtnComponent,
-    FactureListComponent,
-    PaypalPopUpComponent
+    AdresseFieldSendDataComponent,
+    CreateCompteurDesktopComponent,
   ],
   imports: [
     BrowserModule,
@@ -132,9 +122,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     KeycloakAngularModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule,
-    NgxPayPalModule,
-    NgOptimizedImage
+    FormsModule
   ],
   providers: [
     {

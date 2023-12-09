@@ -11,6 +11,7 @@ import { Category } from 'src/models/category';
 import { Location } from '@angular/common';
 import { UserDBService } from 'src/app/_services/userDB.service';
 import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
+import { CompteurService } from 'src/app/_services/compteur.service';
 
 @Component({
   selector: 'app-fournisseur-info',
@@ -21,7 +22,7 @@ export class FournisseurInfoComponent implements OnInit {
   public registerForm: FormGroup;
   public fournisseurSpring$!: Observable<any>;
   public categories$!: Observable<Category[]>;
-  public idProvider: string | undefined;
+  public idProvider!: string;
   public providerUserName = this.route.snapshot.paramMap.get('userName');
   showDiv = false;
   isLoading = false;
@@ -36,18 +37,32 @@ export class FournisseurInfoComponent implements OnInit {
     private messageService: MessageService,
     private location: Location,
     private userDBService: UserDBService,
-    private photoProfilService: PhotoProfilService
+    private photoProfilService: PhotoProfilService,
+    private compteurService: CompteurService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]], // Validation pour 10 chiffres |
-      TVA: ['', [Validators.required]],
-      password: [''],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]], // Validation pour 10 chiffres
+      TVA: ['', [Validators.required, Validators.pattern('BE0[0-9]{9}')]], // Validation pour TVA belge
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
+      confirmPassword: ['', [Validators.required]],
       category: ['', [Validators.required]],
-    });
+    }, { validator: this.checkPasswords });
     this.categories$ = this.CategoryService.getAll();
   }
+
+  checkPasswords(group: FormGroup) {
+    if (group) {
+      let pass = group.get('password')?.value;
+      let confirmPass = group.get('confirmPassword')?.value;
+
+      return pass === confirmPass ? null : { notSame: true }
+    }
+    return { notSame: true };
+  }
+
+
 
   public photoUrl!: string;
   photoNull!: boolean;
@@ -99,6 +114,8 @@ export class FournisseurInfoComponent implements OnInit {
     console.error('Une erreur est survenue : ', error);
   }
 
+  submitted = false;
+
   updateFournisseur() {
     this.isLoading = true;
     if (this.registerForm.valid) {
@@ -136,6 +153,8 @@ export class FournisseurInfoComponent implements OnInit {
       });
     }
   }
+  messagePopup!: string;
+  displayPopupErreurFournisseur: boolean = false;
 
   deleteFournisseur() {
     this.isLoading = true;
@@ -164,9 +183,12 @@ export class FournisseurInfoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
+    if (this.selectedFile.type.match(/image\/*/) == null) {
+      alert("Seules les images sont supportées");
+      return;
+    }
     this.photoProfilService.updatePhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
       (data) => {
-        console.log(data);
         this.photoUrl = data.path;
         this.photoNull = false;
         this.ngOnInit();
@@ -181,7 +203,12 @@ export class FournisseurInfoComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     this.selectedFile = files[0];
-    this.photoProfilService.uploadPhotoProfil(this.selectedFile, this.idProvider).pipe(take(1)).subscribe(
+    if (this.selectedFile.type.match(/image\/*/) == null) {
+      this.messagePopup = "Seules les images sont supportées";
+      this.displayPopupErreurFournisseur = true;
+      return;
+    }
+    this.photoProfilService.uploadPhotoProfil(this.selectedFile, this.idProvider).subscribe(
       (data) => {
         console.log(data);
         this.photoUrl = data.path;
@@ -202,15 +229,42 @@ export class FournisseurInfoComponent implements OnInit {
   }
 
   openModify() {
-    this.closeOrOpenModify = true;
+    this.submitted = true;
+    if(this.registerForm.invalid){
+      this.registerForm.markAllAsTouched();
+    } else {
+      this.closeOrOpenModify = true;
+    }
   }
 
   closeDelete() {
     this.closeOrOpenDelete = false;
   }
 
+  closeDeleteError() {
+    this.displayPopupErreurFournisseur = false;
+  }
+
   openDelete() {
     this.closeOrOpenDelete = true;
+  }
+
+  delete() {
+    this.compteurService.getCompteurProvider(this.idProvider).pipe(take(1)).subscribe(
+      (data) => {
+        console.log(data);
+        if(data[0]){
+          console.log("HERE");
+          this.messagePopup = "Ce fournisseur est lié à un compteur, vous ne pouvez pas le supprimer";
+          this.displayPopupErreurFournisseur = true;}
+         else{
+          this.openDelete();
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   goBack() {

@@ -11,4 +11,5 @@ public class CompteurDataDTO {
     public String codePostal;
     public String ville;
     public String pays;
+    public String device;
 }

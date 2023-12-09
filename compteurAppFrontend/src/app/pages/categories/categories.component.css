@@ -96,10 +96,11 @@ table{
 }
 
 table {
-  width: 50%;
+  width: 90%;
   border-collapse: separate;
   border-spacing: 0;
   margin: 20px 0;
+  font-size: larger;
 }
 
 th, td {
@@ -156,6 +157,13 @@ tr:nth-child(even) {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+}
+
+.error-msg{
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
 }
 
 @media screen and (max-width: 950px) {

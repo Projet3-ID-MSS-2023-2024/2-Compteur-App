@@ -2,6 +2,8 @@ package com.compteurapp.backendcompteurapp.services;
 
 import com.compteurapp.backendcompteurapp.model.Category;
 import com.compteurapp.backendcompteurapp.model.UserDB;
+import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
+import com.compteurapp.backendcompteurapp.repository.CompteurRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtil;
 import jakarta.servlet.ServletException;
@@ -26,6 +28,12 @@ import java.util.stream.Collectors;
 public class UserDBService {
 
     private final UserDBRepository userDBRepository;
+
+    @Autowired
+    private AdresseRepository adresseRepository;
+
+    @Autowired
+    private CompteurRepository compteurRepository;
 
     @Autowired
     private KeycloakSecurityUtil keycloakUtil;
@@ -60,7 +68,6 @@ public class UserDBService {
     public List<UserDB> getProvidersByCategory(Long id) {
         return userDBRepository.findUserDBByCategory_Id(id);
     }
-
 
     public void doFilterInternal( ){
         try {
@@ -110,5 +117,15 @@ public class UserDBService {
         } catch (Exception e) {
             throw new IllegalArgumentException("Unable to auth user", e);
         }
+    }
+
+    public boolean hasAddressAndMeter(String username){
+        boolean verif = true;
+        String clientId =  userDBRepository.findByUsername(username).getId();
+        if(adresseRepository.findAdresseByUserId(clientId) == null)
+            verif = false;
+        if(compteurRepository.findByClient_Id(clientId).isEmpty())
+            verif = false;
+        return verif;
     }
 }

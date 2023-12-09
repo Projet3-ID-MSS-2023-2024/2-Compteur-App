@@ -29,4 +29,6 @@ public class CompteurService {
         return repository.findById(id);
     }
 
+    public List<Compteur> findCompteurByIdProvider(String id){ return repository.findByProvider_Id(id); }
+
 }

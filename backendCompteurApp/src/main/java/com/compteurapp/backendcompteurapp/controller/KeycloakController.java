@@ -3,6 +3,7 @@ package com.compteurapp.backendcompteurapp.controller;
 import com.compteurapp.backendcompteurapp.DTO.ProviderDTO;
 import com.compteurapp.backendcompteurapp.DTO.UserDTO;
 import com.compteurapp.backendcompteurapp.services.KeycloakService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.ws.rs.core.Response;
@@ -12,11 +13,8 @@ import jakarta.ws.rs.core.Response;
 @RequestMapping("/api")
 public class KeycloakController {
 
-    final KeycloakService keycloakService;
-
-    public KeycloakController(KeycloakService keycloakService) {
-        this.keycloakService = keycloakService;
-    }
+    @Autowired
+    private KeycloakService keycloakService;
 
     //------------------User------------------//
 
