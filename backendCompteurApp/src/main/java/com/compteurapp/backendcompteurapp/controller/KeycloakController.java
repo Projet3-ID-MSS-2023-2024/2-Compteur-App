@@ -30,7 +30,7 @@ public class KeycloakController {
 
     //------------------Provider------------------//
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('admin') or hasRole('fournisseur')")
     @PostMapping("/provider")
     public Response createProvider(@RequestBody ProviderDTO providerDTO) {
         return this.keycloakService.createProvider(providerDTO);
