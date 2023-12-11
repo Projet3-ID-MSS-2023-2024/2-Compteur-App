@@ -21,32 +21,28 @@ import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
-  attributLegend = ['Mon compteur', 'Fournisseur', 'Categorie'];
-  buttonOption = ['edit.svg'];
 
-  closeOrOpenPicture: boolean = false;
-
-  idFocus!: number;
-
-  data!: any[][];
+  // Formulaire de données utilisateur
   public registerForm!: FormGroup;
+  user$!: Observable<UserDB>;
+
+  //Formulaire d'adresse
   public adresseForm!: FormGroup;
+  adresse$: Observable<Adresse> = new Observable<Adresse>();
+
+  // Données utilisateur
   userName!: string | undefined;
   isClient!: boolean;
-  user$!: Observable<UserDB>;
-  fournisseur$!: Observable<AddFournisseurSpring>;
-  compteur$!: Observable<CompteurDTO[]>;
-  adresse$: Observable<Adresse> = new Observable<Adresse>();
-  adresseUser!: AdresseDTO;
-  providerEdit: AddFournisseurSpring | undefined;
-  userEdit!: AddFournisseurSpring | undefined;
   idUser!: string | undefined;
   idAdresse!: number | undefined;
-  idProvider!: number;
+
+  // Données modification
+  userEdit!: AddFournisseurSpring | undefined;
+  adresseUser!: AdresseDTO;
   editMode: boolean = false;
+
+  // Données photo de profil
   editPageName: string = 'Profil';
-  categories!: Category[];
-  categorieFournisseur!: Category;
   photoUrl!: string;
   photoNull: boolean = true;
 
@@ -56,7 +52,6 @@ export class ProfilComponent implements OnInit {
     private formBuilder: FormBuilder,
     private adresseFormBuilder: FormBuilder,
     private adresseService: AdresseService,
-    private categoryService: CategoryService,
     private fournisseurService: FournisseurService,
     private nabarStatement: NavbarStatementService,
     private photoProfilService: PhotoProfilService,
@@ -86,11 +81,6 @@ export class ProfilComponent implements OnInit {
       firstname: [[Validators.minLength(1)]], // Au moins 1 caractère
       passwordConf: [['']],
     });
-
-    this.categoryService.getAll().subscribe((data) => {
-      this.categories = data;
-      console.log(data);
-    });
   }
 
   ngOnInit(): void {
@@ -100,14 +90,12 @@ export class ProfilComponent implements OnInit {
   }
 
   private async initUser(): Promise<void> {
-    console.log('initUser');
     return new Promise<void>(async (resolve, reject) => {
       try {
         const isLoggedIn = await this.keycloak.isLoggedIn();
         if (isLoggedIn) {
           const profile = await this.keycloak.loadUserProfile();
           this.userName = profile.username;
-          console.log(this.userName);
 
           this.isClient = !this.keycloak.isUserInRole('fournisseur');
 
@@ -123,7 +111,6 @@ export class ProfilComponent implements OnInit {
               tva: data.tva,
               password: '',
               passwordConf: '',
-              category: !this.isClient ? data.category.name : null,
               lastname: data.lastname,
               firstname: data.firstname,
             });
@@ -140,18 +127,7 @@ export class ProfilComponent implements OnInit {
     });
 
   }
-  buttonPress(arrayData: any) {
-    switch (arrayData[0]) {
-      case 'btn1':
-        this.closeOrOpenPicture = true;
-        break;
-      case 'btn2':
-        break;
-    }
-    this.idFocus = arrayData[1];
-  }
   editUser() {
-    console.log(this.registerForm);
     if (this.registerForm.valid) {
       this.userEdit = {
         email: this.registerForm.value.email,
@@ -161,12 +137,7 @@ export class ProfilComponent implements OnInit {
         userName: this.registerForm.value.username,
         password: this.registerForm.value.password,
         tva: this.registerForm.value.tva,
-        idCategory: this.categories
-          .find((category) => category.name === this.categorieFournisseur)
-          ?.id?.toString(),
       };
-      console.log(this.userEdit);
-      // if (this.userEdit.password == this.registerForm.value.passwordConf)
       if (this.isClient) {
         this.userService.updateUser(this.userEdit, this.idUser).subscribe(
           (data) => {
@@ -208,20 +179,15 @@ export class ProfilComponent implements OnInit {
         id: this.idAdresse,
         idClient: this.idUser,
       };
-      console.log(this.adresseUser.id);
-      console.log(this.adresseUser);
       this.adresseUser.idClient = this.idUser;
       this.adresseService.updateAdresse(this.adresseUser).subscribe();
       this.nabarStatement.setCondition1(true);
     }
   }
   initAdresse() {
-    console.log('initAdresse');
     this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
     this.adresse$.subscribe((data) => {
-      console.log(data);
       this.idAdresse = data ? data.id : undefined;
-      console.log('IdAdresse : ' + this.idAdresse);
       if(data)
       this.adresseForm.patchValue({
         rue: data.rue,
@@ -257,7 +223,6 @@ export class ProfilComponent implements OnInit {
     if (files[0].type.match(/image\/*/) == null) {
       return;
     }
-    console.log('ok')
     this.photoProfilService.uploadPhotoProfil(files[0], this.idUser).subscribe(
       (data) => {
         console.log(data);
