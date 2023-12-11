@@ -43,7 +43,7 @@ public class UserDBController {
         return userDBService.getProvidersByCategory(id);
     }
 
-    @GetMapping("/hasAddressAndMeter/{id}")
+    @GetMapping("/hasAddressAndMeter/{username}")
     public boolean hasAddressAndMeter(@PathVariable String username){
         return userDBService.hasAddressAndMeter(username);
     }
