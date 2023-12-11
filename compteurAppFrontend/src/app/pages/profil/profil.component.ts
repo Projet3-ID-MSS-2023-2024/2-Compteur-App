@@ -51,6 +51,9 @@ export class ProfilComponent implements OnInit {
   donneesModifiees: any[] = [];
   editingUser: boolean = false;
 
+  // Loader
+  isLoading: boolean = false;
+
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
@@ -89,8 +92,10 @@ export class ProfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.initUser().then(() => {
       this.initAdresse();
+      this.isLoading = false;
     });
   }
 
@@ -120,7 +125,7 @@ export class ProfilComponent implements OnInit {
               firstname: data.firstname,
               category: data.category ? data.category.name : '',
             });
-            this.categoryId = data.category.id;
+            this.categoryId = data.category?.id;
             this.initPdp(data.id);
             resolve();
           });
@@ -144,14 +149,17 @@ export class ProfilComponent implements OnInit {
         tva: this.registerForm.value.tva,
         idCategory: this.categoryId?.toString()
       };
+      this.isLoading = true;
       if (this.isClient) {
         this.userService.updateUser(this.userEdit, this.idUser).subscribe(
           (data) => {
             console.log(data);
+            this.isLoading = false;
           },
           (error) => {
             console.log('error');
             this.handleError(error);
+            this.isLoading = false;
           }
         );
       } else {
@@ -160,6 +168,7 @@ export class ProfilComponent implements OnInit {
           .updateFournisseurSpring(this.userEdit, this.idUser)
           .subscribe((data) => {
             console.log(data);
+            this.isLoading = false;
           });
       }
     }
@@ -225,7 +234,8 @@ export class ProfilComponent implements OnInit {
         idClient: this.idUser,
       };
       this.adresseUser.idClient = this.idUser;
-      this.adresseService.updateAdresse(this.adresseUser).subscribe();
+      this.isLoading = true;
+      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {this.isLoading = false;});
       this.nabarStatement.setCondition1(true);
     }
     this.editPopup = false;
