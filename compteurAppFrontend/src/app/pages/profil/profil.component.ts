@@ -21,7 +21,6 @@ import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
   styleUrls: ['./profil.component.css'],
 })
 export class ProfilComponent implements OnInit {
-
   // Formulaire de données utilisateur
   public registerForm!: FormGroup;
   user$!: Observable<UserDB>;
@@ -46,6 +45,11 @@ export class ProfilComponent implements OnInit {
   photoUrl!: string;
   photoNull: boolean = true;
 
+  // Popup
+  editPopup: boolean = false;
+  donneesModifiees: any[] = [];
+  editingUser: boolean = false;
+
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
@@ -54,7 +58,7 @@ export class ProfilComponent implements OnInit {
     private adresseService: AdresseService,
     private fournisseurService: FournisseurService,
     private nabarStatement: NavbarStatementService,
-    private photoProfilService: PhotoProfilService,
+    private photoProfilService: PhotoProfilService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
       rue: [[Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
@@ -101,7 +105,7 @@ export class ProfilComponent implements OnInit {
 
           this.user$ = this.userService.getUserByUserName(this.userName);
           this.user$.subscribe((data) => {
-            console.log(data)
+            console.log(data);
             this.idUser = data.id;
 
             this.registerForm.patchValue({
@@ -114,7 +118,7 @@ export class ProfilComponent implements OnInit {
               lastname: data.lastname,
               firstname: data.firstname,
             });
-             this.initPdp(data.id);
+            this.initPdp(data.id);
             resolve();
           });
         } else {
@@ -123,12 +127,10 @@ export class ProfilComponent implements OnInit {
       } catch (error) {
         reject("Une erreur s'est produite : " + error);
       }
-
     });
-
   }
-  editUser() {
-    if (this.registerForm.valid) {
+  editUser(confirmation: boolean) {
+    if ( confirmation && this.registerForm.valid) {
       this.userEdit = {
         email: this.registerForm.value.email,
         firstName: this.registerForm.value.firstname,
@@ -156,7 +158,47 @@ export class ProfilComponent implements OnInit {
           });
       }
     }
+    this.editPopup = false;
+    this.donneesModifiees = [];
   }
+  editAdressePopup() {
+    this.editingUser = false;
+      this.adresse$.subscribe((data) => {
+        data.codePostal != this.adresseForm.value.codePostal
+          ? this.donneesModifiees.push({
+              'Code postal': this.adresseForm.value.codePostal,
+            })
+          : null;
+        data.numero != this.adresseForm.value.numero
+          ? this.donneesModifiees.push({
+              Numéro: this.adresseForm.value.numero,
+            })
+          : null;
+        data.pays != this.adresseForm.value.pays
+          ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
+          : null;
+        data.rue != this.adresseForm.value.rue
+          ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
+          : null;
+        data.ville != this.adresseForm.value.ville
+          ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
+          : null;
+      });
+      this.editPopup = true;
+    }
+    editUserPopup() {
+      this.editingUser = true;
+        this.user$.subscribe((data) => {
+         data.email != this.registerForm.value.email ? this.donneesModifiees.push({ 'Email': this.registerForm.value.email }) : null;
+          data.firstname != this.registerForm.value.firstname ? this.donneesModifiees.push({ 'Prénom': this.registerForm.value.firstname }) : null;
+          data.lastname != this.registerForm.value.lastname ? this.donneesModifiees.push({ 'Nom': this.registerForm.value.lastname }) : null;
+          data.phoneNumber != this.registerForm.value.phoneNumber ? this.donneesModifiees.push({ 'Téléphone': this.registerForm.value.phoneNumber }) : null; 
+          data.tva != this.registerForm.value.tva ? this.donneesModifiees.push({ 'TVA': this.registerForm.value.tva }) : null;
+          data.username != this.registerForm.value.username ? this.donneesModifiees.push({ 'Nom d\'utilisateur': this.registerForm.value.username }) : null;
+        });
+        this.editPopup = true;
+      }
+  
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
@@ -166,10 +208,8 @@ export class ProfilComponent implements OnInit {
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
   }
-  editAdresse() {
-    console.log('editAdresse');
-    console.log(this.adresseForm);
-    if (this.adresseForm.valid) {
+  editAdresse(confirmation: boolean) {
+    if (confirmation && this.adresseForm.valid) {
       this.adresseUser = {
         rue: this.adresseForm.value.rue,
         codePostal: this.adresseForm.value.codePostal,
@@ -183,41 +223,48 @@ export class ProfilComponent implements OnInit {
       this.adresseService.updateAdresse(this.adresseUser).subscribe();
       this.nabarStatement.setCondition1(true);
     }
+    this.editPopup = false;
+    this.donneesModifiees = [];
   }
+  
   initAdresse() {
     this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
     this.adresse$.subscribe((data) => {
       this.idAdresse = data ? data.id : undefined;
-      if(data)
-      this.adresseForm.patchValue({
-        rue: data.rue,
-        ville: data.ville,
-        pays: data.pays,
-        numero: data.numero,
-        codePostal: data.codePostal,
-      });
-      else this.adresseForm.patchValue({
-        rue: '',
-        ville: '',
-        pays: '',
-        numero: '',
-        codePostal: '',
-      });
+      if (data)
+        this.adresseForm.patchValue({
+          rue: data.rue,
+          ville: data.ville,
+          pays: data.pays,
+          numero: data.numero,
+          codePostal: data.codePostal,
+        });
+      else
+        this.adresseForm.patchValue({
+          rue: '',
+          ville: '',
+          pays: '',
+          numero: '',
+          codePostal: '',
+        });
     });
   }
   deletePhotoProfil() {
-    this.photoProfilService.deletePhotoProfil(this.idUser).pipe(take(1)).subscribe(
-      (data) => {
-        console.log(data);
-        this.photoNull = true;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.photoProfilService
+      .deletePhotoProfil(this.idUser)
+      .pipe(take(1))
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.photoNull = true;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
   onFileChangeAdd(event: Event) {
-    console.log('add')
+    console.log('add');
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     if (files[0].type.match(/image\/*/) == null) {
@@ -227,7 +274,7 @@ export class ProfilComponent implements OnInit {
       (data) => {
         console.log(data);
         this.photoNull = false;
-        this.initPdp(this.idUser)
+        this.initPdp(this.idUser);
       },
       (error) => {
         console.log(error);
@@ -235,43 +282,48 @@ export class ProfilComponent implements OnInit {
     );
   }
   onFileChange(event: Event) {
-    console.log('change')
+    console.log('change');
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     if (files[0].type.match(/image\/*/) == null) {
-      alert("Seules les images sont supportées");
+      alert('Seules les images sont supportées');
       return;
     }
-    this.photoProfilService.updatePhotoProfil(files[0], this.idUser).pipe(take(1)).subscribe(
-      (data) => {
-        this.photoUrl = data.path;
-        this.photoNull = false;
-        this.initPdp(this.idUser)
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.photoProfilService
+      .updatePhotoProfil(files[0], this.idUser)
+      .pipe(take(1))
+      .subscribe(
+        (data) => {
+          this.photoUrl = data.path;
+          this.photoNull = false;
+          this.initPdp(this.idUser);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
   @ViewChild('fileInput') fileInput!: ElementRef;
   onFileSelect(event: Event) {
     this.fileInput.nativeElement.click();
   }
-  initPdp(id:any){
-    this.photoProfilService.getPhotoProfil(id).pipe(take(1)).subscribe(
-      response => {
-        if(response) {
-          this.photoUrl = response.path;
-          console.log(response.path)
-          this.photoNull = false;
+  initPdp(id: any) {
+    this.photoProfilService
+      .getPhotoProfil(id)
+      .pipe(take(1))
+      .subscribe(
+        (response) => {
+          if (response) {
+            this.photoUrl = response.path;
+            console.log(response.path);
+            this.photoNull = false;
+          } else {
+            this.photoNull = true;
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-        else{
-          this.photoNull = true;
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
+      );
   }
 }

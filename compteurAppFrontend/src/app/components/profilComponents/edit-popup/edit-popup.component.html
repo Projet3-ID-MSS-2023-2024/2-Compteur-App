@@ -1,0 +1,19 @@
+<div class="popup">
+  <div class="popupContent">
+    <div class="popupTitle">
+      <h1>Êtes-vous sûr de vouloir modifier ces informations ?</h1>
+    </div>
+    <div class="informationsList">
+      <div class="information" *ngFor="let information of editedFields">
+        <div *ngFor="let prop of getObjectProperties(information)">
+          <p><strong>{{ prop }}:</strong> {{ information[prop] }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="popupButtons">
+      <button (click)="acceptChangesButton()" class="popupButtonYes">Oui</button>
+      <button (click)="refuseChangesButton()" class="popupButtonNo">Non</button>
+    </div>
+  </div>
+
+</div>

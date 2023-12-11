@@ -128,7 +128,7 @@
           <div class="buttonRight" *ngIf="editMode">
             <div class="buttondiv fade-in-out">
               <img
-                (click)="editUser()"
+                (click)="editUserPopup()"
                 src="../../../assets/navbarIcone/send.svg"
                 alt=""
               />
@@ -197,7 +197,7 @@
           <div class="buttonRight">
             <div class="buttondiv fade-in-out" *ngIf="editMode">
               <img
-                (click)="editAdresse()"
+                (click)="editAdressePopup()"
                 src="../../../assets/navbarIcone/send.svg"
                 alt=""
               />
@@ -207,4 +207,5 @@
       </div>
     </div>
   </form>
+<app-edit-popup *ngIf="editPopup" [editedFields]="donneesModifiees" (acceptChanges)="editingUser?editUser($event):editAdresse($event)"></app-edit-popup>
 </div>
