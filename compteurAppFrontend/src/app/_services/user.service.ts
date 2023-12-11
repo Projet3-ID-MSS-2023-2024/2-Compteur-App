@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
+import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 import { User } from 'src/models/user';
 import { UserDB } from 'src/models/userDB';
 
@@ -12,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private readonly keycloak: KeycloakService) { }
 
-  updateUser(user: User | undefined, id: string | undefined) {
+  updateUser(user: AddFournisseurSpring | undefined, id: string | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

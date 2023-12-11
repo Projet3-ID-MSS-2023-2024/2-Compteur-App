@@ -2,6 +2,51 @@
   <div class="pageNamePlacement">
     <app-page-name [pageName]="editPageName"></app-page-name>
   </div>
+  <div class="pdpContaineur">
+    <div class="pdp">
+      <img
+        *ngIf="!editMode"
+        [src]="photoNull ? '' : 'http://localhost:8080/pdp/' + photoUrl"
+        alt="Photo"
+      />
+      <div>
+        <div *ngIf="editMode">
+          <div *ngIf="!photoNull">
+            <button (click)="onFileSelect($event)">Modifier pdp</button>
+            <input
+              type="file"
+              #fileInput
+              style="display: none"
+              (change)="onFileChange($event)"
+            />
+          </div>
+          <div *ngIf="photoNull">
+            <button (click)="onFileSelect($event)">Ajouter pdp</button>
+            <input
+              type="file"
+              #fileInput
+              style="display: none"
+              (change)="onFileChangeAdd($event)"
+            />
+          </div>
+          <div>
+            <button (click)="deletePhotoProfil()" *ngIf="!photoNull">
+              Supprimer pdp
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="editButton">
+        <img
+          (click)="turnEditMode()"
+          src="../../../assets/navbarIcone/edit.svg"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+
   <form [formGroup]="registerForm">
     <div class="placementList" *ngIf="user$ | async as user">
       <div class="containeur-form">
@@ -33,12 +78,12 @@
               [readonly]="!editMode"
             />
           </div>
-          <div class="form-group">
-            <label for="phoneNumber">Numéro de téléphone : </label>
+          <div class="form-group" *ngIf="editMode">
+            <label for="password">Mot de passe : </label>
             <input
-              type="text"
-              id="phoneNumber"
-              formControlName="phoneNumber"
+              type="password"
+              id="password"
+              formControlName="password"
               [readonly]="!editMode"
             />
           </div>
@@ -53,12 +98,33 @@
               [readonly]="!editMode"
             />
           </div>
-          <div class="form-group" *ngIf="editMode">
-            <label for="password">Mot de passe : </label>
+          <div class="form-group">
+            <label for="phoneNumber">Numéro de téléphone : </label>
             <input
-              type="password"
-              id="password"
-              formControlName="password"
+              type="text"
+              id="phoneNumber"
+              formControlName="phoneNumber"
+              [readonly]="!editMode"
+            />
+          </div>
+          <!-- <div class="form-group" *ngIf="!isClient">
+            <label for="category">Catégorie : </label>
+            <select
+              id="category"
+              formControlName="category"
+              [(ngModel)]="categorieFournisseur"
+            >
+              <option *ngFor="let category of categories">
+                {{ category.name }}
+              </option>
+            </select>
+          </div> -->
+          <div class="form-group" *ngIf="!isClient">
+            <label for="tva">TVA : </label>
+            <input
+              type="text"
+              id="tva"
+              formControlName="tva"
               [readonly]="!editMode"
             />
           </div>
@@ -71,27 +137,15 @@
               [readonly]="!editMode"
             />
           </div>
-          <div class="form-group" *ngIf="!isClient">
-            <label for="tva">TVA : </label>
-            <input
-              type="text"
-              id="tva"
-              formControlName="tva"
-              [readonly]="!editMode"
-            />
+          <div class="buttonRight" *ngIf="editMode">
+            <div class="buttondiv fade-in-out">
+              <img
+                (click)="editUser()"
+                src="../../../assets/navbarIcone/send.svg"
+                alt=""
+              />
+            </div>
           </div>
-          <div class="form-group" *ngIf="!isClient">
-            <label for="category">Catégorie : </label>
-            <input
-              type="text"
-              id="category"
-              formControlName="category"
-              [readonly]="!editMode"
-            />
-          </div>
-        </div>
-        <div class="buttondiv" *ngIf="editMode">
-          <button (click)="editUser()">Confirmer modification</button>
         </div>
       </div>
     </div>
@@ -107,6 +161,7 @@
               id="rue"
               formControlName="rue"
               [readonly]="!editMode"
+              placeholder="Rue de la paix"
             />
           </div>
           <div class="form-group">
@@ -116,6 +171,7 @@
               id="numero"
               formControlName="numero"
               [readonly]="!editMode"
+              placeholder="1"
             />
           </div>
           <div class="form-group">
@@ -125,15 +181,7 @@
               id="ville"
               formControlName="ville"
               [readonly]="!editMode"
-            />
-          </div>
-          <div class="form-group">
-            <label for="pays">Pays : </label>
-            <input
-              type="text"
-              id="pays"
-              formControlName="pays"
-              [readonly]="!editMode"
+              placeholder="Bruxelles"
             />
           </div>
         </div>
@@ -145,18 +193,30 @@
               id="codePostal"
               formControlName="codePostal"
               [readonly]="!editMode"
+              placeholder="1000"
             />
           </div>
-        </div>
-        <div class="buttondiv" *ngIf="editMode">
-          <button (click)="editAdresse()">Confirmer modification</button>
+          <div class="form-group">
+            <label for="pays">Pays : </label>
+            <input
+              type="text"
+              id="pays"
+              formControlName="pays"
+              [readonly]="!editMode"
+              placeholder="Belgique"
+            />
+          </div>
+          <div class="buttonRight">
+            <div class="buttondiv fade-in-out" *ngIf="editMode">
+              <img
+                (click)="editAdresse()"
+                src="../../../assets/navbarIcone/send.svg"
+                alt=""
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </form>
-  <div class="buttondiv">
-    <button (click)="turnEditMode()">Modifier profil</button>
-  </div>
 </div>
-
-
