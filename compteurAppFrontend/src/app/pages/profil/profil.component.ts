@@ -24,6 +24,7 @@ export class ProfilComponent implements OnInit {
   // Formulaire de données utilisateur
   public registerForm!: FormGroup;
   user$!: Observable<UserDB>;
+  categoryId!: number | undefined;
 
   //Formulaire d'adresse
   public adresseForm!: FormGroup;
@@ -117,7 +118,9 @@ export class ProfilComponent implements OnInit {
               passwordConf: '',
               lastname: data.lastname,
               firstname: data.firstname,
+              category: data.category ? data.category.name : '',
             });
+            this.categoryId = data.category.id;
             this.initPdp(data.id);
             resolve();
           });
@@ -139,6 +142,7 @@ export class ProfilComponent implements OnInit {
         userName: this.registerForm.value.username,
         password: this.registerForm.value.password,
         tva: this.registerForm.value.tva,
+        idCategory: this.categoryId?.toString()
       };
       if (this.isClient) {
         this.userService.updateUser(this.userEdit, this.idUser).subscribe(
@@ -151,6 +155,7 @@ export class ProfilComponent implements OnInit {
           }
         );
       } else {
+        console.log(this.idUser,this.userEdit)
         this.fournisseurService
           .updateFournisseurSpring(this.userEdit, this.idUser)
           .subscribe((data) => {
@@ -192,13 +197,13 @@ export class ProfilComponent implements OnInit {
          data.email != this.registerForm.value.email ? this.donneesModifiees.push({ 'Email': this.registerForm.value.email }) : null;
           data.firstname != this.registerForm.value.firstname ? this.donneesModifiees.push({ 'Prénom': this.registerForm.value.firstname }) : null;
           data.lastname != this.registerForm.value.lastname ? this.donneesModifiees.push({ 'Nom': this.registerForm.value.lastname }) : null;
-          data.phoneNumber != this.registerForm.value.phoneNumber ? this.donneesModifiees.push({ 'Téléphone': this.registerForm.value.phoneNumber }) : null; 
+          data.phoneNumber != this.registerForm.value.phoneNumber ? this.donneesModifiees.push({ 'Téléphone': this.registerForm.value.phoneNumber }) : null;
           data.tva != this.registerForm.value.tva ? this.donneesModifiees.push({ 'TVA': this.registerForm.value.tva }) : null;
           data.username != this.registerForm.value.username ? this.donneesModifiees.push({ 'Nom d\'utilisateur': this.registerForm.value.username }) : null;
         });
         this.editPopup = true;
       }
-  
+
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
@@ -226,7 +231,7 @@ export class ProfilComponent implements OnInit {
     this.editPopup = false;
     this.donneesModifiees = [];
   }
-  
+
   initAdresse() {
     this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
     this.adresse$.subscribe((data) => {

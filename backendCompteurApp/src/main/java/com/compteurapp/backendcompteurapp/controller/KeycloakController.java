@@ -30,13 +30,13 @@ public class KeycloakController {
 
     //------------------Provider------------------//
 
-    @PreAuthorize("hasRole('admin') or hasRole('fournisseur')")
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/provider")
     public Response createProvider(@RequestBody ProviderDTO providerDTO) {
         return this.keycloakService.createProvider(providerDTO);
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('admin') or hasRole('fournisseur')")
     @PutMapping("/provider/{id}")
     public Response updateProvider(@PathVariable String id, @RequestBody ProviderDTO providerDTO) {
         return this.keycloakService.updateProvider(id, providerDTO);
