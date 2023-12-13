@@ -46,6 +46,14 @@ import { UserDBService } from './_services/userDB.service';
 import { AdresseFieldSendDataComponent } from './components/compteurAndDataComp/adresse-field-send-data/adresse-field-send-data.component';
 import { CreateCompteurDesktopComponent } from './components/compteurAndDataComp/create-compteur-desktop/create-compteur-desktop.component';
 import { EditPopupComponent } from './components/profilComponents/edit-popup/edit-popup.component';
+import {FactureComponent} from "./pages/facture/facture.component";
+import {PaypalBtnComponent} from "./components/universalComponents/paypal-btn/paypal-btn.component";
+import {FactureProviderComponent} from "./pages/facture-provider/facture-provider.component";
+import {ShoppingBtnComponent} from "./components/universalComponents/shopping-btn/shopping-btn.component";
+import {FactureListComponent} from "./components/universalComponents/facture-list/facture-list.component";
+import {PaypalPopUpComponent} from "./components/paypal-pop-up/paypal-pop-up.component";
+import {NgxPayPalModule} from "ngx-paypal";
+import {NgOptimizedImage} from "@angular/common";
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -117,6 +125,16 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     AdresseFieldSendDataComponent,
     CreateCompteurDesktopComponent,
     EditPopupComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent,
+    DropdownCategoryComponent,
+    PaypalBtnComponent,//alessio
+    FactureComponent,//alessio
+    FactureProviderComponent,//alessio
+    ShoppingBtnComponent,//alessio
+    FactureListComponent,//alessio
+    PaypalPopUpComponent//alessio
   ],
   imports: [
     BrowserModule,
@@ -124,7 +142,9 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     KeycloakAngularModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPayPalModule,//alessio
+    NgOptimizedImage//alessio
   ],
   providers: [
     {
