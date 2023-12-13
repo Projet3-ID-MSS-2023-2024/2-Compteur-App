@@ -82,6 +82,8 @@ export class PaypalBtnComponent implements OnInit{
       },
       onError: err => {
         console.log('OnError', err);
+        sessionStorage.setItem('paymentSuccess', 'false');
+        location.reload();
 
       },
       onClick: (data, actions) => {

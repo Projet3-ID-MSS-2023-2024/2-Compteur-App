@@ -39,7 +39,10 @@ export class FactureComponent implements OnInit{
 
   async ngAfterViewInit() {
     if (sessionStorage.getItem('paymentSuccess') === 'true') {
-      this.loading();
+      this.loading(true);
+      sessionStorage.removeItem('paymentSuccess');
+    }else if (sessionStorage.getItem('paymentSuccess') === 'false'){
+      this.loading(false);
       sessionStorage.removeItem('paymentSuccess');
     }
   }
@@ -82,11 +85,16 @@ export class FactureComponent implements OnInit{
     return factureData;
   }
 
-  loading(){
+  loading(payement: boolean){
     this.loadingService.emettreEvenement('loading');
     if (window.innerWidth <= 768) {
       this.device = 'mobile';
     }
-    this.loadingService.emettreEvenement('Paiement effectué');
+    if(payement === true){
+      this.loadingService.emettreEvenement('Paiement effectué');
+    }else {
+      this.loadingService.emettreEvenement('error');
+    }
+
   }
 }
