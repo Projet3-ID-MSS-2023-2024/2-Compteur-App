@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -48,5 +49,6 @@ public class CompteurData {
     private Compteur compteur;
 
     @OneToMany(mappedBy = "compteurData")
+    @JsonIgnore
     private List<Facture> factures;
 }
