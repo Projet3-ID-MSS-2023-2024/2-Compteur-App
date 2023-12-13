@@ -2,7 +2,10 @@ import {Component, EventEmitter, Output, OnInit} from '@angular/core';
 import {CompteurDataService} from "../../_services/compteur-data.service";
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
-import {from, Observable} from "rxjs";
+import {from, lastValueFrom, Observable} from "rxjs";
+import {FactureService} from "../../_services/facture.service";
+import {CompteurDataReq} from "../../../models/compteurDataReq";
+import {Facture} from "../../../models/facture";
 
 @Component({
   selector: 'app-facture',
@@ -13,25 +16,23 @@ export class FactureComponent implements OnInit{
 
   ligneFacture: any[] = [];
   idUserConnecter: any;
+  dataRecue!: any[];
+  data!: any[];
 
   attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
 
-  constructor(private keycloackService: KeycloakService,) {}
+  constructor(
+    private factureService: FactureService,
+    private keycloackService: KeycloakService,) {}
 
   async ngOnInit() {
       let user = await this.getDataUser().toPromise();
       if (user) this.idUserConnecter = user.id;
-      console.log(this.idUserConnecter);
+      this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "IMPAYER");
+      this.data = this.setDataCompteur(this.dataRecue);
+      console.log("madata" + this.data);
 
   }
-
-  data: any[][] = [
-    [1,"1234SEDER4", 'Compteur 1', 'Fournisseur 1',"9301948485", '01/01/2020', '1000'],
-    [2,"1546RFZCRT",'Compteur 2', 'Fournisseur 2', "9301948485",'01/01/2020', '2000'],
-    [3,"1GHSXFSTRH",'Compteur 3', 'Fournisseur 3', "9301948485",'01/01/2020', '3000'],
-    [4,"12EGYITUBF",'Compteur 4', 'Fournisseur 4',"9301948485", '01/01/2020', '4000'],
-    [5,"1FEARTHTH4",'Compteur 5', 'Fournisseur 5', "9301948485",'01/01/2020', '5000'],
-  ]
 
   async buttonPress(arrayData: any){
     console.log(arrayData);
@@ -45,5 +46,40 @@ export class FactureComponent implements OnInit{
   getDataUser(): Observable<KeycloakProfile> {
     console.log(this.keycloackService.loadUserProfile());
     return from(this.keycloackService.loadUserProfile());
+  }
+
+  async getFactureByClientId(idClient:string, status:string){
+    const observable = this.factureService.getFactureByClientId(idClient, status);
+    return lastValueFrom(observable);
+  }
+
+  private formatDate(dateAForm: String): string {
+    const date = new Date(dateAForm as string);
+    const day = this.padZero(date.getDate());
+    const month = this.padZero(date.getMonth() + 1);
+    const year = date.getFullYear();
+
+   return `${day}-${month}-${year}`;
+  }
+
+  private padZero(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
+  }
+
+  setDataCompteur(factureDataReq:Facture[]){
+    //ON ADAPTE LA LEGENDE DE LA LISTE
+    let factureData: any[][] = [];
+
+
+    //FORMATAGE DES DONNEES
+    factureDataReq.forEach(element => {
+      //console.log("date" + element.date);
+      let date = new Date(element.date as string);
+      let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      let data = [element.id,element.id, element.nomCompteur,element.nomProvideur,element.TVA, formattedDate, element.prix];
+      factureData.push(data);
+      console.log("data" + data);
+    });
+    return factureData;
   }
 }

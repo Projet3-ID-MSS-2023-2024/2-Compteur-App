@@ -1,16 +1,16 @@
 export class Facture {
-  numFacture?: string;
+  id?: string;
   nomCompteur?: string;
-  nomFournisseur?: string;
-  numTva?: string;
+  nomProvideur?: string;
+  TVA?: string;
   date?: string;
   prix?: number;
 
-  constructor(numFacture: string, nomCompteur: string, nomFournisseur: string, numTva: string, date: string, prix: number) {
-   this.numFacture = numFacture;
+  constructor(id: string, nomCompteur: string, nomProvideur: string, TVA: string, date: string, prix: number) {
+   this.id = id;
     this.nomCompteur = nomCompteur;
-    this.nomFournisseur = nomFournisseur;
-    this.numTva = numTva;
+    this.nomProvideur = nomProvideur;
+    this.TVA = TVA;
     this.date = date;
     this.prix = prix;
   }
