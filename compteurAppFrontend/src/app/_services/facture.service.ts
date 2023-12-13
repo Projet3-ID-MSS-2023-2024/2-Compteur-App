@@ -20,4 +20,18 @@ export class FactureService {
     };
     return this.http.get<Facture[]>(`/api/facture/${idClient}/${status}`, { headers });
   }
+
+
+  updateStatusFacture(id: number, status:string){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    const body = {
+      id: id,
+      etat: status
+    }
+    return this.http.put<String>(`/api/updateSatus`,body, { headers })
+  }
 }

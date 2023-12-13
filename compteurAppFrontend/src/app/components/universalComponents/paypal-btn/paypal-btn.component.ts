@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
+import {FactureService} from "../../../_services/facture.service";
 
 @Component({
   selector: 'app-paypal-btn',
@@ -13,6 +14,7 @@ export class PaypalBtnComponent implements OnInit{
 
   public payPalConfig ? : IPayPalConfig;
 
+  constructor(private factureService: FactureService) {}
 
   ngOnInit(): void {
     this.initConfig();
@@ -37,7 +39,7 @@ export class PaypalBtnComponent implements OnInit{
             }
           },
           items: [{
-            name: 'Compteur App',
+            name: "facture number:" + " " + this.factureInfo[1] as string + " " + "for" + " " + this.factureInfo[2] as string,
             quantity: '1',
             category: 'DIGITAL_GOODS',
             unit_amount: {
@@ -65,6 +67,9 @@ export class PaypalBtnComponent implements OnInit{
       },
       onClientAuthorization: (data) => {
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+        this.updateStatusFacture(this.factureInfo[1] , "PAYER");
+        alert("payment success");
+
 
       },
       onCancel: (data, actions) => {
@@ -82,4 +87,12 @@ export class PaypalBtnComponent implements OnInit{
       }
     };
   }
+
+  updateStatusFacture(id: number, status:string){
+    const observable = this.factureService.updateStatusFacture(id, status);
+    observable.subscribe(response => {
+      console.log(response);
+    });
+  }
+
 }

@@ -2,6 +2,7 @@ package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.DTO.FactureDTO;
 import com.compteurapp.backendcompteurapp.DTO.FactureSendDTO;
+import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.mapper.FactureMapper;
 import com.compteurapp.backendcompteurapp.model.Facture;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
@@ -33,6 +34,11 @@ public class FactureController {
     public List<FactureSendDTO> getFactureByIdUser(@PathVariable String idUser,@PathVariable FactureStatement state){
         List<Facture> factureList = service.getFactureByIdUser(idUser, state);
         return factureMapper.mappListDTO(factureList);
+    }
+
+    @PutMapping("/updateSatus")
+    public Facture updateStatus(@RequestBody FactureUpdateDTO factureUpdateDTO){
+        return service.updateStatus(factureUpdateDTO.id, factureUpdateDTO.etat);
     }
 
 }

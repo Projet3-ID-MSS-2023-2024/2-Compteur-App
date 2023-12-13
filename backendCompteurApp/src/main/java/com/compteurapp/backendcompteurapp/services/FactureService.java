@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.services;
 
+import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.Facture;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
@@ -24,5 +25,11 @@ public class FactureService {
 
     public List<Facture> getFactureByIdUser(String idUser, FactureStatement state){
         return repository.findByCompteurData_Client_IdAndEtat(idUser, state);
+    }
+
+    public Facture updateStatus(Long factureId,FactureStatement state){
+        Facture facture = repository.findById(factureId).get();
+        facture.setEtat(state);
+        return repository.save(facture);
     }
 }

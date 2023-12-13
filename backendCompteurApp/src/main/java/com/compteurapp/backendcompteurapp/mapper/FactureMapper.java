@@ -2,6 +2,7 @@ package com.compteurapp.backendcompteurapp.mapper;
 
 import com.compteurapp.backendcompteurapp.DTO.FactureDTO;
 import com.compteurapp.backendcompteurapp.DTO.FactureSendDTO;
+import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.Facture;
 import com.compteurapp.backendcompteurapp.model.FactureStatement;
@@ -53,4 +54,5 @@ public class FactureMapper {
     public List<Facture> getFactureByIdUser(String idUser, FactureStatement state){
         return factureService.getFactureByIdUser(idUser, state);
     }
+
 }
