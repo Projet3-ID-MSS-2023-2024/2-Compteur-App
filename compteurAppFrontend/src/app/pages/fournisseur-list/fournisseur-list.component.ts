@@ -43,7 +43,7 @@ export class FournisseurListComponent implements OnInit {
   }
 
 
-  private initFournisseurs() {
+  initFournisseurs() {
     this.fournisseurData$ = this.userDBService.getAllProviders();
     this.fournisseurData$.subscribe((data: any) => {
       this.fournisseurData = data;
@@ -51,7 +51,7 @@ export class FournisseurListComponent implements OnInit {
     });
   }
 
-  private initCategories() {
+  initCategories() {
     this.categories$ = this.categoryService.getAll();
     this.categories$.subscribe((data: any) => {
       this.categories.push({id: 'all', name: 'Tout'});
@@ -61,29 +61,35 @@ export class FournisseurListComponent implements OnInit {
         }
       });
     });
-
     console.log(this.categories);
   }
 
-
+  saveFilterData: UserDB[] =  []
   filterByCategory(event: any) {
     if (event.target.value == 0) {
       this.filterData = [...this.fournisseurData];
+      this.saveFilterData = [...this.filterData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) => {
-        console.log(fournisseur);
-        console.log(event.target.value);
         return fournisseur.category.id == event.target.value;
       });
       console.log(this.filterData);
+      this.saveFilterData = [...this.filterData];
     }
   }
-
   searchFournisseur() {
-    if (!this.searchValue) {
-      this.filterData = [...this.fournisseurData];
+    if (!this.searchValue)
+    {
+      if(this.saveFilterData.length > 0)
+      {
+        this.filterData = [...this.saveFilterData];
+      }
+      else
+      {
+        this.filterData = [...this.fournisseurData];
+      }
     } else {
-      this.filterData = this.fournisseurData.filter((fournisseur) =>
+      this.filterData = this.filterData.filter((fournisseur) =>
         fournisseur.username?.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     }

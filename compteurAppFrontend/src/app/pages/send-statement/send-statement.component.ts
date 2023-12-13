@@ -16,6 +16,7 @@ import { CompteurDTO } from 'src/models/compteurDTO';
 import { CompteurDataSender } from 'src/models/compteurDataSender';
 import { CompteurDataService } from 'src/app/_services/compteur-data.service';
 import { Adresse } from 'src/models/adresse';
+import { NavbarStatementService } from 'src/app/_services/navbar-statement.service';
 
 @Component({
   selector: 'app-send-statement',
@@ -52,7 +53,8 @@ export class SendStatementComponent {
     private adresseService: AdresseService,
     private compteurService: CompteurService,
     private keycloackService: KeycloakService,
-    private compteurDataService: CompteurDataService
+    private compteurDataService: CompteurDataService,
+    private navbarStatement: NavbarStatementService
   ) {}
 
   async ngAfterViewInit() {
@@ -229,6 +231,7 @@ export class SendStatementComponent {
 
   async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
+    this.navbarStatement.setCondition2(true);
     return lastValueFrom(observable);
   }
 

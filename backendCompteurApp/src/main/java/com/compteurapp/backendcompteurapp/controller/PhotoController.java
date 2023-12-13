@@ -13,6 +13,7 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
+
     @GetMapping("/GetphotoProfile/{id}")
     public Photo getPhoto(@PathVariable("id") String id) {
         return photoService.getPhoto(id);
