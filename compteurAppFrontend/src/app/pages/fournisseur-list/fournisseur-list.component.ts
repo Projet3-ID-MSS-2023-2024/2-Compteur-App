@@ -68,6 +68,7 @@ export class FournisseurListComponent implements OnInit {
   filterByCategory(event: any) {
     if (event.target.value == 0) {
       this.filterData = [...this.fournisseurData];
+      this.saveFilterData = [...this.filterData];
     } else {
       this.filterData = this.fournisseurData.filter((fournisseur) => {
         return fournisseur.category.id == event.target.value;
@@ -77,8 +78,16 @@ export class FournisseurListComponent implements OnInit {
     }
   }
   searchFournisseur() {
-    if (!this.searchValue) {
-      this.filterData = [...this.saveFilterData];
+    if (!this.searchValue)
+    {
+      if(this.saveFilterData.length > 0)
+      {
+        this.filterData = [...this.saveFilterData];
+      }
+      else
+      {
+        this.filterData = [...this.fournisseurData];
+      }
     } else {
       this.filterData = this.filterData.filter((fournisseur) =>
         fournisseur.username?.toLowerCase().includes(this.searchValue.toLowerCase())
