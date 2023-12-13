@@ -1,0 +1,9 @@
+<div class="pageContent">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Historique des factures'"></app-page-name>
+  </div>
+  <div class="emplacementIndiceList">
+    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+  </div>
+
+</div>

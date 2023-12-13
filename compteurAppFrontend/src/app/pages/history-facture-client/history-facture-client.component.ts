@@ -1,46 +1,35 @@
-import {Component, EventEmitter, Output, OnInit} from '@angular/core';
-import {CompteurDataService} from "../../_services/compteur-data.service";
-import { KeycloakService } from 'keycloak-angular';
-import { KeycloakProfile } from 'keycloak-js';
-import {from, lastValueFrom, Observable} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 import {FactureService} from "../../_services/facture.service";
-import {CompteurDataReq} from "../../../models/compteurDataReq";
+import {KeycloakService} from "keycloak-angular";
+import {from, lastValueFrom, Observable} from "rxjs";
+import {KeycloakProfile} from "keycloak-js";
 import {Facture} from "../../../models/facture";
 
 @Component({
-  selector: 'app-facture',
-  templateUrl: './facture.component.html',
-  styleUrls: ['./facture.component.css']
+  selector: 'app-history-facture-client',
+  templateUrl: './history-facture-client.component.html',
+  styleUrls: ['./history-facture-client.component.css']
 })
-export class FactureComponent implements OnInit{
+export class HistoryFactureClientComponent implements OnInit{
 
-  ligneFacture: any[] = [];
+  attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
+  buttonOption = ['show.svg'];
   idUserConnecter: any;
   dataRecue!: any[];
   data!: any[];
 
-  attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
 
   constructor(
     private factureService: FactureService,
     private keycloackService: KeycloakService,) {}
 
   async ngOnInit() {
-      let user = await this.getDataUser().toPromise();
-      if (user) this.idUserConnecter = user.id;
-      this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "IMPAYER");
-      this.data = this.setDataCompteur(this.dataRecue);
-      console.log("madata" + this.data);
+    let user = await this.getDataUser().toPromise();
+    if (user) this.idUserConnecter = user.id;
+    this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "PAYER");
+    this.data = this.setDataCompteur(this.dataRecue);
+    console.log("madata" + this.data);
 
-  }
-
-  async buttonPress(arrayData: any){
-    console.log(arrayData);
-    this.ligneFacture= arrayData;
-  }
-
-  cacherPopUp(any: any){
-    this.ligneFacture = [];
   }
 
   getDataUser(): Observable<KeycloakProfile> {
@@ -52,7 +41,6 @@ export class FactureComponent implements OnInit{
     const observable = this.factureService.getFactureByClientId(idClient, status);
     return lastValueFrom(observable);
   }
-
 
 
   setDataCompteur(factureDataReq:Facture[]){
@@ -70,5 +58,9 @@ export class FactureComponent implements OnInit{
       console.log("data" + data);
     });
     return factureData;
+  }
+  buttonPress(arrayData: any) {
+    //methode pour generer pdf
+    console.log(arrayData);
   }
 }

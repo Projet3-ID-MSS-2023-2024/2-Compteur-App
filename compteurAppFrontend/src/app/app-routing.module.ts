@@ -12,6 +12,7 @@ import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-l
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { FactureComponent } from './pages/facture/facture.component';
 import { FactureProviderComponent } from './pages/facture-provider/facture-provider.component';
+import {HistoryFactureClientComponent} from "./pages/history-facture-client/history-facture-client.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'homePage', pathMatch: 'full'},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'received-statement', component: ReceivedStatementComponent},
   {path: 'profil', component: ProfilComponent},
   {path: 'facture', component: FactureComponent },
+  {path: 'history-facture-client', component: HistoryFactureClientComponent},
   {path: 'facture-provider', component: FactureProviderComponent },
   {path: '**', redirectTo: 'home'}
 ];
