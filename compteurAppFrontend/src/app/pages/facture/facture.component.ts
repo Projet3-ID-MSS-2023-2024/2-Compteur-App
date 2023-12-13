@@ -6,6 +6,7 @@ import {from, lastValueFrom, Observable} from "rxjs";
 import {FactureService} from "../../_services/facture.service";
 import {CompteurDataReq} from "../../../models/compteurDataReq";
 import {Facture} from "../../../models/facture";
+import {LoadingService} from "../../_services/loading.service";
 
 @Component({
   selector: 'app-facture',
@@ -18,12 +19,14 @@ export class FactureComponent implements OnInit{
   idUserConnecter: any;
   dataRecue!: any[];
   data!: any[];
+  device: string = 'desktop';
 
   attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
 
   constructor(
     private factureService: FactureService,
-    private keycloackService: KeycloakService,) {}
+    private keycloackService: KeycloakService,
+    private loadingService: LoadingService) {}
 
   async ngOnInit() {
       let user = await this.getDataUser().toPromise();
@@ -32,6 +35,13 @@ export class FactureComponent implements OnInit{
       this.data = this.setDataCompteur(this.dataRecue);
       console.log("madata" + this.data);
 
+  }
+
+  async ngAfterViewInit() {
+    if (sessionStorage.getItem('paymentSuccess') === 'true') {
+      this.loading();
+      sessionStorage.removeItem('paymentSuccess');
+    }
   }
 
   async buttonPress(arrayData: any){
@@ -70,5 +80,13 @@ export class FactureComponent implements OnInit{
       console.log("data" + data);
     });
     return factureData;
+  }
+
+  loading(){
+    this.loadingService.emettreEvenement('loading');
+    if (window.innerWidth <= 768) {
+      this.device = 'mobile';
+    }
+    this.loadingService.emettreEvenement('Paiement effectué');
   }
 }

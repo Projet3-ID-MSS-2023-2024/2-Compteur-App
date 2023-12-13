@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 import {FactureService} from "../../../_services/facture.service";
 
+
 @Component({
   selector: 'app-paypal-btn',
   templateUrl: './paypal-btn.component.html',
@@ -14,9 +15,12 @@ export class PaypalBtnComponent implements OnInit{
 
   public payPalConfig ? : IPayPalConfig;
 
-  constructor(private factureService: FactureService) {}
+  constructor(
+    private factureService: FactureService,
+    ) {}
 
   ngOnInit(): void {
+    console.log("localsto"+localStorage.getItem('paymentSuccess'));
     this.initConfig();
   }
 
@@ -68,9 +72,8 @@ export class PaypalBtnComponent implements OnInit{
       onClientAuthorization: (data) => {
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
         this.updateStatusFacture(this.factureInfo[1] , "PAYER");
-        alert("payment success");
-
-
+        sessionStorage.setItem('paymentSuccess', 'true');
+        location.reload();
       },
       onCancel: (data, actions) => {
         console.log('OnCancel', data, actions);
@@ -94,5 +97,6 @@ export class PaypalBtnComponent implements OnInit{
       console.log(response);
     });
   }
+
 
 }

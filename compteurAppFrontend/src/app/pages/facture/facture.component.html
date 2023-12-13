@@ -7,5 +7,5 @@
   </div>
 </div>
 
-
+<app-loader-api></app-loader-api>
 <app-paypal-pop-up *ngIf="ligneFacture.length>0" [data]="ligneFacture" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>
