@@ -54,6 +54,9 @@ export class ProfilComponent implements OnInit {
   // Loader
   isLoading: boolean = false;
 
+  // Button
+  formChoiceButton: boolean = true;
+
   constructor(
     private keycloak: KeycloakService,
     private userService: UserService,
@@ -340,5 +343,8 @@ export class ProfilComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+  buttonChoiceSwap() {
+    this.formChoiceButton = !this.formChoiceButton;
   }
 }

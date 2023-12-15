@@ -102,6 +102,23 @@ label {
   align-items: center;
   border: #000000 2px solid;
   cursor: pointer;
+  right: -15px;
+  top: -15px;
+  background-color: rgb(231, 231, 231);
+  display: flex;
+  img{
+    filter: invert(50%) sepia(20%) saturate(20%) hue-rotate(0deg) brightness(30%) contrast(90%);
+  }
+}
+.editButtonPdp {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  border: #000000 2px solid;
+  cursor: pointer;
   right: 0;
   bottom: 0;
   background-color: #3a475b;
@@ -145,4 +162,29 @@ label {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.doubleButtonContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.buttonContainer{
+  border-radius: 10px;
+  background-color: #ebebeb;
+  padding: 3px;
+  border: 1px solid #898989;
+}
+.doubleButton{
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+.buttonActive{
+  border-radius: 10px;
+  background-color: #d5d5d5;
 }

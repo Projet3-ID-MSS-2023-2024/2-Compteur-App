@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="editButton">
+      <div class="editButtonPdp">
         <img
           (click)="turnEditMode()"
           src="../../../assets/navbarIcone/edit.svg"
@@ -47,7 +47,14 @@
     </div>
   </div>
 
-  <form [formGroup]="registerForm">
+  <div class="doubleButtonContainer">
+    <div class="buttonContainer">
+      <button (click)="buttonChoiceSwap()" class="doubleButton" [ngClass]="{buttonActive: formChoiceButton}">Profil</button>
+      <button (click)="buttonChoiceSwap()" class="doubleButton" [ngClass]="{buttonActive: !formChoiceButton}">Adresse</button>
+    </div>
+  </div>
+
+  <form [formGroup]="registerForm" *ngIf="formChoiceButton">
     <div class="placementList" *ngIf="user$ | async as user">
       <div class="containeur-form">
         <div class="left">
@@ -140,9 +147,16 @@
           </div>
         </div>
       </div>
+      <div class="editButton">
+        <img
+          (click)="turnEditMode()"
+          src="../../../assets/navbarIcone/edit.svg"
+          alt=""
+        />
+      </div>
     </div>
   </form>
-  <form [formGroup]="adresseForm">
+  <form [formGroup]="adresseForm" *ngIf="!formChoiceButton">
     <div class="placementList">
       <div class="containeur-form">
         <div class="left">
@@ -208,6 +222,13 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="editButton">
+        <img
+          (click)="turnEditMode()"
+          src="../../../assets/navbarIcone/edit.svg"
+          alt=""
+        />
       </div>
     </div>
   </form>
