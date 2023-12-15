@@ -48,7 +48,7 @@ export class UserDBService {
     });
     return this.http.put(`api/updateUserDB/${id}`, user, { headers });
   }
-  public hasAddressAndMeter(username: string | undefined) {
-    return this.http.get(`api/hasAddressAndMeter/${username}`);
+  public hasAddressAndMeter(username: string | undefined) : Observable<any[]> | undefined{
+    return this.http.get(`api/hasAddressAndMeter/${username}`) as Observable<any[]>;
   }
 }

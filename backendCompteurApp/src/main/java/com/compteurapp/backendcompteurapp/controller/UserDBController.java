@@ -44,7 +44,7 @@ public class UserDBController {
     }
 
     @GetMapping("/hasAddressAndMeter/{username}")
-    public boolean hasAddressAndMeter(@PathVariable String username){
+    public boolean[] hasAddressAndMeter(@PathVariable String username){
         return userDBService.hasAddressAndMeter(username);
     }
 
