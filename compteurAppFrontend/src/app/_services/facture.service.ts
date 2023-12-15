@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {KeycloakService} from "keycloak-angular";
 import {Facture} from "../../models/facture";
+import {FactureDTO} from "../../models/factureDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,13 @@ export class FactureService {
       etat: status
     }
     return this.http.put<String>(`/api/updateSatus`,body, { headers })
+  }
+
+  addFacture(facture: FactureDTO){
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.post<FactureDTO>(`/api/facture`, facture, { headers });
   }
 }

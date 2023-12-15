@@ -6,6 +6,8 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { from } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
+import {FactureDTO} from "../../../models/factureDTO";
+import {FactureService} from "../../_services/facture.service";
 
 @Component({
   selector: 'app-received-statement',
@@ -22,6 +24,7 @@ export class ReceivedStatementComponent {
   payerFilterChoice:string = 'choiceOne';
 
   closeOrOpenPicture:boolean = false;
+  closeOrOpenFacturePopUp:boolean = false;
 
   pageStart:number = 0;
   pageEnd:number = 10;
@@ -43,7 +46,10 @@ export class ReceivedStatementComponent {
 
   photoCompteur!: string;
 
+  facture!: FactureDTO;
+
   constructor(private compteurDataService: CompteurDataService,
+    private factureService: FactureService,
     private keycloackService: KeycloakService,
     private loadingService: LoadingService,) {}
 
@@ -67,11 +73,18 @@ export class ReceivedStatementComponent {
         this.closeOrOpenPicture = true;
         break;
       case 'btn2':
+        //this.fillFactureData();
+        //console.log(this.facture);
+        this.closeOrOpenFacturePopUp = true;
         break;
     }
     this.idFocus = arrayData[1];
     this.photoCompteur = (await this.getCompteurById(arrayData[1].toString())).photo;
-   
+
+  }
+
+  fillFactureData(){
+    this.facture = new FactureDTO('IMPAYER', 667, 36);
   }
 
 
@@ -96,6 +109,14 @@ export class ReceivedStatementComponent {
 
   closePicture(close:boolean){
     this.closeOrOpenPicture = false;
+  }
+
+  closePopUp(close:boolean){
+    this.closeOrOpenFacturePopUp = false;
+  }
+
+  priceData(price: any){
+   console.log(price);
   }
 
   //CHANGEMENT DE PAGES
@@ -160,10 +181,10 @@ export class ReceivedStatementComponent {
 
     try{
       compteurDataReq = traiter ? await this.FactureEtat(this.idUserConnecter, payer ? 'PAYER' : 'IMPAYER', this.pageStart, 10) : await this.WithoutFacture(this.idUserConnecter, this.pageStart, 10);
-      historyPageable = [this.pageStart, true]; 
+      historyPageable = [this.pageStart, true];
     }
     catch{
-      historyPageable = [this.pageStart, false]; 
+      historyPageable = [this.pageStart, false];
       this.stop = true;
       this.pageStart -= 1;
     }
@@ -227,6 +248,7 @@ export class ReceivedStatementComponent {
   }
 
 
+
   /*#############################*/
   /* METHODE APPELLE SERVICES */
   /*#############################*/
@@ -262,6 +284,11 @@ export class ReceivedStatementComponent {
 
   getCompteurById(id:string): Promise<CompteurDataReq> {
     const observable = this.compteurDataService.getCompteurDataById(id);
+    return lastValueFrom(observable);
+  }
+
+  addFacture(facture: FactureDTO): Promise<FactureDTO> {
+    const observable = this.factureService.addFacture(facture);
     return lastValueFrom(observable);
   }
 
