@@ -79,14 +79,20 @@ export class FactureComponent implements OnInit{
       date = this.convertirDate(date);
     }
 
+    let comparerDernierElement = false;
+    if (filtre.includes('€')) {
+      filtre = filtre.replace('€', '').trim();
+      comparerDernierElement = true;
+    }
+
     for (let ligne of this.data) {
       if (filtre !== '' && date !== '') {
-        if (ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
           if (ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
             filtrer.push(ligne);
           }
         }
-      } else if (filtre !== '' && ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
         filtrer.push(ligne);
       } else if (date !== '' && ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
         filtrer.push(ligne);
