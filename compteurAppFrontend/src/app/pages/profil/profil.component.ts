@@ -45,6 +45,7 @@ export class ProfilComponent implements OnInit {
   editPageName: string = 'Profil';
   photoUrl!: string;
   photoNull: boolean = true;
+  editPdp: boolean = false;
 
   // Popup
   editPopup: boolean = false;
@@ -56,6 +57,8 @@ export class ProfilComponent implements OnInit {
 
   // Button
   formChoiceButton: boolean = true;
+  editHover: boolean = false;
+  deleteHover: boolean = false;
 
   constructor(
     private keycloak: KeycloakService,
@@ -141,7 +144,7 @@ export class ProfilComponent implements OnInit {
     });
   }
   editUser(confirmation: boolean) {
-    if ( confirmation && this.registerForm.valid) {
+    if (confirmation && this.registerForm.valid) {
       this.userEdit = {
         email: this.registerForm.value.email,
         firstName: this.registerForm.value.firstname,
@@ -150,7 +153,7 @@ export class ProfilComponent implements OnInit {
         userName: this.registerForm.value.username,
         password: this.registerForm.value.password,
         tva: this.registerForm.value.tva,
-        idCategory: this.categoryId?.toString()
+        idCategory: this.categoryId?.toString(),
       };
       this.isLoading = true;
       if (this.isClient) {
@@ -166,7 +169,7 @@ export class ProfilComponent implements OnInit {
           }
         );
       } else {
-        console.log(this.idUser,this.userEdit)
+        console.log(this.idUser, this.userEdit);
         this.fournisseurService
           .updateFournisseurSpring(this.userEdit, this.idUser)
           .subscribe((data) => {
@@ -180,41 +183,59 @@ export class ProfilComponent implements OnInit {
   }
   editAdressePopup() {
     this.editingUser = false;
-      this.adresse$.subscribe((data) => {
-        data.codePostal != this.adresseForm.value.codePostal
-          ? this.donneesModifiees.push({
-              'Code postal': this.adresseForm.value.codePostal,
-            })
-          : null;
-        data.numero != this.adresseForm.value.numero
-          ? this.donneesModifiees.push({
-              Numéro: this.adresseForm.value.numero,
-            })
-          : null;
-        data.pays != this.adresseForm.value.pays
-          ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
-          : null;
-        data.rue != this.adresseForm.value.rue
-          ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
-          : null;
-        data.ville != this.adresseForm.value.ville
-          ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
-          : null;
-      });
-      this.editPopup = true;
-    }
-    editUserPopup() {
-      this.editingUser = true;
-        this.user$.subscribe((data) => {
-         data.email != this.registerForm.value.email ? this.donneesModifiees.push({ 'Email': this.registerForm.value.email }) : null;
-          data.firstname != this.registerForm.value.firstname ? this.donneesModifiees.push({ 'Prénom': this.registerForm.value.firstname }) : null;
-          data.lastname != this.registerForm.value.lastname ? this.donneesModifiees.push({ 'Nom': this.registerForm.value.lastname }) : null;
-          data.phoneNumber != this.registerForm.value.phoneNumber ? this.donneesModifiees.push({ 'Téléphone': this.registerForm.value.phoneNumber }) : null;
-          data.tva != this.registerForm.value.tva ? this.donneesModifiees.push({ 'TVA': this.registerForm.value.tva }) : null;
-          data.username != this.registerForm.value.username ? this.donneesModifiees.push({ 'Nom d\'utilisateur': this.registerForm.value.username }) : null;
-        });
-        this.editPopup = true;
-      }
+    this.adresse$.subscribe((data) => {
+      data.codePostal != this.adresseForm.value.codePostal
+        ? this.donneesModifiees.push({
+            'Code postal': this.adresseForm.value.codePostal,
+          })
+        : null;
+      data.numero != this.adresseForm.value.numero
+        ? this.donneesModifiees.push({
+            Numéro: this.adresseForm.value.numero,
+          })
+        : null;
+      data.pays != this.adresseForm.value.pays
+        ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
+        : null;
+      data.rue != this.adresseForm.value.rue
+        ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
+        : null;
+      data.ville != this.adresseForm.value.ville
+        ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
+        : null;
+    });
+    this.editPopup = true;
+  }
+  editUserPopup() {
+    this.editingUser = true;
+    this.user$.subscribe((data) => {
+      data.email != this.registerForm.value.email
+        ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
+        : null;
+      data.firstname != this.registerForm.value.firstname
+        ? this.donneesModifiees.push({
+            Prénom: this.registerForm.value.firstname,
+          })
+        : null;
+      data.lastname != this.registerForm.value.lastname
+        ? this.donneesModifiees.push({ Nom: this.registerForm.value.lastname })
+        : null;
+      data.phoneNumber != this.registerForm.value.phoneNumber
+        ? this.donneesModifiees.push({
+            Téléphone: this.registerForm.value.phoneNumber,
+          })
+        : null;
+      data.tva != this.registerForm.value.tva
+        ? this.donneesModifiees.push({ TVA: this.registerForm.value.tva })
+        : null;
+      data.username != this.registerForm.value.username
+        ? this.donneesModifiees.push({
+            "Nom d'utilisateur": this.registerForm.value.username,
+          })
+        : null;
+    });
+    this.editPopup = true;
+  }
 
   turnEditMode() {
     if (!this.editMode) {
@@ -238,7 +259,9 @@ export class ProfilComponent implements OnInit {
       };
       this.adresseUser.idClient = this.idUser;
       this.isLoading = true;
-      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {this.isLoading = false;});
+      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {
+        this.isLoading = false;
+      });
       this.nabarStatement.setCondition1(true);
     }
     this.editPopup = false;
@@ -268,6 +291,7 @@ export class ProfilComponent implements OnInit {
     });
   }
   deletePhotoProfil() {
+    this.isLoading = true;
     this.photoProfilService
       .deletePhotoProfil(this.idUser)
       .pipe(take(1))
@@ -275,11 +299,15 @@ export class ProfilComponent implements OnInit {
         (data) => {
           console.log(data);
           this.photoNull = true;
+          this.isLoading = false;
         },
         (error) => {
           console.log(error);
+          this.isLoading = false;
         }
       );
+    this.deleteHover = false;
+    this.editPdp = false;
   }
   onFileChangeAdd(event: Event) {
     console.log('add');
@@ -288,6 +316,7 @@ export class ProfilComponent implements OnInit {
     if (files[0].type.match(/image\/*/) == null) {
       return;
     }
+    this.isLoading = true;
     this.photoProfilService.uploadPhotoProfil(files[0], this.idUser).subscribe(
       (data) => {
         console.log(data);
@@ -296,8 +325,10 @@ export class ProfilComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.isLoading = false;
       }
     );
+    this.editPdp = false;
   }
   onFileChange(event: Event) {
     console.log('change');
@@ -307,6 +338,7 @@ export class ProfilComponent implements OnInit {
       alert('Seules les images sont supportées');
       return;
     }
+    this.isLoading = true;
     this.photoProfilService
       .updatePhotoProfil(files[0], this.idUser)
       .pipe(take(1))
@@ -318,8 +350,10 @@ export class ProfilComponent implements OnInit {
         },
         (error) => {
           console.log(error);
+          this.isLoading = false;
         }
       );
+    this.editPdp = false;
   }
   @ViewChild('fileInput') fileInput!: ElementRef;
   onFileSelect(event: Event) {
@@ -338,13 +372,18 @@ export class ProfilComponent implements OnInit {
           } else {
             this.photoNull = true;
           }
+          this.isLoading = false;
         },
         (error) => {
           console.log(error);
+          this.isLoading = false;
         }
       );
   }
   buttonChoiceSwap() {
     this.formChoiceButton = !this.formChoiceButton;
+  }
+  editPdpButton() {
+    this.editPdp = !this.editPdp;
   }
 }
