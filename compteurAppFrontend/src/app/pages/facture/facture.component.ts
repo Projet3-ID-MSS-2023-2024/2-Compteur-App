@@ -21,6 +21,8 @@ export class FactureComponent implements OnInit{
   data!: any[];
   device: string = 'desktop';
 
+  showPopUpfiltre: boolean = false;
+
   attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
 
   constructor(
@@ -56,6 +58,10 @@ export class FactureComponent implements OnInit{
     this.ligneFacture = [];
   }
 
+  cacherPopUpFiltre(any: any){
+    this.showPopUpfiltre = false;
+  }
+
   getDataUser(): Observable<KeycloakProfile> {
     console.log(this.keycloackService.loadUserProfile());
     return from(this.keycloackService.loadUserProfile());
@@ -83,6 +89,10 @@ export class FactureComponent implements OnInit{
       console.log("data" + data);
     });
     return factureData;
+  }
+
+  showPopUpfiltreFct(){
+    this.showPopUpfiltre = true;
   }
 
   loading(payement: boolean){

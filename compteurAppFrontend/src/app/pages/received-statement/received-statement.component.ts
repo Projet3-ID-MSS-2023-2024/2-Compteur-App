@@ -47,6 +47,7 @@ export class ReceivedStatementComponent {
   photoCompteur!: string;
 
   facture!: FactureDTO;
+  compteurDataNumber!: number;
 
   constructor(private compteurDataService: CompteurDataService,
     private factureService: FactureService,
@@ -76,6 +77,7 @@ export class ReceivedStatementComponent {
         //this.fillFactureData();
         //console.log(this.facture);
         this.closeOrOpenFacturePopUp = true;
+        this.compteurDataNumber = arrayData[1];
         break;
     }
     this.idFocus = arrayData[1];
@@ -83,8 +85,10 @@ export class ReceivedStatementComponent {
 
   }
 
-  fillFactureData(){
-    this.facture = new FactureDTO('IMPAYER', 667, 36);
+  async fillFactureData(price: any){
+    this.facture = new FactureDTO('IMPAYER', price, this.compteurDataNumber);
+    await this.addFacture(this.facture);
+    location.reload();
   }
 
 
@@ -116,7 +120,8 @@ export class ReceivedStatementComponent {
   }
 
   priceData(price: any){
-   console.log(price);
+    this.closeOrOpenFacturePopUp = false;
+   this.fillFactureData(price);
   }
 
   //CHANGEMENT DE PAGES

@@ -1,0 +1,25 @@
+<div class="factureFrom">
+  <div class="formulaire">
+    <div class="placement">
+      <h1>Rechercher une facture</h1>
+    </div>
+
+    <div class="formField" [formGroup]="dataSend">
+      <div class="fieldPlacement">
+        <input type="text" placeholder="Entrer votre recherche" formControlName="filter">
+      </div>
+      <div class="fieldPlacement">
+        <input type="date"  formControlName="date">
+      </div>
+
+      <div class="placement">
+        <div class="button" (click)="dataSender(true)">
+          <p>Enregistrer</p>
+        </div>
+      </div>
+      <div class="croix" (click)="closePopUpFiltre()">
+        <img src="./assets/navbarIcone/hide_picture.svg" alt="croix">
+      </div>
+    </div>
+  </div>
+</div>

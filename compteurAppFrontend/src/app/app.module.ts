@@ -56,6 +56,7 @@ import {NgxPayPalModule} from "ngx-paypal";
 import {NgOptimizedImage} from "@angular/common";
 import { HistoryFactureClientComponent } from './pages/history-facture-client/history-facture-client.component';
 import { AddFacturePricePopupComponent } from './components/compteurAndDataComp/add-facture-price-popup/add-facture-price-popup.component';
+import { FiltreFacturePopupComponent } from './components/compteurAndDataComp/filtre-facture-popup/filtre-facture-popup.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -136,7 +137,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FactureProviderComponent,//alessio
     ShoppingBtnComponent,//alessio
     FactureListComponent,//alessio
-    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent//alessio
+    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent//alessio
   ],
   imports: [
     BrowserModule,
