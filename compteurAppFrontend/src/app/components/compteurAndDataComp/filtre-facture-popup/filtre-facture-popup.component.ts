@@ -10,7 +10,7 @@ export class FiltreFacturePopupComponent {
 
   public dataSend: FormGroup;
 
-  @Output() sendData: EventEmitter<number> = new EventEmitter<any>();
+  @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
   @Output() closePopupFiltre: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private formBuilder: FormBuilder) {
@@ -27,10 +27,10 @@ export class FiltreFacturePopupComponent {
   }
 
   dataSender(choice: boolean) {
+    let data:any[] ;
     if (choice) {
-      console.log(this.dataSend.value.filter);
-      console.log(this.dataSend.value.date);
-      //this.sendData.emit(this.dataSend.value.facturePrice);
+      data = [this.dataSend.value.filter, this.dataSend.value.date];
+      this.sendData.emit(data);
     }
   }
 }

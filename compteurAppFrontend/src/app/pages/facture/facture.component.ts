@@ -19,6 +19,7 @@ export class FactureComponent implements OnInit{
   idUserConnecter: any;
   dataRecue!: any[];
   data!: any[];
+  dataFiltre!: any[] ;
   device: string = 'desktop';
 
   showPopUpfiltre: boolean = false;
@@ -35,8 +36,7 @@ export class FactureComponent implements OnInit{
       if (user) this.idUserConnecter = user.id;
       this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "IMPAYER");
       this.data = this.setDataCompteur(this.dataRecue);
-      console.log("madata" + this.data);
-
+      this.dataFiltre = this.data;
   }
 
   async ngAfterViewInit() {
@@ -50,7 +50,6 @@ export class FactureComponent implements OnInit{
   }
 
   async buttonPress(arrayData: any){
-    console.log(arrayData);
     this.ligneFacture= arrayData;
   }
 
@@ -60,6 +59,45 @@ export class FactureComponent implements OnInit{
 
   cacherPopUpFiltre(any: any){
     this.showPopUpfiltre = false;
+  }
+
+  convertirDate(date: string) {
+    let [annee, mois, jour] = date.split('-');
+    return `${jour}/${mois}/${annee}`;
+  }
+  getFilterData(data: any){
+    console.log(data[0], data[1]);
+    this.showPopUpfiltre = false;
+    this.dataFiltre = this.filtrerData(data[0], data[1]);
+  }
+
+  //prendre les donneee du filtre et filtrer le tableau data
+  filtrerData(filtre: any, date: any){
+    let filtrer: any[] = [];
+
+    if (date !== '') {
+      date = this.convertirDate(date);
+    }
+
+    for (let ligne of this.data) {
+      if (filtre !== '' && date !== '') {
+        if (ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+          if (ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
+            filtrer.push(ligne);
+          }
+        }
+      } else if (filtre !== '' && ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+        filtrer.push(ligne);
+      } else if (date !== '' && ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
+        filtrer.push(ligne);
+      }
+    }
+
+    return filtrer;
+  }
+
+  desableFiltre(){
+    this.dataFiltre = this.data;
   }
 
   getDataUser(): Observable<KeycloakProfile> {

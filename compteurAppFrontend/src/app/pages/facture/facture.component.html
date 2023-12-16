@@ -5,14 +5,14 @@
   <div class="filter" (click)="showPopUpfiltreFct()" >
     <img src="./assets/navbarIcone/filter.svg" alt="filtre" height="49px" width="49px">
   </div>
-  <div class="filter" >
+  <div class="filter" (click)="desableFiltre()">
     <img src="./assets/navbarIcone/filter-enable.svg" alt="filtre" height="49px" width="49px">
   </div>
   <div class="placementList">
-    <app-facture-list [attributLegend]="attributLegend" [data]="data" (buttonPressed)="buttonPress($event)" ></app-facture-list>
+    <app-facture-list [attributLegend]="attributLegend" [data]="dataFiltre" (buttonPressed)="buttonPress($event)" ></app-facture-list>
   </div>
 </div>
 
 <app-loader-api></app-loader-api>
 <app-paypal-pop-up *ngIf="ligneFacture.length>0" [data]="ligneFacture" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>
-<app-filtre-facture-popup *ngIf="showPopUpfiltre" (closePopupFiltre)="cacherPopUpFiltre($event)"></app-filtre-facture-popup>
+<app-filtre-facture-popup *ngIf="showPopUpfiltre" (closePopupFiltre)="cacherPopUpFiltre($event)" (sendData)="getFilterData($event)" ></app-filtre-facture-popup>
