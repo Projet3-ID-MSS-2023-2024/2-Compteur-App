@@ -6,6 +6,8 @@ import com.compteurapp.backendcompteurapp.repository.FactureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FactureService {
 
@@ -17,5 +19,9 @@ public class FactureService {
         compteurData.setId(facture.getCompteurData().getId());
         facture.setCompteurData(compteurData);
         return repository.save(facture);
+    }
+
+    public List<Facture> getFactureByIdUser(String idUser){
+        return repository.findByCompteurData_Client_Id(idUser);
     }
 }

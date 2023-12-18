@@ -14,7 +14,7 @@ import { LoadingService } from 'src/app/_services/loading.service';
 })
 export class ReceivedStatementComponent {
 
-  attributLegend = ['Nom Client', 'Valeur', 'Date'];
+  attributLegend = ['Nom Client', 'Valeur', 'Date', 'Etat'];
 
   buttonOption = ['picture.svg', 'facture.svg'];
 
@@ -71,13 +71,14 @@ export class ReceivedStatementComponent {
     }
     this.idFocus = arrayData[1];
     this.photoCompteur = (await this.getCompteurById(arrayData[1].toString())).photo;
-   
+
   }
 
 
 
   //FILTRER LES COMPTEURSDATA PAS TRAITER/TRAITER
   async traiterFilter(data: string){
+    console.log(data);
     this.traiterFilterChoice = data;
     this.pageStart = 0;
     this.stop = false;
@@ -88,6 +89,7 @@ export class ReceivedStatementComponent {
   //FILTRER LES COMPTEURSDATA PAS IMPAYER/PAYER
   async payerFilter(data: string){
     this.payerFilterChoice = data;
+    console.log(data);
     this.pageStart = 0;
     this.stop = false;
     data = data == 'choiceOne' ? 'Impayé' : 'Payé';
@@ -160,10 +162,10 @@ export class ReceivedStatementComponent {
 
     try{
       compteurDataReq = traiter ? await this.FactureEtat(this.idUserConnecter, payer ? 'PAYER' : 'IMPAYER', this.pageStart, 10) : await this.WithoutFacture(this.idUserConnecter, this.pageStart, 10);
-      historyPageable = [this.pageStart, true]; 
+      historyPageable = [this.pageStart, true];
     }
     catch{
-      historyPageable = [this.pageStart, false]; 
+      historyPageable = [this.pageStart, false];
       this.stop = true;
       this.pageStart -= 1;
     }
@@ -191,10 +193,6 @@ export class ReceivedStatementComponent {
   setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
     //ON ADAPTE LA LEGENDE DE LA LISTE
     let compteurData: any[][] = [];
-    let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
-    let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
-    this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
-
 
     //FORMATAGE DES DONNEES
     compteurDataReq.forEach(element => {
@@ -204,6 +202,9 @@ export class ReceivedStatementComponent {
       if(traiter){
         let etat = payer ? "Payé" : "Impayé";
         data.push(etat);
+      }
+      else{
+        data.push("Non traité");
       }
       compteurData.push(data);
     });
