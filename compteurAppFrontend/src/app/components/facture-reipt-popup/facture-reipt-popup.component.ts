@@ -1,20 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FactureDTO} from "../../../models/factureDTO";
-import {lastValueFrom, Observable} from "rxjs";
-import {User} from "../../../models/user";
-import {UserDBService} from "../../_services/userDB.service";
-import {Facture} from "../../../models/facture";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UserDB} from "../../../models/userDB";
 import {Adresse} from "../../../models/adresse";
+import {FactureDTO} from "../../../models/factureDTO";
+import {UserDBService} from "../../_services/userDB.service";
 import {AdresseService} from "../../_services/adresse.service";
+import {lastValueFrom, Observable} from "rxjs";
+import {Facture} from "../../../models/facture";
 
 @Component({
-  selector: 'app-paypal-pop-up',
-  templateUrl: './paypal-pop-up.component.html',
-  styleUrls: ['./paypal-pop-up.component.css']
+  selector: 'app-facture-reipt-popup',
+  templateUrl: './facture-reipt-popup.component.html',
+  styleUrls: ['./facture-reipt-popup.component.css']
 })
-export class PaypalPopUpComponent implements OnInit{
-  @Input() data!: any[] | undefined;
+export class FactureReiptPopupComponent {
+
+  @Input() facture: Facture | undefined = undefined;
   @Input() userName!: any;
   @Output() buttonPressed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -29,7 +29,7 @@ export class PaypalPopUpComponent implements OnInit{
   userInfo: UserDB | undefined = undefined;
   userAdresseRecue: Adresse | undefined = undefined;
   userAdresse: Adresse | undefined = undefined;
-  facture: FactureDTO | undefined = undefined;
+
 
   isLoading: boolean = false;
 
@@ -38,13 +38,13 @@ export class PaypalPopUpComponent implements OnInit{
     private adresseService: AdresseService,
   ) {}
   async ngOnInit() {
-    if (this.data)
-    this.provideurInfoRecue = await this.getUserByUserName(this.data[3]);
+    if (this.facture)
+      this.provideurInfoRecue = await this.getUserByUserName(this.facture?.nomProvideur);
     this.provideurInfo = this.provideurInfoRecue;
     this.userInfoRecue = await this.getUserByUserName(this.userName);
     this.userInfo = this.userInfoRecue; // <-- Ici
-    if (this.data)
-    this.provideurAdresseRecue = await this.getAdresseUser(this.data[3] as string);
+    if (this.facture)
+      this.provideurAdresseRecue = await this.getAdresseUser(this.facture?.nomProvideur);
     if (this.provideurAdresseRecue){
       this.provideurAdresse = this.provideurAdresseRecue
     }else{
@@ -75,8 +75,6 @@ export class PaypalPopUpComponent implements OnInit{
     console.log(any);
     this.buttonPressed.emit(any);
   }
-
-
 
 
 }

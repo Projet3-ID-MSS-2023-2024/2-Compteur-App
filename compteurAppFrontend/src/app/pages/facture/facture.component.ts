@@ -17,6 +17,7 @@ export class FactureComponent implements OnInit{
 
   ligneFacture: any[] = [];
   idUserConnecter: any;
+  userName: any;
   dataRecue!: any[];
   data!: any[];
   dataFiltre!: any[] ;
@@ -33,10 +34,14 @@ export class FactureComponent implements OnInit{
 
   async ngOnInit() {
       let user = await this.getDataUser().toPromise();
-      if (user) this.idUserConnecter = user.id;
+      if (user){
+        this.idUserConnecter = user.id;
+        this.userName = user.username;
+      }
       this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "IMPAYER");
       this.data = this.setDataCompteur(this.dataRecue);
       this.dataFiltre = this.data;
+      console.log(this.data);
   }
 
   async ngAfterViewInit() {

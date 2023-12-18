@@ -1,13 +1,14 @@
 <div class="popup" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <div class="content">
     <div class="title">
+      <div id="pdf">
       <h1>Facture</h1>
     </div>
 
-    <div class="factureInfo" *ngIf="data">
-      <p>N° de facture : {{data[0]}} </p>
-      <p>Date :{{data[5]}}</p>
-      <p>N° de TVA : {{data[4]}}</p>
+    <div class="factureInfo" *ngIf="facture">
+      <p>N° de facture : {{facture.id}} </p>
+      <p>Date :{{facture.date}}</p>
+      <p>N° de TVA : {{facture.TVA}}</p>
     </div>
 
     <div class="boxTitle">
@@ -31,7 +32,7 @@
       <div class="info">{{provideurAdresse?.codePostal}} {{provideurAdresse?.pays}}</div>
       <div class="info">{{provideurInfo?.email}}</div>
       <div class="info">{{provideurInfo?.phoneNumber}}</div>
-      <div class="info">N° de TVA : {{data?.[4]}}</div>
+      <div class="info">N° de TVA : {{facture?.TVA}}</div>
 
     </div>
 
@@ -40,20 +41,23 @@
       <div class="list"><p>Compteur</p></div>
       <div class="list"><p>Prix</p></div>
     </div>
-    <div class="liste" *ngIf="data">
+    <div class="liste" *ngIf="facture">
       <div class="list"><p>1</p></div>
-      <div class="list"><p>{{data[2]}}</p></div>
-      <div class="list"><p>{{data[6]}} €</p></div>
+      <div class="list"><p>{{facture.nomCompteur}}</p></div>
+      <div class="list"><p>{{facture.prix}} €</p></div>
     </div>
 
-    <div class="total" *ngIf="data">
-    <div class="totalDetail"><h3>Total</h3></div>
-      <div class="totalDetail"><p>{{data[6]}} €</p></div>
+    <div class="total" *ngIf="facture">
+      <div class="totalDetail"><h3>Total</h3></div>
+      <div class="totalDetail"><p>{{facture.prix}} €</p></div>
     </div>
 
-    <div class="button" *ngIf="data">
-      <app-paypal-btn [factureInfo]="data"></app-paypal-btn>
     </div>
+    <div class="buttonPosition" >
+      <button (click)="buttonPress(true)">Valider</button>
+      <button (click)="buttonPress(false)">Annuler</button>
+    </div>
+
     <div class="croix" (click)="buttonPress(false)">
 
     </div>

@@ -45,7 +45,7 @@ public class FactureMapper {
         factureSendDTO.etat = facture.getEtat();
         factureSendDTO.nomCompteur = facture.getCompteurData().getCompteur().getNom();
         factureSendDTO.nomClient = facture.getCompteurData().getClient().getFirstname();
-        factureSendDTO.nomProvideur = facture.getCompteurData().getProvider().getFirstname();
+        factureSendDTO.nomProvideur = facture.getCompteurData().getProvider().getUsername();
         factureSendDTO.date = facture.getCompteurData().getDate();
         factureSendDTO.TVA = facture.getCompteurData().getProvider().getTva();
         return factureSendDTO;

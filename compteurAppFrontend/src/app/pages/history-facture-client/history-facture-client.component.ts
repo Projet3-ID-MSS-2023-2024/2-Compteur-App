@@ -12,12 +12,17 @@ import {Facture} from "../../../models/facture";
 })
 export class HistoryFactureClientComponent implements OnInit{
 
+  ligneFacture: Facture | undefined = undefined;
   attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
   buttonOption = ['show.svg'];
-  idUserConnecter: any;
-  dataRecue!: any[];
-  data!: any[];
+  idUserConnecter: any | undefined;
+  userName: any | undefined;
+  dataRecue: any[] | undefined;
+  data: any | undefined;
+  dataFiltre!: any[] ;
+  showPopUpfiltre: boolean | undefined = false;
 
+  showReceiptPopup: boolean | undefined = false;
 
   constructor(
     private factureService: FactureService,
@@ -25,9 +30,13 @@ export class HistoryFactureClientComponent implements OnInit{
 
   async ngOnInit() {
     let user = await this.getDataUser().toPromise();
-    if (user) this.idUserConnecter = user.id;
+    if (user){
+      this.idUserConnecter = user.id;
+      this.userName = user.username;
+    }
     this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "PAYER");
     this.data = this.setDataCompteur(this.dataRecue);
+    this.dataFiltre = this.data;
     console.log("madata" + this.data);
 
   }
@@ -60,7 +69,69 @@ export class HistoryFactureClientComponent implements OnInit{
     return factureData;
   }
   buttonPress(arrayData: any) {
-    //methode pour generer pdf
+    //retourner le datafiltre en fonction d'un id
+    let tabData = this.dataFiltre.filter((element: any) => element[0] === arrayData[1]);
+    console.log(tabData);
+    this.ligneFacture = new Facture(tabData[0][1], tabData[0][2], tabData[0][3], tabData[0][4], tabData[0][5], tabData[0][6]);
+    console.log(this.ligneFacture);
     console.log(arrayData);
+    this.showReceiptPopup = true;
+  }
+
+  cacherPopUp(any:any){
+    this.showReceiptPopup = false;
+  }
+
+  cacherPopUpFiltre(any: any){
+    this.showPopUpfiltre = false;
+  }
+
+  convertirDate(date: string) {
+    let [annee, mois, jour] = date.split('-');
+    return `${jour}/${mois}/${annee}`;
+  }
+  getFilterData(data: any){
+    console.log(data[0], data[1]);
+    this.showPopUpfiltre = false;
+    this.dataFiltre = this.filtrerData(data[0], data[1]);
+  }
+
+  //prendre les donneee du filtre et filtrer le tableau data
+  filtrerData(filtre: any, date: any){
+    let filtrer: any[] = [];
+
+    if (date !== '') {
+      date = this.convertirDate(date);
+    }
+
+    let comparerDernierElement = false;
+    if (filtre.includes('€')) {
+      filtre = filtre.replace('€', '').trim();
+      comparerDernierElement = true;
+    }
+
+    for (let ligne of this.data) {
+      if (filtre !== '' && date !== '') {
+        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+          if (ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
+            filtrer.push(ligne);
+          }
+        }
+      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
+        filtrer.push(ligne);
+      } else if (date !== '' && ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
+        filtrer.push(ligne);
+      }
+    }
+
+    return filtrer;
+  }
+
+  desableFiltre(){
+    this.dataFiltre = this.data;
+  }
+
+  showPopUpfiltreFct(){
+    this.showPopUpfiltre = true;
   }
 }

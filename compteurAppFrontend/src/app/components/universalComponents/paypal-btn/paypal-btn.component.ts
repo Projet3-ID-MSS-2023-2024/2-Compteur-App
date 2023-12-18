@@ -58,9 +58,9 @@ export class PaypalBtnComponent implements OnInit{
       },
       style: {
         label: 'paypal',
-        layout: 'vertical',
+        layout: 'horizontal',
         color: 'blue',
-        shape: 'pill'
+        shape: 'pill',
       },
       onApprove: (data, actions) => {
         console.log('onApprove - transaction was approved, but not authorized', data, actions);

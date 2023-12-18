@@ -168,4 +168,27 @@ p{
   font-size: 1.4em;
 }
 
+.buttonPosition{
+  display:flex;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
 
+button{
+  background-color: #382c2c; /* Green */
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 20px; /* Augmentez la taille du padding pour un bouton plus grand */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px; /* Augmentez la taille de la police pour un texte plus grand */
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 30%;
+}

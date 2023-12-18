@@ -183,6 +183,9 @@ body::-webkit-scrollbar-track {
   background-color: #f0f0f0;
 }
 
+.paypal-button-label-container{
+  display: none;
+}
 
 @media screen and (max-width: 950px) {
 
@@ -219,5 +222,8 @@ body::-webkit-scrollbar-track {
   .informationPagePlacement{
     margin-top: 0px;
   }
+
+
+
 
 }
