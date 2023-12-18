@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChildren, AfterViewInit, ElementRef, QueryList, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-indice',
@@ -8,6 +9,8 @@ import { Component, Input, OnInit, ViewChildren, AfterViewInit, ElementRef, Quer
 export class IndiceComponent implements AfterViewInit{
 
   @Input() indiceArray: any[] = [];
+  private indiceArraySubject = new Subject<any[]>();
+
   @Input() legend!:boolean;
 
   @Input() buttonOption!: string[];
@@ -22,14 +25,27 @@ export class IndiceComponent implements AfterViewInit{
 
   /* Set size of an indice to perfect size */
   ngAfterViewInit(): void {
-      let sizeMax = 90;
-      let size = sizeMax / this.indiceArray.length;
+    this.sliceContainer()
+  }
+
+
+  sliceContainer(): void{
+    let sizeMax = 90;
+    let size = sizeMax / this.indiceArray.length;
+
+    // Vérifier si this.indices est défini avant de l'utiliser
+    if (this.indices) {
       this.indices.forEach((element) => {
         element.nativeElement.style.width = size + '%';
       });
+    }
+
+    // Vérifier si this.text est défini avant de l'utiliser
+    if (this.text) {
       this.text.forEach((element) => {
         element.nativeElement.style.color = this.legend ? 'rgba(0, 0, 0, 0.500)' : '#3a475b ';
       });
+    }
   }
 
   openCloseLanguette(){

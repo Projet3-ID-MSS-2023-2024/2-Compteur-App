@@ -26,34 +26,7 @@ export class NavbarComponent implements AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    // Surveillez les changements de condition1 et condition2
-    this.navbarStatement.condition1$.subscribe((condition1) => {
-      console.log(condition1);
-      if (condition1 == true) {
-        this.condition1 = true;
-        this.reload();
-      }
-    });
 
-    this.navbarStatement.condition2$.subscribe((condition2) => {
-      console.log(condition2);
-      if (condition2 == true) {
-        this.condition2 = true;
-        this.reload();
-      }
-    });
-  }
-
-  reload() {
-    console.log(this.condition1, this.condition2, this.reloadBool);
-    if (
-      this.condition1 == true &&
-      this.condition2 == true &&
-      this.reloadBool == false
-    ) {
-      this.reloadBool = true;
-      this.ngAfterViewInit()
-    }
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -77,12 +50,18 @@ export class NavbarComponent implements AfterViewInit {
     }
     if (this.isClient) {
       this.userDBService
-        .hasAddressAndMeter((await this.keycloak.loadUserProfile()).username)
-        .subscribe((data) => {
+        .hasAddressAndMeter((await this.keycloak.loadUserProfile()).username)?.subscribe((data) => {
           console.log(data);
-          data ? (this.navBarIsLocked = false) : (this.navBarIsLocked = true);
+          this.navbarStatement.setCondition1(data[0]);
+          this.navbarStatement.setCondition2(data[1]);
+          this.navBarIsLocked = data[0] && data[1];
         });
     }
+     // Surveillez les changements de condition1 et condition2
+     this.navbarStatement.navBarIsLocked$.subscribe((condition) => {
+      this.navBarIsLocked = condition;
+      console.log(this.navBarIsLocked);
+    });
   }
 
   logout() {

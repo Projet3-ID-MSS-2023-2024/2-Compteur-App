@@ -7,9 +7,9 @@
       <app-navbar-card [icone]="'home.svg'" [title]="'Home'" [path]="'/homePage'"></app-navbar-card>
     </div>
 
-    <app-client-navbar *ngIf="isClient && !navBarIsLocked"></app-client-navbar>
+    <app-client-navbar *ngIf="isClient && navBarIsLocked"></app-client-navbar>
     <app-provider-navbar *ngIf="isFournisseur"></app-provider-navbar>
-    <app-lock-navbar *ngIf="navBarIsLocked"></app-lock-navbar>
+    <app-lock-navbar *ngIf=" isClient && !navBarIsLocked"></app-lock-navbar>
     <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
 
     <div (click)="openPopupDeconnexion()" class="logout">

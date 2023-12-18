@@ -119,13 +119,13 @@ public class UserDBService {
         }
     }
 
-    public boolean hasAddressAndMeter(String username){
-        boolean verif = true;
+    public boolean[] hasAddressAndMeter(String username){
+        boolean verif[] = {true,true};
         String clientId =  userDBRepository.findByUsername(username).getId();
         if(adresseRepository.findAdresseByUserId(clientId) == null)
-            verif = false;
+            verif[0] = false;
         if(compteurRepository.findByClient_Id(clientId).isEmpty())
-            verif = false;
+            verif[1] = false;
         return verif;
     }
 }

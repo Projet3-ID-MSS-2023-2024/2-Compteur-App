@@ -232,6 +232,7 @@ export class SendStatementComponent {
   async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
     this.navbarStatement.setCondition2(true);
+    console.log(this.data.length)
     return lastValueFrom(observable);
   }
 
@@ -256,6 +257,7 @@ export class SendStatementComponent {
 
   async deleteCompteur(id: string): Promise<Compteur> {
     const observable = this.compteurService.deleteCompteurs(id);
+    this.navbarStatement.setCondition2(this.data.length != 1);
     return lastValueFrom(observable);
   }
 
