@@ -256,3 +256,6 @@ label {
 .deleteBackground{
   background-color: red;
 }
+.wrongPassword{
+  background-color: rgb(211, 88, 88);
+}

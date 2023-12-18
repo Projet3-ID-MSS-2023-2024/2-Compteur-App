@@ -25,6 +25,8 @@ export class ProfilComponent implements OnInit {
   public registerForm!: FormGroup;
   user$!: Observable<UserDB>;
   categoryId!: number | undefined;
+  passwordConf: string = '';
+  password: string = '';
 
   //Formulaire d'adresse
   public adresseForm!: FormGroup;
@@ -183,58 +185,69 @@ export class ProfilComponent implements OnInit {
   }
   editAdressePopup() {
     this.editingUser = false;
-    this.adresse$.subscribe((data) => {
-      data.codePostal != this.adresseForm.value.codePostal
-        ? this.donneesModifiees.push({
-            'Code postal': this.adresseForm.value.codePostal,
-          })
-        : null;
-      data.numero != this.adresseForm.value.numero
-        ? this.donneesModifiees.push({
-            Numéro: this.adresseForm.value.numero,
-          })
-        : null;
-      data.pays != this.adresseForm.value.pays
-        ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
-        : null;
-      data.rue != this.adresseForm.value.rue
-        ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
-        : null;
-      data.ville != this.adresseForm.value.ville
-        ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
-        : null;
-    });
-    this.editPopup = true;
+    if (this.idAdresse != undefined) {
+      this.adresse$.subscribe((data) => {
+        data.codePostal != this.adresseForm.value.codePostal
+          ? this.donneesModifiees.push({
+              'Code postal': this.adresseForm.value.codePostal,
+            })
+          : null;
+        data.numero != this.adresseForm.value.numero
+          ? this.donneesModifiees.push({
+              Numéro: this.adresseForm.value.numero,
+            })
+          : null;
+        data.pays != this.adresseForm.value.pays
+          ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
+          : null;
+        data.rue != this.adresseForm.value.rue
+          ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
+          : null;
+        data.ville != this.adresseForm.value.ville
+          ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
+          : null;
+        if (this.donneesModifiees.length > 0) {
+          this.editPopup = true;
+        }
+      });
+    } else this.editAdresse(true);
   }
   editUserPopup() {
-    this.editingUser = true;
-    this.user$.subscribe((data) => {
-      data.email != this.registerForm.value.email
-        ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
-        : null;
-      data.firstname != this.registerForm.value.firstname
-        ? this.donneesModifiees.push({
-            Prénom: this.registerForm.value.firstname,
-          })
-        : null;
-      data.lastname != this.registerForm.value.lastname
-        ? this.donneesModifiees.push({ Nom: this.registerForm.value.lastname })
-        : null;
-      data.phoneNumber != this.registerForm.value.phoneNumber
-        ? this.donneesModifiees.push({
-            Téléphone: this.registerForm.value.phoneNumber,
-          })
-        : null;
-      data.tva != this.registerForm.value.tva
-        ? this.donneesModifiees.push({ TVA: this.registerForm.value.tva })
-        : null;
-      data.username != this.registerForm.value.username
-        ? this.donneesModifiees.push({
-            "Nom d'utilisateur": this.registerForm.value.username,
-          })
-        : null;
-    });
-    this.editPopup = true;
+    if (this.password == this.passwordConf) {
+      this.editingUser = true;
+
+      this.user$.subscribe((data) => {
+        data.email != this.registerForm.value.email
+          ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
+          : null;
+        data.firstname != this.registerForm.value.firstname
+          ? this.donneesModifiees.push({
+              Prénom: this.registerForm.value.firstname,
+            })
+          : null;
+        data.lastname != this.registerForm.value.lastname
+          ? this.donneesModifiees.push({
+              Nom: this.registerForm.value.lastname,
+            })
+          : null;
+        data.phoneNumber != this.registerForm.value.phoneNumber
+          ? this.donneesModifiees.push({
+              Téléphone: this.registerForm.value.phoneNumber,
+            })
+          : null;
+        data.tva != this.registerForm.value.tva
+          ? this.donneesModifiees.push({ TVA: this.registerForm.value.tva })
+          : null;
+        data.username != this.registerForm.value.username
+          ? this.donneesModifiees.push({
+              "Nom d'utilisateur": this.registerForm.value.username,
+            })
+          : null;
+        if (this.donneesModifiees.length > 0) {
+          this.editPopup = true;
+        }
+      });
+    }
   }
 
   turnEditMode() {
