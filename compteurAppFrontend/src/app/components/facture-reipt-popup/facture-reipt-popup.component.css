@@ -162,18 +162,22 @@ p{
 }
 
 button{
-  background-color: #382c2c; /* Green */
-  border: none;
-  color: rgb(255, 255, 255);
-  padding: 20px; /* Augmentez la taille du padding pour un bouton plus grand */
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 25px; /* Augmentez la taille de la police pour un texte plus grand */
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 12px;
-  width: 30%;
+  background-color: deepskyblue; /* Couleur de fond */
+  border: none; /* Pas de bordure */
+  color: black; /* Couleur du texte */
+  padding: 15px 32px; /* Espacement interne */
+  text-align: center; /* Alignement du texte */
+  text-decoration: none; /* Pas de soulignement */
+  display: inline-block; /* Affichage en ligne */
+  font-size: 25px; /* Taille de la police */
+  margin: 4px 2px; /* Marge externe */
+  cursor: pointer; /* Curseur en forme de main */
+  border-radius: 12px; /* Bords arrondis */
+  width: 45%; /* Largeur relative à la div parente */
+}
+
+button:hover {
+  background-color: cornflowerblue; /* Couleur de fond lors du survol */
 }
 
 .croix{
