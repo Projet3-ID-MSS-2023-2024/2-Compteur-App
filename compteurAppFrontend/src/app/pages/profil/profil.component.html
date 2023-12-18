@@ -3,16 +3,22 @@
     <app-page-name [pageName]="editPageName"></app-page-name>
   </div>
   <div class="pdpContaineur">
-    <div class="pdp">
+    <div class="pdp" [ngClass]="{editBackground: editHover, deleteBackground: deleteHover}">
       <img
-        *ngIf="!editMode"
-        [src]="photoNull ? '' : 'http://localhost:8080/pdp/' + photoUrl"
+        *ngIf="!editPdp"
+        [src]="
+          photoNull
+            ? '../../../assets/images/photo-profil/photo-profil/pdpDefaut.jpg'
+            : 'http://localhost:8080/pdp/' + photoUrl
+        "
         alt="Photo"
       />
       <div>
-        <div *ngIf="editMode">
+        <div *ngIf="editPdp">
           <div *ngIf="!photoNull">
-            <button (click)="onFileSelect($event)">Modifier pdp</button>
+            <button class="editPdpButton" (click)="onFileSelect($event)" (mouseenter)="editHover = true" (mouseleave)="editHover = false">
+              <img src="../../../assets/navbarIcone/edit.svg" alt="">
+            </button>
             <input
               type="file"
               #fileInput
@@ -21,7 +27,9 @@
             />
           </div>
           <div *ngIf="photoNull">
-            <button (click)="onFileSelect($event)">Ajouter pdp</button>
+            <button class="addButton" (click)="onFileSelect($event)">
+              <img src="../../../assets/navbarIcone/add.svg" alt="" />
+            </button>
             <input
               type="file"
               #fileInput
@@ -29,25 +37,53 @@
               (change)="onFileChangeAdd($event)"
             />
           </div>
-          <div>
-            <button (click)="deletePhotoProfil()" *ngIf="!photoNull">
-              Supprimer pdp
+
+          <div *ngIf="!photoNull">
+            <button
+              class="deleteButton"
+              (click)="deletePhotoProfil()"
+              *ngIf="!photoNull"
+              (mouseenter)="deleteHover = true" (mouseleave)="deleteHover = false"
+            >
+              <img src="../../../assets/navbarIcone/delete.svg" alt="">
             </button>
           </div>
         </div>
       </div>
 
-      <div class="editButton">
+      <div class="editButtonPdp">
         <img
-          (click)="turnEditMode()"
+          (click)="editPdpButton()"
           src="../../../assets/navbarIcone/edit.svg"
           alt=""
+          class="imgSvg"
         />
       </div>
     </div>
   </div>
 
-  <form [formGroup]="registerForm">
+  <div class="doubleButtonContainer">
+    <div class="buttonContainer">
+      <button
+        [disabled]="formChoiceButton"
+        (click)="buttonChoiceSwap()"
+        class="doubleButton"
+        [ngClass]="{ buttonActive: formChoiceButton }"
+      >
+        Profil
+      </button>
+      <button
+        [disabled]="!formChoiceButton"
+        (click)="buttonChoiceSwap()"
+        class="doubleButton"
+        [ngClass]="{ buttonActive: !formChoiceButton }"
+      >
+        Adresse
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="registerForm" *ngIf="formChoiceButton">
     <div class="placementList" *ngIf="user$ | async as user">
       <div class="containeur-form">
         <div class="left">
@@ -89,7 +125,12 @@
           </div>
           <div class="form-group" *ngIf="!editMode && !isClient">
             <label for="category">Catégorie : </label>
-            <input type="category" id="category" formControlName="category" readonly/>
+            <input
+              type="category"
+              id="category"
+              formControlName="category"
+              readonly
+            />
           </div>
         </div>
         <div class="right">
@@ -135,14 +176,22 @@
                 (click)="editUserPopup()"
                 src="../../../assets/navbarIcone/send.svg"
                 alt=""
+                class="imgSvg"
               />
             </div>
           </div>
         </div>
       </div>
+      <div class="editButton">
+        <img
+          (click)="turnEditMode()"
+          src="../../../assets/navbarIcone/edit.svg"
+          alt=""
+        />
+      </div>
     </div>
   </form>
-  <form [formGroup]="adresseForm">
+  <form [formGroup]="adresseForm" *ngIf="!formChoiceButton">
     <div class="placementList">
       <div class="containeur-form">
         <div class="left">
@@ -204,10 +253,18 @@
                 (click)="editAdressePopup()"
                 src="../../../assets/navbarIcone/send.svg"
                 alt=""
+                class="imgSvg"
               />
             </div>
           </div>
         </div>
+      </div>
+      <div class="editButton">
+        <img
+          (click)="turnEditMode()"
+          src="../../../assets/navbarIcone/edit.svg"
+          alt=""
+        />
       </div>
     </div>
   </form>
