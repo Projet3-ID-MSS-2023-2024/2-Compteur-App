@@ -18,6 +18,8 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "keycloak-angular": "^14.1.0",
     "keycloak-js": "^22.0.5",
     "ngx-paypal": "^11.0.0",
