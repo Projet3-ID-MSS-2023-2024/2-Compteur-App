@@ -25,6 +25,8 @@ public class AdresseService {
 
     public Adresse getAdresseByUserName(String username){ return adresseRepository.findAdresseByUserUsername(username);}
 
+    public Adresse getAdresseByUserId(String id){ return adresseRepository.findAdresseByUserId(id);}
+
     public Adresse addAdresse(Adresse adresse){
         return adresseRepository.save(adresse);
     }

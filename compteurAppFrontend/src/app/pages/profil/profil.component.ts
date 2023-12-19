@@ -33,7 +33,6 @@ export class ProfilComponent implements OnInit {
   adresse$: Observable<Adresse> = new Observable<Adresse>();
 
   // Données utilisateur
-  userName!: string | undefined;
   isClient!: boolean;
   idUser!: string | undefined;
   idAdresse!: number | undefined;
@@ -113,11 +112,11 @@ export class ProfilComponent implements OnInit {
         const isLoggedIn = await this.keycloak.isLoggedIn();
         if (isLoggedIn) {
           const profile = await this.keycloak.loadUserProfile();
-          this.userName = profile.username;
+          console.log(profile)
+          this.idUser = profile.id;
 
           this.isClient = !this.keycloak.isUserInRole('fournisseur');
-
-          this.user$ = this.userService.getUserByUserName(this.userName);
+          this.user$ = this.userService.getUserByUserId(this.idUser);
           this.user$.subscribe((data) => {
             console.log(data);
             this.idUser = data.id;
@@ -185,6 +184,7 @@ export class ProfilComponent implements OnInit {
   }
   editAdressePopup() {
     this.editingUser = false;
+    console.log('idadresse : '+this.idAdresse)
     if (this.idAdresse != undefined) {
       this.adresse$.subscribe((data) => {
         data.codePostal != this.adresseForm.value.codePostal
@@ -282,7 +282,7 @@ export class ProfilComponent implements OnInit {
   }
 
   initAdresse() {
-    this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
+    this.adresse$ = this.adresseService.getAdresseByUserId(this.idUser);
     this.adresse$.subscribe((data) => {
       this.idAdresse = data ? data.id : undefined;
       if (data)

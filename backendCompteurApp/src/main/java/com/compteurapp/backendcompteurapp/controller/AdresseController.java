@@ -34,4 +34,7 @@ public class AdresseController {
 
     @GetMapping("/getAdresses")
     public List<Adresse> getAdresses(){ return adresseService.getAdresses();}
+
+    @GetMapping("/getAdresseByUserId/{id}")
+    public Adresse getAdresseByUserId(@PathVariable String id){ return adresseService.getAdresseByUserId(id);}
 }
