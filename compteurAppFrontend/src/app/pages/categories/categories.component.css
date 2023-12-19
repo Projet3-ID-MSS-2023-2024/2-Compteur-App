@@ -1,0 +1,225 @@
+.option {
+  display: flex;
+  width: 45%;
+  height: 100%;
+  position: relative;
+}
+
+.placementList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto 100%;
+  position: relative;
+  margin-top: 20px;
+}
+
+.movePagePlacement {
+  display: flex;
+  width: 100px;
+  height: 30px;
+  margin-top: 10px;
+  margin-left: calc(100% - ( 100px + 2.5% ));
+  position: relative;
+}
+
+.placementIndice {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+
+hr {
+  margin-top: 10px;
+  width: 99%;
+  height: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.103);
+}
+
+.addCategoryForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  background-color: #3a475b;
+  border-radius: 10px;
+  margin: 0 20px;
+  padding: 10px;
+}
+
+.addCategoryForm form{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+.addCategoryForm button{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ffffff;
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
+table{
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.addCategoryForm button:hover{
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.categoryName{
+  font-size: 25px;
+  color: #e9e9f8;
+
+}
+
+#categoryName{
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  font-size: larger;
+  width: 50%;
+}
+
+table {
+  width: 90%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px 0;
+  font-size: larger;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  width: 11px;
+}
+
+
+th:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+th {
+  background-color: #3a475b;
+  color: white;
+}
+
+th:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tdDelete{
+  text-align: center;
+  width: 11px;
+}
+
+.deleteBtn {
+  align-items: center;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    height: 25px;
+}
+
+.messageSuccess{
+  color: red;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.messageError{
+  color: green;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.error-msg{
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+@media screen and (max-width: 950px) {
+
+  .filterPlacement {
+    height: 100px;
+    flex-wrap: wrap;
+  }
+
+  .optionPlacement {
+    width: 100%;
+    height: 40px;
+  }
+
+  .addCategoryForm{
+    height: 20vh;
+  }
+
+  .addCategoryForm form{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .searchBarPlacement {
+    width: 60%;
+    height: 40px;
+    max-width: 400px;
+  }
+
+  .listPlacement {
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+  }
+
+  .listContainer {
+    margin-bottom: 10px;
+    overflow: scroll;
+  }
+
+
+  .listPlacement,.legendPlacement {
+    display: flex;
+    min-width: 800px;
+    position: relative;
+  }
+
+  .movePagePlacement{
+    position: fixed;
+    bottom: 10px;
+    left: -10px;
+  }
+
+}

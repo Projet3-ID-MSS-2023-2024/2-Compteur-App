@@ -1,12 +1,14 @@
 package com.compteurapp.backendcompteurapp.controller;
 
 import com.compteurapp.backendcompteurapp.model.Adresse;
+import com.compteurapp.backendcompteurapp.model.AdresseDTO;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
+import com.compteurapp.backendcompteurapp.services.AdresseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -14,28 +16,22 @@ import java.util.List;
 public class AdresseController {
 
     @Autowired
-    AdresseRepository repository;
+    private AdresseService adresseService;
 
-    @GetMapping("/getAdresses")
-    public List<Adresse> getAdresses(){
-        return repository.findAll();
-    }
 
     @PostMapping("/addAdresse")
     public Adresse addAdresse(@RequestBody Adresse adresse){
-        return repository.save(adresse);
+        return adresseService.addAdresse(adresse);
     }
 
-    @PutMapping
-    public Adresse updateAdresse(@RequestBody Adresse adresse) throws Exception {
-        if(adresse.getId() <= 0){
-            throw new Exception("No id provided");
-        }
-        return repository.save(adresse);
+    @PutMapping("/updateAdresse")
+    public Adresse updateAdresse(@RequestBody AdresseDTO adresse) throws Exception {
+       return adresseService.updateAdresse(adresse);
     }
 
-    @DeleteMapping
-    public void delete(@RequestParam long id){
-        repository.deleteById(id);
-    }
+    @GetMapping("/getAdresseByUsername/{username}")
+    public Adresse getAdresseByUsername(@PathVariable String username){ return adresseService.getAdresseByUserName(username);}
+
+    @GetMapping("/getAdresses")
+    public List<Adresse> getAdresses(){ return adresseService.getAdresses();}
 }

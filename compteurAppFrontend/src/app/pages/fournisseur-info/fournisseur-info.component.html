@@ -1,0 +1,194 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name
+      [pageName]="'Information sur ' + providerUserName"
+    ></app-page-name>
+  </div>
+  <div class="containeur-wrappeur">
+    <div class="container">
+      <div class="back" (click)="goBack()">
+        <img src="../../../assets/navbarIcone/arrow-back.svg" alt="">
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="openModify()">
+        <div class="containeurPhoto">
+          <div class="photoProfil">
+            <div class="imageContainer">
+              <div class="card" *ngIf="!photoNull">
+                <div class="face face1">
+                  <img [src]="photoNull ? '' : 'http://localhost:8080/pdp/'+photoUrl" alt="Photo">
+
+                </div>
+                <div class="face face2">
+                  <button (click)="onFileSelect($event)">Modifier</button>
+                  <input type="file" #fileInput style="display: none" (change)="onFileChange($event)">
+                  <button (click)="deletePhotoProfil()">Supprimer</button>
+                </div>
+              </div>
+              <div class="cardPhotoNull" *ngIf="photoNull">
+                <div class="faceNul">
+                  <button (click)="onFileSelect($event)">Ajouter</button>
+                  <input type="file" #fileInput style="display: none" (change)="onFileChangeAdd($event)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="error-message-global" *ngIf="submitted && registerForm.invalid">
+          Le formulaire contient des erreurs. Veuillez les corriger avant de soumettre.
+        </div>
+
+        <div class="containeur-form">
+          <div class="left">
+            <div class="form-group">
+              <label for="email">Adresse e-mail :</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.get('email')?.hasError('required')">
+                L'adresse e-mail est requise.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('email')?.hasError('email')">
+                Veuillez entrer une adresse e-mail valide.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phoneNumber">Numéro de téléphone :</label>
+              <input
+                type="text"
+                id="phoneNumber"
+                formControlName="phoneNumber"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('required')">
+                Le numéro de téléphone est requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('pattern')">
+                Veuillez entrer un numéro de téléphone valide.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="TVA">Numéro de TVA :</label>
+              <input
+                type="text"
+                id="TVA"
+                formControlName="TVA"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.get('TVA')?.hasError('required')">
+                Le numéro de TVA est requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('TVA')?.hasError('pattern')">
+                Veuillez entrer un numéro de TVA valide.
+              </div>
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="form-group">
+              <label for="username">Nom du fournisseur :</label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.get('username')?.hasError('required')">
+                Le nom du fournisseur est requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('username')?.hasError('minlength')">
+                Le nom du fournisseur doit contenir au moins 6 caractères.
+              </div>
+            </div>
+
+            <div *ngIf="!showDiv" class="form-group">
+              <label for="password">Mot de passe :</label>
+              <button class="hiddenPasswordBtn" (click)="showDiv = !showDiv">Modifier mot de passe</button>
+            </div>
+
+            <div *ngIf="showDiv" class="form-group">
+              <label for="password">Mot de passe :</label>
+              <input
+                type="password"
+                id="password"
+                formControlName="password"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.get('password')?.hasError('required')">
+                Le mot de passe est requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('password')?.hasError('pattern')">
+                Le mot de passe doit contenir au moins un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial.
+              </div>
+            </div>
+
+            <div *ngIf="showDiv" class="form-group">
+              <label for="confirm-password">Confirmer mot de passe :</label>
+              <input
+                type="password"
+                id="confirm-password"
+                formControlName="confirmPassword"
+              />
+              <div class="error-message" *ngIf="submitted && registerForm.errors?.['notSame'] && (registerForm.get('confirmPassword')?.touched || registerForm.get('confirmPassword')?.dirty)">
+                Les mots de passe ne correspondent pas.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttondiv">
+          <button class="modifyVtn" type="submit">Modifier</button>
+          <button type="delete" (click)="delete()" class="button-delete">
+            Supprimer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="popupDelete" *ngIf="closeOrOpenDelete">
+  <div class="popupDeleteContent" *ngIf="!isLoading">
+    <div class="popupDeleteText">
+      <h1>Êtes-vous sûr de vouloir supprimer ce fournisseur ?</h1>
+    </div>
+    <div class="popupDeleteButton">
+      <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
+      <button class="buttonDelete" (click)="deleteFournisseur()">
+        Supprimer
+      </button>
+    </div>
+  </div>
+  <!-- Le loader s'affiche à la place du contenu de la popup -->
+  <div class="loader" *ngIf="isLoading"></div>
+</div>
+
+<div class="popupDelete" *ngIf="displayPopupErreurFournisseur">
+  <div class="popupDeleteContent" *ngIf="!isLoading">
+    <div class="popupDeleteText">
+      <h1>{{messagePopup}}</h1>
+    </div>
+    <div class="popupDeleteButton">
+      <button class="buttonCancel" (click)="closeDeleteError()">Annuler</button>
+    </div>
+  </div>
+  <!-- Le loader s'affiche à la place du contenu de la popup -->
+  <div class="loader" *ngIf="isLoading"></div>
+</div>
+
+<div class="popupDelete" *ngIf="closeOrOpenModify">
+  <div class="popupDeleteContent" *ngIf="!isLoading">
+    <div class="popupDeleteText">
+      <h1>Êtes-vous sûr de vouloir modifier ce fournisseur ?</h1>
+    </div>
+    <div class="popupDeleteButton">
+      <button class="buttonCancel" (click)="closeModify()">Annuler</button>
+      <button class="buttonDelete" (click)="updateFournisseur()">
+        Modifier
+      </button>
+    </div>
+  </div>
+  <!-- Le loader s'affiche à la place du contenu de la popup -->
+  <div class="loader" *ngIf="isLoading"></div>
+</div>
+
+

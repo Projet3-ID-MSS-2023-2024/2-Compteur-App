@@ -1,5 +1,5 @@
 export class AddFournisseurSpring {
-  id?: number;
+  id?: string;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -7,4 +7,5 @@ export class AddFournisseurSpring {
   password?: string;
   tva?: string;
   phoneNumber?: string;
+  idCategory?: string;
 }

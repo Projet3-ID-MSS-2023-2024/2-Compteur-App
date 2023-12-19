@@ -3,12 +3,15 @@ package com.compteurapp.backendcompteurapp;
 import static org.mockito.Mockito.*;
 
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
-import com.compteurapp.backendcompteurapp.model.Compteur;
-import com.compteurapp.backendcompteurapp.model.CompteurData;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.model.*;
+import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
+import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
+import com.compteurapp.backendcompteurapp.services.CompteurService;
+import com.compteurapp.backendcompteurapp.services.UserDBService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -34,77 +37,144 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class CompteurDataControllerTest {
 
     @Autowired
-    CompteurDataService compteurDataService;
+    CompteurService compteurService;
+
+
+    @Autowired
+    UserDBRepository userDBRepository;
+
+    @Autowired
+    UserDBService userDBService;
+
+    @Autowired
+    AdresseRepository adresseRepository;
+
+    @Autowired
+    CompteurDataRepository compteurDataRepository;
+
+    public UserDB provider;
+    public UserDB client;
+    public Adresse adresse;
+    public Category category;
+
+    public Compteur compteur;
+
+    public CompteurData compteurData;
+
 
     @BeforeEach
-    public void init(){
-        Compteur compteurCompteur = new Compteur();
-        compteurCompteur.setId(1L);
-        CompteurData compteur = new CompteurData();
-        compteur.setValeur(10.0);
-        compteur.setVendeur(25L);
-        compteur.setClient(133L);
-        compteur.setCompteur(compteurCompteur);
-        compteur.setPhoto("picture");
-        CompteurData compteur2 = new CompteurData();
-        compteur2.setValeur(100.0);
-        compteur2.setVendeur(25L);
-        compteur2.setClient(133L);
-        compteur2.setPhoto("picture2");
-        compteur2.setCompteur(compteurCompteur);
-        CompteurData compteur3 = new CompteurData();
-        compteur3.setValeur(300.0);
-        compteur3.setVendeur(325L);
-        compteur3.setClient(133L);
-        compteur3.setPhoto("picture3");
-        compteur3.setCompteur(compteurCompteur);
-        compteurDataService.createCompteurData(compteur);
-        compteurDataService.createCompteurData(compteur2);
-        compteurDataService.createCompteurData(compteur3);
+    @Test
+    @Order(0)
+    public void init() {
+
+        Category category = new Category();
+        category.setId(1L);
+
+        UserDB userDB = new UserDB();
+        userDB.setFirstname("test44");
+        userDB.setLastname("test4");
+        userDB.setEmail("test4@gmail.com");
+        userDB.setUsername("test4");
+        userDB.setId("99999test");
+        userDBRepository.save(userDB);
+
+        UserDB provider = new UserDB();
+        provider.setFirstname("test4");
+        provider.setLastname("test4");
+        provider.setEmail("test4@gmail.com");
+        provider.setUsername("test4");
+        provider.setId("9999providertest");
+        provider.setTva("BE123456789");
+        provider.setPhoneNumber("0477777777");
+        provider.setCategory(category);
+
+        userDBRepository.save(provider);
+
+        Adresse adresse = new Adresse();
+        adresse.setRue("rue de test");
+        adresse.setNumero("1");
+        adresse.setVille("test");
+        adresse.setCodePostal("1000");
+        adresse.setPays("test");
+        adresse.setId(59999L);
+        adresseRepository.save(adresse);
+
+        this.category = category;
+        this.provider = provider;
+        this.adresse = adresse;
+        this.client = userDB;
+
+        Compteur compteur = new Compteur();
+        compteur.setNom("test");
+        compteur.setAdresse(this.adresse);
+        compteur.setCategory(this.category);
+        compteur.setProvider(this.provider);
+        compteur.setClient(this.client);
+        Compteur compteurCreate = compteurService.createCompteur(compteur);
+        compteur.setId(compteurCreate.getId());
+        this.compteur = compteur;
+
+        CompteurData compteurData = new CompteurData();
+        compteurData.setCompteur(this.compteur);
+        compteurData.setValeur(100.0);
+        compteurData.setPhoto("test");
+        compteurData.setDate(new Date());
+        compteurData.setClient(this.client);
+        compteurData.setProvider(this.provider);
+        compteurDataRepository.save(compteurData);
+        compteurData.setId(compteurData.getId());
+        this.compteurData = compteurData;
+
+    }
+
+    @Order(2)
+    @Test
+    public void testGetCompteurData(){
+        Optional<CompteurData> compteurData = compteurDataRepository.findById(this.compteurData.getId());
+        assertFalse(compteurData.isEmpty());
+    }
+
+    @Order(3)
+    @Test
+    public void testModifyCompteurData(){
+        CompteurData compteurData = new CompteurData();
+        compteurData.setDate(new Date());
+        compteurData.setValeur(200.0);
+        compteurData.setPhoto("modified");
+        compteurData.setCompteur(this.compteur);
+        compteurData.setClient(this.client);
+        compteurData.setProvider(this.provider);
+        compteurData.setId(this.compteurData.getId());
+        compteurDataRepository.save(compteurData);
+        assertEquals("modified", compteurData.getPhoto());
+    }
+
+    @Order(4)
+    @Test
+    public void testDeleteCompteurData(){
+        compteurDataRepository.deleteById(this.compteurData.getId());
+        Optional<CompteurData> compteurDeleted = compteurDataRepository.findById(this.compteurData.getId());
+        assertTrue(compteurDeleted.isEmpty());
     }
 
     @Test
-    public void testAddData(){
-        Compteur compteurCompteur = new Compteur();
-        CompteurData compteur = new CompteurData();
-        compteur.setCompteur(compteurCompteur);
-        compteur.setValeur(10.0);
-        compteur.setVendeur(25L);
-        compteur.setClient(5L);
-        compteur.setPhoto("dede");
-        CompteurData compteurCreate = compteurDataService.createCompteurData(compteur);
-        assertEquals(10.0, compteurCreate.getValeur(), 0.001);
-        assertEquals(25L, compteurCreate.getVendeur());
-        assertEquals("dede", compteurCreate.getPhoto());
+    @Order(5)
+    void clean() {
+        try {
+            compteurService.deleteById(this.compteur.getId());
+            userDBRepository.deleteById(this.client.getId());
+            userDBRepository.deleteById(this.provider.getId());
+            adresseRepository.deleteById(this.adresse.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    @Test
-    public void testGetCompteurDataByClientId(){
-        List<CompteurData> clientCompteurData = compteurDataService
-                .getCompteurDataByClientId(133L, 0, 1);
-        assertEquals(10.0, clientCompteurData.get(0).getValeur(), 0.001);
-    }
-
-    @Test
-    public void testGetCompteurDataByVendeurIdWithoutFacture(){
-        List<CompteurData> vendeurCompteurData = compteurDataService
-                .getCompteurDataByVendeurIdWithoutFacture(325L,0,1);
-        assertEquals(133.0, vendeurCompteurData.get(0).getClient(), 0.001);
-    }
-
-    @Test
-    public void testGetCompteurDataByVendeurIdAndClientIdWithoutFacture(){
-        List<CompteurData> vendeurCompteurDataClient = compteurDataService
-                .getCompteurDataByVendeurIdAndClientIdWithoutFacture(325L, 133L, 0, 1);
-        assertEquals("picture3", vendeurCompteurDataClient.get(0).getPhoto());
-    }
-
-    /* Doit rajouter test quand il y auras le compteur de fait */
-    /* Doit rajouter test quand il y auras la facture de fait */
 }

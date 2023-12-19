@@ -8,6 +8,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 export class ShowCompteurPictureComponent {
 
   @Output() close: EventEmitter<boolean> = new EventEmitter<any>();
+  @Input() image!: string;
 
   closePicture(){
     this.close.emit(true);

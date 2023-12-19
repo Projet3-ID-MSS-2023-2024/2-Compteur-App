@@ -9,6 +9,8 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  background-color: #3a475b;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 1);
 }
 
 .containerMain{
@@ -52,13 +54,85 @@
   height: 70px;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
   border: 2px solid rgba(0, 0, 0, 0.048);
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .logoCard h1{
   font-size: 2em;
+  color: #e9e9f8;
 }
+
+.popupDeconnexion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popupDeconnexionContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.popupDeconnexionTitle h1 {
+  margin-bottom: 20px;
+}
+
+.popupDeconnexionButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.popupDeconnexionButtonYes {
+  background-color: rgb(176, 5, 5);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  width: 100px;
+  height: 50px;
+}
+
+.popupDeconnexionButtonYes:hover {
+  background-color: rgb(132, 4, 4);
+}
+
+.popupDeconnexionButtonNo {
+  background-color: #757575;
+  color: #fff;
+  border: 1px solid #757575;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  width: 100px;
+  height: 50px;
+}
+
+.popupDeconnexionButtonNo:hover {
+  background-color: #000;
+  color: #fff;
+}
+
 
 @media screen and (max-width: 950px) {
   .navbar{

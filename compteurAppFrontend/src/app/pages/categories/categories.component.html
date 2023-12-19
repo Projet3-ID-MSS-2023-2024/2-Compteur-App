@@ -1,0 +1,55 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Catégorie'"></app-page-name>
+  </div>
+  <div class="addCategoryForm">
+    <div class="error-msg" *ngIf="submitted && registerForm.get('categoryName')?.hasError('required')">
+      Le nom de la catégorie est requis.
+    </div>
+    <div class="error-msg" *ngIf="submitted && registerForm.get('categoryName')?.hasError('pattern')">
+      Le nom de la catégorie doit contenir uniquement des lettres.
+    </div>
+    <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <label class="categoryName" for="categoryName">Nom de la catégorie :</label>
+      <input type="text" id="categoryName" formControlName="categoryName" required>
+      <button type="submit">Ajouter</button>
+    </form>
+  </div>
+  <div class="placementList" *ngIf="categories$ | async as categories">
+    <table>
+      <tr>
+        <th>n°</th>
+        <th>Nom</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let category of categories">
+        <td>{{category.index}}</td>
+        <td>{{category.name}}</td>
+        <td class="tdDelete"><img class="deleteBtn" (click)="openDelete(category)" src="../../../assets/navbarIcone/delete-category.svg" alt="">
+        </td>
+      </tr>
+    </table>
+    <div class="popupDelete" *ngIf="displayPopupSucces">
+      <div class="popupDeleteContent">
+        <div class="popupDeleteText">
+          <h1>Êtes-vous sûr de vouloir supprimer cette catégorie ?</h1>
+        </div>
+        <div class="popupDeleteButton">
+          <button class="buttonCancel" (click)="closeDelete()">Annuler</button>
+          <button class="buttonDelete" (click)="deleteCategory(selectedCategory.id)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popupDelete" *ngIf="displayPopupError">
+      <div class="popupDeleteContent">
+        <div class="popupDeleteText">
+          <h1>Impossible de supprimer cette catégorie car elle contient des utilisateurs</h1 >
+        </div>
+        <div class="popupDeleteButton">
+          <button class="buttonCancel" (click)="closeDelete()">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

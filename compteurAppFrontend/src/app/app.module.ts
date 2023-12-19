@@ -3,10 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { FournisseurListComponent } from './fournisseur-list/fournisseur-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FournisseurAddComponent } from './fournisseur-add/fournisseur-add.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdresseAddComponent } from './adresse-add/adresse-add.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -34,44 +31,72 @@ import { IndiceListComponent } from './components/universalComponents/indice-lis
 import { DeleteConfirmationComponent } from './components/universalComponents/delete-confirmation/delete-confirmation.component';
 import { ModifyMetterComponent } from './components/compteurAndDataComp/modify-metter/modify-metter.component';
 import { ShowCompteurPictureComponent } from './components/compteurAndDataComp/show-compteur-picture/show-compteur-picture.component';
+import { HomeCardComponent } from './components/universalComponents/home-card/home-card.component';
+import { DropdownComponent } from './components/universalComponents/dropdown/dropdown.component';
+import { AdminNavbarComponent } from './components/navbarComponents/admin-navbar/admin-navbar.component';
+import { FournisseurAddComponent } from './pages/fournisseur-add/fournisseur-add.component';
+import { FournisseurInfoComponent } from './pages/fournisseur-info/fournisseur-info.component';
+import { FournisseurListComponent } from './pages/fournisseur-list/fournisseur-list.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { FormsModule } from '@angular/forms';
+import { LoaderAPIComponent } from './components/universalComponents/loader-api/loader-api.component';
 
-/*
-function initializeKeycloak(keycloak: KeycloakService) {
+import { DropdownCategoryComponent } from './components/category/dropdown-category/dropdown-category.component';
+import { UserDBService } from './_services/userDB.service';
+import { AdresseFieldSendDataComponent } from './components/compteurAndDataComp/adresse-field-send-data/adresse-field-send-data.component';
+import { CreateCompteurDesktopComponent } from './components/compteurAndDataComp/create-compteur-desktop/create-compteur-desktop.component';
+import { EditPopupComponent } from './components/profilComponents/edit-popup/edit-popup.component';
+import {FactureComponent} from "./pages/facture/facture.component";
+import {PaypalBtnComponent} from "./components/universalComponents/paypal-btn/paypal-btn.component";
+import {FactureProviderComponent} from "./pages/facture-provider/facture-provider.component";
+import {ShoppingBtnComponent} from "./components/universalComponents/shopping-btn/shopping-btn.component";
+import {FactureListComponent} from "./components/universalComponents/facture-list/facture-list.component";
+import {PaypalPopUpComponent} from "./components/paypal-pop-up/paypal-pop-up.component";
+import {NgxPayPalModule} from "ngx-paypal";
+import {NgOptimizedImage} from "@angular/common";
+import { HistoryFactureClientComponent } from './pages/history-facture-client/history-facture-client.component';
+import { AddFacturePricePopupComponent } from './components/compteurAndDataComp/add-facture-price-popup/add-facture-price-popup.component';
+import { FiltreFacturePopupComponent } from './components/compteurAndDataComp/filtre-facture-popup/filtre-facture-popup.component';
+import { FactureReiptPopupComponent } from './components/facture-reipt-popup/facture-reipt-popup.component';
+
+function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
-    keycloak.init({
-      config: {
-        url: 'http://localhost:8082',
-        realm: 'compteurapp',
-        clientId: 'angular'
-      },
-      initOptions: {
-        onLoad: 'login-required',
-        checkLoginIframe: true
-      },
-      shouldAddToken: (request) => {
-        const { method, url } = request;
+    keycloak
+      .init({
+        config: {
+          url: 'http://localhost:8082',
+          realm: 'compteurapp',
+          clientId: 'angular',
+        },
+        loadUserProfileAtStartUp: true,
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: true,
+        },
+        shouldAddToken: (request) => {
+          const { method, url } = request;
 
-        const isGetRequest = 'GET' === method.toUpperCase();
-        const acceptablePaths = ['/assets', '/clients/public'];
-        const isAcceptablePathMatch = acceptablePaths.some((path) =>
-          url.includes(path)
-        );
+          const isGetRequest = 'GET' === method.toUpperCase();
+          const acceptablePaths = ['/assets', '/clients/public'];
+          const isAcceptablePathMatch = acceptablePaths.some((path) =>
+            url.includes(path)
+          );
 
-        return !(isGetRequest && isAcceptablePathMatch);
-      }
-    });
-}*/
+          return !(isGetRequest && isAcceptablePathMatch);
+        },
+      })
+      .then(() => userDBService.syncUser().toPromise());
+}
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    FournisseurListComponent,
     FournisseurAddComponent,
     AdresseAddComponent,
     HomePageComponent,
     NavbarComponent,
     NavbarCardComponent,
+    LoaderAPIComponent,
     ProfilCardNavbarComponent,
     ClientNavbarComponent,
     ProviderNavbarComponent,
@@ -94,23 +119,45 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DeleteConfirmationComponent,
     ModifyMetterComponent,
     ShowCompteurPictureComponent,
+    HomeCardComponent,
+    DropdownComponent,
+    AdminNavbarComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent,
+    DropdownCategoryComponent,
+    AdresseFieldSendDataComponent,
+    CreateCompteurDesktopComponent,
+    EditPopupComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent,
+    DropdownCategoryComponent,
+    PaypalBtnComponent,//alessio
+    FactureComponent,//alessio
+    FactureProviderComponent,//alessio
+    ShoppingBtnComponent,//alessio
+    FactureListComponent,//alessio
+    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent, FactureReiptPopupComponent//alessio
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgxPayPalModule,//alessio
+    NgOptimizedImage//alessio
   ],
-  /*
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, UserDBService],
     },
-  ],*/
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,33 @@
+[33m2baac63[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m Merge branch 'features/Zakaria/FixIssues' into develop
+[33m5241507[m Merge pull request #29 from Projet3-ID-MSS-2023-2024/Features/AurelienTest
+[33m5b2f55d[m Merge pull request #28 from Projet3-ID-MSS-2023-2024/feature/pdpProfil
+[33m1799425[m Merge pull request #26 from Projet3-ID-MSS-2023-2024/feature/addForeignKeyCategory
+[33m2f183db[m Merge branch 'feature/JoinCompteurDataBackInFront' into develop
+[33m72e8ea2[m Merge pull request #25 from Projet3-ID-MSS-2023-2024/feature/fix
+[33ma0192f6[m Merge branch 'feature/JoinCompteurDataBackInFront' into develop
+[33m7a1f808[m Merge pull request #23 from Projet3-ID-MSS-2023-2024/feature/fixCategoryPopup
+[33m1f2a4f8[m Merge pull request #22 from Projet3-ID-MSS-2023-2024/feature/addReturnButtonProvider
+[33m60a0d2c[m Merge pull request #21 from Projet3-ID-MSS-2023-2024/feature/refactorBackKeycloak
+[33m4560b86[m Merge branch 'develop' into feature/refactorBackKeycloak
+[33m989ee67[m Merge branch 'develop' of https://github.com/Projet3-ID-MSS-2023-2024/2-Compteur-App into develop
+[33mb75d880[m Merge pull request #20 from Projet3-ID-MSS-2023-2024/Features/AurelienTest
+[33m66d8b26[m Merge branch 'develop' into Features/AurelienTest
+[33m845c3b7[m Merge pull request #19 from Projet3-ID-MSS-2023-2024/feature/testModifProvider
+[33m2a20bdc[m Merge pull request #18 from Projet3-ID-MSS-2023-2024/feature/optimiseAwaitFunction
+[33ma8080cb[m Merge pull request #17 from Projet3-ID-MSS-2023-2024/feature/modifyColorApp
+[33m250c296[m Merge pull request #16 from Projet3-ID-MSS-2023-2024/feature/listFournisseur
+[33m68e0684[m Merge pull request #15 from Projet3-ID-MSS-2023-2024/feature/correctioFormulaireInscription
+[33m6b34d01[m Merge pull request #14 from Projet3-ID-MSS-2023-2024/feature/SendEmailNotification
+[33mb24b71b[m Merge pull request #13 from Projet3-ID-MSS-2023-2024/feature/testAddConnexionWithFacebook
+[33maf53d45[m Merge pull request #12 from Projet3-ID-MSS-2023-2024/feature/AddTestKeycloak
+[33m6ae2dc9[m Merge pull request #11 from Projet3-ID-MSS-2023-2024/feature/FrontEndStart
+[33m80658c7[m[33m ([m[1;32mfeature/FrontEndStart[m[33m)[m Merge branch 'develop' into feature/FrontEndStart
+[33m0220be0[m Merge branch 'develop' into feature/AddTestKeycloak
+[33m79b94f4[m[33m ([m[1;32mfeature/CompteurBackend[m[33m)[m Merge pull request #9 from Projet3-ID-MSS-2023-2024/feature/FixPopupLogin
+[33m53e1dbb[m Merge pull request #8 from Projet3-ID-MSS-2023-2024/feature/migrateToService
+[33m3614373[m Merge pull request #7 from Projet3-ID-MSS-2023-2024/feature/fixFrontKeycloak
+[33m456190b[m Merge pull request #6 from Projet3-ID-MSS-2023-2024/feature/CompteurData
+[33m82f2d86[m Merge pull request #5 from Projet3-ID-MSS-2023-2024/feature/fixEnvironmentWork
+[33m38e2cb1[m Merge pull request #4 from Projet3-ID-MSS-2023-2024/Feature/ExportDbOnline
+[33m6266642[m Merge pull request #2 from Projet3-ID-MSS-2023-2024/feature/updateUser
+[33m24f11ea[m Merge pull request #1 from Projet3-ID-MSS-2023-2024/feature/deleteFournisseur

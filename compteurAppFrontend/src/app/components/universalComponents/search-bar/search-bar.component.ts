@@ -11,7 +11,7 @@ export class SearchBarComponent {
   @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
 
   searchForm = new FormGroup({
-    search: new FormControl('', Validators.required),
+    search: new FormControl(''),
   });
 
   sendData(){

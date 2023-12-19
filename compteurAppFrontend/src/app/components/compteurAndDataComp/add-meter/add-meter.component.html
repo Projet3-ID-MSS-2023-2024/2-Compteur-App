@@ -6,14 +6,16 @@
 
     <div class="meterInput">
       <div class="placeHolder"><label>Catégorie</label></div>
-      <select formControlName="categorie">
-        <option [value]="item" *ngFor="let item of category">{{item}}</option>
+
+      <select formControlName="categorie" (change)="onCategoryChange($event)">
+        <option [value]="item.id" *ngFor="let item of category">{{item.name}}</option>
       </select>
+
     </div>
     <div class="meterInput">
       <div class="placeHolder"><label>Fournisseur</label></div>
       <select formControlName="fournisseur">
-        <option [value]="item" *ngFor="let item of provider">{{item}}</option>
+        <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
       </select>
     </div>
     <div class="sendMeter" (click)="sendData()">

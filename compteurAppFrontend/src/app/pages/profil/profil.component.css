@@ -1,0 +1,258 @@
+.placementList {
+  width: 90%;
+  position: relative;
+  border-radius: 10px;
+  background-color: #3a475b;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  margin-left: 5%;
+  margin-top: 20px;
+}
+.pageContent {
+  width: 81%;
+  height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+}
+.buttondiv {
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 5%;
+  cursor: pointer;
+  width: fit-content;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+.buttonRight {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: fit-content;
+}
+.containeur-form {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+}
+.left {
+  justify-content: left;
+  width: 50%;
+}
+.right {
+  justify-content: right;
+  width: 50%;
+  position: relative;
+}
+.form-group {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  margin-left: 15%;
+}
+label {
+  padding-bottom: 0px;
+}
+input {
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 5px;
+  font-size: 20px;
+}
+img {
+  width: 100%;
+  border-radius: 100%;
+}
+.imgSvg {
+  filter: invert(50%) sepia(50%) saturate(50%) hue-rotate(86deg)
+    brightness(200%) contrast(119%);
+  width: 80%;
+}
+label {
+  color: rgb(232, 232, 232);
+}
+.pdp {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background-color: rgb(214, 214, 214);
+  justify-content: center;
+  align-items: center;
+  border: #000000 2px solid;
+  position: relative;
+  display: flex;
+}
+.pdpContaineur {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.editButton {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  border: #000000 2px solid;
+  cursor: pointer;
+  right: -15px;
+  top: -15px;
+  background-color: rgb(231, 231, 231);
+  display: flex;
+  img {
+    filter: invert(50%) sepia(20%) saturate(20%) hue-rotate(0deg)
+      brightness(30%) contrast(90%);
+    width: 80%;
+  }
+}
+.editButtonPdp {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  border: #000000 2px solid;
+  cursor: pointer;
+  right: 0;
+  bottom: 0;
+  background-color: #3a475b;
+  display: flex;
+}
+/* styles.css */
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.fade-in-out {
+  animation: fadeInOut 1s ease-in-out;
+}
+.loaderPage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.loader {
+  border: 10px solid #f3f3f3; /* Couleur de la bordure du loader */
+  border-top: 10px solid #3498db; /* Couleur de la bordure supérieure pour l'effet de rotation */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite; /* Animation de rotation infinie */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.doubleButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.buttonContainer {
+  border-radius: 10px;
+  background-color: #ebebeb;
+  padding: 3px;
+  border: 1px solid #898989;
+}
+.doubleButton {
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+.buttonActive {
+  border-radius: 10px;
+  background-color: #d5d5d5;
+}
+.addButton {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background-color: transparent;
+  img {
+    width: 30%;
+    filter: invert(100%) sepia(100%) saturate(6000%) hue-rotate(0deg)
+      brightness(100%) contrast(200%);
+  }
+}
+.addButton:hover {
+  background-color: #41b4f2;
+  img {
+    filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)
+      contrast(100%);
+  }
+}
+.deleteButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100px;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.editPdpButton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 100px;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.deleteButton img {
+  position: absolute;
+  left: 55px;
+  bottom: 0;
+  width: 90px;
+}
+.editPdpButton img {
+  left: 55px;
+  position: absolute;
+  top: 0;
+  width: 90px;
+}
+.editBackground{
+  background-color: orange;
+}
+.deleteBackground{
+  background-color: red;
+}

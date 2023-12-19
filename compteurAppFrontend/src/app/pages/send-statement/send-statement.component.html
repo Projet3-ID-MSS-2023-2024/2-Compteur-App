@@ -6,7 +6,8 @@
     <app-information-page></app-information-page>
   </div>
   <div class="addCompteurPlacement">
-    <app-add-meter (data)="newMetter($event)" [category]="category" [provider]="provider"></app-add-meter>
+    <app-add-meter (data)="newMetter($event)" [category]="category" [provider]="provider" *ngIf="device==='mobile'"></app-add-meter>
+    <div class="addCompteur" (click)="showPopUpSendMetterDesktop()" *ngIf="device==='desktop'"><p>Ajouter un compteur</p></div>
   </div>
 
   <div class="emplacementIndiceList">
@@ -14,6 +15,9 @@
   </div>
 
 </div>
-<app-send-compteur-data (sendData)="sendStatement($event)" *ngIf="showSendStatement"></app-send-compteur-data>
+<app-adresse-field-send-data (sendData)="sendCompteurData($event)" *ngIf="showPopUpSendStatementDesktop"></app-adresse-field-send-data>
+<app-send-compteur-data (sendData)="sendCompteurData($event)" *ngIf="showSendStatement"></app-send-compteur-data>
 <app-delete-confirmation (delete)="deleteChoice($event)" *ngIf="showPopUpDelete"></app-delete-confirmation>
 <app-modify-metter (data)="modifyMetter($event)" [category]="category" [provider]="provider" *ngIf="showPopUpModifyMetter"></app-modify-metter>
+<app-loader-api></app-loader-api>
+<app-create-compteur-desktop (sendData)="newMetter($event)" [category]="category" [provider]="provider" *ngIf="showPopUpNewMetterDesktop"></app-create-compteur-desktop>

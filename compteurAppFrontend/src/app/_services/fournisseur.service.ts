@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AddFournisseur } from 'src/models/add-fournisseur';
 import { AddFournisseurSpring } from 'src/models/add-fournisseur-spring';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class FournisseurService {
     return this.http.post<AddFournisseurSpring>(`/api/provider`, user, { headers });
   }
 
-  updateFournisseurSpring(user: AddFournisseurSpring | undefined, id: number | undefined) {
+  updateFournisseurSpring(user: AddFournisseurSpring | undefined, id: string | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
@@ -42,7 +42,15 @@ export class FournisseurService {
     return this.http.get<any>(`/api/provider`, { headers });
   }
 
-  deleteFournisseurSpring(id: number | undefined) {
+  getFournisseurSpringByUserName(userName: string | undefined) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any>(`/api/provider/${userName}`, { headers });
+  }
+
+  deleteFournisseurSpring(id: string | undefined) {
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
@@ -50,6 +58,8 @@ export class FournisseurService {
     return this.http.delete<any>(`/api/provider/${id}`, { headers });
   }
 
-
+  public getUserByCategoryId(id: number | undefined): Observable<any> {
+    return this.http.get(`api/listProvidersByCategory/${id}`);
+  }
 
 }

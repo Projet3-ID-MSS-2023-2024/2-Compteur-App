@@ -14,9 +14,6 @@
         <app-option-choice [choiceOne]="'Non payé'" [choiceTwo]="'Payé'" (choice)="payerFilter($event)" *ngIf="traiterFilterChoice==='choiceTwo'"></app-option-choice>
       </div>
     </div>
-    <div class="searchBarPlacement">
-      <app-search-bar (searchData)="searchBarDataReceip($event)"></app-search-bar>
-    </div>
   </div>
   <div class="placementList">
     <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
@@ -25,5 +22,5 @@
     <app-change-pageable (page)="changePage($event)" [pageStart]="pageStart" [pageEnd]="pageEnd"></app-change-pageable>
   </div>
 </div>
-<app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)"></app-show-compteur-picture>
-
+<app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)" [image]="photoCompteur"></app-show-compteur-picture>
+<app-add-facture-price-popup *ngIf="closeOrOpenFacturePopUp" (closePopup)="closePopUp($event)" (sendData)="priceData($event)"></app-add-facture-price-popup>

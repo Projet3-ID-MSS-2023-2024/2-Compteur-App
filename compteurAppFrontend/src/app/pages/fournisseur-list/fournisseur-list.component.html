@@ -1,0 +1,44 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Liste fournisseurs'"></app-page-name>
+  </div>
+  <div class="searchAndCategory">
+    <div class="filterPlacementListProvider">
+      <div class="div">
+        <input class="searchbar" [(ngModel)]="searchValue" (input)="searchFournisseur()">
+      </div>
+      <div class="dropdown-categories">
+        <select
+          name="categories"
+          id="categories"
+          (change)="filterByCategory($event)"
+        >
+          <option value="0">Toutes les catégories</option>
+          <option
+            *ngFor="let category of categories$ | async"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="cardList">
+    <div *ngFor="let filter of filterData" (click)="goToFournisseurInfo(filter.username)">
+      <app-home-card [title]="filter.username"></app-home-card>
+    </div>
+  </div>
+</div>
+
+<div class="popupAjoutReussiFournisseur" *ngIf="closeOrOpenPopup">
+  <div class="popupAjoutReussiFournisseurContent">
+    <div class="popupAjoutReussiFournisseurContentText">
+      <p>{{ message }}</p>
+    </div>
+    <div class="popupAjoutReussiFournisseurContentButton">
+      <button (click)="closePopup()">OK</button>
+    </div>
+  </div>
+</div>

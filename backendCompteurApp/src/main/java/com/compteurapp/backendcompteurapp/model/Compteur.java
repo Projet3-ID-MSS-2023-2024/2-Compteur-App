@@ -1,11 +1,17 @@
 package com.compteurapp.backendcompteurapp.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "compteur")
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Compteur {
 
     @Id
@@ -13,38 +19,22 @@ public class Compteur {
     private Long id;
     private String nom;
 
-    @OneToMany(mappedBy = "compteur", cascade = CascadeType.ALL)
-    private List<CompteurData> compteurData;
+    @ManyToOne
+    @JoinColumn(name="client_id", nullable=false)
+    private UserDB client;
 
-    public Compteur(Long id, String nom, List<CompteurData> compteurData) {
-        this.id = id;
-        this.nom = nom;
-        this.compteurData = compteurData;
-    }
+    @ManyToOne
+    @JoinColumn(name="provider_id", nullable=false)
+    private UserDB provider;
 
-    public Compteur(){}
+    @ManyToOne
+    @JoinColumn(name="adresse_id", nullable=false)
+    private Adresse adresse;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name="categorie_id", nullable=false)
+    private Category category;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getNom() {
-        return nom;
-    }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public List<CompteurData> getCompteurData() {
-        return compteurData;
-    }
-
-    public void setCompteurData(List<CompteurData> compteurData) {
-        this.compteurData = compteurData;
-    }
 }
