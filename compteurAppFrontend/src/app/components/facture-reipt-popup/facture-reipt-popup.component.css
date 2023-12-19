@@ -16,17 +16,8 @@ p{
   flex-direction: column;
   background-color: white;
   position: relative;
-  width: 794px;
-  height: 1123px;
-}
-
-#pdf{
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  position: relative;
-  width: 794px;
-  height: 1123px;
+  width: 35%;
+  height: 90%;
 }
 
 

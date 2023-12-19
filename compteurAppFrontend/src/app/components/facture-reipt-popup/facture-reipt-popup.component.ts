@@ -85,14 +85,10 @@ export class FactureReiptPopupComponent {
   public captureAndDownload() {
     let data = document.getElementById('pdf')!;
     html2canvas(data).then(canvas => {
-      // Utilisez la largeur et la hauteur du canvas pour maintenir le même format que votre page
-      let imgWidth = canvas.width;
-      let imgHeight = canvas.height;
-
       const contentDataURL = canvas.toDataURL('image/png');
-      let pdf = new jsPDF('p', 'mm', [imgWidth, imgHeight]); // Définissez la taille de la page en fonction de la taille de votre div
+      let pdf = new jsPDF('p', 'mm', [210, 297]); // Définissez la taille de la page en fonction de la taille de votre div
 
-      pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.addImage(contentDataURL, 'PNG', 10, 0, 190, 277);
       pdf.save('MYPdf.pdf');
     });
   }
