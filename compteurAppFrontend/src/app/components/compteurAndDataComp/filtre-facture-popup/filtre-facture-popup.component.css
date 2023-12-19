@@ -14,7 +14,7 @@
 .formulaire {
   display: flex;
   width: 65%;
-  height: 40%;
+  height: 60%;
   flex-direction: column;
   justify-content: space-around;
   position: relative;
@@ -120,3 +120,43 @@ input {
 input:focus {
   outline: none;
 }
+
+@media screen and (max-width: 950px) {
+  .formulaire {
+    width: 90%;
+    height: 50%;
+  }
+
+  .placement {
+    height: 20%;
+  }
+
+  .fieldPlacement {
+    height: 20%;
+  }
+
+  .button {
+    width: 200px;
+  }
+
+  .croix {
+    width: 40px;
+    height: 40px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    width: 50%;
+    text-align: center;
+  }
+
+  input {
+    width: 70%;
+    height: 40px;
+  }
+
+  .inputPlacement {
+    width: 100%;
+  }
+}
+
