@@ -16,7 +16,7 @@ import {FactureService} from "../../_services/facture.service";
 })
 export class ReceivedStatementComponent {
 
-  attributLegend = ['Nom Client', 'Valeur', 'Date'];
+  attributLegend = ['Nom Client', 'Valeur', 'Date', 'Etat'];
 
   buttonOption = ['picture.svg', 'facture.svg'];
 
@@ -174,6 +174,7 @@ export class ReceivedStatementComponent {
   }
 
 
+
   /**/
   /* FONCTION RECUPERER DONNEE ET GARDIR HISTORIQUE */
   /* ON RECUPERE LES DONNEES ET ON LES GARDENT DANS UN TABLEAU */
@@ -217,10 +218,6 @@ export class ReceivedStatementComponent {
   setDataCompteur(compteurDataReq:CompteurDataReq[], traiter:boolean, payer:boolean){
     //ON ADAPTE LA LEGENDE DE LA LISTE
     let compteurData: any[][] = [];
-    let attributLegendNonTraiter = ['Nom Client', 'Valeur', 'Date'];
-    let attributLegendTraiter = ['Nom Client', 'Valeur', 'Date', 'Etat'];
-    this.attributLegend = traiter ? attributLegendTraiter : attributLegendNonTraiter;
-
 
     //FORMATAGE DES DONNEES
     compteurDataReq.forEach(element => {
@@ -230,6 +227,9 @@ export class ReceivedStatementComponent {
       if(traiter){
         let etat = payer ? "Payé" : "Impayé";
         data.push(etat);
+      }
+      else{
+        data.push("Non traité");
       }
       compteurData.push(data);
     });
