@@ -1,5 +1,6 @@
 package com.compteurapp.backendcompteurapp.model;
 
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;

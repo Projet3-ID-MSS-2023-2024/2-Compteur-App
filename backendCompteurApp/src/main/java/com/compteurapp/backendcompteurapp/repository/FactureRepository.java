@@ -2,7 +2,7 @@ package com.compteurapp.backendcompteurapp.repository;
 
 import com.compteurapp.backendcompteurapp.model.Facture;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 
 import java.util.List;
 

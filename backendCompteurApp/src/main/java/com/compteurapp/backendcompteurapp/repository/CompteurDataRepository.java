@@ -1,7 +1,7 @@
 package com.compteurapp.backendcompteurapp.repository;
 
 import com.compteurapp.backendcompteurapp.model.CompteurData;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
