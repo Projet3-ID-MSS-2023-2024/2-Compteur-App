@@ -1,6 +1,6 @@
 package com.compteurapp.backendcompteurapp.services;
 
-import com.compteurapp.backendcompteurapp.model.AdresseDTO;
+import com.compteurapp.backendcompteurapp.DTO.AdresseDTO;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
