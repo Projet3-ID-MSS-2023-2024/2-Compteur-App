@@ -8,7 +8,7 @@
         *ngIf="!editPdp"
         [src]="
           photoNull
-            ? '../../../assets/images/photo-profil/photo-profil/pdpDefaut.jpg'
+            ? './assets/images/photo-profil/photo-profil/pdpDefaut.jpg'
             : 'http://localhost:8080/pdp/' + photoUrl
         "
         alt="Photo"
@@ -17,7 +17,7 @@
         <div *ngIf="editPdp">
           <div *ngIf="!photoNull">
             <button class="editPdpButton" (click)="onFileSelect($event)" (mouseenter)="editHover = true" (mouseleave)="editHover = false">
-              <img src="../../../assets/navbarIcone/edit.svg" alt="">
+              <img src="./assets/navbarIcone/edit.svg" alt="">
             </button>
             <input
               type="file"
@@ -28,7 +28,7 @@
           </div>
           <div *ngIf="photoNull">
             <button class="addButton" (click)="onFileSelect($event)">
-              <img src="../../../assets/navbarIcone/add.svg" alt="" />
+              <img src="./assets/navbarIcone/add.svg" alt="" />
             </button>
             <input
               type="file"
@@ -45,7 +45,7 @@
               *ngIf="!photoNull"
               (mouseenter)="deleteHover = true" (mouseleave)="deleteHover = false"
             >
-              <img src="../../../assets/navbarIcone/delete.svg" alt="">
+              <img src="./assets/navbarIcone/delete.svg" alt="">
             </button>
           </div>
         </div>
@@ -54,7 +54,7 @@
       <div class="editButtonPdp">
         <img
           (click)="editPdpButton()"
-          src="../../../assets/navbarIcone/edit.svg"
+          src="./assets/navbarIcone/edit.svg"
           alt=""
           class="imgSvg"
         />
@@ -179,7 +179,7 @@
             <div class="buttondiv fade-in-out">
               <img
                 (click)="editUserPopup()"
-                src="../../../assets/navbarIcone/send.svg"
+                src="./assets/navbarIcone/send.svg"
                 alt=""
                 class="imgSvg"
               />
@@ -190,7 +190,7 @@
       <div class="editButton">
         <img
           (click)="turnEditMode()"
-          src="../../../assets/navbarIcone/edit.svg"
+          src="./assets/navbarIcone/edit.svg"
           alt=""
         />
       </div>
@@ -256,7 +256,7 @@
             <div class="buttondiv fade-in-out" *ngIf="editMode">
               <img
                 (click)="editAdressePopup()"
-                src="../../../assets/navbarIcone/send.svg"
+                src="./assets/navbarIcone/send.svg"
                 alt=""
                 class="imgSvg"
               />
@@ -267,7 +267,7 @@
       <div class="editButton">
         <img
           (click)="turnEditMode()"
-          src="../../../assets/navbarIcone/edit.svg"
+          src="./assets/navbarIcone/edit.svg"
           alt=""
         />
       </div>
