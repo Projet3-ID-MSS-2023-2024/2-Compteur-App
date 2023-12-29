@@ -280,8 +280,7 @@
     (acceptChanges)="editingUser ? editUser($event) : editAdresse($event)"
   ></app-edit-popup>
 
-  <!-- Loader -->
-  <div class="loaderPage" *ngIf="isLoading">
-    <div class="loader"></div>
-  </div>
+  <!-- loader -->
+  <app-simple-loader [isLoading]="isLoading"></app-simple-loader>
+
 </div>
