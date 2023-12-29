@@ -13,7 +13,6 @@ import { AdresseDTO } from 'src/models/adresseDTO';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
 import { NavbarStatementService } from 'src/app/_services/navbar-statement.service';
-import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
 
 @Component({
   selector: 'app-profil',
@@ -27,6 +26,7 @@ export class ProfilComponent implements OnInit {
   categoryId!: number | undefined;
   passwordConf: string = '';
   password: string = '';
+  editPageName: string = 'Profil';
 
   //Formulaire d'adresse
   public adresseForm!: FormGroup;
@@ -42,12 +42,6 @@ export class ProfilComponent implements OnInit {
   adresseUser!: AdresseDTO;
   editMode: boolean = false;
 
-  // Données photo de profil
-  editPageName: string = 'Profil';
-  photoUrl!: string;
-  photoNull: boolean = true;
-  editPdp: boolean = false;
-
   // Popup
   editPopup: boolean = false;
   donneesModifiees: any[] = [];
@@ -58,8 +52,6 @@ export class ProfilComponent implements OnInit {
 
   // Button
   formChoiceButton: boolean = true;
-  editHover: boolean = false;
-  deleteHover: boolean = false;
 
   constructor(
     private keycloak: KeycloakService,
@@ -69,7 +61,6 @@ export class ProfilComponent implements OnInit {
     private adresseService: AdresseService,
     private fournisseurService: FournisseurService,
     private nabarStatement: NavbarStatementService,
-    private photoProfilService: PhotoProfilService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
       rue: [[Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
@@ -132,7 +123,6 @@ export class ProfilComponent implements OnInit {
               category: data.category ? data.category.name : '',
             });
             this.categoryId = data.category?.id;
-            this.initPdp(data.id);
             resolve();
           });
         } else {
@@ -302,100 +292,7 @@ export class ProfilComponent implements OnInit {
         });
     });
   }
-  deletePhotoProfil() {
-    this.isLoading = true;
-    this.photoProfilService
-      .deletePhotoProfil(this.idUser)
-      .pipe(take(1))
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.photoNull = true;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-    this.deleteHover = false;
-    this.editPdp = false;
-  }
-  onFileChangeAdd(event: Event) {
-    console.log('add');
-    const target = event.target as HTMLInputElement;
-    const files = target.files as FileList;
-    if (files[0].type.match(/image\/*/) == null) {
-      return;
-    }
-    this.isLoading = true;
-    this.photoProfilService.uploadPhotoProfil(files[0], this.idUser).subscribe(
-      (data) => {
-        console.log(data);
-        this.photoNull = false;
-        this.initPdp(this.idUser);
-      },
-      (error) => {
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
-    this.editPdp = false;
-  }
-  onFileChange(event: Event) {
-    console.log('change');
-    const target = event.target as HTMLInputElement;
-    const files = target.files as FileList;
-    if (files[0].type.match(/image\/*/) == null) {
-      alert('Seules les images sont supportées');
-      return;
-    }
-    this.isLoading = true;
-    this.photoProfilService
-      .updatePhotoProfil(files[0], this.idUser)
-      .pipe(take(1))
-      .subscribe(
-        (data) => {
-          this.photoUrl = data.path;
-          this.photoNull = false;
-          this.initPdp(this.idUser);
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-    this.editPdp = false;
-  }
-  @ViewChild('fileInput') fileInput!: ElementRef;
-  onFileSelect(event: Event) {
-    this.fileInput.nativeElement.click();
-  }
-  initPdp(id: any) {
-    this.photoProfilService
-      .getPhotoProfil(id)
-      .pipe(take(1))
-      .subscribe(
-        (response) => {
-          if (response) {
-            this.photoUrl = response.path;
-            console.log(response.path);
-            this.photoNull = false;
-          } else {
-            this.photoNull = true;
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-  }
   buttonChoiceSwap() {
     this.formChoiceButton = !this.formChoiceButton;
-  }
-  editPdpButton() {
-    this.editPdp = !this.editPdp;
   }
 }
