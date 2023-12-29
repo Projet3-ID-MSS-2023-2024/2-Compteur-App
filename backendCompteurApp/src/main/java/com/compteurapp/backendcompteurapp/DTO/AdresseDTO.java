@@ -1,4 +1,4 @@
-package com.compteurapp.backendcompteurapp.model;
+package com.compteurapp.backendcompteurapp.DTO;
 
 import lombok.Getter;
 import lombok.Setter;

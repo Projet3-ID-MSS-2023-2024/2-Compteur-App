@@ -1,0 +1,12 @@
+<div class="indiceBar">
+
+  <ng-container *ngFor="let item of indiceArray; let i = index">
+    <div class="indice" #indices *ngIf="(i!=0 )">
+      <p #text>{{item}} <span *ngIf="(i==6)" >€</span></p>
+    </div>
+  </ng-container>
+
+  <div class="indiceButton" #indiceButton (click)="buttonPress(1)">
+      <img ngSrc="./assets/navbarIcone/shopping.svg" alt="show more" height="64" width="64">
+</div>
+</div>

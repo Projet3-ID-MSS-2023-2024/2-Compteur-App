@@ -1,4 +1,4 @@
-package com.compteurapp.backendcompteurapp.model;
+package com.compteurapp.backendcompteurapp.enums;
 
 public enum FactureStatement{
     PAYER,

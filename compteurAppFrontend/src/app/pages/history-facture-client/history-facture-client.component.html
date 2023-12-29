@@ -1,0 +1,18 @@
+<div class="pageContentRow">
+  <div class="pageNamePlacement">
+    <app-page-name [pageName]="'Historique des factures'"></app-page-name>
+  </div>
+  <div class="filter" (click)="showPopUpfiltreFct()" >
+    <img src="./assets/navbarIcone/filter.svg" alt="filtre" height="49px" width="49px">
+  </div>
+  <div class="filter" (click)="desableFiltre()">
+    <img src="./assets/navbarIcone/filter-enable.svg" alt="filtre" height="49px" width="49px">
+  </div>
+  <div class="emplacementIndiceList">
+    <app-indice-list [attributLegend]="attributLegend" [data]="dataFiltre" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+  </div>
+
+</div>
+
+<app-facture-reipt-popup *ngIf="showReceiptPopup" [facture]="ligneFacture" [userName]="userName"  (buttonPressed)="cacherPopUp($event)"></app-facture-reipt-popup>
+<app-filtre-facture-popup *ngIf="showPopUpfiltre" (closePopupFiltre)="cacherPopUpFiltre($event)" (sendData)="getFilterData($event)" ></app-filtre-facture-popup>

@@ -1,0 +1,171 @@
+.popup{
+  display: flex;
+  position: fixed;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.36);
+  width: 100%;
+  height: 100vh;
+}
+p{
+  text-align: left;
+}
+.content{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  position: relative;
+  width: 794px;
+  height: 1123px;
+}
+
+.title{
+  display: flex;
+  width: 90%;
+  height: 15%;
+  align-items: center;
+  margin-left: 5%;
+  font-size: 3em;
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+.adresse{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: auto;
+  margin-left: 5%;
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.adresse h1{
+  font-size: 1.5em;
+  margin-bottom: 5px;
+  color: cornflowerblue;
+}
+
+.information{
+  display: flex;
+  width: 70%;
+  height: auto;
+  margin-left: 5%;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
+.croix{
+  position: absolute;
+  top: -45px;
+  right: -45px;
+  width: 35px;
+  height: 35px;
+  background: rgba(16, 16, 16, 0.34) url("../../../assets/navbarIcone/hide_picture.svg") no-repeat center;
+  background-size: cover;
+}
+
+.button{
+  display:flex;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.button app-paypal-btn{
+  width: 60% !important;
+  height: auto !important;
+}
+
+
+.factureInfo{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-left: 5%;
+  font-size: 1.1em;
+  height: 75px;
+  margin-bottom: 30px;
+}
+
+.factureInfo p{
+  color : grey;
+  font-size: 1.3em;
+}
+
+.userInfo{
+  display: flex;
+  width: 90%;
+  height: 100px;
+  margin-left: 5%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.boxTitle{
+  display: flex;
+  width: 90%;
+  margin-left: 5%;
+  height: 30px;
+  align-items: center;
+}
+
+.boxTitle h2{
+  color: cornflowerblue;
+}
+
+.info{
+  display: flex;
+  width: 33.3333%;
+  height: 30%;
+  align-items: center;
+  font-size: 1.3em;
+}
+
+.liste{
+  display: flex;
+  width: 90%;
+  height: 35px;
+  margin-left: 5%;
+  border: 1px solid rgb(166, 166, 166);
+}
+
+.list{
+  display: flex;
+  width: 33.333%;
+  height: 100%;
+  align-items: center;
+}
+
+.list p, .totalDetail p, .totalDetail h3{
+  margin-left: 10px;
+}
+
+.total{
+  display: flex;
+  width: 30%;
+  height: 35px;
+  margin-left: calc( 100% - (30% + 5%));
+  margin-top: 25px;
+}
+
+.totalDetail{
+  display: flex;
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  font-size: 1.4em;
+}
+
+

@@ -46,6 +46,18 @@ import { UserDBService } from './_services/userDB.service';
 import { AdresseFieldSendDataComponent } from './components/compteurAndDataComp/adresse-field-send-data/adresse-field-send-data.component';
 import { CreateCompteurDesktopComponent } from './components/compteurAndDataComp/create-compteur-desktop/create-compteur-desktop.component';
 import { EditPopupComponent } from './components/profilComponents/edit-popup/edit-popup.component';
+import {FactureComponent} from "./pages/facture/facture.component";
+import {PaypalBtnComponent} from "./components/universalComponents/paypal-btn/paypal-btn.component";
+import {FactureProviderComponent} from "./pages/facture-provider/facture-provider.component";
+import {ShoppingBtnComponent} from "./components/universalComponents/shopping-btn/shopping-btn.component";
+import {FactureListComponent} from "./components/universalComponents/facture-list/facture-list.component";
+import {PaypalPopUpComponent} from "./components/paypal-pop-up/paypal-pop-up.component";
+import {NgxPayPalModule} from "ngx-paypal";
+import {NgOptimizedImage} from "@angular/common";
+import { HistoryFactureClientComponent } from './pages/history-facture-client/history-facture-client.component';
+import { AddFacturePricePopupComponent } from './components/compteurAndDataComp/add-facture-price-popup/add-facture-price-popup.component';
+import { FiltreFacturePopupComponent } from './components/compteurAndDataComp/filtre-facture-popup/filtre-facture-popup.component';
+import { FactureReiptPopupComponent } from './components/facture-reipt-popup/facture-reipt-popup.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -117,6 +129,16 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     AdresseFieldSendDataComponent,
     CreateCompteurDesktopComponent,
     EditPopupComponent,
+    FournisseurInfoComponent,
+    FournisseurListComponent,
+    CategoriesComponent,
+    DropdownCategoryComponent,
+    PaypalBtnComponent,//alessio
+    FactureComponent,//alessio
+    FactureProviderComponent,//alessio
+    ShoppingBtnComponent,//alessio
+    FactureListComponent,//alessio
+    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent, FactureReiptPopupComponent//alessio
   ],
   imports: [
     BrowserModule,
@@ -124,7 +146,9 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     KeycloakAngularModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPayPalModule,//alessio
+    NgOptimizedImage//alessio
   ],
   providers: [
     {

@@ -1,0 +1,11 @@
+<div class="factureList">
+  <div class="facturePlacement">
+    <app-indice [indiceArray]="attributLegend" [legend]="true"></app-indice>
+  </div>
+  <div class="facturePlacement" *ngFor="let item of data">
+    <app-shopping-btn
+      [indiceArray]="item"
+      (buttonPressed)="buttonPress($event)">
+    </app-shopping-btn>
+  </div>
+</div>

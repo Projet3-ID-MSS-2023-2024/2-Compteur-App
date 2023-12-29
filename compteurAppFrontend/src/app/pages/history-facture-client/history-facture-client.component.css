@@ -1,0 +1,22 @@
+.emplacementIndiceList{
+  display: flex;
+  margin-left: 2.5%;
+  margin-top: 10px;
+  width: 95%;
+  position: relative;
+  height: calc(100vh - 410px);
+}
+
+.filter {
+  width: 50px;
+  height: 50px;
+  background: grey;
+  border-radius: 5px;
+  right: 10px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  margin: 0 10px
+}
+

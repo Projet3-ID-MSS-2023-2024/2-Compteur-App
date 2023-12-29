@@ -1,0 +1,22 @@
+.placementList {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  margin-left: 2.5%;
+  height: calc(100vh - 410px);
+  margin-top: 10px;
+  position: relative;
+}
+
+.filter {
+  width: 50px;
+  height: 50px;
+  background: grey;
+  border-radius: 5px;
+  right: 10px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  margin: 0 10px
+}

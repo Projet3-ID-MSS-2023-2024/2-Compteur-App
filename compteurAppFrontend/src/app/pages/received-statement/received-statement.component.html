@@ -23,4 +23,4 @@
   </div>
 </div>
 <app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)" [image]="photoCompteur"></app-show-compteur-picture>
-
+<app-add-facture-price-popup *ngIf="closeOrOpenFacturePopUp" (closePopup)="closePopUp($event)" (sendData)="priceData($event)"></app-add-facture-price-popup>

@@ -120,7 +120,6 @@ export class ProfilComponent implements OnInit {
           this.user$.subscribe((data) => {
             console.log(data);
             this.idUser = data.id;
-
             this.registerForm.patchValue({
               username: data.username,
               email: data.email,
