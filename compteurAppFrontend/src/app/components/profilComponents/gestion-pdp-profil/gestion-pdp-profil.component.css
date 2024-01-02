@@ -50,10 +50,10 @@
   top: 0;
   width: 90px;
 }
-.editBackground{
+.editBackground {
   background-color: orange;
 }
-.deleteBackground{
+.deleteBackground {
   background-color: red;
 }
 .pdp {
@@ -89,4 +89,17 @@ img {
   filter: invert(50%) sepia(50%) saturate(50%) hue-rotate(86deg)
     brightness(200%) contrast(119%);
   width: 80%;
+}
+@media screen and (max-width: 950px) {
+  .pdp,
+  .addButton,
+  .deleteButton,
+  .editPdpButton {
+    width: 150px;
+    height: 150px;
+  }
+  .editButtonPdp {
+    width: 40px;
+    height: 40px;
+  }
 }
