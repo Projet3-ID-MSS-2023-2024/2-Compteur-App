@@ -60,21 +60,22 @@ export class ProfilComponent implements OnInit {
     private adresseFormBuilder: FormBuilder,
     private adresseService: AdresseService,
     private fournisseurService: FournisseurService,
-    private nabarStatement: NavbarStatementService,
+    private nabarStatement: NavbarStatementService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
-      rue: [[Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
-      codePostal: [[Validators.pattern(/^\d{0,5}$/)]], // Maximum 5 chiffres
-      ville: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
-      pays: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
-      numero: [[Validators.pattern(/^\d+$/)]], // Composé uniquement de chiffres
+      rue: ['', [Validators.required, Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
+      codePostal: ['', [Validators.required, Validators.pattern(/^\d{0,5}$/)]], // Maximum 5 chiffres
+      ville: ['', [Validators.required, Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      pays: ['', [Validators.required, Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      numero: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Composé uniquement de chiffres
     });
     this.registerForm = this.formBuilder.group({
-      username: [[Validators.required, Validators.minLength(3)]],
-      email: [[Validators.required, Validators.email]],
-      phoneNumber: [[Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
-      tva: [['', Validators.pattern(/^\d{0,15}$/)]], // Maximum 15 chiffres
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
+      tva: ['', [Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/)]], // Maximum 15 chiffres
       password: [
+        '',
         [
           Validators.minLength(6),
           Validators.pattern(
@@ -83,13 +84,15 @@ export class ProfilComponent implements OnInit {
         ],
       ],
       category: [''],
-      lastname: [[Validators.minLength(1)]], // Au moins 1 caractère
-      firstname: [[Validators.minLength(1)]], // Au moins 1 caractère
-      passwordConf: [['']],
+      lastname: ['', [Validators.required, Validators.minLength(2)]], // Au moins 1 caractère
+      firstname: ['', [Validators.required, Validators.minLength(2)]], // Au moins 1 caractère
+      passwordConf: [''],
     });
   }
 
   ngOnInit(): void {
+    console.log(this.registerForm.controls['username'].status);
+
     this.isLoading = true;
     this.initUser().then(() => {
       this.initAdresse();
@@ -103,7 +106,7 @@ export class ProfilComponent implements OnInit {
         const isLoggedIn = await this.keycloak.isLoggedIn();
         if (isLoggedIn) {
           const profile = await this.keycloak.loadUserProfile();
-          console.log(profile)
+          console.log(profile);
           this.idUser = profile.id;
 
           this.isClient = !this.keycloak.isUserInRole('fournisseur');
@@ -134,7 +137,9 @@ export class ProfilComponent implements OnInit {
     });
   }
   editUser(confirmation: boolean) {
-    if (confirmation && this.registerForm.valid) {
+    console.log(this.registerForm);
+    console.log(this.registerForm.controls['email'].status);
+    if (confirmation && this.registerForm) {
       this.userEdit = {
         email: this.registerForm.value.email,
         firstName: this.registerForm.value.firstname,
@@ -173,8 +178,7 @@ export class ProfilComponent implements OnInit {
   }
   editAdressePopup() {
     this.editingUser = false;
-    console.log('idadresse : '+this.idAdresse)
-    if (this.idAdresse != undefined) {
+    if (this.idAdresse != undefined && this.adresseForm.valid) {
       this.adresse$.subscribe((data) => {
         data.codePostal != this.adresseForm.value.codePostal
           ? this.donneesModifiees.push({
@@ -199,12 +203,12 @@ export class ProfilComponent implements OnInit {
           this.editPopup = true;
         }
       });
-    } else this.editAdresse(true);
+    }
   }
   editUserPopup() {
-    if (this.password == this.passwordConf) {
-      this.editingUser = true;
-
+    this.editingUser = true;
+    console.log(this.registerForm);
+    if (this.password == this.passwordConf && this.verifyUserForm()) {
       this.user$.subscribe((data) => {
         data.email != this.registerForm.value.email
           ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
@@ -249,7 +253,7 @@ export class ProfilComponent implements OnInit {
     console.error('Une erreur est survenue : ', error);
   }
   editAdresse(confirmation: boolean) {
-    if (confirmation && this.adresseForm.valid) {
+    if (confirmation) {
       this.adresseUser = {
         rue: this.adresseForm.value.rue,
         codePostal: this.adresseForm.value.codePostal,
@@ -294,5 +298,22 @@ export class ProfilComponent implements OnInit {
   }
   buttonChoiceSwap() {
     this.formChoiceButton = !this.formChoiceButton;
+  }
+  validateForm() {
+    this.registerForm.value.emailgroup;
+  }
+  verifyUserForm() {
+    if (
+      this.registerForm.controls['username'].status == 'VALID'&&
+      this.registerForm.controls['email'].status == 'VALID' &&
+      this.registerForm.controls['phoneNumber'].status == 'VALID' &&
+      this.registerForm.controls['lastname'].status == 'VALID' &&
+      this.registerForm.controls['firstname'].status == 'VALID' &&
+      (this.registerForm.controls['tva'].status == 'VALID' || this.isClient) &&
+      this.registerForm.controls['password'].status == 'VALID'
+    ) {
+      return true;
+    }
+    return false;
   }
 }
