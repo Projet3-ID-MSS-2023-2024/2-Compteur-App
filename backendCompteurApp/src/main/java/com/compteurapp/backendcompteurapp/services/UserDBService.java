@@ -130,6 +130,7 @@ public class UserDBService {
         List<UserDB> users = new ArrayList<>();
         for (Compteur compteur : compteurRepository.findByProvider_Id(id)
         ) {
+            if(!users.contains(compteur.getClient()))
             users.add(compteur.getClient());
         }
         return users;
