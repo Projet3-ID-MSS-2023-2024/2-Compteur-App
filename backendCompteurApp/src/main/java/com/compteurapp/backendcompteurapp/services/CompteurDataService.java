@@ -2,7 +2,7 @@ package com.compteurapp.backendcompteurapp.services;
 
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

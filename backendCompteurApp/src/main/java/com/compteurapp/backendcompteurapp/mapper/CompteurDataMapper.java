@@ -1,20 +1,15 @@
 package com.compteurapp.backendcompteurapp.mapper;
-import com.compteurapp.backendcompteurapp.DTO.CompteurDataDTO;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
-import com.compteurapp.backendcompteurapp.DTO.CompteurSenderDTO;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.model.*;
-import com.compteurapp.backendcompteurapp.repository.FactureRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.json.JSONObject;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -25,11 +20,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 import java.io.File;
 import java.io.IOException;
