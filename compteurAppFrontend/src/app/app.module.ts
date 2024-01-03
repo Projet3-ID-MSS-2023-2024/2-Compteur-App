@@ -60,6 +60,7 @@ import { FiltreFacturePopupComponent } from './components/compteurAndDataComp/fi
 import { FactureReiptPopupComponent } from './components/facture-reipt-popup/facture-reipt-popup.component';
 import { SimpleLoaderComponent } from './components/universalComponents/simple-loader/simple-loader.component';
 import { GestionPdpProfilComponent } from './components/profilComponents/gestion-pdp-profil/gestion-pdp-profil.component';
+import { ClientListComponent } from './pages/client-list/client-list.component';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
@@ -140,7 +141,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FactureProviderComponent,//alessio
     ShoppingBtnComponent,//alessio
     FactureListComponent,//alessio
-    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent, FactureReiptPopupComponent, SimpleLoaderComponent, GestionPdpProfilComponent//alessio
+    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent, FactureReiptPopupComponent, SimpleLoaderComponent, GestionPdpProfilComponent, ClientListComponent//alessio
   ],
   imports: [
     BrowserModule,
