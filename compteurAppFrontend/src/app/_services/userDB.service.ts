@@ -51,4 +51,7 @@ export class UserDBService {
   public hasAddressAndMeter(username: string | undefined) : Observable<any[]> | undefined{
     return this.http.get(`api/hasAddressAndMeter/${username}`) as Observable<any[]>;
   }
+  public getClientsByProviderId(id: string | undefined): Observable<UserDB[]> {
+    return this.http.get(`api/getClientsByProviderId/${id}`) as Observable<UserDB[]>;
+  }
 }

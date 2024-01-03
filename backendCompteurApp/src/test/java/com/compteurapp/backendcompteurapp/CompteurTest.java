@@ -70,6 +70,8 @@ public class CompteurTest {
     public Category category;
 
     public Long id;
+    public String idClient;
+    public String idProvider;
 
 
     @BeforeEach
@@ -122,6 +124,8 @@ public class CompteurTest {
         compteur.setClient(this.client);
         Compteur compteurCreate = compteurService.createCompteur(compteur);
         this.id = compteurCreate.getId();
+        this.idClient = compteurCreate.getClient().getId();
+        this.idProvider = compteurCreate.getProvider().getId();
 
     }
 
@@ -134,6 +138,16 @@ public class CompteurTest {
     }
 
     @Order(3)
+    @Test
+    public void testGetCompteursByProviderId(){
+        List<Compteur> compteurs = compteurService.findCompteurByIdProvider(this.provider.getId());
+        int lastIndex = compteurs.size() - 1;
+        assertEquals(compteurs.get(lastIndex).getId(),this.id);
+        assertEquals(compteurs.get(lastIndex).getClient().getId(),this.idClient);
+        assertEquals(compteurs.get(lastIndex).getProvider().getId(),this.idProvider);
+    }
+
+    @Order(4)
     @Test
     public void testModifyCompteur(){
         Compteur compteur = new Compteur();
@@ -148,7 +162,7 @@ public class CompteurTest {
         assertEquals("modified", compteurModified.get().getNom());
     }
 
-    @Order(4)
+    @Order(5)
     @Test
     public void testDeleteCompteur(){
         compteurService.deleteById(this.id);
@@ -157,7 +171,7 @@ public class CompteurTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void clean() {
         try {
             userDBRepository.deleteById(this.client.getId());

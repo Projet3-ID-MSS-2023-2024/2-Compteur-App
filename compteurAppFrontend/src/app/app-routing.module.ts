@@ -13,6 +13,7 @@ import { CategoriesComponent } from './pages/categories/categories.component';
 import { FactureComponent } from './pages/facture/facture.component';
 import { FactureProviderComponent } from './pages/facture-provider/facture-provider.component';
 import {HistoryFactureClientComponent} from "./pages/history-facture-client/history-facture-client.component";
+import { ClientListComponent } from './pages/client-list/client-list.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'homePage', pathMatch: 'full'},
@@ -28,7 +29,8 @@ const routes: Routes = [
   {path: 'facture', component: FactureComponent },
   {path: 'history-facture-client', component: HistoryFactureClientComponent},
   {path: 'facture-provider', component: FactureProviderComponent },
-  {path: '**', redirectTo: 'home'}
+  {path: '**', redirectTo: 'home'},
+  {path: 'client-list', component: ClientListComponent}
 ];
 
 @NgModule({

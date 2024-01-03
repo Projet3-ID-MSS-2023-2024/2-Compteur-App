@@ -31,6 +31,13 @@ export class AdresseService {
     };
     return this.http.get<Adresse>(`/api/getAdresseByUsername/${username}`, { headers })
   }
+  getAdresseByUserId(id:string |undefined) {
+    const token = this.keycloak.getKeycloakInstance().token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.get<Adresse>(`/api/getAdresseByUserId/${id}`, { headers })
+  }
   updateAdresse(adresse:AdresseDTO){
     const token = this.keycloak.getKeycloakInstance().token;
     const headers = {
