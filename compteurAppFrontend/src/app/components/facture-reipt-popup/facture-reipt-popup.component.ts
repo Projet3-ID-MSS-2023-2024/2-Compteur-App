@@ -33,6 +33,7 @@ export class FactureReiptPopupComponent {
   userInfo: UserDB | undefined = undefined;
   userAdresseRecue: Adresse | undefined = undefined;
   userAdresse: Adresse | undefined = undefined;
+  pdfName!: string;
 
 
   isLoading: boolean = false;
@@ -64,6 +65,9 @@ export class FactureReiptPopupComponent {
     console.log(this.userAdresse);
   }
 
+  setPdfName(){
+    this.pdfName = "facture_n°" +" "+this.facture?.id+ "_" + this.facture?.date;
+  }
 
   getUserByUserName(userName:any) {
     const observable: Observable<UserDB> = this.userDBService.getProviderByUserName(userName);
@@ -83,13 +87,14 @@ export class FactureReiptPopupComponent {
 
   //generer le pdf
   public captureAndDownload() {
+    this.setPdfName();
     let data = document.getElementById('pdf')!;
     html2canvas(data).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
       let pdf = new jsPDF('p', 'mm', [210, 297]); // Définissez la taille de la page en fonction de la taille de votre div
 
-      pdf.addImage(contentDataURL, 'PNG', 10, 0, 190, 277);
-      pdf.save('MYPdf.pdf');
+      pdf.addImage(contentDataURL, 'PNG', 10, 0, 190, 210);
+      pdf.save(this.pdfName+ '.pdf');
     });
   }
 

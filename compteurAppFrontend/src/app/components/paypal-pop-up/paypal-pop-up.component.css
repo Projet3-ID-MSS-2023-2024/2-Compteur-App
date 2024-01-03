@@ -16,8 +16,8 @@ p{
   flex-direction: column;
   background-color: white;
   position: relative;
-  width: 794px;
-  height: 1123px;
+  width: 35%;
+  height: 90%;
 }
 
 .title{
@@ -167,5 +167,4 @@ p{
   align-items: center;
   font-size: 1.4em;
 }
-
 
