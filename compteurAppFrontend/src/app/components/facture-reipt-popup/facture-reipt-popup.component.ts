@@ -90,24 +90,24 @@ export class FactureReiptPopupComponent {
 
   public captureAndDownload() {
     this.setPdfName();
-    let data = document.getElementById('pdf')!;
-    let width = (data.offsetWidth / data.offsetWidth)* 248/1.5; // Largeur de la div
-    let height = (data.offsetHeight / data.offsetHeight)* 350.8/1.6; // Hauteur de la div
+    let data = document.getElementById('pdf')!.cloneNode(true) as HTMLElement;
+    data.style.width = '595px'; // Largeur de la page A4 en pixels
+    data.style.height = '842px'; // Hauteur de la page A4 en pixels
+    data.style.position = 'fixed';
+    data.style.top = '0';
+    data.style.left = '0';
+    data.style.zIndex = '-1';
+    document.body.appendChild(data);
 
     html2canvas(data).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
-      let pdf = new jsPDF('p', 'mm', [210, 297]); // Définissez la taille de la page en fonction de la taille de votre div
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
 
-      pdf.addImage(contentDataURL, 'PNG', 20, 10, width, height);
-      pdf.save(this.pdfName+ '.pdf');
+      pdf.addImage(contentDataURL, 'PNG', 10, 0, 190, 267); // Dimensions de la page A4 en mm
+      pdf.save(this.pdfName + '.pdf');
+
+      document.body.removeChild(data);
     });
   }
-
-
-
-
-
-
-
 
 }
