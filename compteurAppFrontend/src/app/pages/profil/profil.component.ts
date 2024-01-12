@@ -13,7 +13,6 @@ import { AdresseDTO } from 'src/models/adresseDTO';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Category } from 'src/models/category';
 import { NavbarStatementService } from 'src/app/_services/navbar-statement.service';
-import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
 
 @Component({
   selector: 'app-profil',
@@ -25,13 +24,15 @@ export class ProfilComponent implements OnInit {
   public registerForm!: FormGroup;
   user$!: Observable<UserDB>;
   categoryId!: number | undefined;
+  passwordConf: string = '';
+  password: string = '';
+  editPageName: string = 'Profil';
 
   //Formulaire d'adresse
   public adresseForm!: FormGroup;
   adresse$: Observable<Adresse> = new Observable<Adresse>();
 
   // Données utilisateur
-  userName!: string | undefined;
   isClient!: boolean;
   idUser!: string | undefined;
   idAdresse!: number | undefined;
@@ -40,12 +41,6 @@ export class ProfilComponent implements OnInit {
   userEdit!: AddFournisseurSpring | undefined;
   adresseUser!: AdresseDTO;
   editMode: boolean = false;
-
-  // Données photo de profil
-  editPageName: string = 'Profil';
-  photoUrl!: string;
-  photoNull: boolean = true;
-  editPdp: boolean = false;
 
   // Popup
   editPopup: boolean = false;
@@ -57,8 +52,6 @@ export class ProfilComponent implements OnInit {
 
   // Button
   formChoiceButton: boolean = true;
-  editHover: boolean = false;
-  deleteHover: boolean = false;
 
   constructor(
     private keycloak: KeycloakService,
@@ -67,22 +60,22 @@ export class ProfilComponent implements OnInit {
     private adresseFormBuilder: FormBuilder,
     private adresseService: AdresseService,
     private fournisseurService: FournisseurService,
-    private nabarStatement: NavbarStatementService,
-    private photoProfilService: PhotoProfilService
+    private nabarStatement: NavbarStatementService
   ) {
     this.adresseForm = this.adresseFormBuilder.group({
-      rue: [[Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
-      codePostal: [[Validators.pattern(/^\d{0,5}$/)]], // Maximum 5 chiffres
-      ville: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
-      pays: [[Validators.minLength(1)]], // Vide ou au moins 1 caractère
-      numero: [[Validators.pattern(/^\d+$/)]], // Composé uniquement de chiffres
+      rue: ['', [Validators.required, Validators.minLength(8)]], // Vide ou plus grande que 8 caractères
+      codePostal: ['', [Validators.required, Validators.pattern(/^\d{0,5}$/)]], // Maximum 5 chiffres
+      ville: ['', [Validators.required, Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      pays: ['', [Validators.required, Validators.minLength(1)]], // Vide ou au moins 1 caractère
+      numero: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Composé uniquement de chiffres
     });
     this.registerForm = this.formBuilder.group({
-      username: [[Validators.required, Validators.minLength(3)]],
-      email: [[Validators.required, Validators.email]],
-      phoneNumber: [[Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
-      tva: [['', Validators.pattern(/^\d{0,15}$/)]], // Maximum 15 chiffres
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
+      tva: ['', [Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/)]], // Maximum 15 chiffres
       password: [
+        '',
         [
           Validators.minLength(6),
           Validators.pattern(
@@ -91,13 +84,15 @@ export class ProfilComponent implements OnInit {
         ],
       ],
       category: [''],
-      lastname: [[Validators.minLength(1)]], // Au moins 1 caractère
-      firstname: [[Validators.minLength(1)]], // Au moins 1 caractère
-      passwordConf: [['']],
+      lastname: ['', [Validators.required, Validators.minLength(2)]], // Au moins 1 caractère
+      firstname: ['', [Validators.required, Validators.minLength(2)]], // Au moins 1 caractère
+      passwordConf: [''],
     });
   }
 
   ngOnInit(): void {
+    console.log(this.registerForm.controls['username'].status);
+
     this.isLoading = true;
     this.initUser().then(() => {
       this.initAdresse();
@@ -111,10 +106,11 @@ export class ProfilComponent implements OnInit {
         const isLoggedIn = await this.keycloak.isLoggedIn();
         if (isLoggedIn) {
           const profile = await this.keycloak.loadUserProfile();
-          this.userName = profile.username;
+          console.log(profile);
+          this.idUser = profile.id;
 
           this.isClient = !this.keycloak.isUserInRole('fournisseur');
-          this.user$ = this.userService.getUserByUserName(this.userName);
+          this.user$ = this.userService.getUserByUserId(this.idUser);
           this.user$.subscribe((data) => {
             console.log(data);
             this.idUser = data.id;
@@ -130,7 +126,6 @@ export class ProfilComponent implements OnInit {
               category: data.category ? data.category.name : '',
             });
             this.categoryId = data.category?.id;
-            this.initPdp(data.id);
             resolve();
           });
         } else {
@@ -142,7 +137,9 @@ export class ProfilComponent implements OnInit {
     });
   }
   editUser(confirmation: boolean) {
-    if (confirmation && this.registerForm.valid) {
+    console.log(this.registerForm);
+    console.log(this.registerForm.controls['email'].status);
+    if (confirmation && this.registerForm) {
       this.userEdit = {
         email: this.registerForm.value.email,
         firstName: this.registerForm.value.firstname,
@@ -181,58 +178,69 @@ export class ProfilComponent implements OnInit {
   }
   editAdressePopup() {
     this.editingUser = false;
-    this.adresse$.subscribe((data) => {
-      data.codePostal != this.adresseForm.value.codePostal
-        ? this.donneesModifiees.push({
-            'Code postal': this.adresseForm.value.codePostal,
-          })
-        : null;
-      data.numero != this.adresseForm.value.numero
-        ? this.donneesModifiees.push({
-            Numéro: this.adresseForm.value.numero,
-          })
-        : null;
-      data.pays != this.adresseForm.value.pays
-        ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
-        : null;
-      data.rue != this.adresseForm.value.rue
-        ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
-        : null;
-      data.ville != this.adresseForm.value.ville
-        ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
-        : null;
-    });
-    this.editPopup = true;
+    if (this.idAdresse != undefined && this.adresseForm.valid) {
+      this.adresse$.subscribe((data) => {
+        data.codePostal != this.adresseForm.value.codePostal
+          ? this.donneesModifiees.push({
+              'Code postal': this.adresseForm.value.codePostal,
+            })
+          : null;
+        data.numero != this.adresseForm.value.numero
+          ? this.donneesModifiees.push({
+              Numéro: this.adresseForm.value.numero,
+            })
+          : null;
+        data.pays != this.adresseForm.value.pays
+          ? this.donneesModifiees.push({ Pays: this.adresseForm.value.pays })
+          : null;
+        data.rue != this.adresseForm.value.rue
+          ? this.donneesModifiees.push({ Rue: this.adresseForm.value.rue })
+          : null;
+        data.ville != this.adresseForm.value.ville
+          ? this.donneesModifiees.push({ Ville: this.adresseForm.value.ville })
+          : null;
+        if (this.donneesModifiees.length > 0) {
+          this.editPopup = true;
+        }
+      });
+    }
   }
   editUserPopup() {
     this.editingUser = true;
-    this.user$.subscribe((data) => {
-      data.email != this.registerForm.value.email
-        ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
-        : null;
-      data.firstname != this.registerForm.value.firstname
-        ? this.donneesModifiees.push({
-            Prénom: this.registerForm.value.firstname,
-          })
-        : null;
-      data.lastname != this.registerForm.value.lastname
-        ? this.donneesModifiees.push({ Nom: this.registerForm.value.lastname })
-        : null;
-      data.phoneNumber != this.registerForm.value.phoneNumber
-        ? this.donneesModifiees.push({
-            Téléphone: this.registerForm.value.phoneNumber,
-          })
-        : null;
-      data.tva != this.registerForm.value.tva
-        ? this.donneesModifiees.push({ TVA: this.registerForm.value.tva })
-        : null;
-      data.username != this.registerForm.value.username
-        ? this.donneesModifiees.push({
-            "Nom d'utilisateur": this.registerForm.value.username,
-          })
-        : null;
-    });
-    this.editPopup = true;
+    console.log(this.registerForm);
+    if (this.password == this.passwordConf && this.verifyUserForm()) {
+      this.user$.subscribe((data) => {
+        data.email != this.registerForm.value.email
+          ? this.donneesModifiees.push({ Email: this.registerForm.value.email })
+          : null;
+        data.firstname != this.registerForm.value.firstname
+          ? this.donneesModifiees.push({
+              Prénom: this.registerForm.value.firstname,
+            })
+          : null;
+        data.lastname != this.registerForm.value.lastname
+          ? this.donneesModifiees.push({
+              Nom: this.registerForm.value.lastname,
+            })
+          : null;
+        data.phoneNumber != this.registerForm.value.phoneNumber
+          ? this.donneesModifiees.push({
+              Téléphone: this.registerForm.value.phoneNumber,
+            })
+          : null;
+        data.tva != this.registerForm.value.tva
+          ? this.donneesModifiees.push({ TVA: this.registerForm.value.tva })
+          : null;
+        data.username != this.registerForm.value.username
+          ? this.donneesModifiees.push({
+              "Nom d'utilisateur": this.registerForm.value.username,
+            })
+          : null;
+        if (this.donneesModifiees.length > 0) {
+          this.editPopup = true;
+        }
+      });
+    }
   }
 
   turnEditMode() {
@@ -245,7 +253,7 @@ export class ProfilComponent implements OnInit {
     console.error('Une erreur est survenue : ', error);
   }
   editAdresse(confirmation: boolean) {
-    if (confirmation && this.adresseForm.valid) {
+    if (confirmation) {
       this.adresseUser = {
         rue: this.adresseForm.value.rue,
         codePostal: this.adresseForm.value.codePostal,
@@ -267,7 +275,7 @@ export class ProfilComponent implements OnInit {
   }
 
   initAdresse() {
-    this.adresse$ = this.adresseService.getAdresseByUserName(this.userName);
+    this.adresse$ = this.adresseService.getAdresseByUserId(this.idUser);
     this.adresse$.subscribe((data) => {
       this.idAdresse = data ? data.id : undefined;
       if (data)
@@ -288,100 +296,24 @@ export class ProfilComponent implements OnInit {
         });
     });
   }
-  deletePhotoProfil() {
-    this.isLoading = true;
-    this.photoProfilService
-      .deletePhotoProfil(this.idUser)
-      .pipe(take(1))
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.photoNull = true;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-    this.deleteHover = false;
-    this.editPdp = false;
-  }
-  onFileChangeAdd(event: Event) {
-    console.log('add');
-    const target = event.target as HTMLInputElement;
-    const files = target.files as FileList;
-    if (files[0].type.match(/image\/*/) == null) {
-      return;
-    }
-    this.isLoading = true;
-    this.photoProfilService.uploadPhotoProfil(files[0], this.idUser).subscribe(
-      (data) => {
-        console.log(data);
-        this.photoNull = false;
-        this.initPdp(this.idUser);
-      },
-      (error) => {
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
-    this.editPdp = false;
-  }
-  onFileChange(event: Event) {
-    console.log('change');
-    const target = event.target as HTMLInputElement;
-    const files = target.files as FileList;
-    if (files[0].type.match(/image\/*/) == null) {
-      alert('Seules les images sont supportées');
-      return;
-    }
-    this.isLoading = true;
-    this.photoProfilService
-      .updatePhotoProfil(files[0], this.idUser)
-      .pipe(take(1))
-      .subscribe(
-        (data) => {
-          this.photoUrl = data.path;
-          this.photoNull = false;
-          this.initPdp(this.idUser);
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-    this.editPdp = false;
-  }
-  @ViewChild('fileInput') fileInput!: ElementRef;
-  onFileSelect(event: Event) {
-    this.fileInput.nativeElement.click();
-  }
-  initPdp(id: any) {
-    this.photoProfilService
-      .getPhotoProfil(id)
-      .pipe(take(1))
-      .subscribe(
-        (response) => {
-          if (response) {
-            this.photoUrl = response.path;
-            console.log(response.path);
-            this.photoNull = false;
-          } else {
-            this.photoNull = true;
-          }
-          this.isLoading = false;
-        },
-        (error) => {
-          console.log(error);
-          this.isLoading = false;
-        }
-      );
-  }
   buttonChoiceSwap() {
     this.formChoiceButton = !this.formChoiceButton;
   }
-  editPdpButton() {
-    this.editPdp = !this.editPdp;
+  validateForm() {
+    this.registerForm.value.emailgroup;
+  }
+  verifyUserForm() {
+    if (
+      this.registerForm.controls['username'].status == 'VALID'&&
+      this.registerForm.controls['email'].status == 'VALID' &&
+      this.registerForm.controls['phoneNumber'].status == 'VALID' &&
+      this.registerForm.controls['lastname'].status == 'VALID' &&
+      this.registerForm.controls['firstname'].status == 'VALID' &&
+      (this.registerForm.controls['tva'].status == 'VALID' || this.isClient) &&
+      this.registerForm.controls['password'].status == 'VALID'
+    ) {
+      return true;
+    }
+    return false;
   }
 }

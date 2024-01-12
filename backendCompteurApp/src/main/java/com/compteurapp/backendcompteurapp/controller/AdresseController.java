@@ -1,12 +1,13 @@
 package com.compteurapp.backendcompteurapp.controller;
 
-import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.DTO.AdresseDTO;
+import com.compteurapp.backendcompteurapp.model.Adresse;
 import com.compteurapp.backendcompteurapp.services.AdresseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -32,4 +33,7 @@ public class AdresseController {
 
     @GetMapping("/getAdresses")
     public List<Adresse> getAdresses(){ return adresseService.getAdresses();}
+
+    @GetMapping("/getAdresseByUserId/{id}")
+    public Adresse getAdresseByUserId(@PathVariable String id){ return adresseService.getAdresseByUserId(id);}
 }

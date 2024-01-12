@@ -7,8 +7,12 @@ import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.compteurapp.backendcompteurapp.model.Adresse;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdresseService {
@@ -20,6 +24,8 @@ public class AdresseService {
     UserDBRepository userDBRepository;
 
     public Adresse getAdresseByUserName(String username){ return adresseRepository.findAdresseByUserUsername(username);}
+
+    public Adresse getAdresseByUserId(String id){ return adresseRepository.findAdresseByUserId(id);}
 
     public Adresse addAdresse(Adresse adresse){
         return adresseRepository.save(adresse);
