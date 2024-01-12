@@ -92,20 +92,22 @@ export class FactureComponent implements OnInit{
 
     for (let ligne of this.data) {
       if (filtre !== '' && date !== '') {
-        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.slice(0, -1).some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
           if (ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
             filtrer.push(ligne);
           }
         }
-      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
+      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.slice(0, -1).some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
         filtrer.push(ligne);
       } else if (date !== '' && ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
         filtrer.push(ligne);
       }
     }
+    alert(filtre[4]);
 
     return filtrer;
   }
+
 
   desableFiltre(){
     this.dataFiltre = this.data;
