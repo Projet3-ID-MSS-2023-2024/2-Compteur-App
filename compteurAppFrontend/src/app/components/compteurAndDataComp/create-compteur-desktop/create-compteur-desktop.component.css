@@ -134,3 +134,7 @@ select{
   input:focus {
     outline: none;
   }
+
+.border-red {
+  border: 2px solid red;
+}

@@ -6,26 +6,29 @@
 
     <div class="formField" [formGroup]="dataSend">
       <div class="fieldPlacement">
-        <input type="text" placeholder="Pays" formControlName="pays">
-        <input type="text" placeholder="Ville" formControlName="ville">
+        <input type="text" placeholder="Pays" formControlName="pays" [ngClass]="{ 'border-red': dataSend.get('pays')!.invalid && dataSend.get('pays')!.touched }">
+        <input type="text" placeholder="Ville" formControlName="ville" [ngClass]="{ 'border-red': dataSend.get('ville')!.invalid && dataSend.get('ville')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <input type="text" placeholder="Code postal" formControlName="codePostal">
-        <input type="text" placeholder="Rue" formControlName="rue">
+        <input type="text" placeholder="Code postal" formControlName="codePostal" [ngClass]="{ 'border-red': dataSend.get('codePostal')!.invalid && dataSend.get('codePostal')!.touched }">
+        <input type="text" placeholder="Rue" formControlName="rue" [ngClass]="{ 'border-red': dataSend.get('rue')!.invalid && dataSend.get('rue')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <input type="text" placeholder="Numeros" formControlName="numero">
-        <input type="text" placeholder="Nom" formControlName="nom">
+        <input type="text" placeholder="Numeros" formControlName="numero" [ngClass]="{ 'border-red': dataSend.get('numero')!.invalid && dataSend.get('numero')!.touched }">
+        <input type="text" placeholder="Nom" formControlName="nom" [ngClass]="{ 'border-red': dataSend.get('nom')!.invalid && dataSend.get('nom')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <select formControlName="categorie" (change)="onCategoryChange($event)">
+        <select formControlName="categorie" (change)="onCategoryChange($event)" [ngClass]="{ 'border-red': dataSend.get('categorie')!.invalid && dataSend.get('categorie')!.touched }">
+          <option value="" disabled selected>Catégorie</option>
           <option [value]="item.id" *ngFor="let item of category">{{item.name}}</option>
         </select>
-        <select formControlName="fournisseur">
+        <select formControlName="fournisseur" [ngClass]="{ 'border-red': dataSend.get('fournisseur')!.invalid && dataSend.get('fournisseur')!.touched }">
+          <option value="" disabled selected>Fournisseur</option>
           <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
         </select>
       </div>
     </div>
+
 
     <div class="placement">
       <div class="button" (click)="dataSender()">
