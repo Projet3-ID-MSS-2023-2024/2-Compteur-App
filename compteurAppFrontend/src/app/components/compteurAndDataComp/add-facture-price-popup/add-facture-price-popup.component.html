@@ -8,7 +8,9 @@
       <div class="fieldPlacement">
         <input type="text" placeholder="Montant de la facture" formControlName="facturePrice">
       </div>
-
+      <div class="errorMess" *ngIf="formValid">
+        Veuillez saisir un chiffre valide.
+      </div>
       <div class="placement">
         <div class="button" (click)="dataSender(true)">
           <p>Enregistrer</p>
