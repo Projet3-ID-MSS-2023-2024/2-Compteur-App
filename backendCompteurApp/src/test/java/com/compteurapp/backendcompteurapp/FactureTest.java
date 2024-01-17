@@ -3,6 +3,7 @@ import static org.mockito.Mockito.*;
 
 import com.compteurapp.backendcompteurapp.DTO.FactureDTO;
 import com.compteurapp.backendcompteurapp.DTO.FactureSendDTO;
+import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.controller.FactureController;
 import com.compteurapp.backendcompteurapp.enums.FactureStatement;
@@ -15,6 +16,7 @@ import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -81,21 +83,9 @@ public class FactureTest {
 
     private Facture facture;
 
-    private FactureDTO factureDTO;
-
-    private FactureStatement factureStatement;
-
-    private long compteurDataId;
-
-    private long factureId;
-
-    private long compteurId;
-
-    private long addresseId;
 
 
-    @Test
-    @Order(0)
+    @BeforeEach
     public void init() {
 
         Category category = new Category();
@@ -106,8 +96,7 @@ public class FactureTest {
         userDB.setLastname("test4");
         userDB.setEmail("test4@gmail.com");
         userDB.setUsername("test4");
-        userDB.setId("99999test");
-        this.client = userDB;
+        userDB.setId("999test");
         userDBRepository.save(userDB);
 
         UserDB provider = new UserDB();
@@ -115,11 +104,11 @@ public class FactureTest {
         provider.setLastname("test4");
         provider.setEmail("test4@gmail.com");
         provider.setUsername("test4");
-        provider.setId("9999providertest");
+        provider.setId("999providertest");
         provider.setTva("BE123456789");
         provider.setPhoneNumber("0477777777");
         provider.setCategory(category);
-        this.provider = provider;
+
         userDBRepository.save(provider);
 
         Adresse adresse = new Adresse();
@@ -128,9 +117,13 @@ public class FactureTest {
         adresse.setVille("test");
         adresse.setCodePostal("1000");
         adresse.setPays("test");
-        this.adresse = adresse;
+        adresse.setId(59999L);
         adresseRepository.save(adresse);
-        this.addresseId = adresse.getId();
+
+        this.category = category;
+        this.provider = provider;
+        this.adresse = adresse;
+        this.client = userDB;
 
         Compteur compteur = new Compteur();
         compteur.setNom("test");
@@ -138,9 +131,9 @@ public class FactureTest {
         compteur.setCategory(this.category);
         compteur.setProvider(this.provider);
         compteur.setClient(this.client);
-        this.compteur = compteur;
         Compteur compteurCreate = compteurService.createCompteur(compteur);
-        this.compteurId = compteur.getId();
+        compteur.setId(compteurCreate.getId());
+        this.compteur = compteur;
 
         CompteurData compteurData = new CompteurData();
         compteurData.setCompteur(this.compteur);
@@ -150,42 +143,84 @@ public class FactureTest {
         compteurData.setClient(this.client);
         compteurData.setProvider(this.provider);
         compteurDataRepository.save(compteurData);
-        this.compteurDataId = compteurData.getId();
+        compteurData.setId(compteurData.getId());
+        this.compteurData = compteurData;
 
         Facture facture = new Facture();
-        facture.setPrix(10);
-        facture.setEtat(factureStatement.IMPAYER);
+        facture.setEtat(FactureStatement.IMPAYER);
+        facture.setPrix(992911.0);
         facture.setCompteurData(this.compteurData);
         factureRepository.save(facture);
-        this.factureId = facture.getId();
-
-        this.category = category;
-        this.provider = provider;
-        this.adresse = adresse;
-        this.client = userDB;
+        facture.setId(facture.getId());
         this.facture = facture;
-        this.compteur = compteur;
-        this.compteurData = compteurData;
     }
 
-
-    @Test
-    @Order(1)
-    public void testGetFactureByUserID(){
-        List<FactureSendDTO> factureList = factureController.getFactureByIdUser("99999test", FactureStatement.IMPAYER);
-        assertEquals(1, factureList.size());
-    }
-
-
-    @Test
     @Order(2)
-    void clean() {
-            factureRepository.deleteById(this.factureId);
-            compteurDataRepository.deleteById(this.compteurDataId);
-            compteurService.deleteById(this.compteurId);
-            userDBRepository.deleteById("99999test");
-            userDBRepository.deleteById("9999providertest");
-            adresseRepository.deleteById(this.addresseId);
+    @Test
+    public void testGetFactureByUserId() {
+        List<FactureSendDTO> facture = factureController.getFactureByIdUser(this.client.getId(), FactureStatement.IMPAYER);
+        assertEquals(facture.get(0).id, this.facture.getId());
+    }
+    
+    @Order(3)
+    @Test
+    public void test_createFacture_createsNewFactureWithGivenFactureDTO() {
 
+        FactureDTO factureDTO = new FactureDTO();
+        factureDTO.prix = 10.0;
+        factureDTO.etat = FactureStatement.IMPAYER;
+        factureDTO.idCompteurData = this.compteurData.getId();
+
+
+        Facture result = factureController.createFacture(factureDTO);
+
+
+        assertNotNull(result);
+        assertEquals(factureDTO.prix, result.getPrix(), 0.01);
+        assertEquals(factureDTO.etat, result.getEtat());
+        assertEquals(factureDTO.idCompteurData, result.getCompteurData().getId());
+        factureRepository.deleteById(result.getId());
+    }
+
+    @Order(4)
+    @Test
+    public void test_updateStatus_Facture() {
+
+        FactureDTO factureDTO = new FactureDTO();
+        factureDTO.prix = 10.0;
+        factureDTO.etat = FactureStatement.IMPAYER;
+        factureDTO.idCompteurData = this.compteurData.getId();
+
+        FactureUpdateDTO factureUpdateDTO = new FactureUpdateDTO();
+        factureUpdateDTO.id = this.facture.getId();
+        factureUpdateDTO.etat = FactureStatement.PAYER;
+
+
+        Facture result = factureController.createFacture(factureDTO);
+        Facture resultUpdate = factureController.updateStatus(factureUpdateDTO);
+
+
+        assertNotNull(result);
+        assertEquals(factureDTO.prix, result.getPrix(), 0.01);
+        assertEquals(factureDTO.etat, result.getEtat());
+        assertEquals(factureDTO.idCompteurData, result.getCompteurData().getId());
+
+        assertEquals(result.getCompteurData().getId(), resultUpdate.getCompteurData().getId());
+
+        factureRepository.deleteById(result.getId());
+    }
+
+    @AfterEach
+    void clean() {
+        try {
+            factureRepository.deleteById(this.facture.getId());
+            compteurDataRepository.deleteById(this.compteurData.getId());
+            compteurService.deleteById(this.compteur.getId());
+            userDBRepository.deleteById(this.client.getId());
+            userDBRepository.deleteById(this.provider.getId());
+            adresseRepository.deleteById(this.adresse.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
