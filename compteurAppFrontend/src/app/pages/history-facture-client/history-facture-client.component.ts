@@ -21,6 +21,7 @@ export class HistoryFactureClientComponent implements OnInit{
   data: any | undefined;
   dataFiltre!: any[] ;
   showPopUpfiltre: boolean | undefined = false;
+  listIsEmpty: boolean = false;
 
   showReceiptPopup: boolean | undefined = false;
 
@@ -37,7 +38,9 @@ export class HistoryFactureClientComponent implements OnInit{
     this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "PAYER");
     this.data = this.setDataCompteur(this.dataRecue);
     this.dataFiltre = this.data;
-    console.log("madata" + this.data);
+    if(!this.dataFiltre || this.dataFiltre.length === 0){
+      this.listIsEmpty = true;
+    }
 
   }
 
@@ -82,6 +85,10 @@ export class HistoryFactureClientComponent implements OnInit{
     this.showReceiptPopup = false;
   }
 
+  cacherPopUpEmptyList(any: any){
+    this.listIsEmpty = false;
+  }
+
   cacherPopUpFiltre(any: any){
     this.showPopUpfiltre = false;
   }
@@ -124,6 +131,9 @@ export class HistoryFactureClientComponent implements OnInit{
       }
     }
 
+    if(!filtrer|| filtrer.length === 0){
+      this.listIsEmpty = true;
+    }
     return filtrer;
   }
 
