@@ -161,7 +161,7 @@ public class FactureTest {
         List<FactureSendDTO> facture = factureController.getFactureByIdUser(this.client.getId(), FactureStatement.IMPAYER);
         assertEquals(facture.get(0).id, this.facture.getId());
     }
-    
+
     @Order(3)
     @Test
     public void test_createFacture_createsNewFactureWithGivenFactureDTO() {
