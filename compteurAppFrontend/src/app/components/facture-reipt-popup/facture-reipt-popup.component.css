@@ -189,3 +189,36 @@ button{
   border-radius: 12px;
   width: 55%;
 }
+
+@media screen and (max-width: 950px) {
+  /* ... autres règles ... */
+
+  .popup {
+    height: 50%;
+  }
+
+  .content {
+    width: 90%;
+    height: 90%;
+  }
+
+  .title, .adresse, .information, .factureInfo, .userInfo, .info {
+    font-size: 1em;
+  }
+
+  .croix {
+    width: 20px;
+    height: 20px;
+  }
+
+  .button, .buttonPosition {
+    height: 40px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 20px;
+    width: 70%;
+  }
+}
+
