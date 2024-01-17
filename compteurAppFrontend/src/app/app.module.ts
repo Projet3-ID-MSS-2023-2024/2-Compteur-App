@@ -67,7 +67,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     keycloak
       .init({
         config: {
-          url: 'http://localhost:8082',
+          url: 'https://keycloak.localhost',
           realm: 'compteurapp',
           clientId: 'angular',
         },
@@ -75,18 +75,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
         initOptions: {
           onLoad: 'login-required',
           checkLoginIframe: true,
-        },
-        shouldAddToken: (request) => {
-          const { method, url } = request;
-
-          const isGetRequest = 'GET' === method.toUpperCase();
-          const acceptablePaths = ['/assets', '/clients/public'];
-          const isAcceptablePathMatch = acceptablePaths.some((path) =>
-            url.includes(path)
-          );
-
-          return !(isGetRequest && isAcceptablePathMatch);
-        },
+        }
       })
       .then(() => userDBService.syncUser().toPromise());
 }

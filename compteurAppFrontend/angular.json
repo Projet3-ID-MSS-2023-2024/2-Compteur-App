@@ -80,7 +80,10 @@
           "defaultConfiguration": "development",
           "options": {
             "browserTarget": "compteurAppFrontend:build",
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "ssl": true,
+            "sslKey": "./src/assets/_certificats/localhost.key",
+            "sslCert": "./src/assets/_certificats/localhost.crt"
           }
         },
         "extract-i18n": {
