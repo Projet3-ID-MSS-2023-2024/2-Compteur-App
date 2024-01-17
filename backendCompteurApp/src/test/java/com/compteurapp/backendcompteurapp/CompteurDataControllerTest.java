@@ -167,6 +167,7 @@ public class CompteurDataControllerTest {
     @AfterEach
     void clean() {
         try {
+            compteurDataRepository.delete(this.compteurData);
             compteurService.deleteById(this.compteur.getId());
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
