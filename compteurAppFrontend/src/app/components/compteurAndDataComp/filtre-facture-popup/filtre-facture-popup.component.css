@@ -27,6 +27,45 @@
   border: 1px solid rgba(52, 52, 52, 0.33);
 }
 
+#tooltip {
+  position: relative;
+}
+
+#tooltip .tooltiptext {
+  visibility: hidden;
+  width: 60%;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  font-size: 1.4em;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+#tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 .placement {
   display: flex;
   width: 100%;
@@ -157,6 +196,12 @@ input:focus {
 
   .inputPlacement {
     width: 100%;
+  }
+
+  #tooltip .tooltiptext {
+    width: 70%;
+    left: 15%;
+    font-size: 0.8em;
   }
 }
 
