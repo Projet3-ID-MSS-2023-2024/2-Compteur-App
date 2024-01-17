@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, OnInit} from '@angular/core';
+import {Component, EventEmitter, Output, OnInit, SimpleChanges} from '@angular/core';
 import {CompteurDataService} from "../../_services/compteur-data.service";
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
@@ -24,6 +24,7 @@ export class FactureComponent implements OnInit{
   device: string = 'desktop';
 
   showPopUpfiltre: boolean = false;
+  listIsEmpty: boolean = false;
 
   attributLegend =['Numero de la facture','Nom du compteur', 'Nom du fournisseur','Tva fournisseur' , 'Date', 'Prix'];
 
@@ -41,7 +42,9 @@ export class FactureComponent implements OnInit{
       this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "IMPAYER");
       this.data = this.setDataCompteur(this.dataRecue);
       this.dataFiltre = this.data;
-      console.log(this.data);
+      if(!this.dataFiltre || this.dataFiltre.length === 0){
+        this.listIsEmpty = true;
+      }
   }
 
   async ngAfterViewInit() {
@@ -60,6 +63,10 @@ export class FactureComponent implements OnInit{
 
   cacherPopUp(any: any){
     this.ligneFacture = [];
+  }
+
+  cacherPopUpEmptyList(any: any){
+    this.listIsEmpty = false;
   }
 
   cacherPopUpFiltre(any: any){
@@ -103,8 +110,9 @@ export class FactureComponent implements OnInit{
         filtrer.push(ligne);
       }
     }
-    alert(filtre[4]);
-
+    if(!filtrer|| filtrer.length === 0){
+      this.listIsEmpty = true;
+    }
     return filtrer;
   }
 

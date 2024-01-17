@@ -17,3 +17,4 @@
 <app-loader-api></app-loader-api>
 <app-paypal-pop-up *ngIf="ligneFacture.length>0" [data]="ligneFacture" [userName]="userName" (buttonPressed)="cacherPopUp($event)" ></app-paypal-pop-up>
 <app-filtre-facture-popup *ngIf="showPopUpfiltre" (closePopupFiltre)="cacherPopUpFiltre($event)" (sendData)="getFilterData($event)" ></app-filtre-facture-popup>
+<app-empty-list-popup *ngIf="listIsEmpty" (cacherPopUpEmptyList)="cacherPopUpEmptyList($event)" ></app-empty-list-popup>
