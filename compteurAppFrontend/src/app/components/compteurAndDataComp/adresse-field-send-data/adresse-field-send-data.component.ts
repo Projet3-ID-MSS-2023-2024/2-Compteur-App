@@ -12,15 +12,16 @@ export class AdresseFieldSendDataComponent {
   @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
 
   dataSend = new FormGroup({
-    pays: new FormControl('', Validators.required),
-    ville: new FormControl('', Validators.required),
-    codePostal: new FormControl('', Validators.required),
-    rue: new FormControl('', Validators.required),
-    numero: new FormControl('', Validators.required),
+    pays: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    ville: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    codePostal: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(7)])),
+    rue: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    numero: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
 
-    valeur: new FormControl('', Validators.required),
+    valeur: new FormControl('', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])),
     photo: new FormControl(''),
   });
+
 
   dataSender(choice: boolean) {
     let data: any = [choice];

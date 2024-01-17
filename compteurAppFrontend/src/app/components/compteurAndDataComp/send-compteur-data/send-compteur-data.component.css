@@ -89,6 +89,10 @@ input:focus{
   color: white;
 }
 
+.border-red{
+  border: 2px solid red;
+}
+
 @media screen and (max-width: 950px) {
 
   .sendCompteurForm{

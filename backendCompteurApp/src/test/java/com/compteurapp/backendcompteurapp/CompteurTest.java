@@ -73,10 +73,7 @@ public class CompteurTest {
     public String idClient;
     public String idProvider;
 
-
     @BeforeEach
-    @Test
-    @Order(0)
     public void init() {
 
         Category category = new Category();
@@ -170,10 +167,10 @@ public class CompteurTest {
         assertTrue(compteurDeleted.isEmpty());
     }
 
-    @Test
-    @Order(6)
+    @AfterEach
     void clean() {
         try {
+            compteurService.deleteById(this.id);
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
             adresseRepository.deleteById(this.adresse.getId());

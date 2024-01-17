@@ -22,10 +22,10 @@ export class LoaderAPIComponent {
         this.loadingView();
       }
       if(message === 'sucess' ){
-        this.responseView(true, 'Success');
+        this.responseView(true, 'Succées');
       }
       if(message === 'error'){
-        this.responseView(false, 'Error');
+        this.responseView(false, 'Erreur');
       }
       if(message === 'Paiement effectué'){
         this.responseView(true, 'Paiement effectué');

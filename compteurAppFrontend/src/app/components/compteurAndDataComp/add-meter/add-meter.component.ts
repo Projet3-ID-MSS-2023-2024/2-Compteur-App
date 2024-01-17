@@ -31,10 +31,11 @@ export class AddMeterComponent {
 
 
   addMeter = new FormGroup({
-    nom: new FormControl('', Validators.required),
-    categorie: new FormControl('', Validators.required),
-    fournisseur: new FormControl('', Validators.required),
-  });
+    nom: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    categorie: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    fournisseur: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])),
+});
+
 
   constructor(
     private loadingService: LoadingService

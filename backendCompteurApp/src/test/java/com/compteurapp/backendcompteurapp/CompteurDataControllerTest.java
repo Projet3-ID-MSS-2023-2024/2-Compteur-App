@@ -10,6 +10,7 @@ import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -71,8 +72,6 @@ public class CompteurDataControllerTest {
 
 
     @BeforeEach
-    @Test
-    @Order(0)
     public void init() {
 
         Category category = new Category();
@@ -83,7 +82,7 @@ public class CompteurDataControllerTest {
         userDB.setLastname("test4");
         userDB.setEmail("test4@gmail.com");
         userDB.setUsername("test4");
-        userDB.setId("99999test");
+        userDB.setId("999test");
         userDBRepository.save(userDB);
 
         UserDB provider = new UserDB();
@@ -91,7 +90,7 @@ public class CompteurDataControllerTest {
         provider.setLastname("test4");
         provider.setEmail("test4@gmail.com");
         provider.setUsername("test4");
-        provider.setId("9999providertest");
+        provider.setId("999providertest");
         provider.setTva("BE123456789");
         provider.setPhoneNumber("0477777777");
         provider.setCategory(category);
@@ -165,8 +164,7 @@ public class CompteurDataControllerTest {
         assertTrue(compteurDeleted.isEmpty());
     }
 
-    @Test
-    @Order(5)
+    @AfterEach
     void clean() {
         try {
             compteurService.deleteById(this.compteur.getId());

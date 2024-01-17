@@ -12,7 +12,7 @@ export class SendCompteurDataComponent {
   adresse!: addAdresse;
 
   dataSend = new FormGroup({
-    valeur: new FormControl('', Validators.required),
+    valeur: new FormControl('', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$")])),
     photo: new FormControl(''),
   });
 
