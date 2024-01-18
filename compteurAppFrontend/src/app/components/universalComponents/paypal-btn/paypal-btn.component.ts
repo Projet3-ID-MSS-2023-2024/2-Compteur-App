@@ -28,7 +28,7 @@ export class PaypalBtnComponent implements OnInit{
   sendEmail() {
     const object = 'Payement facture N° ' + this.factureInfo[1];
     const message = 'La facture N° ' + this.factureInfo[1] + ' a été payée avec succès.';
-      this.mailService.sendMail('alessio.rinaldi@outlook.com', object, message).subscribe(response => {
+      this.mailService.sendMail(this.userMail, object, message).subscribe(response => {
         console.log(response);
       } );
 
