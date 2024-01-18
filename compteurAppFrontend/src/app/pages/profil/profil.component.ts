@@ -176,7 +176,7 @@ export class ProfilComponent implements OnInit {
     this.editPopup = false;
     this.donneesModifiees = [];
   }
-  editAdressePopup() {
+  async editAdressePopup() {
     this.editingUser = false;
     if (this.idAdresse != undefined && this.adresseForm.valid) {
       this.adresse$.subscribe((data) => {
@@ -202,6 +202,14 @@ export class ProfilComponent implements OnInit {
         if (this.donneesModifiees.length > 0) {
           this.editPopup = true;
         }
+      });
+    }
+    else if(this.adresseForm.valid) {
+    this.editAdresse(true);
+      this.adresse$ = await this.adresseService.getAdresseByUserId(this.idUser);
+      this.adresse$.subscribe((data) => {
+        this.idAdresse = data ? data.id : undefined;
+        console.log(this.idAdresse);
       });
     }
   }
