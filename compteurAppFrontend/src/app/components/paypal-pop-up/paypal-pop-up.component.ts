@@ -77,6 +77,5 @@ export class PaypalPopUpComponent implements OnInit{
   }
 
 
-
-
+  protected readonly undefined = undefined;
 }

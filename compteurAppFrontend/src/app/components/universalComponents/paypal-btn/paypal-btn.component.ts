@@ -1,6 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 import {FactureService} from "../../../_services/facture.service";
+import {MailService} from "../../../_services/mail.service";
 
 
 @Component({
@@ -12,16 +13,25 @@ export class PaypalBtnComponent implements OnInit{
 
   //@Input() facture:Facture;
   @Input() factureInfo: any[] = [];
+  @Input() userMail!: any;
 
   public payPalConfig ? : IPayPalConfig;
 
   constructor(
     private factureService: FactureService,
+    private mailService: MailService,
     ) {}
 
   ngOnInit(): void {
-    console.log("localsto"+localStorage.getItem('paymentSuccess'));
     this.initConfig();
+  }
+  sendEmail() {
+    const object = 'Payement facture N° ' + this.factureInfo[1];
+    const message = 'La facture N° ' + this.factureInfo[1] + ' a été payée avec succès.';
+      this.mailService.sendMail('alessio.rinaldi@outlook.com', object, message).subscribe(response => {
+        console.log(response);
+      } );
+
   }
 
   private initConfig(): void {
@@ -71,6 +81,7 @@ export class PaypalBtnComponent implements OnInit{
       },
       onClientAuthorization: (data) => {
         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+        this.sendEmail();
         this.updateStatusFacture(this.factureInfo[1] , "PAYER");
         sessionStorage.setItem('paymentSuccess', 'true');
         location.reload();

@@ -51,7 +51,7 @@
     </div>
 
     <div class="button" *ngIf="data">
-      <app-paypal-btn [factureInfo]="data"></app-paypal-btn>
+      <app-paypal-btn [factureInfo]="data" [userMail]="userInfo?.email"></app-paypal-btn>
     </div>
     <div class="croix" (click)="buttonPress(false)">
 
