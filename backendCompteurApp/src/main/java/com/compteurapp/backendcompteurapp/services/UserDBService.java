@@ -108,6 +108,7 @@ public class UserDBService {
 
                     Keycloak keycloak = keycloakUtil.getKeycloakInstance();
                     RoleRepresentation providerRole = keycloak.realm(realm).roles().get("admin").toRepresentation();
+
                     keycloak.realm(realm).users().get(id).roles().realmLevel().add(Collections.singletonList(providerRole));
                 }
                 this.syncUser(user);

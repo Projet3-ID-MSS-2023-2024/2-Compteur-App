@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { lastValueFrom } from 'rxjs';
 import { NavbarStatementService } from 'src/app/_services/navbar-statement.service';
 import { UserDBService } from 'src/app/_services/userDB.service';
 import { UserDB } from 'src/models/userDB';
@@ -13,11 +14,12 @@ export class NavbarComponent implements AfterViewInit {
   isAdmin = false;
   isFournisseur = false;
   isClient = false;
-  user: UserDB | undefined;
+  user!: UserDB;
   navBarIsLocked = false;
   condition1 = false;
   condition2 = false;
   reloadBool = false;
+  role = '';
 
   constructor(
     private readonly keycloak: KeycloakService,
@@ -33,7 +35,25 @@ export class NavbarComponent implements AfterViewInit {
     const authenticated = await this.keycloak.isLoggedIn();
     if (authenticated) {
       const token = await this.keycloak.getToken();
+      // get roles user
+      const roles = await this.keycloak.getUserRoles();
+
+      console.log(roles);
       console.log(token);
+      // get id user
+      const id = (await this.keycloak.loadUserProfile()).id;
+      // get user
+      this.user = await this.getUser(id);
+
+      if(roles.includes(this.user.role) && this.user!.role != undefined){
+        console.log(roles + " " + this.user!.role);
+      }
+      else
+      {
+        console.log(roles + " " + this.user!.role + " ELSE" );
+        location.reload();
+      }
+
       this.isAdmin = this.keycloak.isUserInRole('admin');
       this.isFournisseur = this.keycloak.isUserInRole('fournisseur');
       this.isClient = this.keycloak.isUserInRole('client');
@@ -46,7 +66,7 @@ export class NavbarComponent implements AfterViewInit {
       }
     }
     if (!this.isAdmin && !this.isFournisseur && !this.isClient) {
-      location.reload();
+
     }
     if (this.isClient) {
       this.userDBService
@@ -77,4 +97,10 @@ export class NavbarComponent implements AfterViewInit {
   closePopup() {
     this.isPopup = false;
   }
+
+  getUser(id: any): Promise<any> {
+    const observable = this.userDBService.getUserById(id);
+    return lastValueFrom(observable);
+  }
+
 }
