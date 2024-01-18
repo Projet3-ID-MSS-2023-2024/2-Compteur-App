@@ -7,39 +7,30 @@
   background-color: rgba(0, 0, 0, 0.36);
   width: 100%;
   height: 100vh;
+  z-index: 50;
 }
 p{
   text-align: left;
 }
 .content{
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   background-color: white;
   position: relative;
-  width: 40%;
+  min-width: 35%;
   height: 90%;
 }
-
-#pdf{
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
 
 .title{
   display: flex;
   width: 90%;
-  height: 10%;
+  height: 15%;
   align-items: center;
   margin-left: 5%;
-  font-size: 2em;
+  font-size: 2.5em;
   font-weight: bold;
   margin-top: 40px;
-  background-color: cornflowerblue;
 }
 
 .adresse{
@@ -51,7 +42,6 @@ p{
   margin-top: 20px;
   font-size: 1.2em;
   font-weight: bold;
-  background-color: cornflowerblue;
 }
 
 .adresse h1{
@@ -71,18 +61,43 @@ p{
   align-items: center;
   font-size: 1.2em;
   font-weight: bold;
-  background-color: cornflowerblue;
 }
+
+
+.croix{
+  position: absolute;
+  top: -45px;
+  right: -45px;
+  width: 35px;
+  height: 35px;
+  background: rgba(16, 16, 16, 0.34) url("../../../assets/navbarIcone/hide_picture.svg") no-repeat center;
+  background-size: cover;
+  right: 0px;
+  top: 0px;
+}
+
+.button{
+  display:flex;
+  bottom: 20px;
+  width: 100%;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.button app-paypal-btn{
+  width: 60% !important;
+  height: auto !important;
+}
+
 
 .factureInfo{
   display: flex;
   flex-direction: column;
   width: 90%;
   margin-left: 5%;
-  font-size: 1em;
-  height: 60px;
-  margin-bottom: 30px;
-  background-color: cornflowerblue;
+  font-size: 1.1em;
+  margin-bottom: 15px;
 }
 
 .factureInfo p{
@@ -92,13 +107,11 @@ p{
 
 .userInfo{
   display: flex;
-  width: 90%;
   height: 100px;
   margin-left: 5%;
   flex-direction: column;
   flex-wrap: wrap;
   margin-bottom: 20px;
-  background-color: cornflowerblue;
 }
 
 .boxTitle{
@@ -107,7 +120,6 @@ p{
   margin-left: 5%;
   height: 30px;
   align-items: center;
-  background-color: cornflowerblue;
 }
 
 .boxTitle h2{
@@ -116,7 +128,6 @@ p{
 
 .info{
   display: flex;
-  width: 33.3333%;
   height: 30%;
   align-items: center;
   font-size: 1.3em;
@@ -128,7 +139,6 @@ p{
   height: 35px;
   margin-left: 5%;
   border: 1px solid rgb(166, 166, 166);
-  background-color: cornflowerblue;
 }
 
 .list{
@@ -169,40 +179,50 @@ p{
 }
 
 button{
-  background-color: deepskyblue; /* Couleur de fond */
-  border: none; /* Pas de bordure */
-  color: black; /* Couleur du texte */
-  padding: 15px 32px; /* Espacement interne */
-  text-align: center; /* Alignement du texte */
-  text-decoration: none; /* Pas de soulignement */
-  display: inline-block; /* Affichage en ligne */
-  font-size: 25px; /* Taille de la police */
-  margin: 4px 2px; /* Marge externe */
-  cursor: pointer; /* Curseur en forme de main */
-  border-radius: 12px; /* Bords arrondis */
-  width: 45%; /* Largeur relative à la div parente */
+  background-color: #382c2c; /* Green */
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 20px; /* Augmentez la taille du padding pour un bouton plus grand */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px; /* Augmentez la taille de la police pour un texte plus grand */
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 55%;
 }
 
-button:hover {
-  background-color: cornflowerblue; /* Couleur de fond lors du survol */
+@media screen and (max-width: 950px) {
+  .content {
+    width: 90%;
+    height: 95%;
+  }
+
+  .adresse, .information, .factureInfo, .userInfo, .info {
+    font-size: 1em;
+  }
+
+  .title {
+    font-size: 1.5em;
+  }
+
+  .croix {
+    z-index: 150;
+    width: 20px;
+    height: 20px;
+  }
+
+  .button, .buttonPosition {
+    height: 40px;
+  }
+
+
+  button {
+    padding: 10px;
+    font-size: 20px;
+    width: 70%;
+    z-index: 100;
+  }
 }
 
-.croix{
-  position: absolute;
-  top: -45px;
-  right: -45px;
-  width: 35px;
-  height: 35px;
-  background: rgba(16, 16, 16, 0.34) url("../../../assets/navbarIcone/hide_picture.svg") no-repeat center;
-  background-size: cover;
-}
-
-.button{
-  display:flex;
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  height: 80px;
-  justify-content: center;
-  align-items: center;
-}

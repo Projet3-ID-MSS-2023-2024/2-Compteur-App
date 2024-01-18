@@ -5,60 +5,57 @@
         <h1>Facture</h1>
       </div>
 
-      <div class="factureInfo" *ngIf="facture">
-        <p>N° de facture : {{facture.id}} </p>
-        <p>Date :{{facture.date}}</p>
-        <p>N° de TVA : {{facture.TVA}}</p>
-      </div>
+        <div class="factureInfo" *ngIf="facture">
+          <p>N° de facture : {{facture.id}} </p>
+          <p>Date :{{facture.date}}</p>
+        </div>
 
-      <div class="boxTitle">
-        <h2>Client</h2>
-      </div>
-      <div class="userInfo">
-        <div class="info">{{userInfo?.firstname}} {{userInfo?.lastname}}</div>
-        <div class="info">{{userAdresse?.numero}} {{userAdresse?.rue}}, {{userAdresse?.ville}}</div>
-        <div class="info">{{userAdresse?.codePostal}} {{userAdresse?.pays}}</div>
-        <div class="info">{{userInfo?.email}}</div>
-        <div class="info">{{userInfo?.phoneNumber}}</div>
+        <div class="boxTitle">
+          <h2>Client</h2>
+        </div>
+        <div class="userInfo">
+          <div class="info">{{userInfo?.firstname}} {{userInfo?.lastname}}</div>
+          <div class="info">{{userAdresse?.numero}} {{userAdresse?.rue}}, {{userAdresse?.ville}}</div>
+          <div class="info">{{userAdresse?.codePostal}} {{userAdresse?.pays}}</div>
+          <div class="info">{{userInfo?.email}}</div>
+          <div class="info">{{userInfo?.phoneNumber}}</div>
 
-      </div>
+        </div>
 
-      <div class="boxTitle">
-        <h2>Fournisseur</h2>
-      </div>
-      <div class="userInfo">
-        <div class="info">{{provideurInfo?.firstname}} {{provideurInfo?.lastname}}</div>
-        <div class="info">{{provideurAdresse?.rue}} {{provideurAdresse?.numero}}, {{provideurAdresse?.ville}}</div>
-        <div class="info">{{provideurAdresse?.codePostal}} {{provideurAdresse?.pays}}</div>
-        <div class="info">{{provideurInfo?.email}}</div>
-        <div class="info">{{provideurInfo?.phoneNumber}}</div>
-        <div class="info">N° de TVA : {{facture?.TVA}}</div>
+        <div class="boxTitle">
+          <h2>Fournisseur</h2>
+        </div>
+        <div class="userInfo">
+          <div class="info">{{provideurInfo?.firstname}} {{provideurInfo?.lastname}}</div>
+          <div class="info">{{provideurAdresse?.rue}} {{provideurAdresse?.numero}}, {{provideurAdresse?.ville}}</div>
+          <div class="info">{{provideurAdresse?.codePostal}} {{provideurAdresse?.pays}}</div>
+          <div class="info">{{provideurInfo?.email}}</div>
+          <div class="info">{{provideurInfo?.phoneNumber}}</div>
+          <div class="info">N° de TVA : {{facture?.TVA}}</div>
 
-      </div>
+        </div>
 
-      <div class="liste">
-        <div class="list"><p>Quantite</p></div>
-        <div class="list"><p>Compteur</p></div>
-        <div class="list"><p>Prix</p></div>
-      </div>
-      <div class="liste" *ngIf="facture">
-        <div class="list"><p>1</p></div>
-        <div class="list"><p>{{facture.nomCompteur}}</p></div>
-        <div class="list"><p>{{facture.prix}} €</p></div>
-      </div>
+        <div class="liste">
+          <div class="list"><p>Quantite</p></div>
+          <div class="list"><p>Compteur</p></div>
+          <div class="list"><p>Prix</p></div>
+        </div>
+        <div class="liste" *ngIf="facture">
+          <div class="list"><p>1</p></div>
+          <div class="list"><p>{{facture.nomCompteur}}</p></div>
+          <div class="list"><p>{{facture.prix}}</p></div>
+        </div>
 
-      <div class="total" *ngIf="facture">
-        <div class="totalDetail"><h3>Total</h3></div>
-        <div class="totalDetail"><p>{{facture.prix}} €</p></div>
-      </div>
-
+        <div class="total" *ngIf="facture">
+          <div class="totalDetail"><h3>Total</h3></div>
+          <div class="totalDetail"><p>{{facture.prix}}</p></div>
+        </div>
     </div>
-      <div class="buttonPosition" >
-        <button (click)="captureAndDownload()">Telecharger la facture</button>
-      </div>
-      <div class="croix" (click)="buttonPress(false)">
-
-      </div>
+    <div class="buttonPosition" >
+      <button (click)="captureAndDownload()">Telecharger la facture</button>
+    </div>
+    <div class="croix" (click)="buttonPress(false)"></div>
   </div>
+
 </div>
 

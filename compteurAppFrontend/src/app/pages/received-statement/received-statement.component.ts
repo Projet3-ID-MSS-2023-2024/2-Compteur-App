@@ -8,6 +8,10 @@ import { from } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
 import {FactureDTO} from "../../../models/factureDTO";
 import {FactureService} from "../../_services/facture.service";
+import {MailService} from "../../_services/mail.service";
+import {UserService} from "../../_services/user.service";
+import {User} from "../../../models/user";
+import {UserDB} from "../../../models/userDB";
 
 @Component({
   selector: 'app-received-statement',
@@ -49,10 +53,15 @@ export class ReceivedStatementComponent {
   facture!: FactureDTO;
   compteurDataNumber!: number;
 
+  clientMail!: string;
+  clientName!: string;
+
   constructor(private compteurDataService: CompteurDataService,
     private factureService: FactureService,
     private keycloackService: KeycloakService,
-    private loadingService: LoadingService,) {}
+    private userService: UserService,
+    private loadingService: LoadingService,
+              private mailService: MailService,) {}
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
@@ -88,6 +97,10 @@ export class ReceivedStatementComponent {
   async fillFactureData(price: any){
     this.facture = new FactureDTO('IMPAYER', price, this.compteurDataNumber);
     await this.addFacture(this.facture);
+    let compteurData:any = await this.getCompteurDataForGetClientId(this.facture.idCompteurData!.toString());
+    this.clientMail = compteurData.client.email;
+    this.clientName= compteurData.client.firstname;
+    this.sendEmail(this.clientMail, this.clientName);
     location.reload();
   }
 
@@ -267,6 +280,17 @@ export class ReceivedStatementComponent {
     });
   }
 
+  /**/
+  /* FONCTION d'envoie de mail au client*/
+  /**/
+  sendEmail(mail:string, clientName: string) {
+    const object = 'Nouvelle facture disponible';
+    const message = 'Bonjour'+' '+ clientName+ ', une nouvelle facture est disponible dans l’onglet Facture de votre CompteurApp.';
+    this.mailService.sendMail(mail, object, message).subscribe(response => {
+     console.log(response);
+    } );
+
+  }
 
 
   /*#############################*/
@@ -312,5 +336,8 @@ export class ReceivedStatementComponent {
     return lastValueFrom(observable);
   }
 
-
+  getCompteurDataForGetClientId(id:string): Promise<CompteurDataReq> {
+    const observable = this.compteurDataService.getCompteurDataNoDTO(id);
+    return lastValueFrom(observable);
+  }
 }
