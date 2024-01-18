@@ -72,7 +72,7 @@ export class ProfilComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^(\+|0)[1-9][0-9]{8,14}$/)]], // Validation pour 10 chiffres
       tva: ['', [Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/)]], // Maximum 15 chiffres
       password: [
         '',

@@ -75,7 +75,7 @@ public class CompteurDataControllerTest {
     public void init() {
 
         Category category = new Category();
-        category.setId(1L);
+        category.setId(2L);
 
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
