@@ -157,6 +157,7 @@ export class SendStatementComponent {
           this.category.find((item) => item.id == data[0].categorie)?.name,
         ]);
         this.loadingService.emettreEvenement('sucess');
+        this.navbarStatement.setCondition2(true);
       } catch {
         console.log('error');
         this.loadingService.emettreEvenement('error');
@@ -208,6 +209,7 @@ export class SendStatementComponent {
         await this.deleteCompteur(this.idFocus);
         this.data = this.data.filter((item) => item[0] !== this.idFocus);
         this.loadingService.emettreEvenement('sucess');
+        this.navbarStatement.setCondition2(this.data.length > 0);
       } catch {
         this.loadingService.emettreEvenement('error');
       }
@@ -231,8 +233,6 @@ export class SendStatementComponent {
 
   async addCompteur(compteur: Compteur): Promise<CompteurDTO> {
     const observable = this.compteurService.addCompteur(compteur);
-    this.navbarStatement.setCondition2(true);
-    console.log(this.data.length)
     return lastValueFrom(observable);
   }
 
@@ -257,7 +257,6 @@ export class SendStatementComponent {
 
   async deleteCompteur(id: string): Promise<Compteur> {
     const observable = this.compteurService.deleteCompteurs(id);
-    this.navbarStatement.setCondition2(this.data.length != 1);
     return lastValueFrom(observable);
   }
 

@@ -4,7 +4,7 @@
       <h1>Envoyer votre relevé</h1>
     </div>
     <div class="formulaire" [formGroup]="dataSend">
-      <input type="text" placeholder="Valeur" formControlName="valeur">
+      <input type="text" placeholder="Valeur" formControlName="valeur" [ngClass]="{ 'border-red': dataSend.get('valeur')!.invalid && dataSend.get('valeur')!.touched }">
       <input type="file" formControlName="photo">
     </div>
     <div class="buttonContainer">

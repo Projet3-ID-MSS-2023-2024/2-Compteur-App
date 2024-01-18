@@ -1,11 +1,12 @@
 <div class="factureFrom">
   <div class="formulaire">
     <div class="placement">
-      <h1>Rechercher une facture</h1>
+      <h1>Rechercher une facture </h1>
     </div>
 
     <div class="formField" [formGroup]="dataSend">
-      <div class="fieldPlacement">
+      <div id="tooltip" class="fieldPlacement">
+          <span class="tooltiptext">Si vous voulez rechercher un prix, veuillez ajouter le symbole € après le montant recherché. Par exemple : 123€. Pour tout autre champ de la liste, entrez simplement la valeur à rechercher.</span>
         <input type="text" placeholder="Entrer votre recherche" formControlName="filter">
       </div>
       <div class="fieldPlacement">

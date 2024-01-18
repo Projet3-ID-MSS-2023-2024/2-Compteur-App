@@ -24,16 +24,17 @@ export class CreateCompteurDesktopComponent {
   filteredProviders!: UserDB[];
 
   dataSend = new FormGroup({
-    pays: new FormControl('', Validators.required),
-    ville: new FormControl('', Validators.required),
-    codePostal: new FormControl('', Validators.required),
-    rue: new FormControl('', Validators.required),
-    numero: new FormControl('', Validators.required),
+    pays: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    ville: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    codePostal: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(7)])),
+    rue: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    numero: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
 
-    nom: new FormControl('', Validators.required),
-    categorie: new FormControl('', Validators.required),
-    fournisseur: new FormControl('', Validators.required),
+    nom: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    categorie: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(30)])),
+    fournisseur: new FormControl('', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])),
   });
+
 
   dataSender() {
     let data:any[] = [];

@@ -1,9 +1,8 @@
 package com.compteurapp.backendcompteurapp.services;
 
-import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
 import com.compteurapp.backendcompteurapp.model.Facture;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.repository.FactureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

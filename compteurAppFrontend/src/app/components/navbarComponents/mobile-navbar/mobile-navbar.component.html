@@ -5,7 +5,7 @@
       </div>
     </div>
     <div class="homePlacement" #items>
-      <app-navbar-card [icone]="'home.svg'" [title]="'Home'" [path]="'/homePage'"></app-navbar-card>
+      <app-navbar-card [icone]="'home.svg'" [title]="'Acceuil'" [path]="'/homePage'"></app-navbar-card>
     </div>
 
     <div class="navbarPosition" #items>
@@ -16,12 +16,13 @@
     </div>
 
     <div class="homePlacement" #items>
-      <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'" (click)="openPopupDeconnexion()"></app-navbar-card>
+      <app-navbar-card [icone]="'log_out.svg'" [title]="'Déconnexion'" (click)="openPopupDeconnexion()"></app-navbar-card>
     </div>
 
     <div class="containerBottom" #items>
-      <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'" [surname]="'Robert Johns'"
-        [lock]="role"></app-profil-card-navbar>
+      <div (click)="goToProfil()" class="logout">
+        <app-navbar-card [icone]="'profil.svg'" [title]="'Profil'"></app-navbar-card>
+      </div>
     </div>
 
   </div>

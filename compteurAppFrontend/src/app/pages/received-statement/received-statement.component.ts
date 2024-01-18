@@ -8,6 +8,10 @@ import { from } from 'rxjs';
 import { LoadingService } from 'src/app/_services/loading.service';
 import {FactureDTO} from "../../../models/factureDTO";
 import {FactureService} from "../../_services/facture.service";
+import {MailService} from "../../_services/mail.service";
+import {UserService} from "../../_services/user.service";
+import {User} from "../../../models/user";
+import {UserDB} from "../../../models/userDB";
 
 @Component({
   selector: 'app-received-statement',
@@ -16,9 +20,12 @@ import {FactureService} from "../../_services/facture.service";
 })
 export class ReceivedStatementComponent {
 
+
   attributLegend = ['Nom Client', 'Valeur', 'Date', 'Etat'];
 
   buttonOption = ['picture.svg', 'facture.svg'];
+
+  buttonOptionTraite = ['picture.svg'];
 
   traiterFilterChoice:string = 'choiceOne';
   payerFilterChoice:string = 'choiceOne';
@@ -49,10 +56,15 @@ export class ReceivedStatementComponent {
   facture!: FactureDTO;
   compteurDataNumber!: number;
 
+  clientMail!: string;
+  clientName!: string;
+
   constructor(private compteurDataService: CompteurDataService,
     private factureService: FactureService,
     private keycloackService: KeycloakService,
-    private loadingService: LoadingService,) {}
+    private userService: UserService,
+    private loadingService: LoadingService,
+              private mailService: MailService,) {}
 
   async ngAfterViewInit() {
     this.loadingService.emettreEvenement('loading');
@@ -88,6 +100,10 @@ export class ReceivedStatementComponent {
   async fillFactureData(price: any){
     this.facture = new FactureDTO('IMPAYER', price, this.compteurDataNumber);
     await this.addFacture(this.facture);
+    let compteurData:any = await this.getCompteurDataForGetClientId(this.facture.idCompteurData!.toString());
+    this.clientMail = compteurData.client.email;
+    this.clientName= compteurData.client.firstname;
+    this.sendEmail(this.clientMail, this.clientName);
     location.reload();
   }
 
@@ -95,20 +111,35 @@ export class ReceivedStatementComponent {
 
   //FILTRER LES COMPTEURSDATA PAS TRAITER/TRAITER
   async traiterFilter(data: string){
-    this.traiterFilterChoice = data;
-    this.pageStart = 0;
-    this.stop = false;
-    data = data == 'choiceOne' ? 'Non traité' : 'Impayé';
-    await this.mainFunctionShowData(data);
+    this.loadingService.emettreEvenement('loading');
+    try{
+      this.traiterFilterChoice = data;
+      this.pageStart = 0;
+      this.stop = false;
+      data = data == 'choiceOne' ? 'Non traité' : 'Impayé';
+      await this.mainFunctionShowData(data);
+      this.loadingService.emettreEvenement('sucess');
+    }catch{
+      this.loadingService.emettreEvenement('error');
+    }
+
   }
 
   //FILTRER LES COMPTEURSDATA PAS IMPAYER/PAYER
   async payerFilter(data: string){
-    this.payerFilterChoice = data;
-    this.pageStart = 0;
-    this.stop = false;
-    data = data == 'choiceOne' ? 'Impayé' : 'Payé';
-    await this.mainFunctionShowData(data);
+    this.loadingService.emettreEvenement('loading');
+    try{
+      this.payerFilterChoice = data;
+      this.pageStart = 0;
+      this.stop = false;
+      data = data == 'choiceOne' ? 'Impayé' : 'Payé';
+      await this.mainFunctionShowData(data);
+      this.loadingService.emettreEvenement('sucess');
+    }
+    catch{
+      this.loadingService.emettreEvenement('error');
+    }
+
   }
 
   closePicture(close:boolean){
@@ -252,6 +283,17 @@ export class ReceivedStatementComponent {
     });
   }
 
+  /**/
+  /* FONCTION d'envoie de mail au client*/
+  /**/
+  sendEmail(mail:string, clientName: string) {
+    const object = 'Nouvelle facture disponible';
+    const message = 'Bonjour'+' '+ clientName+ ', une nouvelle facture est disponible dans l’onglet Facture de votre CompteurApp.';
+    this.mailService.sendMail(mail, object, message).subscribe(response => {
+     console.log(response);
+    } );
+
+  }
 
 
   /*#############################*/
@@ -297,5 +339,8 @@ export class ReceivedStatementComponent {
     return lastValueFrom(observable);
   }
 
-
+  getCompteurDataForGetClientId(id:string): Promise<CompteurDataReq> {
+    const observable = this.compteurDataService.getCompteurDataNoDTO(id);
+    return lastValueFrom(observable);
+  }
 }

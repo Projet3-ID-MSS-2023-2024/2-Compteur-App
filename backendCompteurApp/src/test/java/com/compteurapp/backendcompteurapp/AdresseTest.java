@@ -1,18 +1,15 @@
-/*
-
 package com.compteurapp.backendcompteurapp;
 
 import com.compteurapp.backendcompteurapp.model.Adresse;
-import com.compteurapp.backendcompteurapp.model.Category;
-import com.compteurapp.backendcompteurapp.model.User;
 import com.compteurapp.backendcompteurapp.model.UserDB;
+import com.compteurapp.backendcompteurapp.DTO.AdresseDTO;
 import com.compteurapp.backendcompteurapp.services.AdresseService;
 import com.compteurapp.backendcompteurapp.services.KeycloakService;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
+import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
+import org.aspectj.apache.bcel.util.Repository;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,50 +29,66 @@ public class AdresseTest {
     @Autowired
     KeycloakService keycloakService;
 
-    @Test
-    @Order(1)
-    public void testAddAdresse(){
+    @Autowired
+    AdresseRepository adresseRepository;
 
+    @Autowired
+    UserDBRepository userDBRepository;
+
+
+    public Adresse testAdresse;
+    public UserDB testUser;
+
+
+    @BeforeEach
+    public void init(){
         Adresse adresse = new Adresse();
         adresse.setNumero("10");
         adresse.setPays("Italy");
         adresse.setRue("Rue des tests");
         adresse.setVille("Rome");
         adresse.setCodePostal("14");
-        Adresse adresseCree = adresseService.addAdresse(adresse);
+        adresse.setId(5555L);
+        this.testAdresse = adresseService.addAdresse(adresse);
 
-        assertNotNull(adresseCree.getId());
-        assertEquals(adresseCree.getNumero(),"10");
-        assertEquals(adresseCree.getPays(),"Italy");
-        assertEquals(adresseCree.getVille(),"Rome");
-        assertEquals(adresseCree.getRue(),"Rue des tests");
-        assertEquals(adresseCree.getCodePostal(),"14");
+        UserDB user = new UserDB();
+        user.setAdresse(testAdresse);
+        user.setRole("client");
+        user.setUsername("TestUser");
+        user.setId("5555");
+
+        userDBRepository.save(user);
+        this.testUser = userDBService.getUserById("5555");
+    }
+
+    @AfterEach
+     void clean(){
+        userDBRepository.deleteById(this.testUser.getId());
+        adresseRepository.deleteById(this.testAdresse.getId());
+    }
+
+    @Test
+    @Order(1)
+    public void testAddAdresse(){
+
+        assertNotNull(this.testAdresse.getId());
+        assertEquals(this.testAdresse.getNumero(),"10");
+        assertEquals(this.testAdresse.getPays(),"Italy");
+        assertEquals(this.testAdresse.getVille(),"Rome");
+        assertEquals(this.testAdresse.getRue(),"Rue des tests");
+        assertEquals(this.testAdresse.getCodePostal(),"14");
     }
 
     @Test
     @Order(2)
     public void testUpdateAdresse() throws Exception {
 
-        Adresse adresse = new Adresse();
-        adresse.setNumero("10");
-        adresse.setPays("Italy");
-        adresse.setRue("Rue des tests");
-        adresse.setVille("Rome");
-        adresse.setCodePostal("14");
-        Adresse adresseCree = adresseService.addAdresse(adresse);
+        AdresseDTO adresse = new AdresseDTO("Rue des updates","11","12","Paris","France",this.testUser.getId());
+        adresse.setId(this.testAdresse.getId());
 
+        Adresse adresseUpdated = adresseService.updateAdresse(adresse);
 
-        adresse.setId(adresseCree.getId());
-        adresse.setNumero("11");
-        adresse.setPays("France");
-        adresse.setRue("Rue des updates");
-        adresse.setVille("Paris");
-        adresse.setCodePostal("12");
-        Adresse adresseUpdated = adresseService.addAdresse(adresse);
-
-        //adresseService.updateAdresse(adresse);
-
-        assertEquals(adresseUpdated.getId(),adresseCree.getId());
+        assertEquals(adresseUpdated.getId(),this.testAdresse.getId());
         assertEquals(adresseUpdated.getNumero(),"11");
         assertEquals(adresseUpdated.getPays(),"France");
         assertEquals(adresseUpdated.getVille(),"Paris");
@@ -83,42 +96,29 @@ public class AdresseTest {
         assertEquals(adresseUpdated.getCodePostal(),"12");
     }
 
-
-
     @Test
     @Order(3)
     public void testGetAdresseByUsername() {
+        Adresse adresseGet = adresseService.getAdresseByUserName("TestUser");
 
-        Adresse adresse = new Adresse();
+        assertEquals(this.testAdresse.getId(),adresseGet.getId());
+        assertEquals(adresseGet.getNumero(),"10");
+        assertEquals(adresseGet.getPays(),"Italy");
+        assertEquals(adresseGet.getVille(),"Rome");
+        assertEquals(adresseGet.getRue(),"Rue des tests");
+        assertEquals(adresseGet.getCodePostal(),"14");
+    }
 
-        adresse.setNumero("11");
-        adresse.setPays("France");
-        adresse.setRue("Rue des updates");
-        adresse.setVille("Paris");
-        adresse.setCodePostal("12");
-        Adresse adresseCree = adresseService.addAdresse(adresse);
+    @Test
+    @Order(4)
+    public void testGetAdresseByUserId(){
+        Adresse adresseGet = adresseService.getAdresseByUserId(this.testUser.getId());
 
-        UserDB user = new UserDB();
-
-        user.setAdresse(adresseCree);
-        user.setUsername("UserTest");
-        user.setEmail("test@gmail.com");
-        user.setCategory(null);
-        user.setFirstname("Jean");
-        user.setLastname("Louis");
-        user.setRole("client");
-        user.setTva(null);
-        user.setPhoneNumber("0411224555");
-
-        //keycloakService.updateUser("8f5aa930-67d4-4fb9-a2c8-e18d6a5c1887",user);
-
-        Adresse adresseGet = adresseService.getAdresseByUserName("UserTest");
-
-        assertEquals(adresseGet.getRue(),"Rue des updates");
-        assertEquals(adresseCree.getNumero(),"11");
-        assertEquals(adresseCree.getPays(),"France");
-        assertEquals(adresseCree.getCodePostal(),"12");
-        assertEquals(adresseCree.getVille(),"Paris");
+        assertEquals(this.testAdresse.getId(),adresseGet.getId());
+        assertEquals(adresseGet.getNumero(),"10");
+        assertEquals(adresseGet.getPays(),"Italy");
+        assertEquals(adresseGet.getVille(),"Rome");
+        assertEquals(adresseGet.getRue(),"Rue des tests");
+        assertEquals(adresseGet.getCodePostal(),"14");
     }
 }
-*/

@@ -7,7 +7,7 @@
   </ng-container>
 
   <div class="indiceButton" #indiceButton>
-    <div class="showMore" *ngIf="legend===false" (click)="openCloseLanguette()">
+    <div class="showMore" *ngIf="legend===false && buttonOption.length != 0" (click)="openCloseLanguette()">
       <img src="./assets/navbarIcone/more.svg" alt="show more">
     </div>
     <div class="languette" *ngIf="legend===false" #languette>

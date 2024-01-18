@@ -1,7 +1,7 @@
 <div class="pageContentRow">
   <div class="pageNamePlacement">
     <app-page-name
-      [pageName]="'Information sur ' + providerUserName"
+      [pageName]="'Information sur ' + providerUserName + ' [' + nameCategory + ']'"
     ></app-page-name>
   </div>
   <div class="containeur-wrappeur">
@@ -33,54 +33,70 @@
             </div>
           </div>
         </div>
-        <div class="error-message-global" *ngIf="submitted && registerForm.invalid">
-          Le formulaire contient des erreurs. Veuillez les corriger avant de soumettre.
-        </div>
 
         <div class="containeur-form">
           <div class="left">
             <div class="form-group">
               <label for="email">Adresse e-mail :</label>
-              <input
-                type="email"
-                id="email"
-                formControlName="email"
-              />
+              <div class="tooltip-container">
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                />
+                <div class="tooltip-content">
+                  Entrez votre adresse e-mail. <br>
+                  Par exemple : fournisseur@mail.com
+                </div>
+              </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('email')?.hasError('required')">
-                L'adresse e-mail est requise.
+                Est requise.
               </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('email')?.hasError('email')">
-                Veuillez entrer une adresse e-mail valide.
+                Adresse e-mail non valide.
               </div>
             </div>
 
             <div class="form-group">
               <label for="phoneNumber">Numéro de téléphone :</label>
-              <input
-                type="text"
-                id="phoneNumber"
-                formControlName="phoneNumber"
-              />
+              <div class="tooltip-container">
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  formControlName="phoneNumber"
+                />
+                <div class="tooltip-content">
+                  Entrez votre numéro de téléphone. <br>
+                  Par exemple : 0470000000
+                </div>
+              </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('required')">
-                Le numéro de téléphone est requis.
+                Est requis.
               </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('pattern')">
-                Veuillez entrer un numéro de téléphone valide.
+                Numéro de téléphone non valide.
               </div>
             </div>
 
             <div class="form-group">
               <label for="TVA">Numéro de TVA :</label>
-              <input
-                type="text"
-                id="TVA"
-                formControlName="TVA"
-              />
+              <div class="tooltip-container">
+                <input
+                  type="text"
+                  id="TVA"
+                  formControlName="TVA"
+                />
+                <div class="tooltip-content">
+                  Entrez votre numéro de TVA. <br>
+                  Il doit être composé de 10 chiffres <br>
+                  et doit commencer par BE0.
+                </div>
+              </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('TVA')?.hasError('required')">
-                Le numéro de TVA est requis.
+                Est requis.
               </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('TVA')?.hasError('pattern')">
-                Veuillez entrer un numéro de TVA valide.
+                N° TVA belge non valide.
               </div>
             </div>
           </div>
@@ -88,16 +104,18 @@
           <div class="right">
             <div class="form-group">
               <label for="username">Nom du fournisseur :</label>
-              <input
-                type="text"
-                id="username"
-                formControlName="username"
-              />
+              <div class="tooltip-container">
+                <input type="text" id="username" formControlName="username" />
+                <div class="tooltip-content">
+                  Entrez le nom du fournisseur. <br>
+                  Il doit comporter au moins 6 caractères.
+                </div>
+              </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('username')?.hasError('required')">
-                Le nom du fournisseur est requis.
+                Est requis.
               </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('username')?.hasError('minlength')">
-                Le nom du fournisseur doit contenir au moins 6 caractères.
+                Doit contenir au moins 6 caractères.
               </div>
             </div>
 
@@ -108,27 +126,59 @@
 
             <div *ngIf="showDiv" class="form-group">
               <label for="password">Mot de passe :</label>
-              <input
-                type="password"
-                id="password"
-                formControlName="password"
-              />
+              <div class="tooltip-container">
+                <input
+                  type="password"
+                  id="password"
+                  formControlName="password"
+                />
+                <div class="tooltip-content">
+                  Entrez votre mot de passe. <br>
+                  Il doit contenir :
+                  <ul>
+                    <li>Au moins 8 caractères</li>
+                    <li>Une lettre majuscule</li>
+                    <li>Une lettre minuscule</li>
+                    <li>Un chiffre</li>
+                    <li>Un caractère spécial</li>
+                  </ul>
+                </div>
+              </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('password')?.hasError('required')">
-                Le mot de passe est requis.
+                Est requis.
               </div>
               <div class="error-message" *ngIf="submitted && registerForm.get('password')?.hasError('pattern')">
-                Le mot de passe doit contenir au moins un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial.
+                Un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial requis.
               </div>
             </div>
 
             <div *ngIf="showDiv" class="form-group">
-              <label for="confirm-password">Confirmer mot de passe :</label>
-              <input
-                type="password"
-                id="confirm-password"
-                formControlName="confirmPassword"
-              />
-              <div class="error-message" *ngIf="submitted && registerForm.errors?.['notSame'] && (registerForm.get('confirmPassword')?.touched || registerForm.get('confirmPassword')?.dirty)">
+              <label for="password">Vérification du mot de passe :</label>
+              <div class="tooltip-container">
+                <input
+                  type="password"
+                  id="passwordVerif"
+                  formControlName="passwordVerif"
+                />
+                <div class="tooltip-content">
+                  Entrez votre mot de passe. <br>
+                  Il doit contenir :
+                  <ul>
+                    <li>Au moins 8 caractères</li>
+                    <li>Une lettre majuscule</li>
+                    <li>Une lettre minuscule</li>
+                    <li>Un chiffre</li>
+                    <li>Un caractère spécial</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('passwordVerif')?.hasError('required')">
+                Est requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('passwordVerif')?.hasError('pattern')">
+                Un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial requis.
+              </div>
+              <div class="error-message" *ngIf="submitted && registerForm.get('passwordVerif')?.errors?.['mustMatch']">
                 Les mots de passe ne correspondent pas.
               </div>
             </div>

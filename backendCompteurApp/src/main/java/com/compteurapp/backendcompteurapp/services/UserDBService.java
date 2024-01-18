@@ -1,6 +1,7 @@
 package com.compteurapp.backendcompteurapp.services;
 
 import com.compteurapp.backendcompteurapp.model.Category;
+import com.compteurapp.backendcompteurapp.model.Compteur;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurRepository;
@@ -17,10 +18,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,6 +108,7 @@ public class UserDBService {
 
                     Keycloak keycloak = keycloakUtil.getKeycloakInstance();
                     RoleRepresentation providerRole = keycloak.realm(realm).roles().get("admin").toRepresentation();
+
                     keycloak.realm(realm).users().get(id).roles().realmLevel().add(Collections.singletonList(providerRole));
                 }
                 this.syncUser(user);
@@ -127,5 +126,14 @@ public class UserDBService {
         if(compteurRepository.findByClient_Id(clientId).isEmpty())
             verif[1] = false;
         return verif;
+    }
+    public List<UserDB> getClientsByProvider_id(String id) {
+        List<UserDB> users = new ArrayList<>();
+        for (Compteur compteur : compteurRepository.findByProvider_Id(id)
+        ) {
+            if(!users.contains(compteur.getClient()))
+            users.add(compteur.getClient());
+        }
+        return users;
     }
 }

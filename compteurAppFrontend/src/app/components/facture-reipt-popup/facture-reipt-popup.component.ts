@@ -33,6 +33,7 @@ export class FactureReiptPopupComponent {
   userInfo: UserDB | undefined = undefined;
   userAdresseRecue: Adresse | undefined = undefined;
   userAdresse: Adresse | undefined = undefined;
+  pdfName!: string;
 
 
   isLoading: boolean = false;
@@ -64,6 +65,9 @@ export class FactureReiptPopupComponent {
     console.log(this.userAdresse);
   }
 
+  setPdfName(){
+    this.pdfName = "facture_n°" +" "+this.facture?.id+ "_" + this.facture?.date;
+  }
 
   getUserByUserName(userName:any) {
     const observable: Observable<UserDB> = this.userDBService.getProviderByUserName(userName);
@@ -82,25 +86,28 @@ export class FactureReiptPopupComponent {
 
 
   //generer le pdf
+
+
   public captureAndDownload() {
-    let data = document.getElementById('pdf')!;
+    this.setPdfName();
+    let data = document.getElementById('pdf')!.cloneNode(true) as HTMLElement;
+    data.style.width = '595px'; // Largeur de la page A4 en pixels
+    data.style.height = '842px'; // Hauteur de la page A4 en pixels
+    data.style.position = 'fixed';
+    data.style.top = '0';
+    data.style.left = '0';
+    data.style.zIndex = '-1';
+    document.body.appendChild(data);
+
     html2canvas(data).then(canvas => {
-      // Utilisez la largeur et la hauteur du canvas pour maintenir le même format que votre page
-      let imgWidth = canvas.width;
-      let imgHeight = canvas.height;
-
       const contentDataURL = canvas.toDataURL('image/png');
-      let pdf = new jsPDF('p', 'mm', [imgWidth, imgHeight]); // Définissez la taille de la page en fonction de la taille de votre div
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
 
-      pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save('MYPdf.pdf');
+      pdf.addImage(contentDataURL, 'PNG', 10, 0, 190, 267); // Dimensions de la page A4 en mm
+      pdf.save(this.pdfName + '.pdf');
+
+      document.body.removeChild(data);
     });
   }
-
-
-
-
-
-
 
 }

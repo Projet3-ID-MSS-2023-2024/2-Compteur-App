@@ -73,6 +73,11 @@ input {
   border: none;
   font-size: 1.1em;
 }
+.errorMess {
+  color: white;
+  font-size: 1.5em;
+  margin-top: 5px;
+}
 
 .button {
   display: flex;

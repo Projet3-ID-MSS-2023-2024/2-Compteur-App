@@ -1,24 +1,26 @@
 <div class="addMeter" [formGroup]="addMeter">
-    <div class="meterInput">
-      <div class="placeHolder"><label>Nom compteur</label></div>
-      <input type="text" placeholder="Nom compteur" formControlName="nom"/>
-    </div>
+  <div class="meterInput">
+    <div class="placeHolder"><label>Nom compteur</label></div>
+    <input type="text" placeholder="Nom compteur" formControlName="nom" [ngClass]="{ 'border-red': addMeter.get('nom')!.invalid && addMeter.get('nom')!.touched }"/>
+  </div>
 
-    <div class="meterInput">
-      <div class="placeHolder"><label>Catégorie</label></div>
+  <div class="meterInput">
+    <div class="placeHolder"><label>Catégorie</label></div>
 
-      <select formControlName="categorie" (change)="onCategoryChange($event)">
-        <option [value]="item.id" *ngFor="let item of category">{{item.name}}</option>
-      </select>
+    <select formControlName="categorie" (change)="onCategoryChange($event)" [ngClass]="{ 'border-red': addMeter.get('categorie')!.invalid && addMeter.get('categorie')!.touched }">
+      <option value="" disabled selected>Catégorie</option>
+      <option [value]="item.id" *ngFor="let item of category">{{item.name}}</option>
+    </select>
 
-    </div>
-    <div class="meterInput">
-      <div class="placeHolder"><label>Fournisseur</label></div>
-      <select formControlName="fournisseur">
-        <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
-      </select>
-    </div>
-    <div class="sendMeter" (click)="sendData()">
-      <img src="./assets/navbarIcone/add.svg" alt="add" />
-    </div>
+  </div>
+  <div class="meterInput">
+    <div class="placeHolder"><label>Fournisseur</label></div>
+    <select formControlName="fournisseur" [ngClass]="{ 'border-red': addMeter.get('fournisseur')!.invalid && addMeter.get('fournisseur')!.touched }">
+      <option value="" disabled selected>Fournisseur</option>
+      <option [value]="item.id" *ngFor="let item of filteredProviders">{{item.firstname}}</option>
+    </select>
+  </div>
+  <div class="sendMeter" (click)="sendData()">
+    <img src="./assets/navbarIcone/add.svg" alt="add" />
+  </div>
 </div>

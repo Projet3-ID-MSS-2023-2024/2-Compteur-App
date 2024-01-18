@@ -70,15 +70,14 @@ public class CompteurTest {
     public Category category;
 
     public Long id;
-
+    public String idClient;
+    public String idProvider;
 
     @BeforeEach
-    @Test
-    @Order(0)
     public void init() {
 
         Category category = new Category();
-        category.setId(1L);
+        category.setId(2L);
 
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
@@ -122,6 +121,8 @@ public class CompteurTest {
         compteur.setClient(this.client);
         Compteur compteurCreate = compteurService.createCompteur(compteur);
         this.id = compteurCreate.getId();
+        this.idClient = compteurCreate.getClient().getId();
+        this.idProvider = compteurCreate.getProvider().getId();
 
     }
 
@@ -134,6 +135,16 @@ public class CompteurTest {
     }
 
     @Order(3)
+    @Test
+    public void testGetCompteursByProviderId(){
+        List<Compteur> compteurs = compteurService.findCompteurByIdProvider(this.provider.getId());
+        int lastIndex = compteurs.size() - 1;
+        assertEquals(compteurs.get(lastIndex).getId(),this.id);
+        assertEquals(compteurs.get(lastIndex).getClient().getId(),this.idClient);
+        assertEquals(compteurs.get(lastIndex).getProvider().getId(),this.idProvider);
+    }
+
+    @Order(4)
     @Test
     public void testModifyCompteur(){
         Compteur compteur = new Compteur();
@@ -148,7 +159,7 @@ public class CompteurTest {
         assertEquals("modified", compteurModified.get().getNom());
     }
 
-    @Order(4)
+    @Order(5)
     @Test
     public void testDeleteCompteur(){
         compteurService.deleteById(this.id);
@@ -156,10 +167,10 @@ public class CompteurTest {
         assertTrue(compteurDeleted.isEmpty());
     }
 
-    @Test
-    @Order(5)
+    @AfterEach
     void clean() {
         try {
+            compteurService.deleteById(this.id);
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
             adresseRepository.deleteById(this.adresse.getId());

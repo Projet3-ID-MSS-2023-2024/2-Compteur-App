@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mobile-navbar',
@@ -21,6 +22,7 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit {
 
   constructor(
     private keycloakService: KeycloakService,
+    private route: Router
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -83,5 +85,9 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit {
 
   closePopup(){
     this.isPopup = false;
+  }
+
+  goToProfil() {
+    this.route.navigate(['/profil']);
   }
 }

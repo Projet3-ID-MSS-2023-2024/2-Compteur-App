@@ -2,65 +2,8 @@
   <div class="pageNamePlacement">
     <app-page-name [pageName]="editPageName"></app-page-name>
   </div>
-  <div class="pdpContaineur">
-    <div class="pdp" [ngClass]="{editBackground: editHover, deleteBackground: deleteHover}">
-      <img
-        *ngIf="!editPdp"
-        [src]="
-          photoNull
-            ? '../../../assets/images/photo-profil/photo-profil/pdpDefaut.jpg'
-            : 'http://localhost:8080/pdp/' + photoUrl
-        "
-        alt="Photo"
-      />
-      <div>
-        <div *ngIf="editPdp">
-          <div *ngIf="!photoNull">
-            <button class="editPdpButton" (click)="onFileSelect($event)" (mouseenter)="editHover = true" (mouseleave)="editHover = false">
-              <img src="../../../assets/navbarIcone/edit.svg" alt="">
-            </button>
-            <input
-              type="file"
-              #fileInput
-              style="display: none"
-              (change)="onFileChange($event)"
-            />
-          </div>
-          <div *ngIf="photoNull">
-            <button class="addButton" (click)="onFileSelect($event)">
-              <img src="../../../assets/navbarIcone/add.svg" alt="" />
-            </button>
-            <input
-              type="file"
-              #fileInput
-              style="display: none"
-              (change)="onFileChangeAdd($event)"
-            />
-          </div>
-
-          <div *ngIf="!photoNull">
-            <button
-              class="deleteButton"
-              (click)="deletePhotoProfil()"
-              *ngIf="!photoNull"
-              (mouseenter)="deleteHover = true" (mouseleave)="deleteHover = false"
-            >
-              <img src="../../../assets/navbarIcone/delete.svg" alt="">
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="editButtonPdp">
-        <img
-          (click)="editPdpButton()"
-          src="../../../assets/navbarIcone/edit.svg"
-          alt=""
-          class="imgSvg"
-        />
-      </div>
-    </div>
-  </div>
+<div class="pdpContaineur">
+  <app-gestion-pdp-profil *ngIf="idUser" [idUser]="this.idUser"></app-gestion-pdp-profil></div>
 
   <div class="doubleButtonContainer">
     <div class="buttonContainer">
@@ -95,6 +38,7 @@
               formControlName="username"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['username'].status == 'INVALID'">Le nom utilisateur est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="lastname">Nom de famille: </label>
@@ -104,6 +48,7 @@
               formControlName="lastname"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['lastname'].status == 'INVALID'">Le nom de famille est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="firstName">Prénom : </label>
@@ -113,6 +58,7 @@
               formControlName="firstname"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['firstname'].status == 'INVALID'">Le prénom est incorrecte</p>
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="password">Mot de passe : </label>
@@ -121,7 +67,11 @@
               id="password"
               formControlName="password"
               [readonly]="!editMode"
+              [(ngModel)]="password"
+              [ngClass]="{wrongPassword: password != passwordConf}"
+
             />
+            <p *ngIf="submitted && this.registerForm.controls['password'].status == 'INVALID'">  Un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial requis.</p>
           </div>
           <div class="form-group" *ngIf="!editMode && !isClient">
             <label for="category">Catégorie : </label>
@@ -142,6 +92,7 @@
               formControlName="email"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['email'].status == 'INVALID'">L'adresse email est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="phoneNumber">Numéro de téléphone : </label>
@@ -151,6 +102,7 @@
               formControlName="phoneNumber"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['phoneNumber'].status == 'INVALID'">Le numéro de téléphone est incorrecte</p>
           </div>
           <div class="form-group" *ngIf="!isClient">
             <label for="tva">TVA : </label>
@@ -160,21 +112,24 @@
               formControlName="tva"
               [readonly]="!editMode"
             />
+            <p *ngIf="submitted && this.registerForm.controls['tva'].status == 'INVALID'">Le numéro de TVA est incorrecte</p>
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="passwordConf">Confirmation de mot de passe : </label>
             <input
-              type="passwordConf"
+              type="password"
               id="passwordConf"
               formControlName="passwordConf"
               [readonly]="!editMode"
+              [(ngModel)]="passwordConf"
+              [ngClass]="{wrongPassword: password != passwordConf}"
             />
           </div>
           <div class="buttonRight" *ngIf="editMode">
-            <div class="buttondiv fade-in-out">
+            <div class="buttondiv fade-in-out" #boutton>
               <img
                 (click)="editUserPopup()"
-                src="../../../assets/navbarIcone/send.svg"
+                src="./assets/navbarIcone/send.svg"
                 alt=""
                 class="imgSvg"
               />
@@ -185,7 +140,7 @@
       <div class="editButton">
         <img
           (click)="turnEditMode()"
-          src="../../../assets/navbarIcone/edit.svg"
+          src="./assets/navbarIcone/edit.svg"
           alt=""
         />
       </div>
@@ -204,6 +159,7 @@
               [readonly]="!editMode"
               placeholder="Rue de la paix"
             />
+            <p *ngIf="submitted && this.adresseForm.controls['rue'].status == 'INVALID'">Le nom de la rue est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="numero">Numéro : </label>
@@ -214,6 +170,7 @@
               [readonly]="!editMode"
               placeholder="1"
             />
+            <p *ngIf="submitted && this.adresseForm.controls['numero'].status == 'INVALID'">Le numéro de la rue est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="ville">Ville : </label>
@@ -224,6 +181,7 @@
               [readonly]="!editMode"
               placeholder="Bruxelles"
             />
+            <p *ngIf="submitted && this.adresseForm.controls['ville'].status == 'INVALID'">Le nom de la ville est incorrecte</p>
           </div>
         </div>
         <div class="right">
@@ -236,6 +194,7 @@
               [readonly]="!editMode"
               placeholder="1000"
             />
+            <p *ngIf="submitted && this.adresseForm.controls['codePostal'].status == 'INVALID'">Le code postal est incorrecte</p>
           </div>
           <div class="form-group">
             <label for="pays">Pays : </label>
@@ -246,12 +205,13 @@
               [readonly]="!editMode"
               placeholder="Belgique"
             />
+            <p *ngIf="submitted && this.adresseForm.controls['pays'].status == 'INVALID'">Le nom du pays est incorrecte</p>
           </div>
           <div class="buttonRight">
             <div class="buttondiv fade-in-out" *ngIf="editMode">
               <img
                 (click)="editAdressePopup()"
-                src="../../../assets/navbarIcone/send.svg"
+                src="./assets/navbarIcone/send.svg"
                 alt=""
                 class="imgSvg"
               />
@@ -262,7 +222,7 @@
       <div class="editButton">
         <img
           (click)="turnEditMode()"
-          src="../../../assets/navbarIcone/edit.svg"
+          src="./assets/navbarIcone/edit.svg"
           alt=""
         />
       </div>
@@ -275,8 +235,7 @@
     (acceptChanges)="editingUser ? editUser($event) : editAdresse($event)"
   ></app-edit-popup>
 
-  <!-- Loader -->
-  <div class="loaderPage" *ngIf="isLoading">
-    <div class="loader"></div>
-  </div>
+  <!-- loader -->
+  <app-simple-loader [isLoading]="isLoading"></app-simple-loader>
+
 </div>

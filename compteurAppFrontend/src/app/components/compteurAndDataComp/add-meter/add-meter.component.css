@@ -79,6 +79,10 @@ select{
   height: calc(100% - 30px);
 }
 
+.border-red{
+  border: 2px solid red;
+}
+
 @media screen and (max-width: 950px) {
 
   input, select{

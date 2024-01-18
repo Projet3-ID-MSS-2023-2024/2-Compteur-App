@@ -6,19 +6,19 @@
 
     <div class="formField" [formGroup]="dataSend">
       <div class="fieldPlacement">
-        <input type="text" placeholder="Pays" formControlName="pays">
-        <input type="text" placeholder="Ville" formControlName="ville">
+        <input type="text" placeholder="Pays" formControlName="pays" [ngClass]="{ 'border-red': dataSend.get('pays')!.invalid && dataSend.get('pays')!.touched }">
+        <input type="text" placeholder="Ville" formControlName="ville" [ngClass]="{ 'border-red': dataSend.get('ville')!.invalid && dataSend.get('ville')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <input type="text" placeholder="Code postal" formControlName="codePostal">
-        <input type="text" placeholder="Rue" formControlName="rue">
+        <input type="text" placeholder="Code postal" formControlName="codePostal" [ngClass]="{ 'border-red': dataSend.get('codePostal')!.invalid && dataSend.get('codePostal')!.touched }">
+        <input type="text" placeholder="Rue" formControlName="rue" [ngClass]="{ 'border-red': dataSend.get('rue')!.invalid && dataSend.get('rue')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <input type="text" placeholder="Numeros" formControlName="numero">
-        <input type="text" placeholder="Valeur" formControlName="valeur">
+        <input type="text" placeholder="Numeros" formControlName="numero" [ngClass]="{ 'border-red': dataSend.get('numero')!.invalid && dataSend.get('numero')!.touched }">
+        <input type="text" placeholder="Valeur" formControlName="valeur" [ngClass]="{ 'border-red': dataSend.get('valeur')!.invalid && dataSend.get('valeur')!.touched }">
       </div>
       <div class="fieldPlacement">
-        <input type="file" formControlName="photo">
+        <input type="file" formControlName="photo" [ngClass]="{ 'border-red': dataSend.get('photo')!.invalid && dataSend.get('photo')!.touched }">
       </div>
     </div>
 

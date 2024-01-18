@@ -4,7 +4,7 @@
       <h1>Compteur'App</h1>
     </div>
     <div class="homeCard">
-      <app-navbar-card [icone]="'home.svg'" [title]="'Home'" [path]="'/homePage'"></app-navbar-card>
+      <app-navbar-card [icone]="'home.svg'" [title]="'Accueil'" [path]="'/homePage'"></app-navbar-card>
     </div>
 
     <app-client-navbar *ngIf="isClient && navBarIsLocked"></app-client-navbar>
@@ -13,12 +13,13 @@
     <app-admin-navbar *ngIf="isAdmin"></app-admin-navbar>
 
     <div (click)="openPopupDeconnexion()" class="logout">
-      <app-navbar-card [icone]="'log_out.svg'" [title]="'Logout'"></app-navbar-card>
+      <app-navbar-card [icone]="'log_out.svg'" [title]="'Déconnexion'"></app-navbar-card>
     </div>
   </div>
   <div class="containerBottom">
-    <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'"
-      [surname]="'Robert Johns'"></app-profil-card-navbar>
+    <div (click)="goToProfil()" class="logout">
+      <app-navbar-card [icone]="'profil.svg'" [title]="'Profil'"></app-navbar-card>
+    </div>
   </div>
 </div>
 

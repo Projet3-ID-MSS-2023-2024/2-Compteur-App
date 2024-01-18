@@ -1,6 +1,6 @@
 package com.compteurapp.backendcompteurapp.services;
 
-import com.compteurapp.backendcompteurapp.model.AdresseDTO;
+import com.compteurapp.backendcompteurapp.DTO.AdresseDTO;
 import com.compteurapp.backendcompteurapp.model.UserDB;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
@@ -24,6 +24,8 @@ public class AdresseService {
     UserDBRepository userDBRepository;
 
     public Adresse getAdresseByUserName(String username){ return adresseRepository.findAdresseByUserUsername(username);}
+
+    public Adresse getAdresseByUserId(String id){ return adresseRepository.findAdresseByUserId(id);}
 
     public Adresse addAdresse(Adresse adresse){
         return adresseRepository.save(adresse);

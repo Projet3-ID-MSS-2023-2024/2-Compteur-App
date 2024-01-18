@@ -2,7 +2,7 @@ package com.compteurapp.backendcompteurapp.services;
 
 import com.compteurapp.backendcompteurapp.exception.ResourceNotFoundException;
 import com.compteurapp.backendcompteurapp.model.CompteurData;
-import com.compteurapp.backendcompteurapp.model.FactureStatement;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,6 +70,14 @@ public class CompteurDataService {
             throw new ResourceNotFoundException("No CompteurData found with vendeur id " + idVendeur + ", client id " + idClient + " and Facture etat " + etat);
         }
         return page.getContent();
+    }
+
+    public CompteurData getDataCompteurById(Long idCompteur){
+        Optional<CompteurData> compteurData = repository.findById(idCompteur);
+        if (compteurData.isEmpty()) {
+            throw new ResourceNotFoundException("No CompteurData found with id " + idCompteur);
+        }
+        return compteurData.get();
     }
 
 }

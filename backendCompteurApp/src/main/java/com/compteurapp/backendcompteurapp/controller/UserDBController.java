@@ -48,4 +48,8 @@ public class UserDBController {
         return userDBService.hasAddressAndMeter(username);
     }
 
+    @GetMapping("/getClientsByProviderId/{providerId}")
+    public List<UserDB> getClientsByProviderId(@PathVariable String providerId){
+        return userDBService.getClientsByProvider_id(providerId);
+    }
 }
