@@ -112,6 +112,7 @@
               formControlName="tva"
               [readonly]="!editMode"
             />
+            <p *ngIf="this.registerForm.controls['tva'].status == 'INVALID'">Le numéro de TVA est incorrecte</p>
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="passwordConf">Confirmation de mot de passe : </label>
@@ -125,7 +126,7 @@
             />
           </div>
           <div class=" form-group buttonRight" *ngIf="editMode">
-            <div class="buttondiv fade-in-out">
+            <div class="buttondiv fade-in-out" #boutton>
               <img
                 (click)="editUserPopup()"
                 src="./assets/navbarIcone/send.svg"

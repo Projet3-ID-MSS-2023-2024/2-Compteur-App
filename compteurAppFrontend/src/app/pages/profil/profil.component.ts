@@ -246,8 +246,15 @@ export class ProfilComponent implements OnInit {
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
+      if(window.innerWidth < 768) {
+        // scrool tt en bas
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
+      }
     } else this.editPageName = 'Profil';
     this.editMode = !this.editMode;
+
   }
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
