@@ -65,7 +65,7 @@ export class HistoryFactureClientComponent implements OnInit{
       //console.log("date" + element.date);
       let date = new Date(element.date as string);
       let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      let data = [element.id,element.id, element.nomCompteur,element.nomProvideur,element.TVA, formattedDate, element.prix+'€'];
+      let data = [element.id,element.id, element.nomCompteur,element.nomProvideur,element.TVA, formattedDate, element.prix+' €'];
       factureData.push(data);
       console.log("data" + data);
     });
