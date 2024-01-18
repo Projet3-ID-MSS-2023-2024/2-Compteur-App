@@ -26,6 +26,7 @@ export class FournisseurInfoComponent implements OnInit {
   public providerUserName = this.route.snapshot.paramMap.get('userName');
   showDiv = false;
   isLoading = false;
+  nameCategory!: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,21 +46,30 @@ export class FournisseurInfoComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^((\\+91-?)|0)?[0-9]{10}$')]], // Validation pour 10 chiffres
       TVA: ['', [Validators.required, Validators.pattern('BE0[0-9]{9}')]], // Validation pour TVA belge
-      password: ['', [Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')]], // Validation pour au moins un chiffre et une lettre
-      confirmPassword: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/)]],
+      passwordVerif: ['', [Validators.required]],
       category: ['', [Validators.required]],
-    }, { validator: this.checkPasswords });
+    }, {
+      validator: this.MustMatch('password', 'passwordVerif')
+    });
     this.categories$ = this.CategoryService.getAll();
   }
 
-  checkPasswords(group: FormGroup) {
-    if (group) {
-      let pass = group.get('password')?.value;
-      let confirmPass = group.get('confirmPassword')?.value;
+  MustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
 
-      return pass === confirmPass ? null : { notSame: true }
-    }
-    return { notSame: true };
+      if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
+        return;
+      }
+
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
   }
 
 
@@ -86,6 +96,7 @@ export class FournisseurInfoComponent implements OnInit {
             password: data.password,
             category: data.category.id,
           });
+          this.nameCategory = data.category.name;
           this.photoProfilService.getPhotoProfil(data.id).pipe(take(1)).subscribe(
             response => {
               if(response) {

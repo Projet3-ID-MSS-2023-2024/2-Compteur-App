@@ -17,8 +17,9 @@
     </div>
   </div>
   <div class="containerBottom">
-    <app-profil-card-navbar [profilPicture]="'profilPicture.png'" [name]="'Total Energie'"
-      [surname]="'Robert Johns'"></app-profil-card-navbar>
+    <div (click)="goToProfil()" class="logout">
+      <app-navbar-card [icone]="'profil.svg'" [title]="'Profil'"></app-navbar-card>
+    </div>
   </div>
 </div>
 

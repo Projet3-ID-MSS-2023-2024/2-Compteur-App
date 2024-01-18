@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { NavbarStatementService } from 'src/app/_services/navbar-statement.service';
 import { UserDBService } from 'src/app/_services/userDB.service';
 import { UserDB } from 'src/models/userDB';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +25,8 @@ export class NavbarComponent implements AfterViewInit {
   constructor(
     private readonly keycloak: KeycloakService,
     private userDBService: UserDBService,
-    private navbarStatement: NavbarStatementService
+    private navbarStatement: NavbarStatementService,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +103,10 @@ export class NavbarComponent implements AfterViewInit {
   getUser(id: any): Promise<any> {
     const observable = this.userDBService.getUserById(id);
     return lastValueFrom(observable);
+  }
+
+  goToProfil() {
+    this.route.navigate(['/profil']);
   }
 
 }
