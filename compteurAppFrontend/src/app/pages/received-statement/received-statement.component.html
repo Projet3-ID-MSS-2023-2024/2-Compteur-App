@@ -3,7 +3,10 @@
     <app-page-name [pageName]="'Relevé reçu'"></app-page-name>
   </div>
   <div class="informationPagePlacement">
-    <app-information-page></app-information-page>
+    <app-information-page
+    [title]="['Non traiter', 'Payer', 'Impayé']"
+    [description]="[dataCompteurNonTraiter.length.toString(), dataCompteurTraiterPayer.length.toString(), dataCompteurTraiterImpayer.length.toString()]"
+    ></app-information-page>
   </div>
   <div class="filterPlacement">
     <div class="optionPlacement">
@@ -24,3 +27,4 @@
 </div>
 <app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)" [image]="photoCompteur"></app-show-compteur-picture>
 <app-add-facture-price-popup *ngIf="closeOrOpenFacturePopUp" (closePopup)="closePopUp($event)" (sendData)="priceData($event)"></app-add-facture-price-popup>
+<app-loader-api></app-loader-api>

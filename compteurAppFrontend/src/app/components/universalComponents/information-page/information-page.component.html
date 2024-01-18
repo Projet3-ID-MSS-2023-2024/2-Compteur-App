@@ -1,13 +1,8 @@
 <div class="informationPage">
+  <ng-container *ngFor="let item of [0, 1, 2]; let i = index">
   <div class="informationPlacement">
-    <app-information-card></app-information-card>
+    <app-information-card [title]="title[i]" [description]="description[i]"></app-information-card>
   </div>
-  <hr>
-  <div class="informationPlacement">
-    <app-information-card></app-information-card>
-  </div>
-  <hr>
-  <div class="informationPlacement">
-    <app-information-card></app-information-card>
-  </div>
+  <hr *ngIf="i < 2">
+</ng-container>
 </div>

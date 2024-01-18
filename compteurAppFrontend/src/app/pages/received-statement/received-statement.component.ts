@@ -95,20 +95,35 @@ export class ReceivedStatementComponent {
 
   //FILTRER LES COMPTEURSDATA PAS TRAITER/TRAITER
   async traiterFilter(data: string){
-    this.traiterFilterChoice = data;
-    this.pageStart = 0;
-    this.stop = false;
-    data = data == 'choiceOne' ? 'Non traité' : 'Impayé';
-    await this.mainFunctionShowData(data);
+    this.loadingService.emettreEvenement('loading');
+    try{
+      this.traiterFilterChoice = data;
+      this.pageStart = 0;
+      this.stop = false;
+      data = data == 'choiceOne' ? 'Non traité' : 'Impayé';
+      await this.mainFunctionShowData(data);
+      this.loadingService.emettreEvenement('sucess');
+    }catch{
+      this.loadingService.emettreEvenement('error');
+    }
+    
   }
 
   //FILTRER LES COMPTEURSDATA PAS IMPAYER/PAYER
   async payerFilter(data: string){
-    this.payerFilterChoice = data;
-    this.pageStart = 0;
-    this.stop = false;
-    data = data == 'choiceOne' ? 'Impayé' : 'Payé';
-    await this.mainFunctionShowData(data);
+    this.loadingService.emettreEvenement('loading');
+    try{
+      this.payerFilterChoice = data;
+      this.pageStart = 0;
+      this.stop = false;
+      data = data == 'choiceOne' ? 'Impayé' : 'Payé';
+      await this.mainFunctionShowData(data);
+      this.loadingService.emettreEvenement('sucess');
+    }
+    catch{
+      this.loadingService.emettreEvenement('error');
+    }
+    
   }
 
   closePicture(close:boolean){
