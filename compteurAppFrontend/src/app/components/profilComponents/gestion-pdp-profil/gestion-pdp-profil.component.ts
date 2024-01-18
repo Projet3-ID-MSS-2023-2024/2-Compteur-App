@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { take } from 'rxjs';
 import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
 
@@ -7,7 +7,7 @@ import { PhotoProfilService } from 'src/app/_services/photo-profil.service';
   templateUrl: './gestion-pdp-profil.component.html',
   styleUrls: ['./gestion-pdp-profil.component.css'],
 })
-export class GestionPdpProfilComponent {
+export class GestionPdpProfilComponent implements OnInit {
   constructor(private photoProfilService: PhotoProfilService) {}
 
   // Données photo de profil
@@ -22,7 +22,7 @@ export class GestionPdpProfilComponent {
   ngOnInit(): void {
     this.initPdp(this.idUser);
   }
-  
+
   deletePhotoProfil() {
     this.isLoading = true;
     this.photoProfilService
@@ -33,6 +33,7 @@ export class GestionPdpProfilComponent {
           console.log(data);
           this.photoNull = true;
           this.isLoading = false;
+          this.ngOnInit();
         },
         (error) => {
           console.log(error);

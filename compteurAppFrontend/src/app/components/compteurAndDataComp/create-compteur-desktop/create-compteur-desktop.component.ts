@@ -53,8 +53,8 @@ export class CreateCompteurDesktopComponent {
         fournisseur: this.dataSend.value.fournisseur!,
       };
       data = [compteur, adresse];
-      this.sendData.emit(data);
     }
+    this.sendData.emit(data);
   }
 
   onCategoryChange(event: Event) {

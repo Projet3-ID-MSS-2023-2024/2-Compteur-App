@@ -36,6 +36,7 @@ export class ProfilComponent implements OnInit {
   isClient!: boolean;
   idUser!: string | undefined;
   idAdresse!: number | undefined;
+  submitted: boolean = false;
 
   // Données modification
   userEdit!: AddFournisseurSpring | undefined;
@@ -72,7 +73,7 @@ export class ProfilComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validation pour 10 chiffres
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^(\+|0)[1-9][0-9]{8,14}$/)]], // Validation pour 10 chiffres
       tva: ['', [Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d).+$/)]], // Maximum 15 chiffres
       password: [
         '',
@@ -175,8 +176,12 @@ export class ProfilComponent implements OnInit {
     }
     this.editPopup = false;
     this.donneesModifiees = [];
+
+    this.registerForm.controls['password'].reset('');
+    this.registerForm.controls['passwordConf'].reset('');
   }
-  editAdressePopup() {
+  async editAdressePopup() {
+    this.submitted = true;
     this.editingUser = false;
     if (this.idAdresse != undefined && this.adresseForm.valid) {
       this.adresse$.subscribe((data) => {
@@ -204,8 +209,13 @@ export class ProfilComponent implements OnInit {
         }
       });
     }
+    else if(this.adresseForm.valid) {
+    this.editAdresse(true);
+    this.adresse$ = await this.adresseService.getAdresseByUserId(this.idUser);
+    }
   }
   editUserPopup() {
+    this.submitted = true;
     this.editingUser = true;
     console.log(this.registerForm);
     if (this.password == this.passwordConf && this.verifyUserForm()) {
@@ -236,6 +246,7 @@ export class ProfilComponent implements OnInit {
               "Nom d'utilisateur": this.registerForm.value.username,
             })
           : null;
+          this.registerForm.value.password != '' ? this.donneesModifiees.push({ "Mot de passe": "modifié" }) : null;
         if (this.donneesModifiees.length > 0) {
           this.editPopup = true;
         }
@@ -246,8 +257,15 @@ export class ProfilComponent implements OnInit {
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
+      if(window.innerWidth < 768) {
+        // scrool tt en bas
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
+      }
     } else this.editPageName = 'Profil';
     this.editMode = !this.editMode;
+
   }
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
@@ -265,7 +283,8 @@ export class ProfilComponent implements OnInit {
       };
       this.adresseUser.idClient = this.idUser;
       this.isLoading = true;
-      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {
+      this.adresseService.updateAdresse(this.adresseUser).subscribe((a:any) => {
+        this.idAdresse = a.id;
         this.isLoading = false;
       });
       this.nabarStatement.setCondition1(true);

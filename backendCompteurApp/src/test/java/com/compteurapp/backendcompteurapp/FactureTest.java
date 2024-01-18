@@ -1,19 +1,26 @@
 package com.compteurapp.backendcompteurapp;
-
 import static org.mockito.Mockito.*;
 
+import com.compteurapp.backendcompteurapp.DTO.FactureDTO;
+import com.compteurapp.backendcompteurapp.DTO.FactureSendDTO;
+import com.compteurapp.backendcompteurapp.DTO.FactureUpdateDTO;
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
+import com.compteurapp.backendcompteurapp.controller.FactureController;
+import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.model.*;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
+import com.compteurapp.backendcompteurapp.repository.FactureRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.keycloak.representations.AccessTokenResponse;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +48,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 @SpringBootTest
-public class CompteurDataControllerTest {
-
+public class FactureTest {
     @Autowired
     CompteurService compteurService;
 
@@ -61,14 +66,23 @@ public class CompteurDataControllerTest {
     @Autowired
     CompteurDataRepository compteurDataRepository;
 
-    public UserDB provider;
-    public UserDB client;
-    public Adresse adresse;
-    public Category category;
+    @Autowired
+    FactureRepository factureRepository;
 
-    public Compteur compteur;
+    @Autowired
+    FactureController factureController;
 
-    public CompteurData compteurData;
+    private  UserDB provider;
+    private UserDB client;
+    private Adresse adresse;
+    private Category category;
+
+    private Compteur compteur;
+
+    private CompteurData compteurData;
+
+    private Facture facture;
+
 
 
     @BeforeEach
@@ -132,42 +146,75 @@ public class CompteurDataControllerTest {
         compteurData.setId(compteurData.getId());
         this.compteurData = compteurData;
 
+        Facture facture = new Facture();
+        facture.setEtat(FactureStatement.IMPAYER);
+        facture.setPrix(992911.0);
+        facture.setCompteurData(this.compteurData);
+        factureRepository.save(facture);
+        facture.setId(facture.getId());
+        this.facture = facture;
     }
 
     @Order(2)
     @Test
-    public void testGetCompteurData(){
-        Optional<CompteurData> compteurData = compteurDataRepository.findById(this.compteurData.getId());
-        assertFalse(compteurData.isEmpty());
+    public void testGetFactureByUserId() {
+        List<FactureSendDTO> facture = factureController.getFactureByIdUser(this.client.getId(), FactureStatement.IMPAYER);
+        assertEquals(facture.get(0).id, this.facture.getId());
     }
 
     @Order(3)
     @Test
-    public void testModifyCompteurData(){
-        CompteurData compteurData = new CompteurData();
-        compteurData.setDate(new Date());
-        compteurData.setValeur(200.0);
-        compteurData.setPhoto("modified");
-        compteurData.setCompteur(this.compteur);
-        compteurData.setClient(this.client);
-        compteurData.setProvider(this.provider);
-        compteurData.setId(this.compteurData.getId());
-        compteurDataRepository.save(compteurData);
-        assertEquals("modified", compteurData.getPhoto());
+    public void test_createFacture_createsNewFactureWithGivenFactureDTO() {
+
+        FactureDTO factureDTO = new FactureDTO();
+        factureDTO.prix = 10.0;
+        factureDTO.etat = FactureStatement.IMPAYER;
+        factureDTO.idCompteurData = this.compteurData.getId();
+
+
+        Facture result = factureController.createFacture(factureDTO);
+
+
+        assertNotNull(result);
+        assertEquals(factureDTO.prix, result.getPrix(), 0.01);
+        assertEquals(factureDTO.etat, result.getEtat());
+        assertEquals(factureDTO.idCompteurData, result.getCompteurData().getId());
+        factureRepository.deleteById(result.getId());
     }
 
     @Order(4)
     @Test
-    public void testDeleteCompteurData(){
-        compteurDataRepository.deleteById(this.compteurData.getId());
-        Optional<CompteurData> compteurDeleted = compteurDataRepository.findById(this.compteurData.getId());
-        assertTrue(compteurDeleted.isEmpty());
+    public void test_updateStatus_Facture() {
+
+        FactureDTO factureDTO = new FactureDTO();
+        factureDTO.prix = 10.0;
+        factureDTO.etat = FactureStatement.IMPAYER;
+        factureDTO.idCompteurData = this.compteurData.getId();
+
+        FactureUpdateDTO factureUpdateDTO = new FactureUpdateDTO();
+        factureUpdateDTO.id = this.facture.getId();
+        factureUpdateDTO.etat = FactureStatement.PAYER;
+
+
+        Facture result = factureController.createFacture(factureDTO);
+        Facture resultUpdate = factureController.updateStatus(factureUpdateDTO);
+
+
+        assertNotNull(result);
+        assertEquals(factureDTO.prix, result.getPrix(), 0.01);
+        assertEquals(factureDTO.etat, result.getEtat());
+        assertEquals(factureDTO.idCompteurData, result.getCompteurData().getId());
+
+        assertEquals(result.getCompteurData().getId(), resultUpdate.getCompteurData().getId());
+
+        factureRepository.deleteById(result.getId());
     }
 
     @AfterEach
     void clean() {
         try {
-            compteurDataRepository.delete(this.compteurData);
+            factureRepository.deleteById(this.facture.getId());
+            compteurDataRepository.deleteById(this.compteurData.getId());
             compteurService.deleteById(this.compteur.getId());
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());

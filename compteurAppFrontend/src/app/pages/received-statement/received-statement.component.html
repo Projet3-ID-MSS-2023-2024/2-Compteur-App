@@ -3,7 +3,10 @@
     <app-page-name [pageName]="'Relevé reçu'"></app-page-name>
   </div>
   <div class="informationPagePlacement">
-    <app-information-page></app-information-page>
+    <app-information-page
+    [title]="['Non traité', 'Payé', 'Impayé']"
+    [description]="[dataCompteurNonTraiter.length.toString(), dataCompteurTraiterPayer.length.toString(), dataCompteurTraiterImpayer.length.toString()]"
+    ></app-information-page>
   </div>
   <div class="filterPlacement">
     <div class="optionPlacement">
@@ -16,7 +19,12 @@
     </div>
   </div>
   <div class="placementList">
-    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
+      <app-indice-list *ngIf="traiterFilterChoice === 'choiceOne'" [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
+
+      <app-indice-list *ngIf="traiterFilterChoice !== 'choiceOne'" [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOptionTraite" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
   </div>
   <div class="movePagePlacement">
     <app-change-pageable (page)="changePage($event)" [pageStart]="pageStart" [pageEnd]="pageEnd"></app-change-pageable>
@@ -24,3 +32,4 @@
 </div>
 <app-show-compteur-picture *ngIf="closeOrOpenPicture" (close)="closePicture($event)" [image]="photoCompteur"></app-show-compteur-picture>
 <app-add-facture-price-popup *ngIf="closeOrOpenFacturePopUp" (closePopup)="closePopUp($event)" (sendData)="priceData($event)"></app-add-facture-price-popup>
+<app-loader-api></app-loader-api>

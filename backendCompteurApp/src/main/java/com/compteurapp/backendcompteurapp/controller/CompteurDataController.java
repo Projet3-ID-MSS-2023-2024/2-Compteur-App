@@ -3,6 +3,7 @@ package com.compteurapp.backendcompteurapp.controller;
 import com.compteurapp.backendcompteurapp.DTO.CompteurDataSenderDTO;
 import com.compteurapp.backendcompteurapp.mapper.CompteurDataMapper;
 import com.compteurapp.backendcompteurapp.enums.FactureStatement;
+import com.compteurapp.backendcompteurapp.model.CompteurData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
@@ -65,6 +66,11 @@ public class CompteurDataController {
     @GetMapping("/getCompteurDataByVendeurIdWithoutFacture/{idVendeur}/{start}/{end}")
     public List<CompteurDataSenderDTO> getCompteurDataByVendeurIdWithoutFacture(@PathVariable String idVendeur, @PathVariable int start, @PathVariable int end){
         return compteurDataMapper.mappingCompteurDataByVendeurIdWithoutFacture(idVendeur, start, end);
+    }
+
+    @GetMapping("/getDataCompteurById/IdCompteur/{idCompteur}")
+    public CompteurData getDataCompteurById(@PathVariable Long idCompteur){
+        return service.getDataCompteurById(idCompteur);
     }
 
 

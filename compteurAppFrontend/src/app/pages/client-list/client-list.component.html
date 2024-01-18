@@ -2,23 +2,11 @@
   <div class="pageNamePlacement">
     <app-page-name [pageName]="'Liste de vos client'"></app-page-name>
   </div>
-
-  <div class="listContainer">
-    <div class="tableauContainer">
-      <div class="tableauHeader">
-        <h3>Nom</h3>
-        <h3>Prénom</h3>
-        <h3>Téléphone</h3>
-        <h3>Email</h3>
-      </div>
-      <div class="tableauElementContainer">
-        <div class="tableauElement" *ngFor="let client of clients | async">
-          <p>{{ client.lastname }}</p>
-          <p>{{ client.firstname }}</p>
-          <p>{{ client.phoneNumber }}</p>
-          <p>{{ client.email }}</p>
-        </div>
-      </div>
-    </div>
+  <div class="liste">
+    <app-indice-list
+      [attributLegend]="attributLegend"
+      [data]="data"
+      [buttonOption]="[]"
+    ></app-indice-list>
   </div>
 </div>

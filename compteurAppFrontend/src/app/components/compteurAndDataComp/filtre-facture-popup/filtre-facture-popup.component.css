@@ -13,8 +13,8 @@
 
 .formulaire {
   display: flex;
-  width: 65%;
-  height: 60%;
+  width: 50%;
+  height: 50%;
   flex-direction: column;
   justify-content: space-around;
   position: relative;
@@ -25,6 +25,45 @@
   backdrop-filter: blur(7.2px);
   -webkit-backdrop-filter: blur(7.2px);
   border: 1px solid rgba(52, 52, 52, 0.33);
+}
+
+#tooltip {
+  position: relative;
+}
+
+#tooltip .tooltiptext {
+  visibility: hidden;
+  width: 60%;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  font-size: 1.2em;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 155%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+#tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 .placement {
@@ -43,7 +82,7 @@ h1 {
 .fieldPlacement {
   display: flex;
   width: 98%;
-  height: 22%;
+  height: 10%;
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
@@ -78,7 +117,7 @@ input {
 .button {
   display: flex;
   width: 250px;
-  height: 90%;
+  height: 50px;
   background-color: rgb(163, 163, 163);
   border-radius: 10px;
   justify-content: center;
@@ -157,6 +196,12 @@ input:focus {
 
   .inputPlacement {
     width: 100%;
+  }
+
+  #tooltip .tooltiptext {
+    width: 70%;
+    left: 15%;
+    font-size: 0.8em;
   }
 }
 

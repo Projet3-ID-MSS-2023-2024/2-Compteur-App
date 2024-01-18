@@ -40,6 +40,9 @@ export class FournisseurListComponent implements OnInit {
     this.initFournisseurs();
     this.messageService.currentMessage.subscribe(message => this.message = message);
     this.messageService.currentPopup.subscribe(closeOrOpenPopup => this.closeOrOpenPopup = closeOrOpenPopup);
+    // Initialiser un événement avec une valeur de 0
+    const event = { target: { value: 0 } };
+    this.filterByCategory(event);
   }
 
 
@@ -48,6 +51,7 @@ export class FournisseurListComponent implements OnInit {
     this.fournisseurData$.subscribe((data: any) => {
       this.fournisseurData = data;
       this.filterData = [...data];
+      this.saveFilterDataByCategory = [...this.fournisseurData];
     });
   }
 
@@ -64,36 +68,32 @@ export class FournisseurListComponent implements OnInit {
     console.log(this.categories);
   }
 
-  saveFilterData: UserDB[] =  []
-  filterByCategory(event: any) {
-    if (event.target.value == 0) {
-      this.filterData = [...this.fournisseurData];
-      this.saveFilterData = [...this.filterData];
-    } else {
-      this.filterData = this.fournisseurData.filter((fournisseur) => {
-        return fournisseur.category.id == event.target.value;
-      });
-      console.log(this.filterData);
-      this.saveFilterData = [...this.filterData];
-    }
+  saveFilterDataByCategory: UserDB[] =  []
+
+filterByCategory(event: any) {
+  console.log(event.target.value);
+  if (event.target.value == 0) {
+    this.filterData = [...this.fournisseurData];
+
+  } else {
+    this.filterData = this.fournisseurData.filter((fournisseur) => {
+      return fournisseur.category.id == event.target.value;
+    });
+    console.log(this.filterData);
+    this.saveFilterDataByCategory = [...this.filterData];
   }
-  searchFournisseur() {
-    if (!this.searchValue)
-    {
-      if(this.saveFilterData.length > 0)
-      {
-        this.filterData = [...this.saveFilterData];
-      }
-      else
-      {
-        this.filterData = [...this.fournisseurData];
-      }
-    } else {
-      this.filterData = this.filterData.filter((fournisseur) =>
-        fournisseur.username?.toLowerCase().includes(this.searchValue.toLowerCase())
-      );
-    }
+}
+
+searchFournisseur() {
+  if (this.searchValue.length == 0)
+  {
+    this.filterData = [...this.saveFilterDataByCategory];
+  } else {
+    this.filterData = this.saveFilterDataByCategory.filter((fournisseur) =>
+      fournisseur.username?.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
   }
+}
 
   goToFournisseurInfo(userName: string | undefined) {
     this.route.navigate(['/fournisseur-info', userName]);

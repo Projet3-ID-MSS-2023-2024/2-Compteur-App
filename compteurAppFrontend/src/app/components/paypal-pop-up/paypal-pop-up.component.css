@@ -7,17 +7,19 @@
   background-color: rgba(0, 0, 0, 0.36);
   width: 100%;
   height: 100vh;
+  z-index: 50;
 }
 p{
   text-align: left;
 }
 .content{
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   background-color: white;
   position: relative;
-  width: 794px;
-  height: 1123px;
+  min-width: 45%;
+  height: 95%;
 }
 
 .title{
@@ -26,9 +28,9 @@ p{
   height: 15%;
   align-items: center;
   margin-left: 5%;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .adresse{
@@ -70,11 +72,13 @@ p{
   height: 35px;
   background: rgba(16, 16, 16, 0.34) url("../../../assets/navbarIcone/hide_picture.svg") no-repeat center;
   background-size: cover;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
 }
 
 .button{
   display:flex;
-  position: absolute;
   bottom: 20px;
   width: 100%;
   height: 80px;
@@ -94,8 +98,7 @@ p{
   width: 90%;
   margin-left: 5%;
   font-size: 1.1em;
-  height: 75px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .factureInfo p{
@@ -105,7 +108,6 @@ p{
 
 .userInfo{
   display: flex;
-  width: 90%;
   height: 100px;
   margin-left: 5%;
   flex-direction: column;
@@ -127,7 +129,6 @@ p{
 
 .info{
   display: flex;
-  width: 33.3333%;
   height: 30%;
   align-items: center;
   font-size: 1.3em;
@@ -168,4 +169,71 @@ p{
   font-size: 1.4em;
 }
 
+.buttonPosition{
+  display:flex;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+button{
+  background-color: #382c2c; /* Green */
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 20px; /* Augmentez la taille du padding pour un bouton plus grand */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px; /* Augmentez la taille de la police pour un texte plus grand */
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 55%;
+}
+
+.button app-paypal-btn{
+  width: 60% !important;
+  height: auto !important;
+}
+
+@media screen and (max-width: 950px) {
+  .content {
+    width: 90%;
+    height: 90%;
+  }
+
+  .adresse, .information, .factureInfo, .userInfo, .info {
+    font-size: 1em;
+  }
+
+  .title {
+    font-size: 1.5em;
+  }
+
+  .croix {
+    z-index: 150;
+    width: 20px;
+    height: 20px;
+  }
+
+  .button, .buttonPosition {
+    height: 40px;
+  }
+
+  .button app-paypal-btn{
+    width: 60% !important;
+    height: auto !important;
+    margin-top: 0px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 20px;
+    width: 70%;
+    z-index: 100;
+  }
+}
 

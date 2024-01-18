@@ -3,7 +3,10 @@
     <app-page-name [pageName]="'Envoyer son relevé'"></app-page-name>
   </div>
   <div class="informationPagePlacement">
-    <app-information-page></app-information-page>
+    <app-information-page
+    [title]="['Compteur','Appareil']"
+    [description]="[data.length.toString(), device]"
+    ></app-information-page>
   </div>
   <div class="addCompteurPlacement">
     <app-add-meter (data)="newMetter($event)" [category]="category" [provider]="provider" *ngIf="device==='mobile'"></app-add-meter>

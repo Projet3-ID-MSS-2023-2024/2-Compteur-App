@@ -22,7 +22,7 @@ export class LoaderAPIComponent {
         this.loadingView();
       }
       if(message === 'sucess' ){
-        this.responseView(true, 'Succées');
+        this.responseView(true, 'Succès');
       }
       if(message === 'error'){
         this.responseView(false, 'Erreur');

@@ -5,7 +5,7 @@ export class UserDB {
   firstname: string | undefined;
   lastname: string | undefined;
   phone_number: string | undefined;
-  role: string | undefined;
+  role!: string;
   tva: string | undefined;
   username: string | undefined;
   category: any | undefined;

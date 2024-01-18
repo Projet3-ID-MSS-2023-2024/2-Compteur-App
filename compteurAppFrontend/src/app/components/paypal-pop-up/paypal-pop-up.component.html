@@ -7,7 +7,6 @@
     <div class="factureInfo" *ngIf="data">
       <p>N° de facture : {{data[0]}} </p>
       <p>Date :{{data[5]}}</p>
-      <p>N° de TVA : {{data[4]}}</p>
     </div>
 
     <div class="boxTitle">
@@ -52,7 +51,7 @@
     </div>
 
     <div class="button" *ngIf="data">
-      <app-paypal-btn [factureInfo]="data"></app-paypal-btn>
+      <app-paypal-btn [factureInfo]="data" [userMail]="userInfo?.email"></app-paypal-btn>
     </div>
     <div class="croix" (click)="buttonPress(false)">
 

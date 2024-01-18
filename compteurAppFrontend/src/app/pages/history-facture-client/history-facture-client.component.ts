@@ -21,6 +21,7 @@ export class HistoryFactureClientComponent implements OnInit{
   data: any | undefined;
   dataFiltre!: any[] ;
   showPopUpfiltre: boolean | undefined = false;
+  listIsEmpty: boolean = false;
 
   showReceiptPopup: boolean | undefined = false;
 
@@ -37,7 +38,9 @@ export class HistoryFactureClientComponent implements OnInit{
     this.dataRecue = await this.getFactureByClientId(this.idUserConnecter, "PAYER");
     this.data = this.setDataCompteur(this.dataRecue);
     this.dataFiltre = this.data;
-    console.log("madata" + this.data);
+    if(!this.dataFiltre || this.dataFiltre.length === 0){
+      this.listIsEmpty = true;
+    }
 
   }
 
@@ -62,7 +65,7 @@ export class HistoryFactureClientComponent implements OnInit{
       //console.log("date" + element.date);
       let date = new Date(element.date as string);
       let formattedDate = date.toLocaleString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      let data = [element.id,element.id, element.nomCompteur,element.nomProvideur,element.TVA, formattedDate, element.prix];
+      let data = [element.id,element.id, element.nomCompteur,element.nomProvideur,element.TVA, formattedDate, element.prix+' €'];
       factureData.push(data);
       console.log("data" + data);
     });
@@ -80,6 +83,10 @@ export class HistoryFactureClientComponent implements OnInit{
 
   cacherPopUp(any:any){
     this.showReceiptPopup = false;
+  }
+
+  cacherPopUpEmptyList(any: any){
+    this.listIsEmpty = false;
   }
 
   cacherPopUpFiltre(any: any){
@@ -112,18 +119,21 @@ export class HistoryFactureClientComponent implements OnInit{
 
     for (let ligne of this.data) {
       if (filtre !== '' && date !== '') {
-        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
+        if (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.slice(0, -1).some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase())) {
           if (ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
             filtrer.push(ligne);
           }
         }
-      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
+      } else if (filtre !== '' && (comparerDernierElement ? ligne[ligne.length - 1].toString().toLowerCase() === filtre.toLowerCase() : ligne.slice(0, -1).some((element: any) => element.toString().toLowerCase() === filtre.toLowerCase()))) {
         filtrer.push(ligne);
       } else if (date !== '' && ligne.some((element: any) => element.toString().toLowerCase() === date.toLowerCase())) {
         filtrer.push(ligne);
       }
     }
 
+    if(!filtrer|| filtrer.length === 0){
+      this.listIsEmpty = true;
+    }
     return filtrer;
   }
 

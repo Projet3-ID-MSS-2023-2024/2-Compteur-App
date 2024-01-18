@@ -95,12 +95,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.submitted = true;
     if(this.registerForm.invalid){
+
       this.registerForm.markAllAsTouched();
       return;
     }
-    if (this.categoryName != '') {
+    if (this.registerForm.get('categoryName')?.value != '') {
+      console.log(this.registerForm.get('categoryName')?.value);
       this.categoryService
-        .create(this.categoryName)
+        .create(this.registerForm.get('categoryName')?.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           () => this.loadCategories(),
