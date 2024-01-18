@@ -20,3 +20,26 @@
   transition: all 0.1s ease-in-out;
   margin: 0 10px
 }
+
+.top{
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+@media screen and (max-width: 950px) {
+
+
+  .placementList{
+    height: 100vh;
+  }
+
+
+
+  .top{
+    margin-top: 50px;
+  }
+}
