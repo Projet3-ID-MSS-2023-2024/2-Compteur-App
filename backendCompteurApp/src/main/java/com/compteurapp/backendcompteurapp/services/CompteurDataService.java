@@ -72,4 +72,12 @@ public class CompteurDataService {
         return page.getContent();
     }
 
+    public CompteurData getDataCompteurById(Long idCompteur){
+        Optional<CompteurData> compteurData = repository.findById(idCompteur);
+        if (compteurData.isEmpty()) {
+            throw new ResourceNotFoundException("No CompteurData found with id " + idCompteur);
+        }
+        return compteurData.get();
+    }
+
 }
