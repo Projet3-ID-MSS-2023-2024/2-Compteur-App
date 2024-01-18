@@ -176,7 +176,7 @@ export class ProfilComponent implements OnInit {
     this.editPopup = false;
     this.donneesModifiees = [];
   }
-  editAdressePopup() {
+  async editAdressePopup() {
     this.editingUser = false;
     if (this.idAdresse != undefined && this.adresseForm.valid) {
       this.adresse$.subscribe((data) => {
@@ -203,6 +203,10 @@ export class ProfilComponent implements OnInit {
           this.editPopup = true;
         }
       });
+    }
+    else if(this.adresseForm.valid) {
+    this.editAdresse(true);
+    this.adresse$ = await this.adresseService.getAdresseByUserId(this.idUser);
     }
   }
   editUserPopup() {
@@ -246,8 +250,15 @@ export class ProfilComponent implements OnInit {
   turnEditMode() {
     if (!this.editMode) {
       this.editPageName = 'Modification du profil';
+      if(window.innerWidth < 768) {
+        // scrool tt en bas
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
+      }
     } else this.editPageName = 'Profil';
     this.editMode = !this.editMode;
+
   }
   handleError(error: any) {
     console.error('Une erreur est survenue : ', error);
@@ -265,7 +276,8 @@ export class ProfilComponent implements OnInit {
       };
       this.adresseUser.idClient = this.idUser;
       this.isLoading = true;
-      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {
+      this.adresseService.updateAdresse(this.adresseUser).subscribe((a:any) => {
+        this.idAdresse = a.id;
         this.isLoading = false;
       });
       this.nabarStatement.setCondition1(true);
