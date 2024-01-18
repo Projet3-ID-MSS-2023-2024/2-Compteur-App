@@ -206,11 +206,7 @@ export class ProfilComponent implements OnInit {
     }
     else if(this.adresseForm.valid) {
     this.editAdresse(true);
-      this.adresse$ = await this.adresseService.getAdresseByUserId(this.idUser);
-      this.adresse$.subscribe((data) => {
-        this.idAdresse = data ? data.id : undefined;
-        console.log(this.idAdresse);
-      });
+    this.adresse$ = await this.adresseService.getAdresseByUserId(this.idUser);
     }
   }
   editUserPopup() {
@@ -280,7 +276,8 @@ export class ProfilComponent implements OnInit {
       };
       this.adresseUser.idClient = this.idUser;
       this.isLoading = true;
-      this.adresseService.updateAdresse(this.adresseUser).subscribe(() => {
+      this.adresseService.updateAdresse(this.adresseUser).subscribe((a:any) => {
+        this.idAdresse = a.id;
         this.isLoading = false;
       });
       this.nabarStatement.setCondition1(true);
