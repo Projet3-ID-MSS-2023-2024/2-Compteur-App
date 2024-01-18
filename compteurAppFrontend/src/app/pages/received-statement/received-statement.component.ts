@@ -20,9 +20,12 @@ import {UserDB} from "../../../models/userDB";
 })
 export class ReceivedStatementComponent {
 
+
   attributLegend = ['Nom Client', 'Valeur', 'Date', 'Etat'];
 
   buttonOption = ['picture.svg', 'facture.svg'];
+
+  buttonOptionTraite = ['picture.svg'];
 
   traiterFilterChoice:string = 'choiceOne';
   payerFilterChoice:string = 'choiceOne';
@@ -119,7 +122,7 @@ export class ReceivedStatementComponent {
     }catch{
       this.loadingService.emettreEvenement('error');
     }
-    
+
   }
 
   //FILTRER LES COMPTEURSDATA PAS IMPAYER/PAYER
@@ -136,7 +139,7 @@ export class ReceivedStatementComponent {
     catch{
       this.loadingService.emettreEvenement('error');
     }
-    
+
   }
 
   closePicture(close:boolean){

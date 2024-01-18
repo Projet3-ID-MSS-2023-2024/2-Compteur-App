@@ -36,6 +36,7 @@ export class ProfilComponent implements OnInit {
   isClient!: boolean;
   idUser!: string | undefined;
   idAdresse!: number | undefined;
+  submitted: boolean = false;
 
   // Données modification
   userEdit!: AddFournisseurSpring | undefined;
@@ -175,8 +176,12 @@ export class ProfilComponent implements OnInit {
     }
     this.editPopup = false;
     this.donneesModifiees = [];
+
+    this.registerForm.controls['password'].reset('');
+    this.registerForm.controls['passwordConf'].reset('');
   }
   async editAdressePopup() {
+    this.submitted = true;
     this.editingUser = false;
     if (this.idAdresse != undefined && this.adresseForm.valid) {
       this.adresse$.subscribe((data) => {
@@ -210,6 +215,7 @@ export class ProfilComponent implements OnInit {
     }
   }
   editUserPopup() {
+    this.submitted = true;
     this.editingUser = true;
     console.log(this.registerForm);
     if (this.password == this.passwordConf && this.verifyUserForm()) {
@@ -240,6 +246,7 @@ export class ProfilComponent implements OnInit {
               "Nom d'utilisateur": this.registerForm.value.username,
             })
           : null;
+          this.registerForm.value.password != '' ? this.donneesModifiees.push({ "Mot de passe": "modifié" }) : null;
         if (this.donneesModifiees.length > 0) {
           this.editPopup = true;
         }

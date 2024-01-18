@@ -23,14 +23,14 @@ const routes: Routes = [
   {path: 'addAdresse', component: AdresseAddComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'fournisseur-info/:userName', component: FournisseurInfoComponent, canActivate: [AuthGuard], data: { roles: ['admin'] }},
   {path: 'homePage', component: HomePageComponent},
-  {path: 'send-statement', component: SendStatementComponent},
-  {path: 'received-statement', component: ReceivedStatementComponent},
+  {path: 'send-statement', component: SendStatementComponent, canActivate: [AuthGuard], data: { roles: ['client'] }},
+  {path: 'received-statement', component: ReceivedStatementComponent, canActivate: [AuthGuard], data: { roles: ['fournisseur'] }},
   {path: 'profil', component: ProfilComponent},
-  {path: 'facture', component: FactureComponent },
-  {path: 'history-facture-client', component: HistoryFactureClientComponent},
-  {path: 'facture-provider', component: FactureProviderComponent },
-  {path: '**', redirectTo: 'home'},
-  {path: 'client-list', component: ClientListComponent}
+  {path: 'facture', component: FactureComponent, canActivate: [AuthGuard], data: { roles: ['client'] } },
+  {path: 'history-facture-client', component: HistoryFactureClientComponent, canActivate: [AuthGuard], data: { roles: ['client'] }},
+  {path: 'facture-provider', component: FactureProviderComponent, canActivate: [AuthGuard], data: { roles: ['fournisseur'] } },
+  {path: '**', redirectTo: 'homePage'},
+  {path: 'client-list', component: ClientListComponent, canActivate: [AuthGuard], data: { roles: ['fournisseur'] }},
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@
   </div>
   <div class="informationPagePlacement">
     <app-information-page
-    [title]="['Non traiter', 'Payer', 'Impayé']"
+    [title]="['Non traité', 'Payé', 'Impayé']"
     [description]="[dataCompteurNonTraiter.length.toString(), dataCompteurTraiterPayer.length.toString(), dataCompteurTraiterImpayer.length.toString()]"
     ></app-information-page>
   </div>
@@ -19,7 +19,12 @@
     </div>
   </div>
   <div class="placementList">
-    <app-indice-list [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
+      <app-indice-list *ngIf="traiterFilterChoice === 'choiceOne'" [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOption" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
+
+      <app-indice-list *ngIf="traiterFilterChoice !== 'choiceOne'" [attributLegend]="attributLegend" [data]="data" [buttonOption]="buttonOptionTraite" (buttonPressed)="buttonPress($event)"></app-indice-list>
+
   </div>
   <div class="movePagePlacement">
     <app-change-pageable (page)="changePage($event)" [pageStart]="pageStart" [pageEnd]="pageEnd"></app-change-pageable>

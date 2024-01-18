@@ -87,7 +87,13 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   logout() {
-    this.keycloak.logout();
+    this.route.navigate(['/homePage']);
+    // sleep 0.5 secondes
+    setTimeout(() => {
+      this.keycloak.logout();
+    }, 50);
+
+
   }
 
   isPopup: boolean = false;

@@ -18,8 +18,8 @@ p{
   flex-direction: column;
   background-color: white;
   position: relative;
-  min-width: 35%;
-  height: 90%;
+  min-width: 45%;
+  height: 95%;
 }
 
 .title{
@@ -28,9 +28,9 @@ p{
   height: 15%;
   align-items: center;
   margin-left: 5%;
-  font-size: 2.5em;
+  font-size: 2em;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .adresse{
@@ -74,6 +74,7 @@ p{
   background-size: cover;
   right: 0px;
   top: 0px;
+  cursor: pointer;
 }
 
 .button{
@@ -182,7 +183,6 @@ button{
   background-color: #382c2c; /* Green */
   border: none;
   color: rgb(255, 255, 255);
-  padding: 20px; /* Augmentez la taille du padding pour un bouton plus grand */
   text-align: center;
   text-decoration: none;
   display: inline-block;
