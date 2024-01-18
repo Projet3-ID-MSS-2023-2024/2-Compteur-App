@@ -16,6 +16,9 @@ export class ClientListComponent implements OnInit {
   ) {}
 
   clients: Observable<UserDB[]> = new Observable<UserDB[]>();
+  attributLegend: any[] = ['Nom', 'Prénom', 'Téléphone','Email'];
+  data: any[][] = [];
+
 
   ngOnInit(): void {
     this.initClientList();
@@ -24,5 +27,16 @@ export class ClientListComponent implements OnInit {
     const profile = await this.keycloak.loadUserProfile();
 
     this.clients = await this.service.getClientsByProviderId(profile.id);
+    this.clients.subscribe((client) => {
+      client.forEach((element) => {
+        this.data.push([
+          element.id,
+          element.lastname,
+          element.firstname,
+          element.phoneNumber,
+          element.email,
+        ]);
+      });
+    });
   }
 }
