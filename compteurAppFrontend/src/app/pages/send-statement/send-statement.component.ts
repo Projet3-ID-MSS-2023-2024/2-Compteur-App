@@ -107,7 +107,7 @@ export class SendStatementComponent {
     console.log(choice);
     if (choice[0]) {
       let index = this.device === 'desktop' ? 2 : 3;
-      let valeur = this.device === 'desktop' ? choice[2].valeur : choice[2];
+      let valeur = choice[2];
       try {
         this.loadingService.emettreEvenement('loading');
         if (choice[0]) {
@@ -118,11 +118,11 @@ export class SendStatementComponent {
             this.idUserConnecter,
             provider['result'],
             this.idFocus,
-            choice[index].rue,
-            choice[index].numero,
-            choice[index].codePostal,
-            choice[index].ville,
-            choice[index].pays,
+            "",
+            "",
+            "",
+            "",
+            "",
             this.device
           );
           await this.addCompteurData(compteurDataSender);
