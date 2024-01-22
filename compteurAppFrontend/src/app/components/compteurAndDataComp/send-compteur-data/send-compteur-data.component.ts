@@ -24,9 +24,11 @@ export class SendCompteurDataComponent {
       ) as HTMLInputElement;
       data.push(photo.files);
       data.push(this.dataSend.value.valeur);
-      let adresse = await this.getAdresse();
+      let adresse = null;
       data.push(adresse);
     }
+
+    console.log(data);
     this.sendData.emit(data);
   }
 

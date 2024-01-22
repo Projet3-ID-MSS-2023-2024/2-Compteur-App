@@ -62,13 +62,14 @@ import { SimpleLoaderComponent } from './components/universalComponents/simple-l
 import { GestionPdpProfilComponent } from './components/profilComponents/gestion-pdp-profil/gestion-pdp-profil.component';
 import { ClientListComponent } from './pages/client-list/client-list.component';
 import { EmptyListPopupComponent } from './components/universalComponents/empty-list-popup/empty-list-popup.component';
+import { EmptyListPopupComponentHistorique } from './components/universalComponents/empty-list-popup-historique/empty-list-popup.component-historique';
 
 function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBService) {
   return () =>
     keycloak
       .init({
         config: {
-          url: 'http://localhost:8082',
+          url: 'https://keycloak.localhost',
           realm: 'compteurapp',
           clientId: 'angular',
         },
@@ -76,18 +77,7 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
         initOptions: {
           onLoad: 'login-required',
           checkLoginIframe: true,
-        },
-        shouldAddToken: (request) => {
-          const { method, url } = request;
-
-          const isGetRequest = 'GET' === method.toUpperCase();
-          const acceptablePaths = ['/assets', '/clients/public'];
-          const isAcceptablePathMatch = acceptablePaths.some((path) =>
-            url.includes(path)
-          );
-
-          return !(isGetRequest && isAcceptablePathMatch);
-        },
+        }
       })
       .then(() => userDBService.syncUser().toPromise());
 }
@@ -142,7 +132,15 @@ function initializeKeycloak(keycloak: KeycloakService, userDBService: UserDBServ
     FactureProviderComponent,//alessio
     ShoppingBtnComponent,//alessio
     FactureListComponent,//alessio
-    PaypalPopUpComponent, HistoryFactureClientComponent, AddFacturePricePopupComponent, FiltreFacturePopupComponent, FactureReiptPopupComponent, SimpleLoaderComponent, GestionPdpProfilComponent, ClientListComponent, EmptyListPopupComponent//alessio
+    PaypalPopUpComponent, HistoryFactureClientComponent,
+    AddFacturePricePopupComponent,
+    FiltreFacturePopupComponent,
+    FactureReiptPopupComponent,
+    SimpleLoaderComponent,
+    GestionPdpProfilComponent,
+    ClientListComponent,
+    EmptyListPopupComponent,//alessio
+    EmptyListPopupComponentHistorique
   ],
   imports: [
     BrowserModule,

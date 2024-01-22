@@ -29,8 +29,9 @@ const routes: Routes = [
   {path: 'facture', component: FactureComponent, canActivate: [AuthGuard], data: { roles: ['client'] } },
   {path: 'history-facture-client', component: HistoryFactureClientComponent, canActivate: [AuthGuard], data: { roles: ['client'] }},
   {path: 'facture-provider', component: FactureProviderComponent, canActivate: [AuthGuard], data: { roles: ['fournisseur'] } },
-  {path: '**', redirectTo: 'homePage'},
   {path: 'client-list', component: ClientListComponent, canActivate: [AuthGuard], data: { roles: ['fournisseur'] }},
+  {path: '**', redirectTo: 'homePage'},
+
 ];
 
 @NgModule({

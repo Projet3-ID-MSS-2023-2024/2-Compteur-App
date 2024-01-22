@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.model.*;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
+import com.compteurapp.backendcompteurapp.repository.CategoryRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.security.KeycloakSecurityUtilTest;
@@ -64,6 +65,9 @@ public class CompteurTest {
     @Autowired
     AdresseRepository adresseRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     public UserDB provider;
     public UserDB client;
     public Adresse adresse;
@@ -77,7 +81,8 @@ public class CompteurTest {
     public void init() {
 
         Category category = new Category();
-        category.setId(2L);
+        category.setName("testCategoy");
+        category = categoryRepository.save(category);
 
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
@@ -174,6 +179,7 @@ public class CompteurTest {
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
             adresseRepository.deleteById(this.adresse.getId());
+            categoryRepository.deleteById(this.category.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

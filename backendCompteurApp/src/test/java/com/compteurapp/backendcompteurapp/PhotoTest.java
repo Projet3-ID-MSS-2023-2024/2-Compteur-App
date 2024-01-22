@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +42,13 @@ public class PhotoTest {
     private String idUser = "idtestphoto";
     @BeforeEach
     public void setUp() throws IOException {
+        String uploadDir = "src/main/resources/static/pdp/";
+
+        File uploadDirectory = new File(uploadDir);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdir();
+        }
+
         UserDB user = new UserDB();
         user.setId(idUser);
 

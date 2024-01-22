@@ -8,10 +8,7 @@ import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.controller.FactureController;
 import com.compteurapp.backendcompteurapp.enums.FactureStatement;
 import com.compteurapp.backendcompteurapp.model.*;
-import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
-import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
-import com.compteurapp.backendcompteurapp.repository.FactureRepository;
-import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
+import com.compteurapp.backendcompteurapp.repository.*;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
 import com.compteurapp.backendcompteurapp.services.CompteurService;
 import com.compteurapp.backendcompteurapp.services.UserDBService;
@@ -72,6 +69,9 @@ public class FactureTest {
     @Autowired
     FactureController factureController;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     private  UserDB provider;
     private UserDB client;
     private Adresse adresse;
@@ -89,7 +89,8 @@ public class FactureTest {
     public void init() {
 
         Category category = new Category();
-        category.setId(2L);
+        category.setName("testCategoy");
+        category = categoryRepository.save(category);
 
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
@@ -219,6 +220,7 @@ public class FactureTest {
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
             adresseRepository.deleteById(this.adresse.getId());
+            categoryRepository.deleteById(this.category.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,3 +12,42 @@ services:
       - KC_DB_URL=jdbc:postgresql://13.37.240.236:5432/postgres?currentSchema=public
       - KC_DB_USERNAME=admin
       - KC_DB_PASSWORD=admin
+      - KC_PROXY=edge
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.tls=true"
+      - "traefik.http.routers.keycloak.rule=Host(`keycloak.localhost`)"
+      - "traefik.http.routers.keycloak.entrypoints=websecure"
+  traefik:
+    image: "traefik:v2.10"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.file.filename=/etc/traefik/dynamic_conf.yaml"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8083:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./dynamic_conf.yaml:/etc/traefik/dynamic_conf.yaml"
+      - "./certs:/certs"
+    labels:
+      # redirect to https
+      - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
+      - traefik.http.routers.http-catchall.entrypoints=web
+      - traefik.http.routers.http-catchall.middlewares=redirect-to-https
+      # middleware redirect
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+
+  whoami:
+    image: "traefik/whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"

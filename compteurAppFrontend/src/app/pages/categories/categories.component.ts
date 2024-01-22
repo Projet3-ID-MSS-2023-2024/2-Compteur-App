@@ -27,7 +27,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder
   ) {
     this.registerForm = this.formBuilder.group({
-      categoryName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
+      categoryName: ['', [Validators.required, Validators.pattern(/^[a-zA-ZÀ-ÿ]+$/)]],
     });
   }
 
