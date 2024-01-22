@@ -32,6 +32,7 @@ public class AdresseService {
     }
 
     public Adresse updateAdresse(AdresseDTO adresse) throws Exception {
+        //Cette fonction modifie une adresse et en crée une si besoin
         Adresse adresseCree = new Adresse();
         adresseCree.setRue(adresse.getRue());
         adresseCree.setVille(adresse.getVille());
@@ -40,6 +41,7 @@ public class AdresseService {
         adresseCree.setNumero(adresse.getNumero());
 
         if(adresse.getId() == null){
+            // Création d'une adresse si aucune adresse n'existe
             adresseCree = adresseRepository.save(adresseCree);
             UserDB user = userDBRepository.findById(adresse.getIdClient()).get();
             user.setAdresse(adresseCree);
