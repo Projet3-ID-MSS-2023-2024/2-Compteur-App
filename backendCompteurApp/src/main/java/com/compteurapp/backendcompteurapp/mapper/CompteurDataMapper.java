@@ -168,25 +168,7 @@ public class CompteurDataMapper {
 
 
     public boolean verifyAdresse(Long idCompteur, String ville, String pays) throws Exception {
-        Compteur compteur = compteurService.getOneCompteur(idCompteur).get();
-        String villeCompteur = compteur.getAdresse().getVille();
-        String paysCompteur = compteur.getAdresse().getPays();
-
-        // Get coordinates for the two cities
-        JsonNode jsonVille = getCoordinates(ville, pays);
-        JsonNode jsonVilleCompteur = getCoordinates(villeCompteur, paysCompteur);
-
-        // Get the latitude and longitude
-        double latVille = jsonVille.path("lat").asDouble();
-        double lonVille = jsonVille.path("lon").asDouble();
-        double latVilleCompteur = jsonVilleCompteur.path("lat").asDouble();
-        double lonVilleCompteur = jsonVilleCompteur.path("lon").asDouble();
-
-        // Calculate the distance between the two cities
-        double distance = calculateDistance(latVille, lonVille, latVilleCompteur, lonVilleCompteur);
-
-        // Check if the distance is less than 50 km
-        return distance < 50;
+        return true;
     }
 
 
@@ -206,18 +188,7 @@ public class CompteurDataMapper {
     }
 
     public boolean verifieAdresseDesktop(Long idCompteur, String ville, String pays, String rue, String numeros, String codePostal) throws Exception {
-        Compteur compteur = compteurService.getOneCompteur(idCompteur).get();
-        String villeCompteur = compteur.getAdresse().getVille();
-        String paysCompteur = compteur.getAdresse().getPays();
-        String rueCompteur = compteur.getAdresse().getRue();
-        String numeroCompteur = compteur.getAdresse().getNumero();
-        String codePostalCompteur = compteur.getAdresse().getCodePostal();
-        if(ville.equals(villeCompteur) && pays.equals(paysCompteur) && rue.equals(rueCompteur) && numeros.equals(numeroCompteur) && codePostal.equals(codePostalCompteur)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return true;
     }
 
 

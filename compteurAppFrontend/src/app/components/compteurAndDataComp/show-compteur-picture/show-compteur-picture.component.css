@@ -18,7 +18,7 @@
   height: 60%;
   flex-direction: column;
   border-radius: 20px;
-  background: rgba(52, 52, 52, 0.77);
+  background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7.2px);

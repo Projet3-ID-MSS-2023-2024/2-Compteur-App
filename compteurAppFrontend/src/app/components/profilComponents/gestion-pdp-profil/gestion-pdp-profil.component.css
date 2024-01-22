@@ -1,6 +1,6 @@
 .addButton {
-  width: 200px;
-  height: 200px;
+  width: 130px;
+  height: 130px;
   border-radius: 100%;
   background-color: transparent;
   img {
@@ -18,10 +18,8 @@
 }
 .deleteButton {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 200px;
-  height: 100px;
+  right: 38px;
+  top: 10px;
   background-color: transparent;
   margin: 0;
   padding: 0;
@@ -29,10 +27,8 @@
 }
 .editPdpButton {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 200px;
-  height: 100px;
+  right: 38px;
+  bottom: 10px;
   background-color: transparent;
   margin: 0;
   padding: 0;
@@ -40,15 +36,13 @@
 }
 .deleteButton img {
   position: absolute;
-  left: 55px;
   bottom: 0;
-  width: 90px;
+  width: 50px;
 }
 .editPdpButton img {
-  left: 55px;
   position: absolute;
   top: 0;
-  width: 90px;
+  width: 50px;
 }
 .editBackground {
   background-color: orange;
@@ -76,8 +70,8 @@
   align-items: center;
   border: #000000 2px solid;
   cursor: pointer;
-  right: 0;
-  bottom: 0;
+  right: -12px;
+  bottom: -9px;
   background-color: #3a475b;
   display: flex;
 }
@@ -91,15 +85,5 @@ img {
   width: 80%;
 }
 @media screen and (max-width: 950px) {
-  .pdp,
-  .addButton,
-  .deleteButton,
-  .editPdpButton {
-    width: 150px;
-    height: 150px;
-  }
-  .editButtonPdp {
-    width: 40px;
-    height: 40px;
-  }
+
 }

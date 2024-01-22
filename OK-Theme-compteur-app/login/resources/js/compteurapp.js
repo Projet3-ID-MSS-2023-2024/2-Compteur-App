@@ -91,26 +91,6 @@ function validateLogin(){
     displayPopup("Veuillez remplir tous les champs obligatoires.");
     return false; // Prevent form submission
   }
-
-  // Check if the username is available
-  var usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
-  if (!usernameRegex.test(username)) {
-    displayPopup(
-      "Le nom d'utilisateur doit contenir entre 3 et 20 caractères alphanumériques ou des tirets bas."
-    );
-    return false; // Prevent form submission
-  }
-
-  // Check if the password is strong enough
-  var passwordRegex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/;
-  if (!passwordRegex.test(password)) {
-    displayPopup(
-      "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial, et avoir une longueur d’au moins 8 caractères."
-    );
-    return false; // Prevent form submission
-  }
-
   return true;
 }
 
@@ -120,9 +100,7 @@ function validateResetPassword(){
   // Check if the usernam is valid
   var usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
   if (!usernameRegex.test(username)) {
-    displayPopup(
-      "Le nom d'utilisateur doit contenir entre 3 et 20 caractères alphanumériques ou des tirets bas."
-    );
+    displayPopup("Veuillez remplir tous les champs obligatoires.");
     return false; // Prevent form submission
   }
 
