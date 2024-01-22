@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import com.compteurapp.backendcompteurapp.controller.CompteurDataController;
 import com.compteurapp.backendcompteurapp.model.*;
 import com.compteurapp.backendcompteurapp.repository.AdresseRepository;
+import com.compteurapp.backendcompteurapp.repository.CategoryRepository;
 import com.compteurapp.backendcompteurapp.repository.CompteurDataRepository;
 import com.compteurapp.backendcompteurapp.repository.UserDBRepository;
 import com.compteurapp.backendcompteurapp.services.CompteurDataService;
@@ -48,7 +49,6 @@ public class CompteurDataControllerTest {
     @Autowired
     CompteurService compteurService;
 
-
     @Autowired
     UserDBRepository userDBRepository;
 
@@ -61,11 +61,13 @@ public class CompteurDataControllerTest {
     @Autowired
     CompteurDataRepository compteurDataRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     public UserDB provider;
     public UserDB client;
     public Adresse adresse;
     public Category category;
-
     public Compteur compteur;
 
     public CompteurData compteurData;
@@ -75,7 +77,8 @@ public class CompteurDataControllerTest {
     public void init() {
 
         Category category = new Category();
-        category.setId(2L);
+        category.setName("testCategoy");
+        category = categoryRepository.save(category);
 
         UserDB userDB = new UserDB();
         userDB.setFirstname("test44");
@@ -94,7 +97,6 @@ public class CompteurDataControllerTest {
         provider.setTva("BE123456789");
         provider.setPhoneNumber("0477777777");
         provider.setCategory(category);
-
         userDBRepository.save(provider);
 
         Adresse adresse = new Adresse();
@@ -172,6 +174,7 @@ public class CompteurDataControllerTest {
             userDBRepository.deleteById(this.client.getId());
             userDBRepository.deleteById(this.provider.getId());
             adresseRepository.deleteById(this.adresse.getId());
+            categoryRepository.deleteById(this.category.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
