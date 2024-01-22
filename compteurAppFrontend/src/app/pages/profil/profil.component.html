@@ -2,9 +2,15 @@
   <div class="pageNamePlacement">
     <app-page-name [pageName]="editPageName"></app-page-name>
   </div>
-<div class="pdpContaineur">
-  <app-gestion-pdp-profil *ngIf="idUser" [idUser]="this.idUser"></app-gestion-pdp-profil></div>
+  <!-- Photo de profil -->
+  <div class="pdpContaineur">
+    <app-gestion-pdp-profil
+      *ngIf="idUser"
+      [idUser]="this.idUser"
+    ></app-gestion-pdp-profil>
+  </div>
 
+  <!-- Boutton de choix de formulaire entre adresse et profil -->
   <div class="doubleButtonContainer">
     <div class="buttonContainer">
       <button
@@ -26,6 +32,7 @@
     </div>
   </div>
 
+  <!-- Forumulaire de modification des données utilisateur -->
   <form [formGroup]="registerForm" *ngIf="formChoiceButton">
     <div class="placementList" *ngIf="user$ | async as user">
       <div class="containeur-form">
@@ -38,7 +45,15 @@
               formControlName="username"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['username'].status == 'INVALID'">Le nom utilisateur est incorrecte</p>
+            <!-- Message d'erreur si le le nom entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['username'].status == 'INVALID'
+              "
+            >
+              Le nom utilisateur est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="lastname">Nom de famille: </label>
@@ -48,7 +63,15 @@
               formControlName="lastname"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['lastname'].status == 'INVALID'">Le nom de famille est incorrecte</p>
+            <!-- Message d'erreur si le le nom de famille entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['lastname'].status == 'INVALID'
+              "
+            >
+              Le nom de famille est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="firstName">Prénom : </label>
@@ -58,20 +81,38 @@
               formControlName="firstname"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['firstname'].status == 'INVALID'">Le prénom est incorrecte</p>
+            <!-- Message d'erreur si le le prénom entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['firstname'].status == 'INVALID'
+              "
+            >
+              Le prénom est incorrecte
+            </p>
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="password">Mot de passe : </label>
+            <!-- Champs mot de passe -->
+            <!-- Affiche le champs en rouge si le mot de passe et la confirmation ne sont pas identique -->
             <input
               type="password"
               id="password"
               formControlName="password"
               [readonly]="!editMode"
               [(ngModel)]="password"
-              [ngClass]="{wrongPassword: password != passwordConf}"
-
+              [ngClass]="{ wrongPassword: password != passwordConf }"
             />
-            <p *ngIf="submitted && this.registerForm.controls['password'].status == 'INVALID'">  Un chiffre, une lettre majuscule, une lettre minuscule et un caractère spécial requis.</p>
+            <!-- Message d'erreur si le le mot de passe entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['password'].status == 'INVALID'
+              "
+            >
+              Un chiffre, une lettre majuscule, une lettre minuscule et un
+              caractère spécial requis.
+            </p>
           </div>
           <div class="form-group" *ngIf="!editMode && !isClient">
             <label for="category">Catégorie : </label>
@@ -92,7 +133,15 @@
               formControlName="email"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['email'].status == 'INVALID'">L'adresse email est incorrecte</p>
+            <!-- Message d'erreur si le le mail entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['email'].status == 'INVALID'
+              "
+            >
+              L'adresse email est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="phoneNumber">Numéro de téléphone : </label>
@@ -102,7 +151,15 @@
               formControlName="phoneNumber"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['phoneNumber'].status == 'INVALID'">Le numéro de téléphone est incorrecte</p>
+            <!-- Message d'erreur si le le numéro de téléphone entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['phoneNumber'].status == 'INVALID'
+              "
+            >
+              Le numéro de téléphone est incorrecte
+            </p>
           </div>
           <div class="form-group" *ngIf="!isClient">
             <label for="tva">TVA : </label>
@@ -112,20 +169,33 @@
               formControlName="tva"
               [readonly]="!editMode"
             />
-            <p *ngIf="submitted && this.registerForm.controls['tva'].status == 'INVALID'">Le numéro de TVA est incorrecte</p>
+            <!-- Message d'erreur si le le numéro de TVA entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.registerForm.controls['tva'].status == 'INVALID'
+              "
+            >
+              Le numéro de TVA est incorrecte
+            </p>
           </div>
           <div class="form-group" *ngIf="editMode">
             <label for="passwordConf">Confirmation de mot de passe : </label>
+            <!-- Champs confirmation mot de passe -->
+            <!-- Affiche le champs en rouge si le mot de passe et la confirmation ne sont pas identique -->
             <input
               type="password"
               id="passwordConf"
               formControlName="passwordConf"
               [readonly]="!editMode"
               [(ngModel)]="passwordConf"
-              [ngClass]="{wrongPassword: password != passwordConf}"
+              [ngClass]="{ wrongPassword: password != passwordConf }"
             />
           </div>
+
           <div class="buttonRight" *ngIf="editMode">
+            <!-- Boutton d'envoi des données du formulaire de modification des données utilisateur -->
+            <!-- Ce boutton active une popup de confirmation de changement de données -->
             <div class="buttondiv fade-in-out" #boutton>
               <img
                 (click)="editUserPopup()"
@@ -137,6 +207,7 @@
           </div>
         </div>
       </div>
+      <!-- Boutton d'activation du mode édition -->
       <div class="editButton">
         <img
           (click)="turnEditMode()"
@@ -146,6 +217,7 @@
       </div>
     </div>
   </form>
+  <!-- Formlaire de modification de l'adresse -->
   <form [formGroup]="adresseForm" *ngIf="!formChoiceButton">
     <div class="placementList">
       <div class="containeur-form">
@@ -159,7 +231,15 @@
               [readonly]="!editMode"
               placeholder="Rue de la paix"
             />
-            <p *ngIf="submitted && this.adresseForm.controls['rue'].status == 'INVALID'">Le nom de la rue est incorrecte</p>
+            <!-- Message d'erreur si le le nom de la rue entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.adresseForm.controls['rue'].status == 'INVALID'
+              "
+            >
+              Le nom de la rue est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="numero">Numéro : </label>
@@ -170,7 +250,15 @@
               [readonly]="!editMode"
               placeholder="1"
             />
-            <p *ngIf="submitted && this.adresseForm.controls['numero'].status == 'INVALID'">Le numéro de la rue est incorrecte</p>
+            <!-- Message d'erreur si le le numéro de la rue entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.adresseForm.controls['numero'].status == 'INVALID'
+              "
+            >
+              Le numéro de la rue est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="ville">Ville : </label>
@@ -181,7 +269,15 @@
               [readonly]="!editMode"
               placeholder="Bruxelles"
             />
-            <p *ngIf="submitted && this.adresseForm.controls['ville'].status == 'INVALID'">Le nom de la ville est incorrecte</p>
+            <!-- Message d'erreur si le le nom de la ville entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.adresseForm.controls['ville'].status == 'INVALID'
+              "
+            >
+              Le nom de la ville est incorrecte
+            </p>
           </div>
         </div>
         <div class="right">
@@ -194,7 +290,15 @@
               [readonly]="!editMode"
               placeholder="1000"
             />
-            <p *ngIf="submitted && this.adresseForm.controls['codePostal'].status == 'INVALID'">Le code postal est incorrecte</p>
+            <!-- Message d'erreur si le le code postal entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.adresseForm.controls['codePostal'].status == 'INVALID'
+              "
+            >
+              Le code postal est incorrecte
+            </p>
           </div>
           <div class="form-group">
             <label for="pays">Pays : </label>
@@ -205,9 +309,18 @@
               [readonly]="!editMode"
               placeholder="Belgique"
             />
-            <p *ngIf="submitted && this.adresseForm.controls['pays'].status == 'INVALID'">Le nom du pays est incorrecte</p>
+            <!-- Message d'erreur si le le nom du pays entré ne respecte pas les conditions -->
+            <p
+              *ngIf="
+                submitted &&
+                this.adresseForm.controls['pays'].status == 'INVALID'
+              "
+            >
+              Le nom du pays est incorrecte
+            </p>
           </div>
           <div class="buttonRight">
+            <!-- Boutton d'envoi des données du formulaire de modification de l'adresse -->
             <div class="buttondiv fade-in-out" *ngIf="editMode">
               <img
                 (click)="editAdressePopup()"
@@ -220,6 +333,7 @@
         </div>
       </div>
       <div class="editButton">
+        <!-- Boutton d'activation du mode édition -->
         <img
           (click)="turnEditMode()"
           src="./assets/navbarIcone/edit.svg"
@@ -235,7 +349,6 @@
     (acceptChanges)="editingUser ? editUser($event) : editAdresse($event)"
   ></app-edit-popup>
 
-  <!-- loader -->
+  <!-- Loader activé lors de l'envoi et la reception des données -->
   <app-simple-loader [isLoading]="isLoading"></app-simple-loader>
-
 </div>
