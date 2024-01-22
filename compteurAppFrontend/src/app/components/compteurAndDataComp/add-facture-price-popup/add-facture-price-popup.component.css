@@ -9,12 +9,14 @@
   justify-content: center;
   align-items: center;
   top: 0;
+  z-index: 5;
 }
 
 .formulaire {
+  z-index: 10;
   display: flex;
-  width: 55%;
-  height: 25%;
+  width: 80%;
+  height: 50vh;
   flex-direction: column;
   justify-content: space-around;
   position: relative;
@@ -38,6 +40,8 @@
 h1 {
   font-size: 2.5em;
   color: rgb(0, 0, 0);
+  text-align: center;
+  margin-top: 50px;
 }
 
 .fieldPlacement {
@@ -74,7 +78,7 @@ input {
   font-size: 1.1em;
 }
 .errorMess {
-  color: white;
+  color: black;
   font-size: 1.5em;
   margin-top: 5px;
 }
