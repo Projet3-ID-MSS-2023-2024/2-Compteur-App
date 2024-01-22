@@ -13,10 +13,11 @@
 
 .formulaire {
   display: flex;
-  width: 55%;
-  height: 25%;
+  width: 35%;
+  height: 30%;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   position: relative;
   border-radius: 20px;
   background: #fff;
@@ -27,6 +28,7 @@
   border: 1px solid rgba(52, 52, 52, 0.33);
 }
 
+
 .placement {
   display: flex;
   width: 100%;
@@ -36,6 +38,7 @@
 }
 
 h1 {
+  text-align: center;
   font-size: 2.5em;
   color: rgb(0, 0, 0);
 }
@@ -46,38 +49,9 @@ h1 {
   height: 22%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
 }
 
-.formField {
-  display: flex;
-  width: 100%;
-  height: 60%;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-around; /* Modifié pour centrer le contenu verticalement */
-  align-items: center;
-}
-
-.inputPlacement {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-input {
-  width: 60%; /* Ajusté pour mieux s'adapter à votre mise en page */
-  height: 100%;
-  background-color: rgb(163, 163, 163);
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.1em;
-}
-.errorMess {
-  color: white;
-  font-size: 1.5em;
-  margin-top: 5px;
-}
 
 .button {
   display: flex;
@@ -98,29 +72,30 @@ input {
   background-color: rgb(0, 145, 0);
 }
 
-.croix {
-  position: absolute;
-  top: 10px;
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.267);
-  border-radius: 5px;
-  right: 10px;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
-}
-
-.croix img {
-  width: 100%;
-  height: auto;
-}
-
-.croix:hover {
-  background-color: rgba(255, 255, 255, 0.726);
-}
 
 input:focus {
   outline: none;
 }
+
+@media screen and (max-width: 950px) {
+  .formulaire {
+    width: 90%;
+    height: 30%;
+  }
+
+  .placement {
+    height: 30%;
+  }
+
+  .fieldPlacement {
+    height: 20%;
+  }
+
+  .button {
+    width: 200px;
+    font-size: 1.1em;
+  }
+
+
+}
+
